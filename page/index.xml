@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Clloz</title>
-        <link>https://clloz.github.io/</link>
-        <description>Recent content on Clloz</description>
+        <title>Pages on Clloz</title>
+        <link>https://clloz.github.io/page/</link>
+        <description>Recent content in Pages on Clloz</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <lastBuildDate>Mon, 13 Mar 2023 17:14:58 +0800</lastBuildDate><atom:link href="https://clloz.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Clloz</title>
-        <link>https://clloz.github.io/posts/test/</link>
-        <pubDate>Mon, 13 Mar 2023 17:14:58 +0800</pubDate>
-        
-        <guid>https://clloz.github.io/posts/test/</guid>
-        <description>&lt;img src="https://clloz.github.io/posts/test/bg.jpg" alt="Featured image of post Clloz" /&gt;&lt;h3 id=&#34;this-is-a-test-page&#34;&gt;this is a test page&lt;/h3&gt;
-&lt;p&gt;test stack theme&lt;/p&gt;
-</description>
-        </item>
-        <item>
+        <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://clloz.github.io/page/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Archives</title>
         <link>https://clloz.github.io/archives/</link>
         <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>

@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Posts on My New Hugo Site</title>
-    <link>https://clloz.github.io/posts/</link>
-    <description>Recent content in Posts on My New Hugo Site</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Mon, 13 Mar 2023 17:14:58 +0800</lastBuildDate><atom:link href="https://clloz.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Clloz</title>
-      <link>https://clloz.github.io/posts/clloz/</link>
-      <pubDate>Mon, 13 Mar 2023 17:14:58 +0800</pubDate>
-      
-      <guid>https://clloz.github.io/posts/clloz/</guid>
-      <description>this is a test page </description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>Posts on Clloz</title>
+        <link>https://clloz.github.io/posts/</link>
+        <description>Recent content in Posts on Clloz</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Mon, 13 Mar 2023 17:14:58 +0800</lastBuildDate><atom:link href="https://clloz.github.io/posts/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Clloz</title>
+        <link>https://clloz.github.io/posts/test/</link>
+        <pubDate>Mon, 13 Mar 2023 17:14:58 +0800</pubDate>
+        
+        <guid>https://clloz.github.io/posts/test/</guid>
+        <description>&lt;img src="https://clloz.github.io/posts/test/bg.jpg" alt="Featured image of post Clloz" /&gt;&lt;h3 id=&#34;this-is-a-test-page&#34;&gt;this is a test page&lt;/h3&gt;
+&lt;p&gt;test stack theme&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
 </rss>
