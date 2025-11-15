@@ -1,0 +1,12 @@
+# CNAME 文件说明
+# 
+# 如果你有自定义域名，取消下面的注释并替换为你的域名
+# 然后将此文件重命名为 CNAME（无扩展名）
+#
+# 例如：yourdomain.com
+# 或子域名：blog.yourdomain.com
+#
+# 同时需要在 astro.config.mjs 中更新 site 配置
+# 以及在域名提供商处配置 DNS 记录
+
+# yourdomain.com

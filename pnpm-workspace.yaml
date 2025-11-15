@@ -1,0 +1,11 @@
+packages:
+  - 'packages/*'
+
+# 如果需要 hoisting 配置，可以添加：
+# shamefully-hoist=true
+# public-hoist-pattern[]=*astro*
+# public-hoist-pattern[]=*vite*
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp

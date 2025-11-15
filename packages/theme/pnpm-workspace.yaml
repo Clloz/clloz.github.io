@@ -1,0 +1,6 @@
+# 主题包不需要单独的 workspace 配置
+# 统一使用根目录的 pnpm-workspace.yaml
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
