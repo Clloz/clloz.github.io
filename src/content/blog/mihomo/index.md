@@ -351,14 +351,14 @@ clash_restart() {
 clash_on() {
     print_status "Enabling system proxy for all network services..."
 
-    # 获取当前网络端口（从配置文件中提取）
+    # 获取当前网络端口(从配置文件中提取)
     local proxy_port=$(grep -E "^mixed-port:" "$CONFIG_FILE" 2>/dev/null | awk '{print $2}')
     if [[ -z "$proxy_port" ]]; then
         proxy_port=7890  # 默认端口
     fi
 
     # 1. 获取所有网络服务列表
-    # 使用 networksetup 命令列出所有服务，并过滤掉已禁用的服务（名称前带*号）
+    # 使用 networksetup 命令列出所有服务，并过滤掉已禁用的服务(名称前带*号)
     local network_services
     network_services=$(networksetup -listallnetworkservices | tail -n +2 | grep -v '^\*')
 
@@ -455,7 +455,7 @@ clash_config_set() {
     # 备份原配置
     cp "$CONFIG_FILE" "$CONFIG_FILE.bak"
 
-    # 使用yq工具修改配置（需要先安装yq）
+    # 使用yq工具修改配置(需要先安装yq)
     if command -v yq >/dev/null 2>&1; then
         yq e ".$field = \"$value\"" -i "$CONFIG_FILE"
     else
