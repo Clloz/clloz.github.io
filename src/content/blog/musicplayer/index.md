@@ -85,8 +85,6 @@ heroImage: { 'src': './musicplayer.png', 'color': '#B4C6DA' }
 
 歌曲列表的样式并没有什么难的地方，一个列表就可以解决。不过我想给歌曲列表的打开和关闭制作一个动画，当打开的时候，歌曲列表从播放器主体下方滑出；当关闭的时候，列表缓慢上移，上移的部分在主体下方消失，效果如下面的动图：
 
-![musiclist](./images/musiclist.gif 'musiclist')
-
 上移的效果非常容易，`transform: translateY(-300px)` 就可以了，但是上移的部分还是会显示在画面中，并且挡住整个主体了。我的解决方案是在 `ul` 外面再套一层 `div`，`div` 设置一个 `overflow: hidden;`，在 `ul` 向上移动的过程中 `div` 的高度也同步减小，保持两者的 `transition` 的时间相同，这样两者的过度效果能保持相同。因为 `overflow: hidden` 的存在，`ul` 滑动到上方的部分将会被隐藏。具体代码看上面的 `GitHub` 链接。
 
 ## 功能实现
