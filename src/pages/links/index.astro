@@ -1,8 +1,8 @@
 ---
 import links from '@/data/links.json'
-import { Collapse, Timeline } from 'astro-pure-clloz/user'
 import config from 'virtual:config'
 
+import { Collapse, Timeline } from 'astro-pure-clloz/user'
 import PageLayout from '@/layouts/CommonPage.astro'
 import FriendList from '@/components/links/FriendList.astro'
 
@@ -49,12 +49,7 @@ const linkEditPage = 'https://github.com/cworld1/astro-theme-pure/blob/main/publ
     }
   </blockquote>
 
-  <p>
-    可通过下方留言或 <a href={linkEditPage} target='_blank'>提交 PR</a> 申请友链。此外申请说明：<br
-    />
-    Apply your link by leaving comment or <a href={linkEditPage} target='_blank'>Submitting a PR</a
-    >. Additional info:
-  </p>
+  <p>可通过下方留言按上方模板申请友链。此外申请说明:</p>
   <ul>
     <li>在你的友链上添加了本站. You've recommended this site on your website.</li>
     <li>请确保你的站点活着. Make sure your site is alive.</li>

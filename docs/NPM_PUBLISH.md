@@ -6,7 +6,19 @@
 
 访问 <https://www.npmjs.com/> 注册账号
 
-### 2. 本地登录
+### 2. 切换到官方 npm 源
+
+⚠️ **重要**：如果使用了镜像源（淘宝/腾讯等），必须先切换到官方源
+
+```bash
+# 检查当前源
+npm config get registry
+
+# 切换到官方源
+npm config set registry https://registry.npmjs.org/
+```
+
+### 3. 本地登录
 
 ```bash
 npm login
@@ -14,7 +26,7 @@ npm login
 
 输入用户名、密码和邮箱
 
-### 3. 检查包名是否可用
+### 4. 检查包名是否可用
 
 ```bash
 npm search astro-pure

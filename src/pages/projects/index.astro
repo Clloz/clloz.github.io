@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets'
-import { Button, Collapse, Icon } from 'astro-pure-clloz/user'
 
+import { Button, Collapse, Icon } from 'astro-pure-clloz/user'
 import PageLayout from '@/layouts/CommonPage.astro'
 import ProjectSection from '@/components/projects/ProjectSection.astro'
 import Sponsors from '@/components/projects/Sponsors.astro'
@@ -24,7 +24,7 @@ const headings = [
   <p>Github Activities:</p>
   <p>
     <Image
-      src='https://ghchart.rshah.org/659eb9/cworld1'
+      src='https://ghchart.rshah.org/659eb9/clloz'
       alt='github activities'
       inferSize
       loading='lazy'
@@ -38,7 +38,7 @@ const headings = [
     <Icon class='size-5' name='receive-money' slot='before' />
   </Button>
 
-  <h2 id='theme'>Theme</h2>
+  <!-- <h2 id='theme'>Theme</h2>
   <ProjectSection
     projects={[
       {
@@ -54,50 +54,55 @@ const headings = [
         ]
       }
     ]}
-  />
+  /> -->
 
   <h2 id='programs'>Programs</h2>
   <ProjectSection
     projects={[
-      {
-        name: '📒 Notie',
-        description:
-          'Android note App complies with Material You specifications, developed using Java',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/notie' },
-          {
-            type: 'release',
-            href: 'https://github.com/cworld1/notie/releases'
-          }
-        ]
-      },
-      {
-        name: '💄 PKU Art',
-        description: 'A script to beautify pku course website',
-        links: [
-          { type: 'github', href: 'https://github.com/zhuozhiyongde/pku-art' },
-          { type: 'site', href: 'https://github.com/zhuozhiyongde/pku-art' },
-          { type: 'doc', href: 'https://docs.arthals.ink/docs/pku-art' }
-        ]
-      }
+      // {
+      //   name: '📒 Notie',
+      //   description:
+      //     'Android note App complies with Material You specifications, developed using Java',
+      //   links: [
+      //     { type: 'github', href: 'https://github.com/cworld1/notie' },
+      //     {
+      //       type: 'release',
+      //       href: 'https://github.com/cworld1/notie/releases'
+      //     }
+      //   ]
+      // }
+      // {
+      //   name: '💄 PKU Art',
+      //   description: 'A script to beautify pku course website',
+      //   links: [
+      //     { type: 'github', href: 'https://github.com/zhuozhiyongde/pku-art' },
+      //     { type: 'site', href: 'https://github.com/zhuozhiyongde/pku-art' },
+      //     { type: 'doc', href: 'https://docs.arthals.ink/docs/pku-art' }
+      //   ]
+      // }
     ]}
   />
   <Collapse title='Some old projects'>
     <ProjectSection
       projects={[
         {
-          name: 'Search Switcher',
-          description: 'Add links to each other in search engines',
-          links: [{ type: 'github', href: 'https://github.com/cworld1/search-switcher' }]
+          name: 'Audio Tech',
+          description: 'Front-end audio record and pcm playback tool',
+          links: [{ type: 'github', href: 'https://github.com/Clloz/audio-tech-learning' }]
         },
         {
-          name: 'Pure Baidu',
-          description: 'Baidu search page beautification module',
-          links: [
-            { type: 'doc', href: 'https://cworld0.com/blog/pure-baidu' },
-            { type: 'site', href: 'https://userstyles.org/styles/173673/pure' }
-          ]
+          name: 'Webpack Template',
+          description: 'A simple webpack template for front-end development',
+          links: [{ type: 'github', href: 'https://github.com/Clloz/webpack-template' }]
         }
+        // {
+        //   name: 'Pure Baidu',
+        //   description: 'Baidu search page beautification module',
+        //   links: [
+        //     { type: 'doc', href: 'https://cworld0.com/blog/pure-baidu' },
+        //     { type: 'site', href: 'https://userstyles.org/styles/173673/pure' }
+        //   ]
+        // }
       ]}
     />
   </Collapse>
@@ -107,24 +112,29 @@ const headings = [
     class='my-2'
     projects={[
       {
-        name: 'Rust Learning',
-        description: 'Some notes and code about CWorld learning Rust',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/rust-learning' }]
+        name: 'WebGL Learning',
+        description: 'Some demos about learning WebGL',
+        links: [{ type: 'github', href: 'https://github.com/Clloz/webgl-demo' }]
       },
       {
-        name: 'CS 213 Learning',
-        description: 'Notes, code and experiences for Introduction to Computer Systems course',
-        links: [
-          {
-            type: 'github',
-            href: 'https://github.com/zhuozhiyongde/Introduction-To-Computer-System-2023Fall-PKU'
-          }
-        ]
+        name: 'Network Learing',
+        description: 'Notes and code for computer network course',
+        links: [{ type: 'github', href: 'https://github.com/Clloz/network-note' }]
       }
+      // {
+      //   name: 'CS 213 Learning',
+      //   description: 'Notes, code and experiences for Introduction to Computer Systems course',
+      //   links: [
+      //     {
+      //       type: 'github',
+      //       href: 'https://github.com/zhuozhiyongde/Introduction-To-Computer-System-2023Fall-PKU'
+      //     }
+      //   ]
+      // }
     ]}
   />
 
-  <h2 id='others'>Others</h2>
+  <!-- <h2 id='others'>Others</h2>
   <ProjectSection
     projects={[
       {
@@ -138,17 +148,17 @@ const headings = [
         links: [{ type: 'github', href: 'https://github.com/zhuozhiyongde' }]
       }
     ]}
-  />
+  /> -->
 
   <!-- gpg signature -->
-  <h2 id='gpg-signature'>GPG Signature</h2>
+  <!-- <h2 id='gpg-signature'>GPG Signature</h2>
   <p>
     You can verify the authenticity of the files I signed by checking the GPG signature. My GPG key
     is <code>114514</code>, and you can find it on the opengpg key servers or download from it.
   </p>
   <Button href='https://keys.openpgp.org/search?q=114514' title='Checkout my key' target='_blank'>
     <KeyIcon class='size-5' slot='before' />
-  </Button>
+  </Button> -->
 
   <!-- sponsorship -->
   <h2 id='sponsorship'>Sponsorship</h2>
@@ -159,7 +169,7 @@ const headings = [
       { name: 'Alipay', icon: 'alipay', image: alipay }
     ]}
   />
-  <p>Thanks to the following sponsors:</p>
+  <!-- <p>Thanks to the following sponsors:</p>
   <Sponsors
     progressMax={25}
     sponsors={[
@@ -170,7 +180,7 @@ const headings = [
       { name: '◌ (1934****45)', platform: 'QQ', amount: 3, date: '2019-12-30' },
       { name: 'C*a (酷安@暴走の蜗牛)', amount: 2, date: '2019-07-02' }
     ]}
-  />
+  /> -->
 </PageLayout>
 
 <style>
