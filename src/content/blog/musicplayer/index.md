@@ -7,22 +7,22 @@ tags:
   - 编程技巧
   - 项目实现
 language: '中文'
-heroImage: {"src":"./musicplayer.png","color":"#B4C6DA"}
+heroImage: { 'src': './musicplayer.png', 'color': '#B4C6DA' }
 ---
 
 \[toc\]
 
 ## 前言
 
-花了一个下午带晚上的事件做了一个简单的音乐播放器，大部分时间都花在了 `audio` 的自动播放问题上，原来浏览器只是不允许在移动设备上自动播放，从 `chrome66` 开始 `PC` 端也不允许自动播放了，`audio.play()` 必须写在点击事件的回调函数中才能生效，不然就会报错 `DOMException: play() failed because the user didn't interact with the document first.`，也就是说现在想要让页面上的音频播放必须经过用户点击以后才行，不能不经过和用户的互动直接播放了。这方面的资料比较少，`chrome` 有一篇文档说明[autoplay policy changes](https://developers.google.com/web/updates/2017/09/autoplay-policy-changes "autoplay policy changes")。除开这个问题，其他功能并没有遇到太大的问题，样式的事件花的多一点，播放器的逻辑比较简单，JS基本都是操作样式和 `Audio` 对象，下面来分享以下构思和实现的过程。
+花了一个下午带晚上的事件做了一个简单的音乐播放器，大部分时间都花在了 `audio` 的自动播放问题上，原来浏览器只是不允许在移动设备上自动播放，从 `chrome66` 开始 `PC` 端也不允许自动播放了，`audio.play()` 必须写在点击事件的回调函数中才能生效，不然就会报错 `DOMException: play() failed because the user didn't interact with the document first.`，也就是说现在想要让页面上的音频播放必须经过用户点击以后才行，不能不经过和用户的互动直接播放了。这方面的资料比较少，`chrome` 有一篇文档说明[autoplay policy changes](https://developers.google.com/web/updates/2017/09/autoplay-policy-changes 'autoplay policy changes')。除开这个问题，其他功能并没有遇到太大的问题，样式的事件花的多一点，播放器的逻辑比较简单，JS基本都是操作样式和 `Audio` 对象，下面来分享以下构思和实现的过程。
 
-> `HTMLMediaElement` 的属性、方法和事件很多，建议大家到[MDN](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement "MDN")仔细阅读以下文档。
+> `HTMLMediaElement` 的属性、方法和事件很多，建议大家到[MDN](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement 'MDN')仔细阅读以下文档。
 
 ## 项目预览
 
-项目完成后我放在了服务器上，访问地址是[音乐播放器](https://www.clloz.com/study/musicPlayer/index.html "music player")，`GitHub` 地址 [音乐播放器-github](https://github.com/Clloz/musicPlayer "音乐播放器-github")。其实本来是想在 `GitHub Pages`上也能够预览的，配置了 `apache` 的跨域访问，但是在请求阿里云的静态资源（专辑封面和歌曲）的时候一直403，明明以及把 `GitHub Pages` 的地址加入到白名单了，试了半天只能放弃了。下面是整个页面的预览图片：
+项目完成后我放在了服务器上，访问地址是[音乐播放器](https://www.clloz.com/study/musicPlayer/index.html 'music player')，`GitHub` 地址 [音乐播放器-github](https://github.com/Clloz/musicPlayer '音乐播放器-github')。其实本来是想在 `GitHub Pages`上也能够预览的，配置了 `apache` 的跨域访问，但是在请求阿里云的静态资源（专辑封面和歌曲）的时候一直403，明明以及把 `GitHub Pages` 的地址加入到白名单了，试了半天只能放弃了。下面是整个页面的预览图片：
 
-![screenshot](./images/screenshot.png "screenshot")
+![screenshot](./images/screenshot.png 'screenshot')
 
 ## 项目需求
 
@@ -59,21 +59,21 @@ heroImage: {"src":"./musicplayer.png","color":"#B4C6DA"}
 
 最上面的歌曲信息部分没啥好说的，设置合适的字体就可以了，`white-space: nowrap`，`text-overflow: ellipsis`，处理歌曲信息过长。中间一层我放了进度条和音量控制，进度条就是总长度一个元素，当前长度一个元素，两个元素选择不同的颜色重叠就可以了，时间我用的是总长度的进度条元素的伪元素来实现的，伪元素的 `content` 用进度条元素的属性来设置 `content = attr(data-time)`。 本来我是想当前进度也用伪元素来实现的，但是伪元素并不算是 `DOM` 元素，无法用 `JS` 来操作，并且没法添加事件（虽然有各种黑科技）。
 
-> 理论上来说伪元素不算 `DOM` 元素，所以无法用JS操作以及绑定事件，不过我看到 `segmentfault`上有两个答案对这两种行为都提出了解答，[通过JS改变伪元素样式](https://segmentfault.com/q/1010000002452755 "通过JS改变伪元素样式"), [pointer-event为伪元素绑定事件](https://segmentfault.com/q/1010000003759156/ "pointer-event为伪元素绑定事件")
+> 理论上来说伪元素不算 `DOM` 元素，所以无法用JS操作以及绑定事件，不过我看到 `segmentfault`上有两个答案对这两种行为都提出了解答，[通过JS改变伪元素样式](https://segmentfault.com/q/1010000002452755 '通过JS改变伪元素样式'), [pointer-event为伪元素绑定事件](https://segmentfault.com/q/1010000003759156/ 'pointer-event为伪元素绑定事件')
 
 中间这一层我直接给包裹层一个高度，内部的几个块都用绝对定位，保持两个进度条的位置一致，并且和音量键对齐。同时音量的控制模块也用绝对定位。用绝对定位是为了让这几个元素对齐比较方便，特别是音量和进度条都是两个元素重叠在一起，并且两个元素都是需要点击计算距离的，所以 `1px` 的误差都不能有，用绝对定位比较好处理。结构如下：
 
 ```html
 <div class="mid">
-    <div class="progress" data-time="00:00/00:00"></div>
-    <div class="current"></div>
-    <div class="volume">
-        <div class="vol-control"></div>
-        <div class="vol-current"></div>
-    </div>
-    <div class="vol">
-        <span><i class="fa fa-volume-up"></i></span>
-    </div>
+  <div class="progress" data-time="00:00/00:00"></div>
+  <div class="current"></div>
+  <div class="volume">
+    <div class="vol-control"></div>
+    <div class="vol-current"></div>
+  </div>
+  <div class="vol">
+    <span><i class="fa fa-volume-up"></i></span>
+  </div>
 </div>
 ```
 
@@ -85,7 +85,7 @@ heroImage: {"src":"./musicplayer.png","color":"#B4C6DA"}
 
 歌曲列表的样式并没有什么难的地方，一个列表就可以解决。不过我想给歌曲列表的打开和关闭制作一个动画，当打开的时候，歌曲列表从播放器主体下方滑出；当关闭的时候，列表缓慢上移，上移的部分在主体下方消失，效果如下面的动图：
 
-![musiclist](./images/musiclist.gif "musiclist")
+![musiclist](./images/musiclist.gif 'musiclist')
 
 上移的效果非常容易，`transform: translateY(-300px)` 就可以了，但是上移的部分还是会显示在画面中，并且挡住整个主体了。我的解决方案是在 `ul` 外面再套一层 `div`，`div` 设置一个 `overflow: hidden;`，在 `ul` 向上移动的过程中 `div` 的高度也同步减小，保持两者的 `transition` 的时间相同，这样两者的过度效果能保持相同。因为 `overflow: hidden` 的存在，`ul` 滑动到上方的部分将会被隐藏。具体代码看上面的 `GitHub` 链接。
 
@@ -105,8 +105,8 @@ heroImage: {"src":"./musicplayer.png","color":"#B4C6DA"}
 
 ```javascript
 audio.onended = function () {
-    var event = new Event('click');
-    nextBtn.dispatchEvent(event);
+  var event = new Event('click')
+  nextBtn.dispatchEvent(event)
 }
 ```
 
@@ -131,8 +131,6 @@ audio.onended = function () {
 ## 断网控制
 
 当断网时，如果继续执行页面逻辑或出现请求不到资源，图片加载不出，页面报错。所以在断网发生时我们需要立即处理。通过 `window` 对象的 `offine` 和 `online` 事件我们可以很好地处理这个逻辑。当断网发生时我们应该禁止用户点击控件和歌曲列表，如果用解绑事件的方式太麻烦了，我直接采取用一个遮罩层盖住控件，收起播放列表，暂停当前播放，在遮罩层上显示一个断网信息。当网络恢复的时候我们再打开播放列表，如果断网前音乐是在播放的，那我们就恢复播放。效果如下:
-
-![offline](./images/offline.gif "offline")
 
 ## 思维拓展
 

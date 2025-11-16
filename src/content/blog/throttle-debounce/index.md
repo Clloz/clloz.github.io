@@ -22,68 +22,67 @@ language: '中文'
 
 ```html
 <style>
-    div {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    .wrap {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        height: 200px;
-        width: 200px;
-        padding: 0 10px;
-        transform: translate(-50%, -50%);
-        border: 1px solid black;
-        overflow: auto;
-    }
+  div {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  .wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 200px;
+    width: 200px;
+    padding: 0 10px;
+    transform: translate(-50%, -50%);
+    border: 1px solid black;
+    overflow: auto;
+  }
 
-    .content {
-        width: 100%;
-        height: 500px;
-        background: lightblue;
-    }
+  .content {
+    width: 100%;
+    height: 500px;
+    background: lightblue;
+  }
 </style>
 <div class="wrap">
-    <div class="content"></div>
+  <div class="content"></div>
 </div>
 <script>
-    var wrap = document.querySelector('.wrap')
-    var content = document.querySelector('.content')
-    wrap.addEventListener('scroll', function () {
-        console.log('dispatch')
-    })
+  var wrap = document.querySelector('.wrap')
+  var content = document.querySelector('.content')
+  wrap.addEventListener('scroll', function () {
+    console.log('dispatch')
+  })
 </script>
 ```
 
 我们为 `wrap` 绑定了一个滚动事件的监听，这种需求是经常用到的，比如我们需要根据用户的滚动显示不同的内容，但是很明显的是我们并不需要如此频繁地执行回调函数，我们需要让这个监听的回调函数执行的次数少一点，这时候就需要用到函数节流。
 
-![scroll-event](./images/scroll-event.gif "scroll-event")
-
 浏览器的监控肯定是固定频率持续发生的，这是我们无法控制的，我们能做的就是在执行流进入到回调函数的时候进行判断，如果不符合条件我们就不执行，这就是函数节流的原理。如何设计这个逻辑呢，我们可以利用 `JavaScript` 的定时器配合一个表示状态的锁来达到目的，代码如下：
 
 ```javascript
-wrap.addEventListener('scroll', throttle(function () {
-    console.log('dispatch: ' + new Date().getTime());
-}, 300))
+wrap.addEventListener(
+  'scroll',
+  throttle(function () {
+    console.log('dispatch: ' + new Date().getTime())
+  }, 300)
+)
 
-function throttle (fn, interval) {
-    var executing = false;
-    return function () {
-        if (executing) return;
-        executing = true;
-        setTimeout(() => {
-            fn.apply(this, arguments);
-            executing = false;
-        }, interval)
-    }
+function throttle(fn, interval) {
+  var executing = false
+  return function () {
+    if (executing) return
+    executing = true
+    setTimeout(() => {
+      fn.apply(this, arguments)
+      executing = false
+    }, interval)
+  }
 }
 ```
 
 现在我们的回调函数在 `executing` 为 `true` 的时候会直接返回，而我们的功能代码也就是 `fn` 每隔 `300ms` 才会执行一次，效果如下:
-
-![throttle-scroll](./images/scroll-throttle.gif "throttle-scroll")
 
 > 需要注意的是 `setTimeout` 的回调函数中的 `this` 默认指向 `window`，因为 `setTimeout` 是 `window` 对象上的一个方法，调用 `setTimeout` 实际上是 `window.setTimeout`，而我们的 `fn` 中的 `this` 需要指向绑定事件的 `DOM` 元素，所以需要 `bind` ，箭头函数或者中间变量。这里我使用的箭头函数，用 `apply` 来设置函数执行的 `this` 和参数。
 
@@ -100,28 +99,28 @@ function throttle (fn, interval) {
 ```html
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>debounce</title>
-    </head>
-    <body>
-        <input id="inp" type="text" />
-        <script>
-            function debounce(fn, interval) {
-                let timeout = null;
-                return function () {
-                    clearTimeout(timeout);
-                    timeout = setTimeout(() => {
-                        fn.apply(this, arguments);
-                    }, interval);
-                };
-            }
-            function sayHi() {
-                console.log('debounce success!');
-            }
-            var inp = document.getElementById('inp');
-            inp.addEventListener('input', debounce(sayHi, 500)); // 防抖
-        </script>
-    </body>
+  <head>
+    <title>debounce</title>
+  </head>
+  <body>
+    <input id="inp" type="text" />
+    <script>
+      function debounce(fn, interval) {
+        let timeout = null
+        return function () {
+          clearTimeout(timeout)
+          timeout = setTimeout(() => {
+            fn.apply(this, arguments)
+          }, interval)
+        }
+      }
+      function sayHi() {
+        console.log('debounce success!')
+      }
+      var inp = document.getElementById('inp')
+      inp.addEventListener('input', debounce(sayHi, 500)) // 防抖
+    </script>
+  </body>
 </html>
 ```
 
@@ -133,5 +132,5 @@ function throttle (fn, interval) {
 
 ## 参考文章
 
-1. [什么是防抖和节流？有什么区别？如何实现？](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/5 "什么是防抖和节流？有什么区别？如何实现？")
-2. [函数防抖与函数节流](https://zhuanlan.zhihu.com/p/38313717 "函数防抖与函数节流")
+1. [什么是防抖和节流？有什么区别？如何实现？](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/5 '什么是防抖和节流？有什么区别？如何实现？')
+2. [函数防抖与函数节流](https://zhuanlan.zhihu.com/p/38313717 '函数防抖与函数节流')
