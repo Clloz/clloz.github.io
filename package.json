@@ -21,7 +21,8 @@
     "new": "astro-pure new",
     "format": "prettier --write  '**/*.{js,jsx,ts,tsx,md,mdx,astro}'",
     "lint": "eslint --fix 'src/**/*.{js,ts,jsx,tsx,astro}'",
-    "cache:avatars": "tsx scripts/cacheAvatars.ts"
+    "cache:avatars": "tsx scripts/cacheAvatars.ts",
+    "migrate": "node scripts/migrateBlog.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.5",

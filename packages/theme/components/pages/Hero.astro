@@ -2,6 +2,8 @@
 import { Image } from 'astro:assets'
 import type { InferEntrySchema } from 'astro:content'
 
+import defaultThumb from '@/assets/default-thum.png'
+
 import { FormattedDate, Icon } from '../user'
 
 interface Props {
@@ -14,32 +16,31 @@ const {
   remarkPluginFrontmatter
 } = Astro.props
 
+// 使用默认封面图（如果没有设置 heroImage）
+const displayImage = heroImage || { src: defaultThumb, alt: title }
+
 const dateTimeOptions: Intl.DateTimeFormatOptions = {
   month: 'short'
 }
 ---
 
-{
-  heroImage && (
-    <div class='hero-image relative mb-6'>
-      <Image
-        alt={heroImage.alt || title}
-        class='cover-image relative z-10 h-auto w-full max-w-[65ch] rounded-2xl object-contain'
-        fetchpriority='high'
-        loading='eager'
-        {...heroImage}
-      />
-      <Image
-        alt='Blur image'
-        fetchpriority='high'
-        loading='eager'
-        id='blurImage'
-        class='absolute end-0 top-4 z-0 mt-0 h-full max-w-[65ch] rounded-3xl opacity-60 transition-opacity duration-300'
-        {...heroImage}
-      />
-    </div>
-  )
-}
+<div class='hero-image relative mb-6'>
+  <Image
+    alt={displayImage.alt || title}
+    class='cover-image relative z-10 h-auto w-full max-w-[65ch] rounded-2xl object-contain'
+    fetchpriority='high'
+    loading='eager'
+    {...displayImage}
+  />
+  <Image
+    alt='Blur image'
+    fetchpriority='high'
+    loading='eager'
+    id='blurImage'
+    class='absolute end-0 top-4 z-0 mt-0 h-full max-w-[65ch] rounded-3xl opacity-60 transition-opacity duration-300'
+    {...displayImage}
+  />
+</div>
 
 {draft ? <span class='text-red-500'>(Draft)</span> : null}
 

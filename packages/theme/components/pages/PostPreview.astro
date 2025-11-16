@@ -3,6 +3,8 @@ import { Image } from 'astro:assets'
 import { render, type CollectionEntry, type CollectionKey } from 'astro:content'
 import type { HTMLTag, Polymorphic } from 'astro/types'
 
+import defaultThumb from '@/assets/default-thum.png'
+
 import { cn } from '../../utils'
 import { Button, FormattedDate, Icon } from '../user'
 
@@ -18,6 +20,7 @@ const { id, data } = post
 
 const { remarkPluginFrontmatter } = await render(post)
 const postDate = data.updatedDate ?? data.publishDate
+const displayImage = data.heroImage || { src: defaultThumb, alt: data.title }
 ---
 
 <li
@@ -27,26 +30,26 @@ const postDate = data.updatedDate ?? data.publishDate
     className
   )}
   style={detailed &&
-    data.heroImage?.color &&
-    `--preview-highlight:color-mix(in srgb,${data.heroImage.color} 40%,hsl(var(--foreground)/var(--un-text-opacity,1)));
-    --preview-highlight-bg:hsl(from ${data.heroImage.color} h s l/20%)`}
+    displayImage?.color &&
+    `--preview-highlight:color-mix(in srgb,${displayImage.color} 40%,hsl(var(--foreground)/var(--un-text-opacity,1)));
+    --preview-highlight-bg:hsl(from ${displayImage.color} h s l/20%)`}
 >
   <a
     class={cn(
       'group/link w-full flex flex-col transition-all hover:text-primary',
       !detailed && 'sm:flex-row',
-      detailed && data.heroImage && 'max-md:pt-24'
+      detailed && 'max-md:pt-24'
     )}
     href={`/blog/${id}`}
     data-astro-prefetch
   >
     {
-      detailed && data.heroImage && (
+      detailed && (
         <Image
-          alt={data.heroImage.alt || data.title}
+          alt={displayImage.alt || data.title}
           class='cover-image absolute end-0 top-0 z-0 h-2/3 w-full rounded-2xl object-cover opacity-50 transition-opacity duration-300 group-hover/card:opacity-70 md:h-full md:w-3/5'
           loading='eager'
-          {...data.heroImage}
+          {...displayImage}
         />
       )
     }
@@ -89,7 +92,7 @@ const postDate = data.updatedDate ?? data.publishDate
             <p
               class={cn(
                 'line-clamp-2 pt-1 text-sm text-muted-foreground sm:line-clamp-3',
-                data.heroImage && 'sm:me-24'
+                'sm:me-24'
               )}
             >
               {data.description}
