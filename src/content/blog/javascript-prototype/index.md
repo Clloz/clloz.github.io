@@ -7,10 +7,8 @@ tags:
   - 学习笔记
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -26,15 +24,15 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 我们将 `JavaScript` 中的对象分成两大类，一类是 `Object` ，一类就是 `Function`。我们来说一下他们之间的关系。
 
-* * *
+---
 
-我们创建对象有很多种方法，`Object.create()`，`new Object()`，`new function()`，和对象字面量等。但其实他们的本质都是 `new Object()` （关于 `new` 和对象创建的内容参考另外两篇文章：[JavaScript对象属性类型和赋值细节](https://www.clloz.com/programming/front-end/js/2020/09/09/javascript-object-prop-assign/ "JavaScript对象属性类型和赋值细节") 和 [JavaScript中new操作符的解析和实现](https://www.clloz.com/programming/front-end/js/2020/06/29/new-operator/ "JavaScript中new操作符的解析和实现")）。
+我们创建对象有很多种方法，`Object.create()`，`new Object()`，`new function()`，和对象字面量等。但其实他们的本质都是 `new Object()` （关于 `new` 和对象创建的内容参考另外两篇文章：[JavaScript对象属性类型和赋值细节](https://www.clloz.com/programming/front-end/js/2020/09/09/javascript-object-prop-assign/ 'JavaScript对象属性类型和赋值细节') 和 [JavaScript中new操作符的解析和实现](https://www.clloz.com/programming/front-end/js/2020/06/29/new-operator/ 'JavaScript中new操作符的解析和实现')）。
 
 ## Object.prototype.**\_\_proto\_\_**
 
 我们用 `new Object()` 创建一个空对象，它在 `Chrome` 中打印出的结果如下。
 
-![proto3](./images/proto1.png "proto1")
+![proto3](./images/proto1.png 'proto1')
 
 我们可以看到所谓的 **空对象**，并不是完全空的，它内部有一个 `__proto__` 属性。但其实这个属性并不是它自身的，这个属性是 `Object.prototype.__proto__`，一个访问器属性（一个 `getter` 函数和一个 `setter` 函数）, 暴露了通过它访问的对象的内部 `[[Prototype]]` (一个对象或 `null`)。
 
@@ -42,7 +40,7 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 这个属性是由浏览器厂商提供的，并且目前绝大多数的浏览器都支持这个属性，所以 `ECMAScript 2015` 中也将其写入标准附录中，保持浏览器的兼容性。但是直接修改对象的 `[[prototype]]` 在任何引擎和浏览器中都是非常慢并且影响性能的操作，使用这种方式来改变和继承属性是对性能影响非常严重的，并且性能消耗的时间也不是简单的花费在 `obj.__proto__ = ...` 语句上, 它还会影响到所有继承来自该 `[[Prototype]]` 的对象。标准中还提供了两组关于读写原型对象的方法 `Object.getPrototypeOf/Reflect.getPrototypeOf` 和 `Object.setPrototypeOf/Reflect.setPrototypeOf`。不过写对象和上面说的一样，依然是一个影响性能的操作，如果你关心性能，不应该用这些方法。比较好的实践是用 `Object.create()` 来设置原型，用 `Object.getPrototypeOf()` 来读取原型对象。
 
-> 我们同样可以用对象字面量来设置 `__proto__`，也可以自定义 `__proto__` 来覆盖 `Object.prototype.__proto__`。参考文章：[JavaScript对象属性类型和赋值细节](https://www.clloz.com/programming/front-end/js/2020/09/09/javascript-object-prop-assign/ "JavaScript对象属性类型和赋值细节")。
+> 我们同样可以用对象字面量来设置 `__proto__`，也可以自定义 `__proto__` 来覆盖 `Object.prototype.__proto__`。参考文章：[JavaScript对象属性类型和赋值细节](https://www.clloz.com/programming/front-end/js/2020/09/09/javascript-object-prop-assign/ 'JavaScript对象属性类型和赋值细节')。
 
 不同类型的对象其 `[[prototype]]` 是不同的，对于使用数组字面量创建的对象，这个值是 `Array.prototype`。对于 `functions`，这个值是 `Function.prototype`。对于使用 `new fun` 创建的对象，其中 `fun` 是由 `js` 提供的内建构造器函数之一(`Array, Boolean, Date, Number, Object, String` 等等），这个值总是 `fun.prototype`。对于用 `js` 定义的其他 `js` 构造器函数创建的对象，这个值就是该构造器函数的 `prototype` 属性。关于内置对象之间的关系，我们后面会详细讨论。
 
@@ -52,7 +50,7 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 我们上面说过对象内部有一个 `[[prototype]]` 属性指向它的源性对象；而每一个函数都有一个 `prototype` 属性，指向由这个函数构造出的对象的 `[[prototype]]`。更准确的说，在函数被创建的时候，就有一个 `prototype` 属性指向一个对象，这个对象本身只有一个 `constructor` 属性指向这个函数。当用 `new func()` 创建对象的时候，新对象的 `[[prototype]]` 就指向构造函数的 `prototype` 对应的对象。不过需要注意的是 `prototype` 和 `constructor` 都是可以 **重写** 的。
 
-![proto3](./images/proto2.png "proto2")
+![proto3](./images/proto2.png 'proto2')
 
 对于我们的自定义对象，这是很好理解的。那么内置对象之间的关系，特别是 `Object` 和 `Function` 之间的关系是怎么样的呢。先明确两点：
 
@@ -64,7 +62,7 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 其实记住这几点就可以应对绝大部分问题，如果你还对内置对象的关系有兴趣，可以继续往下看。
 
-* * *
+---
 
 根据我们上面的两条规律我们可以知道 `Object` 的 `[[prototype]]` 指向 `Function.prototype`，那么 `function Function()` ，`Function.prototype` 和 `Object.prototype` 的 `[[prototype]]` 都分别是什么呢？
 
@@ -94,7 +92,7 @@ set __proto__: ƒ __proto__()
 
 想要更清晰的看清楚我上面说的关系，可以借助于这张来自网上的图，画的非常好。
 
-![proto3](./images/proto3.jpg "proto3")
+![proto3](./images/proto3.jpg 'proto3')
 
 ## 其他内置对象
 
@@ -162,9 +160,9 @@ console.log(!!Boolean('')) //false
 console.log(!!new Boolean('')) //true
 ```
 
-关于 `constructor` 和 `prototype` 有一个有趣的小题目，可以看一看：[关于constructor和prototype的思考](https://www.clloz.com/programming/front-end/js/2019/05/31/prototype-constructor/ "关于constructor和prototype的思考")
+关于 `constructor` 和 `prototype` 有一个有趣的小题目，可以看一看：[关于constructor和prototype的思考](https://www.clloz.com/programming/front-end/js/2019/05/31/prototype-constructor/ '关于constructor和prototype的思考')
 
 ## 参考文章
 
-1. [继承与原型链 - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain "继承与原型链")
-2. [Object.prototype.**proto** - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/proto "Object.prototype.__proto__ - MDN")
+1. [继承与原型链 - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain '继承与原型链')
+2. [Object.prototype.**proto** - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/proto 'Object.prototype.__proto__ - MDN')

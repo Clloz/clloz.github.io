@@ -6,10 +6,8 @@ tags:
   - html
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./html-logo.png","color":"#B4C6DA"}
+heroImage: { 'src': './html-logo.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -23,7 +21,7 @@ heroImage: {"src":"./html-logo.png","color":"#B4C6DA"}
 
 `HTML` 是蒂姆·伯纳斯-李在发明万维网的过程中根据 `SGML` 创造的，它描述 `18` 个元素，包括 `HTML` 初始的、相对简单的设计。除了超链接之外，其他标签都是以 `SGML` 为基础的。这些标签中有 `11` 个到 `HTML4` 都仍然存在。
 
-不存在 `HTML 1.0`，只在 `1993` 年中期由 [IETF互联网工程任务组](https://zh.wikipedia.org/zh/%E4%BA%92%E8%81%94%E7%BD%91%E5%B7%A5%E7%A8%8B%E4%BB%BB%E5%8A%A1%E7%BB%84 "IETF互联网工程任务组")提出了一个[超文本标记语言（HTML）互联网草案](https://www.w3.org/MarkUp/draft-ietf-iiir-html-01.txt "超文本标记语言（HTML）互联网草案")。`HTML` 第一个正式的规范是由 `IETF` 的 `HTML` 工作小组创建的 `HTML 2.0`。
+不存在 `HTML 1.0`，只在 `1993` 年中期由 [IETF互联网工程任务组](https://zh.wikipedia.org/zh/%E4%BA%92%E8%81%94%E7%BD%91%E5%B7%A5%E7%A8%8B%E4%BB%BB%E5%8A%A1%E7%BB%84 'IETF互联网工程任务组')提出了一个[超文本标记语言（HTML）互联网草案](https://www.w3.org/MarkUp/draft-ietf-iiir-html-01.txt '超文本标记语言（HTML）互联网草案')。`HTML` 第一个正式的规范是由 `IETF` 的 `HTML` 工作小组创建的 `HTML 2.0`。
 
 在 `IETF` 的主持下，`HTML` 标准的进一步发展因竞争利益而遭受停滞。自 `1996` 年起，`HTML` 规范一直由万维网联盟（`W3C`）维护，并由商业软件厂商出资。不过在 `2000` 年，`HTML` 也成为国际标准（`ISO/ IEC15445：2000`）。`HTML 4.01` 于 `1999` 年末发布，进一步的勘误版本于 `2001` 年发布。`2004` 年，网页超文本应用技术工作小组（`WHATWG`）开始开发 `HTML5`，并在 `2008` 年与 `W3C` 共同交付，`2014年10月28日` 完成标准化。
 
@@ -31,7 +29,7 @@ heroImage: {"src":"./html-logo.png","color":"#B4C6DA"}
 
 ## HTML 语法
 
-![html-syntax](./images/html-syntax.jpg "html-syntax")
+![html-syntax](./images/html-syntax.jpg 'html-syntax')
 
 ## 标签
 
@@ -42,7 +40,7 @@ heroImage: {"src":"./html-logo.png","color":"#B4C6DA"}
 - 结束标签：`</tagname>`
 - 自闭合标签：`<tagname />`
 
-属性可以使用单引号、双引号或者完全不用引号，这三种情况下，需要转义的部分都不太一样。属性中可以使用字符实体（参考另一篇文章[HTML character entity HTML字符实体](https://www.clloz.com/programming/front-end/2019/11/19/html-character-entity/ "HTML character entity HTML字符实体")）来做转义，属性中，一定需要转义的有下面几种。
+属性可以使用单引号、双引号或者完全不用引号，这三种情况下，需要转义的部分都不太一样。属性中可以使用字符实体（参考另一篇文章[HTML character entity HTML字符实体](https://www.clloz.com/programming/front-end/2019/11/19/html-character-entity/ 'HTML character entity HTML字符实体')）来做转义，属性中，一定需要转义的有下面几种。
 
 - 无引号属性：`<tab> <LF> <FF> <SPACE> &`五种字符。
 - 单引号属性：`' &`两种字符。
@@ -86,7 +84,7 @@ heroImage: {"src":"./html-logo.png","color":"#B4C6DA"}
 <!-- 注释内容 -->
 ```
 
-* * *
+---
 
 在 `HTML5` 之后，由于这些 `DTD` 过于复杂的写法没啥实际用途，加之浏览器也不会使用 `SGML` 去解析他们，干脆放弃了 `SGML` 子集的的支持，规定了一个简单易记住的类似 `DTD` 的声明 `<!DOCTYPE html>`。`XML` 也逐渐用 `XML Schema` 来代替 `DTD`。但是因为我们的互联网上仍然存在大量的 `HTML4.01` 和 `xhtml1.0` 的网页，所以新的标准都是向前兼容的（比较激进的不向前兼容的 `xhtml2.0` 已经废弃）。常用的 `DOCTYPE` 声明有如下几种。
 
@@ -95,13 +93,13 @@ heroImage: {"src":"./html-logo.png","color":"#B4C6DA"}
 <!DOCTYPE html>
 
 <!--HTML 4.01 Strict 这个 DTD 包含所有 HTML 元素和属性，但不包括表象或过时的元素（如 font ）。框架集是不允许的。-->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 <!--HTML 4.01 Transitional 这个 DTD 包含所有 HTML 元素和属性，包括表象或过时的元素（如 font ）。框架集是不允许的。-->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <!--HTML 4.01 Frameset 这个 DTD 与 HTML 4.01 Transitional 相同，但是允许使用框架集内容。-->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 
 <!--XHTML 1.0 Strict 这个 DTD 包含所有 HTML 元素和属性，但不包括表象或过时的元素（如 font ）。框架集是不允许的。结构必须按标准格式的 XML 进行书写。-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -148,9 +146,9 @@ heroImage: {"src":"./html-logo.png","color":"#B4C6DA"}
 Content-Type: text/html
 
 <!DOCTYPE html>
-<html lang=en>
+<html lang="en">
   <head>
-    <meta charset=utf-8>
+    <meta charset="utf-8" />
     <title>HTML</title>
   </head>
   <body>
@@ -160,9 +158,7 @@ Content-Type: text/html
 ```
 
 ```html
-Content-Type: application/xhtml+xml
-
-<?xml version="1.0" encoding="UTF-8"?>
+Content-Type: application/xhtml+xml <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head>
     <title>XHTML</title>
@@ -205,7 +201,7 @@ Content-Type: application/xhtml+xml
 - 新的全局属性：`contenteditable, contextmenu, draggable, dropzone, hidden, spellcheck`。
 - 移除标签：`acronym, applet, basefont, big, center, dir, font, frame, frameset, isindex, noframes, strike, tt`。
 
-* * *
+---
 
 除了原先的 `DOM` 接口，`HTML5` 增加了更多样化的 `API`。
 
@@ -220,7 +216,7 @@ Content-Type: application/xhtml+xml
 - Web Messaging
 - Web Storage – a key-value pair storage framework that provides behaviour similar to cookies but with larger storage capacity and improved API.
 
-关于 `HTML5` 的新特性，参考 `MDN` 的[HTML5](https://developer.mozilla.org/zh-CN/docs/Web/Guide/HTML/HTML5 "HTML5")
+关于 `HTML5` 的新特性，参考 `MDN` 的[HTML5](https://developer.mozilla.org/zh-CN/docs/Web/Guide/HTML/HTML5 'HTML5')
 
 ## 总结
 
@@ -228,5 +224,5 @@ Content-Type: application/xhtml+xml
 
 ## 参考文章
 
-1. [HTML、XML、XHTML 有什么区别 (SGML、DTD 标准 )](https://blog.csdn.net/weixin_41796631/article/details/89371356 "HTML、XML、XHTML 有什么区别 (SGML、DTD 标准 )")
-2. [HTML5 - 维基百科](https://zh.wikipedia.org/wiki/HTML5#XHTML5%EF%BC%88XML-serialized_HTML5%EF%BC%89 "HTML5 - 维基百科")
+1. [HTML、XML、XHTML 有什么区别 (SGML、DTD 标准 )](https://blog.csdn.net/weixin_41796631/article/details/89371356 'HTML、XML、XHTML 有什么区别 (SGML、DTD 标准 )')
+2. [HTML5 - 维基百科](https://zh.wikipedia.org/wiki/HTML5#XHTML5%EF%BC%88XML-serialized_HTML5%EF%BC%89 'HTML5 - 维基百科')

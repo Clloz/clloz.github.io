@@ -3,7 +3,7 @@ title: Mihomo Mac 配置
 publishDate: 2025-11-09 22:00:00
 description: 'Mihomo 在 Mac 的命令行工具配置'
 tags:
-  - Markdown
+  - Proxy
 heroImage: { src: './thumbnail.jpg', color: '#B4C6DA' }
 language: '中文'
 ---

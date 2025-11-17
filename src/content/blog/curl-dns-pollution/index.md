@@ -6,10 +6,8 @@ tags:
   - assorted
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './macos.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -19,4 +17,4 @@ heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
 
 解决办法就是修改 `hosts` 文件，直接在本地完成 `DNS` 的解析就不需要去访问上层的 `DNS` 服务器了。`DNS` 解析一般是先查看本机的 `hosts`，然后是查看路由器，如果都没查到就要访问 `DNS` 服务器了。
 
-我们先去 [IP Address](https://www.ipaddress.com/ "IP Address") 查询一下域名定义的 `IP`，然后在 `hosts` 中添加一条解析记录即可。最后查询到的 `IP` 是 `199.232.96.133`，所以我们用 `sudo vim /etc/hosts` 编辑 `hosts` 文件，然后添加一条 `199.232.68.133 raw.githubusercontent.com` 解析记录即可。
+我们先去 [IP Address](https://www.ipaddress.com/ 'IP Address') 查询一下域名定义的 `IP`，然后在 `hosts` 中添加一条解析记录即可。最后查询到的 `IP` 是 `199.232.96.133`，所以我们用 `sudo vim /etc/hosts` 编辑 `hosts` 文件，然后添加一条 `199.232.68.133 raw.githubusercontent.com` 解析记录即可。

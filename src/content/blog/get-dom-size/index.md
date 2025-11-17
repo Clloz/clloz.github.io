@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 获取元素的尺寸和位置是我们经常需要遇到的问题，获取文档的高度有各种不同的方法，每个属性的作用各不相同。比如 `window` 对象的 `innerHeight` 和 `outerHeight` 就表示不一样的意思，元素的属性也一样。获取元素尺寸和位置的时间也很重要，如果我们在元素还没加载的时候获取肯定是得不到正确结果的。比较安全的方法当然是 `load` 事件触发以后获取。
@@ -34,7 +32,7 @@ language: '中文'
       }
     </style>
     <script>
-      console.log(123);
+      console.log(123)
     </script>
   </head>
   <body>
@@ -42,42 +40,42 @@ language: '中文'
     <div>this is a div element!</div>
     <script>
       function get(selector) {
-        return document.querySelector(selector);
+        return document.querySelector(selector)
       }
 
       function getAll(selector) {
-        return document.querySelectorAll(selector);
+        return document.querySelectorAll(selector)
       }
-      var img = get("img");
-      var link = get("link");
-      var style = get("style");
-      var script = get("script");
-      var div = get("div");
-      var inner = getAll("script")[1];
+      var img = get('img')
+      var link = get('link')
+      var style = get('style')
+      var script = get('script')
+      var div = get('div')
+      var inner = getAll('script')[1]
 
       img.onload = function () {
-        console.log("img");
-      };
+        console.log('img')
+      }
 
       link.onload = function () {
-        console.log("link")
+        console.log('link')
       }
 
       style.onload = function () {
-        console.log("style");
-      };
+        console.log('style')
+      }
 
       script.onload = function () {
-        console.log("script");
-      };
+        console.log('script')
+      }
 
       inner.onload = function () {
-        console.log("inner");
+        console.log('inner')
       }
 
       div.onload = function () {
-        console.log("div");
-      };
+        console.log('div')
+      }
     </script>
   </body>
 </html>
@@ -85,7 +83,7 @@ language: '中文'
 
 输出结果：
 
-```
+```plaintext
 123
 link
 script
@@ -103,15 +101,15 @@ img
 ```html
 <div style="width: 300px">this is a div element!</div>
 <script>
-function get(selector) {
-return document.querySelector(selector);
-}
+  function get(selector) {
+    return document.querySelector(selector)
+  }
 
-var div = get("div");
+  var div = get('div')
 
-window.onload = function () {
-console.log(div.style.width);
-}
+  window.onload = function () {
+    console.log(div.style.width)
+  }
 </script>
 ```
 
@@ -123,26 +121,26 @@ console.log(div.style.width);
 
 ```html
 <style>
-    div {
-        height: 50px;
-        width: 80px;
-        padding: 10px;
-        margin: 10px;
-        border: 3px solid;
-        background-color: lightblue;
-        overflow: scroll;
-    }
+  div {
+    height: 50px;
+    width: 80px;
+    padding: 10px;
+    margin: 10px;
+    border: 3px solid;
+    background-color: lightblue;
+    overflow: scroll;
+  }
 </style>
 <div>sdfdsfsfdsfsdfdsfsfsfdsffsfsdfasfasfasfsafasfsafsafsafsafs</div>
 <script>
-    function get(selector) {
-        return document.querySelector(selector);
-    }
-    var div = get("div");
+  function get(selector) {
+    return document.querySelector(selector)
+  }
+  var div = get('div')
 
-    window.onload = function () {
-        console.log(div.offsetHeight, div.offsetWidth);//76, 106
-    }
+  window.onload = function () {
+    console.log(div.offsetHeight, div.offsetWidth) //76, 106
+  }
 </script>
 ```
 
@@ -152,26 +150,26 @@ console.log(div.style.width);
 
 ```html
 <style>
-    div {
-        height: 50px;
-        width: 80px;
-        padding: 10px;
-        margin: 10px;
-        border: 3px solid;
-        background-color: lightblue;
-        overflow: scroll;
-    }
+  div {
+    height: 50px;
+    width: 80px;
+    padding: 10px;
+    margin: 10px;
+    border: 3px solid;
+    background-color: lightblue;
+    overflow: scroll;
+  }
 </style>
 <div>sdfdsfsfdsfsdfdsfsfsfdsffsfsdfasfasfasfsafasfsafsafsafsafs</div>
 <script>
-    function get(selector) {
-        return document.querySelector(selector);
-    }
-    var div = get("div");
+  function get(selector) {
+    return document.querySelector(selector)
+  }
+  var div = get('div')
 
-    window.onload = function () {
-        console.log(div.scrollWidth);//382
-    }
+  window.onload = function () {
+    console.log(div.scrollWidth) //382
+  }
 </script>
 ```
 
@@ -181,27 +179,27 @@ console.log(div.style.width);
 
 ```html
 <style>
-    div {
-        height: 50px;
-        width: 80px;
-        padding: 10px;
-        margin: 10px;
-        border: 3px solid;
-        background-color: lightblue;
-        overflow: scroll;
-    }
+  div {
+    height: 50px;
+    width: 80px;
+    padding: 10px;
+    margin: 10px;
+    border: 3px solid;
+    background-color: lightblue;
+    overflow: scroll;
+  }
 </style>
 <div>sdfdsfsfdsfsdfdsfsfsfdsffsfsdfasfasfasfsafasfsafsafsafsafs</div>
-    <script>
-        function get(selector) {
-            return document.querySelector(selector);
-        }
-        var div = get("div");
+<script>
+  function get(selector) {
+    return document.querySelector(selector)
+  }
+  var div = get('div')
 
-        window.onload = function () {
-            console.log(div.clientWidth);//100
-        }
-    </script>
+  window.onload = function () {
+    console.log(div.clientWidth) //100
+  }
+</script>
 ```
 
 ## window.getComputedStyle
@@ -234,12 +232,16 @@ console.log(div.style.width);
     <div>sdfdsfsfdsfsdfdsfsfsfdsffsfsdfasfasfasfsafasfsafsafsafsafs</div>
     <script>
       function get(selector) {
-        return document.querySelector(selector);
+        return document.querySelector(selector)
       }
-      var div = get("div");
+      var div = get('div')
 
       window.onload = function () {
-        console.log(window.getComputedStyle(div, null).padding, window.getComputedStyle(div, null).border,window.getComputedStyle(div, null).width);
+        console.log(
+          window.getComputedStyle(div, null).padding,
+          window.getComputedStyle(div, null).border,
+          window.getComputedStyle(div, null).width
+        )
       }
     </script>
   </body>
@@ -252,7 +254,7 @@ console.log(div.style.width);
 
 `Element.getBoundingClientRect()` 方法返回元素的大小及其相对于视口的位置。 返回值是一个 `DOMRect` 对象，这个对象是由该元素的 `getClientRects()` 方法返回的一组矩形的集合, 即：是与该元素相关的 `CSS` 边框集合 。
 
-`DOMRect` 对象包含了一组用于描述边框的只读属性——`left`、`top`、`right`和`bottom`，单位为像素。除了 `width` 和 `height` 外的属性都是相对于视口的左上角位置而言的。 ![getBoundingClinetRect](./images/getBoundingClientRect.png "getBoundingClinetRect")
+`DOMRect` 对象包含了一组用于描述边框的只读属性——`left`、`top`、`right`和`bottom`，单位为像素。除了 `width` 和 `height` 外的属性都是相对于视口的左上角位置而言的。 ![getBoundingClinetRect](./images/getBoundingClientRect.png 'getBoundingClinetRect')
 
 空边框盒（译者注：没有内容的边框）会被忽略。如果所有的元素边框都是空边框，那么这个矩形给该元素返回的 `width、height` 值为 `0`，`left、top` 值为第一个 `css` 盒子（按内容顺序）的 `top-left`值。
 
@@ -277,15 +279,15 @@ console.log(div.style.width);
 ```html
 <img src="img/totoro.jpg" alt="" />
 <script>
-    function $(selector) {
-        return document.querySelector(selector);
-    }
-    var img = $("img");
-    img.onload = function () {
-        var image = document.createElement('img');
-        image.src = img.src;
-        console.log(image.width, image.height)
-    }
+  function $(selector) {
+    return document.querySelector(selector)
+  }
+  var img = $('img')
+  img.onload = function () {
+    var image = document.createElement('img')
+    image.src = img.src
+    console.log(image.width, image.height)
+  }
 </script>
 ```
 
@@ -294,17 +296,17 @@ console.log(div.style.width);
 ```html
 <img src="img/totoro.jpg" alt="" />
 <script>
-    function $(selector) {
-        return document.querySelector(selector);
-    }
-    var img = $("img");
-    img.onload = function () {
-        console.log(img.naturalHeight, img.naturalWidth);
-    }
+  function $(selector) {
+    return document.querySelector(selector)
+  }
+  var img = $('img')
+  img.onload = function () {
+    console.log(img.naturalHeight, img.naturalWidth)
+  }
 </script>
 ```
 
 ## 参考文档
 
-1. [原生 JS 获取元素的尺寸和位置](https://segmentfault.com/a/1190000007687940 "原生 JS 获取元素的尺寸和位置")
-2. [JavaScript获取图片的原始尺寸](https://www.cnblogs.com/snandy/p/3704218.html "JavaScript获取图片的原始尺寸")
+1. [原生 JS 获取元素的尺寸和位置](https://segmentfault.com/a/1190000007687940 '原生 JS 获取元素的尺寸和位置')
+2. [JavaScript获取图片的原始尺寸](https://www.cnblogs.com/snandy/p/3704218.html 'JavaScript获取图片的原始尺寸')

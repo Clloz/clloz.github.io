@@ -6,10 +6,8 @@ tags:
   - emacs-vim
   - 奇技淫巧
 language: '中文'
-heroImage: {"src":"./emacs-logo.png","color":"#B4C6DA"}
+heroImage: { 'src': './emacs-logo.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 

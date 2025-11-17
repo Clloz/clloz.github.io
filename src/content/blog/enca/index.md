@@ -8,15 +8,13 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 `Mac` 的默认文本编辑器 `TextEdit` 不能查看和修改编码格式的，有时候打开一些 `GB2312` 的中文文本会有乱码。虽然 `vscode` 可以修改，但是比较麻烦。这里介绍一个可以查看、修改 `charset` 的工具 `enca`。
 
 ## 安装和使用
 
-> 完整的使用教程查看[官方文档](https://linux.die.net/man/1/enca#:~:text=Charset%20is%20a%20set%20of,(bits)%20constituting%20the%20file. "官方文档")，本文只介绍一些基础的使用方法。
+> 完整的使用教程查看[官方文档](<https://linux.die.net/man/1/enca#:~:text=Charset%20is%20a%20set%20of,(bits)%20constituting%20the%20file.> '官方文档')，本文只介绍一些基础的使用方法。
 
 `Mac` 上的安装非常简单：`brew install enca`。
 

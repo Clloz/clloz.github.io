@@ -6,14 +6,12 @@ tags:
   - emacs-vim
   - 奇技淫巧
 language: '中文'
-heroImage: {"src":"./irssi.png","color":"#B4C6DA"}
+heroImage: { 'src': './irssi.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
-在 `lazycat` 的博客看到他对 `emacs` 学习的建议，了解到了 `IRC` 也就是 `Internet Relay Chat`，于是便做了了解，这篇文章告诉大家如何使用 `IRC`。关于 `IRC` 的介绍请看[维基百科](https://zh.wikipedia.org/wiki/IRC "维基百科")
+在 `lazycat` 的博客看到他对 `emacs` 学习的建议，了解到了 `IRC` 也就是 `Internet Relay Chat`，于是便做了了解，这篇文章告诉大家如何使用 `IRC`。关于 `IRC` 的介绍请看[维基百科](https://zh.wikipedia.org/wiki/IRC '维基百科')
 
 ## 安装
 
@@ -29,7 +27,7 @@ heroImage: {"src":"./irssi.png","color":"#B4C6DA"}
 /connect irc.freenode.net 6667
 ```
 
-然后我们需要注册一个我们的 `ID`，注册方法（可以查看 `freenode` 的[网站](https://freenode.net/kb/answer/registration "网站")具体了解）
+然后我们需要注册一个我们的 `ID`，注册方法（可以查看 `freenode` 的[网站](https://freenode.net/kb/answer/registration '网站')具体了解）
 
 ```bash
 #设置昵称
@@ -54,7 +52,7 @@ heroImage: {"src":"./irssi.png","color":"#B4C6DA"}
 
 ## 使用
 
-不管是用 `GUI` 软件还是在终端使用，基本都是用命令来控制，关于命令可以查看维基百科的页面[List of Internet Relay Chat commands](https://en.wikipedia.org/wiki/List_of_Internet_Relay_Chat_commands "List of Internet Relay Chat commands")以及 这个[页面](https://kiwiirc.com/docs/client/commands "页面")
+不管是用 `GUI` 软件还是在终端使用，基本都是用命令来控制，关于命令可以查看维基百科的页面[List of Internet Relay Chat commands](https://en.wikipedia.org/wiki/List_of_Internet_Relay_Chat_commands 'List of Internet Relay Chat commands')以及 这个[页面](https://kiwiirc.com/docs/client/commands '页面')
 
 常用的一些命令有：
 
@@ -84,9 +82,9 @@ heroImage: {"src":"./irssi.png","color":"#B4C6DA"}
 
 ## 发送代码和图片
 
-发送代码使用代码粘贴网站来发送，不要直接发送大段代码，代码粘贴网站可以使用 [paste.ubuntu.com](https://paste.ubuntu.com/ "paste.ubuntu.com")，发送图片可以使用[img.vim-cn.com](http://img.vim-cn.com/ "img.vim-cn.com")，当然也可以搜索其他可用的 `paste` 网站。
+发送代码使用代码粘贴网站来发送，不要直接发送大段代码，代码粘贴网站可以使用 [paste.ubuntu.com](https://paste.ubuntu.com/ 'paste.ubuntu.com')，发送图片可以使用[img.vim-cn.com](http://img.vim-cn.com/ 'img.vim-cn.com')，当然也可以搜索其他可用的 `paste` 网站。
 
 ## 参考文章
 
-1. [IRC基本概念](https://wiki.ubuntu.com.cn/IRC%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5 "IRC基本概念")
-2. [IRC快速发图](http://www.lenky.info/archives/2013/09/2341?utm_source=tuicool&utm_medium=referral "IRC快速发图")
+1. [IRC基本概念](https://wiki.ubuntu.com.cn/IRC%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5 'IRC基本概念')
+2. [IRC快速发图](http://www.lenky.info/archives/2013/09/2341?utm_source=tuicool&utm_medium=referral 'IRC快速发图')

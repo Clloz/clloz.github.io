@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 字符串的匹配是编写程序的时候经常遇到的一个问题，也是计算机处理的基础问题之一。最简单的方法是循环字符串，一位一位地进行匹配，也可以使用正则表达式。今天本文讨论用状态机的模型如何理解和解决字符串匹配的问题。
@@ -20,14 +18,14 @@ language: '中文'
 
 ```javascript
 function fsm_start(input) {
-    //当前状态机的逻辑
-    return next_fsm;//返回下一个状态函数
+  //当前状态机的逻辑
+  return next_fsm //返回下一个状态函数
 }
 
-let state = fsm_start//设置初始状态
+let state = fsm_start //设置初始状态
 
 while (condition) {
-    state = state(input)//执行当前状态机函数，并将
+  state = state(input) //执行当前状态机函数，并将
 }
 ```
 
@@ -39,49 +37,49 @@ while (condition) {
 
 ```javascript
 function match(string) {
-    let foundA = foundB = foundC = foundD = foundE = false;
-    for (let c of string) {
-        if (c === 'a') {
-            foundA = true;
-        } else if (foundA && c === 'b') {
-            foundB = true;
-        } else if (foundB && c === 'c') {
-            foundC = true;
-        } else if (foundC && c === 'd') {
-            foundD = true;
-        } else if (foundD && c === 'e') {
-            foundE = true;
-        } else if (foundE && c === 'f') {
-            return true
-        } 
+  let foundA = (foundB = foundC = foundD = foundE = false)
+  for (let c of string) {
+    if (c === 'a') {
+      foundA = true
+    } else if (foundA && c === 'b') {
+      foundB = true
+    } else if (foundB && c === 'c') {
+      foundC = true
+    } else if (foundC && c === 'd') {
+      foundD = true
+    } else if (foundD && c === 'e') {
+      foundE = true
+    } else if (foundE && c === 'f') {
+      return true
     }
-    return false;
+  }
+  return false
 }
 
-console.log(match('abcdeabcdef'))//true
+console.log(match('abcdeabcdef')) //true
 ```
 
 但是如果我们想要匹配的字符串时 `abcabx` 这种有重复部分的时候我们就没法用上面那种方法了，因为当我们匹配到 `x` 这一位的时候有可能是 `c` 我们需要回到检测到 `c` 的状态，这种情况用上面的方法就没法实现，因为 `if/else` 结构是没法跳转到某一步的。在不用状态机的情况下我们可以用下面的“暴力”方法实现，用 `i` 和 `j` 分别表示字符串和 `pattern` 当前正在匹配的字符的下标，匹配成功则都 `+1`，否则 `i = i - j +1`，`j = 0`。循环继续的条件是字符串还没匹配完，并且也没有成功匹配出 `pattern`。大概过程如下图。
 
-![kmp1](./images/kmp1.png "kmp1")
+![kmp1](./images/kmp1.png 'kmp1')
 
 ```javascript
 function match(string, pattern) {
-    let i = j = 0;
-    for (; i < string.length && j < pattern.length; i++) {
-        if (string[i] === pattern[j]) {
-            j++;
-        } else {
-            i -= j;
-            j = 0;
-        }
-    }
-    if (j === pattern.length) {
-        let s_index = i - pattern.length;
-        return [s_index, string.slice(s_index, s_index + pattern.length)];
+  let i = (j = 0)
+  for (; i < string.length && j < pattern.length; i++) {
+    if (string[i] === pattern[j]) {
+      j++
     } else {
-        return 'failed'
+      i -= j
+      j = 0
     }
+  }
+  if (j === pattern.length) {
+    let s_index = i - pattern.length
+    return [s_index, string.slice(s_index, s_index + pattern.length)]
+  } else {
+    return 'failed'
+  }
 }
 
 console.log(...match('abababababcabcabxababab', 'abcabx'))
@@ -91,66 +89,66 @@ console.log(...match('abababababcabcabxababab', 'abcabx'))
 
 ```javascript
 function match(string) {
-    let state = start;
-    for (let c of string) {
-        state = state(c);
-    }
-    return state === end;
+  let state = start
+  for (let c of string) {
+    state = state(c)
+  }
+  return state === end
 }
 
 function start(c) {
-    if (c === 'a') {
-        return foundA;
-    } else {
-        return start;
-    }
+  if (c === 'a') {
+    return foundA
+  } else {
+    return start
+  }
 }
 
 function foundA(c) {
-    if (c === 'b') {
-        return foundB;
-    } else {
-        return start(c);
-    }
+  if (c === 'b') {
+    return foundB
+  } else {
+    return start(c)
+  }
 }
 
 function foundB(c) {
-    if (c === 'c') {
-        return foundC;
-    } else {
-        return start(c);
-    }
+  if (c === 'c') {
+    return foundC
+  } else {
+    return start(c)
+  }
 }
 
 function foundC(c) {
-    if (c === 'a') {
-        return foundA2;
-    } else {
-        return start(c);
-    }
+  if (c === 'a') {
+    return foundA2
+  } else {
+    return start(c)
+  }
 }
 
 function foundA2(c) {
-    if (c === 'b') {
-        return foundB2;
-    } else {
-        return start(c);
-    }
+  if (c === 'b') {
+    return foundB2
+  } else {
+    return start(c)
+  }
 }
 
 function foundB2(c) {
-    if (c === 'x') {
-        return end;
-    } else {
-        return foundB(c);//跳转到找到第一个b的状态
-    }
+  if (c === 'x') {
+    return end
+  } else {
+    return foundB(c) //跳转到找到第一个b的状态
+  }
 }
 
 function end() {
-    return end;
+  return end
 }
 
-console.log(match('ababaabcabcabxab'))//true
+console.log(match('ababaabcabcabxab')) //true
 ```
 
 用状态机模型的方式实现，代码结构也很清晰，每一个状态直接是没有关系的，我们可以通过控制状态的跳转来控制流程，提高匹配的效率。但是这样的实现方式显然也不好，每次出现一个新的 `pattern` 我们都要重新写代码，并没有将状态机的逻辑完全抽象出来。
@@ -161,17 +159,17 @@ console.log(match('ababaabcabcabxab'))//true
 
 在匹配字符串这个问题上，最重要的就是当一个字符匹配失败的时候，我们怎么进行下面的匹配才是最高效的。比如上面的非状态机的实现方法，当我们匹配失败的时候，我们已经匹配成功了 `[0, j - 1]` 位了，此时我们将 `i` 回退到未匹配状态并右移一位再从 `j = 0` 开始匹配，这显然是非常低效的。比如 `abcabx` 这样的 `pattern`，当我们在 `x` 这一位匹配失败的时候，我们并不一定需要全部重新匹配，因为如果我们当前这一位是 `c` 的话我们可以优化我们的匹配过程，如下图。
 
-![kmp2](./images/kmp2.png "kmp2")
+![kmp2](./images/kmp2.png 'kmp2')
 
 如果我们能找到 `pattern` 的规律就能够很好地优化我们的过程，`kmp` 算法正是一个很好字符串匹配的算法。`kmp` 算法有两种实现方式，一种是基于确定有限状态机的 `DFM(deterministic finite-state automaton)`，另一种是基于部分匹配表 `PMT(Partial Match Table)` 的。我个人觉得 `PMT` 的思路更容易理解一点，但是 `DFM` 则是一种更”优雅“的方式。
 
 ## DFM
 
-在谷歌上搜索 `DFM` 的中文结果很少，大部分的 `KMP` 算法的文章都是讲解 `PMT` 中的 `next` 数组的含义，通过状态机来讲解这个算法的非常少，而且质量也不是很高。大部分的 `DFM` 文章都来源于 `《算法》第四版` 中的 `5.3` 章节 `Substring Search` 中的 `Knuth-Morris-Pratt substring search`，以及作者 `Robert Sedgewick` 对该算法的讲解视频（视频地址贴在[这里](https://www.coursera.org/lecture/algorithms-part2/knuth-morris-pratt-TAtDr "这里")）。我最后也是直接看原文和视频来理解的（虽然英文很烂，硬着头皮看，不过视频还好，没有什么听力难点，**学好英语**对程序员太重要了），这里整理一下我的理解。我认为重点是要理解状态转移之间的关系，这是 `DFM` 的核心。
+在谷歌上搜索 `DFM` 的中文结果很少，大部分的 `KMP` 算法的文章都是讲解 `PMT` 中的 `next` 数组的含义，通过状态机来讲解这个算法的非常少，而且质量也不是很高。大部分的 `DFM` 文章都来源于 `《算法》第四版` 中的 `5.3` 章节 `Substring Search` 中的 `Knuth-Morris-Pratt substring search`，以及作者 `Robert Sedgewick` 对该算法的讲解视频（视频地址贴在[这里](https://www.coursera.org/lecture/algorithms-part2/knuth-morris-pratt-TAtDr '这里')）。我最后也是直接看原文和视频来理解的（虽然英文很烂，硬着头皮看，不过视频还好，没有什么听力难点，**学好英语**对程序员太重要了），这里整理一下我的理解。我认为重点是要理解状态转移之间的关系，这是 `DFM` 的核心。
 
 首先贴上《算法》中的对字符串 `ABABAC` 作为 `pattern` 的状态机图示。
 
-![kmp3](./images/kmp3.png "kmp3")
+![kmp3](./images/kmp3.png 'kmp3')
 
 对这两个图做一个简单的解释，上方的是一个矩阵，下方是一个图表，他们表达的是同一个有限状态机，只是形式不同。这两张图表达的就是 `ABABAC` 进行匹配的状态机。所有的数字表示的都是状态，而这个状态数字可以理解成当前已经成功匹配了几个字符，比如状态 `4` 表示已经成功匹配到了 `ABAB` 才进入状态 `4`。下方图表的箭头则表示状态的转移，注意每个箭头上都有一个字母，表示这个转移是因为这个字母的输入。以状态 `3` 为例，我们此时已经成功匹配到了 `ABA` 三个字符，下面我们接受的输入有三种可能 `A B C`，当接收 `B` 时，我们成功匹配进入状态 `4`，当接收 `A` 时，我们回到了状态 `1`，当我们接收 `C` 时回到状态 `0`。我们的状态机接收两个参数，一个是当前状态，一个是输入，得到的结果就是应该转移的状态。在矩阵图中，`j` 是当前所处的状态，`pat.charAt(j)` 表示 `pattern` 在当前要匹配的字符，纵向的 `dfa[][j]` 则表示输入，中间的矩阵表示要转移到的状态，比如矩阵中位置 `[0,0]` 的 `1` 表示，在状态 `0` 接收输入 `A`，状态转移到 `1`。
 
@@ -181,7 +179,7 @@ console.log(match('ababaabcabcabxab'))//true
 
 我们用一个变量 `X` 表示当前状态下匹配失败要跳转到的状态。我们上面说过，当状态 `5` 匹配失败时，我们实际上是将 `ABABA` 去掉首位变成 `BABA` 进入状态机运算得到的结果作为状态 `5` 的 `X`，也就是说当我们在状态 `j` 匹配失败时，我们是将 `pattern` 中已经匹配成功的 `pattern[0] - pattern[j - 1]`,去掉首位，也就是 `pattern[1] - pattern[j - 1]` 放入状态机中运算，得到的结果作为 `X`。我们还是以 `ABABAC` 为例，分析一下各个状态的 `X`。
 
-**语言能力不太好，下面的表述可能不太清晰。主要有三个概念：X是当前状态的restart state，目标字符是当前状态能匹配成功的字符，还有一个就是求X需要的当前状态已匹配的字符串（去掉首位，比如上面的 BABA)**
+> 语言能力不太好，下面的表述可能不太清晰。主要有三个概念：X是当前状态的restart state，目标字符是当前状态能匹配成功的字符，还有一个就是求X需要的当前状态已匹配的字符串（去掉首位，比如上面的 BABA)
 
 1. 状态 `0`，目标字符 `A`，一个字符都没有匹配成功，不考虑。
 2. 状态 `1`，目标字符 `B`，匹配成功 `A` 去掉首位为 `""`，放入状态机中运算结果为 `0`，`X` 为 `0`。
@@ -200,49 +198,48 @@ console.log(match('ababaabcabcabxab'))//true
 
 《算法》第四版中有两张图可以来辅助理解。
 
-![kmp6](./images/kmp6.png "kmp6")
+![kmp6](./images/kmp6.png 'kmp6')
 
-![kmp5](./images/kmp5.png "kmp5")
+![kmp5](./images/kmp5.png 'kmp5')
 
-* * *
+---
 
 下面就是具体代码，我们可以分成两个部分，一个部分是检索子字符串，另一部分是管理状态机。第一部分的代码非常简单，循环字符串，将字符交给状态机，当字符循环完毕没匹配成功则返回 `false`，若匹配成功则返回 `success`。第二部分则是生成对应 `pattern` 的状态机。
 
 ```javascript
 function match(s, p) {
-    let M = p.length,
-        N = s.length,
-        i = 0,
-        j = 0,
-        dfa = KMP(p);
+  let M = p.length,
+    N = s.length,
+    i = 0,
+    j = 0,
+    dfa = KMP(p)
 
-    for (; i < N && j < M; i++) j = dfa[j][s.charCodeAt(i)];
-    if (j === M) return 'match success at index of ' + (i - M);
-    return 'false';
+  for (; i < N && j < M; i++) j = dfa[j][s.charCodeAt(i)]
+  if (j === M) return 'match success at index of ' + (i - M)
+  return 'false'
 }
 
 function KMP(p) {
-    let X = 0,
-        R = 256,
-        M = p.length,
-        dfa = new Array(M);
-    for (let i = 0; i < dfa.length; i++) dfa[i] = new Array(R); //创建长度为dfa.length的数组，每一项为一个对象
+  let X = 0,
+    R = 256,
+    M = p.length,
+    dfa = new Array(M)
+  for (let i = 0; i < dfa.length; i++) dfa[i] = new Array(R) //创建长度为dfa.length的数组，每一项为一个对象
 
-    //初始化dfa[0],即初始的X状态，后面的状态要用这一状态来复制
-    for (let i = 0; i < R; i++) dfa[0][i] = 0;
-    dfa[0][p.charCodeAt(0)] = 1; //状态0时匹配到第一位总是进入状态1
+  //初始化dfa[0],即初始的X状态，后面的状态要用这一状态来复制
+  for (let i = 0; i < R; i++) dfa[0][i] = 0
+  dfa[0][p.charCodeAt(0)] = 1 //状态0时匹配到第一位总是进入状态1
 
-    //生成后面的状态机
-    for (let j = 1; j < M; j++) {
-        for (let c = 0; c < R; c++) dfa[j][c] = dfa[X][c]   //设置状态j的匹配失败项，从状态X复制
-        dfa[j][p.charCodeAt(j)] = j + 1;//设置匹配成功项
-        X = dfa[X][p.charCodeAt(j)] //计算下一状态的 X
-    }
-    return dfa;
+  //生成后面的状态机
+  for (let j = 1; j < M; j++) {
+    for (let c = 0; c < R; c++) dfa[j][c] = dfa[X][c] //设置状态j的匹配失败项，从状态X复制
+    dfa[j][p.charCodeAt(j)] = j + 1 //设置匹配成功项
+    X = dfa[X][p.charCodeAt(j)] //计算下一状态的 X
+  }
+  return dfa
 }
 
-console.log(match('asdfasdfsafabababafabababacasdf', 'ababac'));
-
+console.log(match('asdfasdfsafabababafabababacasdf', 'ababac'))
 ```
 
 这里的代码使用 `javascript` 写的，所以 `KMP` 中我们需要手动初始化状态 `0`（也就是默认的 `X`）的状态跳转。《算法》中的代码使 `Java`，所以整形数组的项的默认值是 `0`，不需要处理。 `javascript` 中，`new Array()` 方法创建的固定长度的数组其实只是一个确定了 `length` 属性的数组对象，里面并没有任何元素（不要理解成都是 `undefined`）。
@@ -251,56 +248,56 @@ console.log(match('asdfasdfsafabababafabababacasdf', 'ababac'));
 
 ```javascript
 function match(s, p) {
-    let M = p.length,
-        N = s.length,
-        i = 0,
-        j = 0,
-        o = {},
-        dfa = KMP(p);
+  let M = p.length,
+    N = s.length,
+    i = 0,
+    j = 0,
+    o = {},
+    dfa = KMP(p)
 
-    //生成pattern中不重复元素的对象
-    for (let t of p) {
-        if (!o[t]) o[t] = t; 
-    }
+  //生成pattern中不重复元素的对象
+  for (let t of p) {
+    if (!o[t]) o[t] = t
+  }
 
-    for (; i < N && j < M; i++) {
-        j = !!o[s[i]] ? dfa[j][s[i]] : 0;
-    }
-    if (j === M) return 'match success at index of ' + (i - M);
-    return 'false';
+  for (; i < N && j < M; i++) {
+    j = !!o[s[i]] ? dfa[j][s[i]] : 0
+  }
+  if (j === M) return 'match success at index of ' + (i - M)
+  return 'false'
 }
 
 function KMP(p) {
-    let X = 0,
-        R = 256,
-        M = p.length,
-        o = {},
-        dfa = new Array(M);
+  let X = 0,
+    R = 256,
+    M = p.length,
+    o = {},
+    dfa = new Array(M)
 
-    //生成pattern中不重复元素的对象
-    for (let t of p) {
-        if (!o[t]) o[t] = t; 
-    }
+  //生成pattern中不重复元素的对象
+  for (let t of p) {
+    if (!o[t]) o[t] = t
+  }
 
-    for (let i = 0; i < dfa.length; i++) dfa[i] = {...o}; //创建长度为dfa.length的数组，每一项为一个对象
+  for (let i = 0; i < dfa.length; i++) dfa[i] = { ...o } //创建长度为dfa.length的数组，每一项为一个对象
 
-    //初始化dfa[0],即初始的X状态，后面的状态要用这一状态来复制
-    for (let key in dfa[0]) {
-        dfa[0][key] = 0;
-    }
-    dfa[0][p[0]] = 1; //状态0时匹配到第一位总是进入状态1
+  //初始化dfa[0],即初始的X状态，后面的状态要用这一状态来复制
+  for (let key in dfa[0]) {
+    dfa[0][key] = 0
+  }
+  dfa[0][p[0]] = 1 //状态0时匹配到第一位总是进入状态1
 
-    //生成后面的状态机
-    for (let j = 1; j < M; j++) {
-        for (let c in o) dfa[j][c] = dfa[X][c]  //设置状态j的匹配失败项，从状态X复制
-        dfa[j][p[j]] = j + 1;//设置匹配成功项
-        X = dfa[X][p[j]] //计算下一状态的 X
-    }
-    console.log(dfa)
-    return dfa;
+  //生成后面的状态机
+  for (let j = 1; j < M; j++) {
+    for (let c in o) dfa[j][c] = dfa[X][c] //设置状态j的匹配失败项，从状态X复制
+    dfa[j][p[j]] = j + 1 //设置匹配成功项
+    X = dfa[X][p[j]] //计算下一状态的 X
+  }
+  console.log(dfa)
+  return dfa
 }
 
-console.log(match('asdfasdfsafabababafabababacasdf', 'ababac'));
+console.log(match('asdfasdfsafabababafabababacasdf', 'ababac'))
 
 //[
 //  { a: 1, b: 0, c: 0 },
@@ -323,37 +320,37 @@ console.log(match('asdfasdfsafabababafabababacasdf', 'ababac'));
 
 我们先来介绍前后缀的概念。对于一个字符串，包含该字符串的首位且不包含末位的子串就是这个字符串的前缀，而包含该字符串的末位且不包含首位的子串就是这个字符串的后缀。比如对于字符串 `ababa` ，他的前缀包括 `a ab aba abab`， 他的后缀包括 `a ba aba abab`。我们在 `DFM` 中找的 `X` 在 `PTM` 的理解中就是寻找最长的相同前后缀。比如 `ababa` 的最长相同前后缀就是 `aba`，长度为 `3`。我们在 `DFM` 中的 `ABABAC` 的 `j` 为 `5` 的情况下对应的 `X` 就是 `3`。这个原理其实也很简单，看下图。
 
-![kmp7](./images/kmp7.png "kmp7")
+![kmp7](./images/kmp7.png 'kmp7')
 
 在 `DFM` 中我们理解这张图是我们在 `j` 为 `5` 的状态匹配失败，此时我们将前面匹配成功的五位 `ABABA` 去掉首位再放到状态机中计算得到的输出作为 `X`。在 `PTM` 中其实就没有所谓的状态了，我们在当前这一位匹配失败了，就找出前面匹配成功的字符串 `ABABA` 中的最长前后缀，也就是 `ABA`。其实我们仔细思考一下，这两种方法其实并没有本质的区别，把 `BABA` 放到状态机中计算就是找最长前后缀，只不过 `DFM` 更巧妙一些，我们不需要真的去找最长的前后缀。可以说 `DFM` 的做法是着眼于各个状态的关系，用这个关系来解决问题；而 `PTM` 则更简单直接一点，我这个状态的问题就利用这个状态自己解决。
 
 所以在 `PTM` 中我们可以得出 `pattern` 的各位对应的最长相同前后缀的长度，这个长度所形成的表就叫做部分匹配表。我们用两个 `pattern` 来看一下对应的 `PTM` 。第一个是 `ababac`，第二个是 `abababca`。
 
-![kmp8](./images/kmp8.png "kmp8")
+![kmp8](./images/kmp8.png 'kmp8')
 
 如何求这个 `PTM` 呢？其实 `PTM` 就是 `pattern` 自己和自己匹配然后得出的结果，因为我们在用 `pattern` 和字符串匹配的时候，匹配成功的组合必然就在 `pattern` 中，匹配失败的时候我们需要移动的也只是 `pattern` 的指针，所以 `PTM` 只和 `pattern` 相关。大概的逻辑是：从 `pattern[1]` 开始不断用 `pattern` 进行匹配，用两个指针分别指向两个 `pattern` 当前的位置（如下图），用一个数组 `arr` 储存 `i` 指针对应位的最长前后缀的长度。匹配成功则两个指针都右移，`arr[i] = j`（得到当前位置的最长前后缀）；失败则 `i` 不动，`j` 赋值为 `arr[j-1]` 的值（在运行过程中就利用我们已经得到的结果）；如果 `j` 为 `0`，则 `arr[i] = 0` 并且 `i` 向右移动一位。整个过程就是 `DFM` 中的某一位匹配失败时，用前面匹配成功的部分去掉第一位放进状态机匹配的详细过程。详细的过程和代码看下图
 
-![kmp11](./images/kmp11.png "kmp10") ![kmp12](./images/kmp12.png "kmp10")
+![kmp11](./images/kmp11.png 'kmp10') ![kmp12](./images/kmp12.png 'kmp10')
 
 ```javascript
 function PMT(p) {
-    let i = 1,//i和j错开
-        j = 0,
-        arr = [0];//第一位的最长前后缀为0
+  let i = 1, //i和j错开
+    j = 0,
+    arr = [0] //第一位的最长前后缀为0
 
-    while (i < p.length) {
-        if (p[i] === p[j]) {
-            j++;
-            arr[i] = j;
-            i++;
-        } else if (j === 0){
-            arr[i] = 0;
-            i++;
-        } else {
-            j = arr[j - 1];//匹配失败的时候，j回到j-1位的最长前后缀的位置
-        }
+  while (i < p.length) {
+    if (p[i] === p[j]) {
+      j++
+      arr[i] = j
+      i++
+    } else if (j === 0) {
+      arr[i] = 0
+      i++
+    } else {
+      j = arr[j - 1] //匹配失败的时候，j回到j-1位的最长前后缀的位置
     }
-    return arr;
+  }
+  return arr
 }
 console.log(PMT('ababac'))
 console.log(PMT('abababca'))
@@ -363,28 +360,25 @@ console.log(PMT('abababca'))
 
 我们上面求得的这个 `PTM` 在实际编码中并不方便，我们上面的 `i` 指针实际上相当于我们在 `i + 1` 位匹配失败，求得前 `1 ~ i` 位的最长相同前后缀（即 `DFM` 中的把 `1 ~ i` 位放到状态机中执行），所以 `i` 位的 `PTM` 值其实是给 `i + 1` 位用的，基于这个原因，我们将 `PTM` 表向右移动一位，最左边补上一个 `-1`（单纯是为了编程方便），最右边的位舍去，得到如下的 `next` 表。
 
-![kmp9](./images/kmp9.png "kmp9")
+![kmp9](./images/kmp9.png 'kmp9')
 
 我们也可以直接求出 `next` 数组，代码如下。
 
 ```javascript
 function PTM2(p) {
-    let arr = [-1];
-    let i = 0, j = -1;
+  let arr = [-1]
+  let i = 0,
+    j = -1
 
-    while (i < p.length)
-    {
-        if (j == -1 || p[i] == p[j])
-        {
-            ++i;
-            ++j;
-            arr[i] = j;
-        }
-        else
-            j = arr[j];
-    }
-    //arr.pop();
-    return arr;
+  while (i < p.length) {
+    if (j == -1 || p[i] == p[j]) {
+      ++i
+      ++j
+      arr[i] = j
+    } else j = arr[j]
+  }
+  //arr.pop();
+  return arr
 }
 console.log(PTM2('ababac'))
 console.log(PTM2('abababca'))
@@ -396,20 +390,20 @@ console.log(PTM2('abababca'))
 
 ```javascript
 function match(s, p) {
-    let i = 0,
-        j = 0,
-        arr = PMT(p);
+  let i = 0,
+    j = 0,
+    arr = PMT(p)
 
-    while (i < s.length) {
-        if (j === -1 || s[i] === p[j]) {
-            if (j === arr.length - 1) return 'success';
-            i++;
-            j++;
-        } else {
-            j = arr[j];
-        }
+  while (i < s.length) {
+    if (j === -1 || s[i] === p[j]) {
+      if (j === arr.length - 1) return 'success'
+      i++
+      j++
+    } else {
+      j = arr[j]
     }
-    return 'failed';
+  }
+  return 'failed'
 }
 ```
 
@@ -419,9 +413,9 @@ function match(s, p) {
 
 ## 参考文章
 
-1. [有限状态机 - Wikipedia](https://zh.wikipedia.org/wiki/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA "有限状态机 - Wikipedia")
-2. [字符串匹配的KMP算法 - 阮一峰](https://www.ruanyifeng.com/blog/2013/05/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm.html "字符串匹配的KMP算法 - 阮一峰")
-3. [KMP 算法的两种实现](https://juejin.im/post/5eb7b5656fb9a0437e0e9596#sec-5 "KMP 算法的两种实现")
-4. [使用确定有限状态自动机解KMP算法](https://cgiirw.github.io/2018/04/22/KMP/ "使用确定有限状态自动机解KMP算法")
+1. [有限状态机 - Wikipedia](https://zh.wikipedia.org/wiki/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA '有限状态机 - Wikipedia')
+2. [字符串匹配的KMP算法 - 阮一峰](https://www.ruanyifeng.com/blog/2013/05/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm.html '字符串匹配的KMP算法 - 阮一峰')
+3. [KMP 算法的两种实现](https://juejin.im/post/5eb7b5656fb9a0437e0e9596#sec-5 'KMP 算法的两种实现')
+4. [使用确定有限状态自动机解KMP算法](https://cgiirw.github.io/2018/04/22/KMP/ '使用确定有限状态自动机解KMP算法')
 5. 《算法 第四版》
-6. [如何更好地掌握KMP算法](https://www.zhihu.com/question/21923021/answer/281346746 "如何更好地掌握KMP算法")
+6. [如何更好地掌握KMP算法](https://www.zhihu.com/question/21923021/answer/281346746 '如何更好地掌握KMP算法')

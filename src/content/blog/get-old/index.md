@@ -7,7 +7,8 @@ tags:
   - 朝花夕拾
   - 生活杂记
 language: '中文'
-heroImage: {"src":"./totoro.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './totoro.jpg', 'color': '#B4C6DA' }
+draft: true
 ---
 
 **一切都在变，不变只有时间的流逝。** **时间，让深的东西越深，浅的东西越浅。**
@@ -28,6 +29,6 @@ heroImage: {"src":"./totoro.jpg","color":"#B4C6DA"}
 
 我总是跟妈妈说希望她和爸爸60岁的时候能够过上无忧无虑的晚年生活，不用再为任何事操心，过上为自己考虑的生活。我希望那一天早一点，毕竟外婆也已经76岁，外公82岁，我也要多给母亲一些尽孝道的时间。
 
-新的一年加油把！为自己的人生涂上新的一抹亮色，早日画上那道彩虹！ :sparkling\_heart:
+新的一年加油把！为自己的人生涂上新的一抹亮色，早日画上那道彩虹！ :sparkling_heart:
 
-![densha](./images/densha.jpg "densha")
+![densha](./images/densha.jpg 'densha')

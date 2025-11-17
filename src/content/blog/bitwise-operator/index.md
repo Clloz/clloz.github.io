@@ -7,10 +7,8 @@ tags:
   - 实用技巧
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -20,23 +18,23 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 `JavaScript` 中的按位操作符见下表：
 
-| 运算符 | 用法 | 描述 |
-| --- | --- | --- |
-| 按位与（ `AND`） | `a & b` | 对于每一个比特位，只有两个操作数相应的比特位都是 `1` 时，结果才为 `1`，否则为 `0`。 |
-| 按位或（`OR`） | `a | b` | 对于每一个比特位，当两个操作数相应的比特位至少有一个 `1` 时，结果为 `1`，否则为 `0`。 |
-| 按位异或（`XOR`） | `a ^` | 对于每一个比特位，当两个操作数相应的比特位有且只有一个 `1` 时，结果为 `1`，否则为 `0`。 |
-| 按位非（`NOT`） | `~ a` | 反转操作数的比特位，即 `0` 变成 `1`，`1` 变成 `0`。 |
-| 左移（`Left shift`） | `a << b` | 将 `a` 的二进制形式向左移 `b (< 32)` 比特位，右边用 `0` 填充。 |
-| 有符号右移 | `a >> b` | 将 `a` 的二进制表示向右移 `b (< 32)` 位，丢弃被移出的位。 |
-| 无符号右移 | `a >>> b` | 将 `a` 的二进制表示向右移 `b (< 32)` 位，丢弃被移出的位，并使用 `0` 在左侧填充。 |
+| 运算符               | 用法      | 描述                                                                                    |
+| -------------------- | --------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| 按位与（ `AND`）     | `a & b`   | 对于每一个比特位，只有两个操作数相应的比特位都是 `1` 时，结果才为 `1`，否则为 `0`。     |
+| 按位或（`OR`）       | `a        | b`                                                                                      | 对于每一个比特位，当两个操作数相应的比特位至少有一个 `1` 时，结果为 `1`，否则为 `0`。 |
+| 按位异或（`XOR`）    | `a ^`     | 对于每一个比特位，当两个操作数相应的比特位有且只有一个 `1` 时，结果为 `1`，否则为 `0`。 |
+| 按位非（`NOT`）      | `~ a`     | 反转操作数的比特位，即 `0` 变成 `1`，`1` 变成 `0`。                                     |
+| 左移（`Left shift`） | `a << b`  | 将 `a` 的二进制形式向左移 `b (< 32)` 比特位，右边用 `0` 填充。                          |
+| 有符号右移           | `a >> b`  | 将 `a` 的二进制表示向右移 `b (< 32)` 位，丢弃被移出的位。                               |
+| 无符号右移           | `a >>> b` | 将 `a` 的二进制表示向右移 `b (< 32)` 位，丢弃被移出的位，并使用 `0` 在左侧填充。        |
 
-所有的按位操作符的操作数都会被转成补码形式的有符号 `32` 位二进制整数。关于补码的知识，可以参考我的另一片文章[原码，反码和补码](https://www.clloz.com/programming/assorted/2019/06/05/true-form-ones-complement-twos-complement/ "原码，反码和补码")。如果操作数是一个非数字，我们需要注意 `JavaScript` 会将它转化为什么：
+所有的按位操作符的操作数都会被转成补码形式的有符号 `32` 位二进制整数。关于补码的知识，可以参考我的另一片文章[原码，反码和补码](https://www.clloz.com/programming/assorted/2019/06/05/true-form-ones-complement-twos-complement/ '原码，反码和补码')。如果操作数是一个非数字，我们需要注意 `JavaScript` 会将它转化为什么：
 
 ```javascript
 Number(null) //0
 Number(undefined) //NaN
 Number([]) //0
-Number([1,2,3]) //NaN
+Number([1, 2, 3]) //NaN
 Number(true) //1
 Number(false) //0
 Number('123') //123
@@ -95,29 +93,34 @@ Number(Symbol(123)) //Uncaught TypeError: Cannot convert a Symbol value to a num
 
 ```javascript
 //布尔值转掩码
-function createMask () {
-  var nMask = 0, nFlag = 0, nLen = arguments.length > 32 ? 32 : arguments.length;
+function createMask() {
+  var nMask = 0,
+    nFlag = 0,
+    nLen = arguments.length > 32 ? 32 : arguments.length
   for (nFlag; nFlag < nLen; nMask |= arguments[nFlag] << nFlag++);
-  return nMask;
+  return nMask
 }
-var mask1 = createMask(true, true, false, true); // 11, 0b1011
-var mask2 = createMask(false, false, true); // 4, 0b0100
-var mask3 = createMask(true); // 1, 0b0001
+var mask1 = createMask(true, true, false, true) // 11, 0b1011
+var mask2 = createMask(false, false, true) // 4, 0b0100
+var mask3 = createMask(true) // 1, 0b0001
 
 //掩码转布尔值
-function arrayFromMask (nMask) {
+function arrayFromMask(nMask) {
   // nMask 必须介于 -2147483648 和 2147483647 之间，去除符号位还有31位
-  if (nMask > 0x7fffffff || nMask < -0x80000000) { 
-    throw new TypeError("arrayFromMask - out of range"); 
+  if (nMask > 0x7fffffff || nMask < -0x80000000) {
+    throw new TypeError('arrayFromMask - out of range')
   }
-  for (var nShifted = nMask, aFromMask = []; nShifted; 
-       aFromMask.push(Boolean(nShifted & 1)), nShifted >>>= 1);
-  return aFromMask;
+  for (
+    var nShifted = nMask, aFromMask = [];
+    nShifted;
+    aFromMask.push(Boolean(nShifted & 1)), nShifted >>>= 1
+  );
+  return aFromMask
 }
 
-var array1 = arrayFromMask(11); //[true, true, false, true]
-var array2 = arrayFromMask(4); //[false, false, true]
-var array3 = arrayFromMask(1); //[true]
+var array1 = arrayFromMask(11) //[true, true, false, true]
+var array2 = arrayFromMask(4) //[false, false, true]
+var array3 = arrayFromMask(1) //[true]
 ```
 
 ## 乘除
@@ -125,9 +128,9 @@ var array3 = arrayFromMask(1); //[true]
 我们的右移相当于**除2**，左移相当于**乘2**。
 
 ```javascript
-let a = -10;
-a >> 1; // -5
-a << 1; // -20
+let a = -10
+a >> 1 // -5
+a << 1 // -20
 ```
 
 ## 交换两个数的值
@@ -148,10 +151,10 @@ a ^ = b; // a = a ^ a ^ b -> b
 二进制数只有最后一位是 `0` 就是偶数，最后一位是 `1` 就是奇数，我们可以利用这一点进行判断，
 
 ```javascript
-if ( 0 === (a & 1)) {
-    console.log('an even number')
+if (0 === (a & 1)) {
+  console.log('an even number')
 } else {
-    console.log('an odd number')
+  console.log('an odd number')
 }
 ```
 
@@ -160,16 +163,16 @@ if ( 0 === (a & 1)) {
 对于二进制补码，有 `X + ~X + 1 = 0`，变形可得 `-X = ~X + 1`，所以一个数的相反数就是按位取反再加一。
 
 ```javascript
-let a = 10;
-console.log(~a + 1); //-10
+let a = 10
+console.log(~a + 1) //-10
 ```
 
 利用这一特性我们也可以求绝对值，只要先判断值的正负即可。利用 `a >> 31` 即可判断正负，正数右移 `31` 位后结果为 `0`，负数右移 `31` 位后结果为 `-1`，如果是负数则求其相反数。求绝对值还有一个更简化一点的办法：
 
 ```javascript
 let a = -10
-let i = a >> 31;
-console.log((a^i) - i); //10
+let i = a >> 31
+console.log((a ^ i) - i) //10
 ```
 
 主要就是利用任何数与 `-1` 进行异或运算就是取反。
@@ -201,5 +204,5 @@ console.log(100. toString(2)) //1100100
 
 ## 参考文章
 
-1. [位运算有什么奇技淫巧？ - 力扣（LeetCode）的回答 - 知乎](https://www.zhihu.com/question/38206659/answer/736472332 "位运算有什么奇技淫巧？ - 力扣（LeetCode）的回答 - 知乎 ")
-2. [按位操作符 - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators "按位操作符 - MDN")
+1. [位运算有什么奇技淫巧？ - 力扣（LeetCode）的回答 - 知乎](https://www.zhihu.com/question/38206659/answer/736472332 '位运算有什么奇技淫巧？ - 力扣（LeetCode）的回答 - 知乎 ')
+2. [按位操作符 - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators '按位操作符 - MDN')

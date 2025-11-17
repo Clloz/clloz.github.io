@@ -6,14 +6,12 @@ tags:
   - js
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
-本文分析 `JavaScript` 的事件循环 `Event Loop` 的执行机制和细节。`Event Loop` 标准文档见 [Event Loop - whatwg](https://html.spec.whatwg.org/multipage/webappapis.html#event-loops "HTML5")
+本文分析 `JavaScript` 的事件循环 `Event Loop` 的执行机制和细节。`Event Loop` 标准文档见 [Event Loop - whatwg](https://html.spec.whatwg.org/multipage/webappapis.html#event-loops 'HTML5')
 
 ## 基础概念
 
@@ -33,15 +31,15 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 2. `Heap` ：存放对象，数据。没有引用的对象会被垃圾回收。
 3. `Task Queue` ：执行栈为空的时候从任务队列中取一个任务执行，再次为空时再次到任务队列中取任务执行，如此循环，所以称为 `Event Loop`。
 
-![js-engine](https://img.clloz.com/blog/writing/js-engine.svg "js-engine")
+![js-engine](https://img.clloz.com/blog/writing/js-engine.svg 'js-engine')
 
 ## 理解事件循环
 
-理解事件循环机制首先要理解浏览器的组成，可以参考我的另一片文章：[浏览器渲染过程](https://www.clloz.com/programming/front-end/js/2019/04/25/how-browser-work-2/ "浏览器渲染过程")，这里我就做一个简短的说明。
+理解事件循环机制首先要理解浏览器的组成，可以参考我的另一片文章：[浏览器渲染过程](https://www.clloz.com/programming/front-end/js/2019/04/25/how-browser-work-2/ '浏览器渲染过程')，这里我就做一个简短的说明。
 
 以 `Chorme` 为例，每一个页面（一个 `tab`）都是一个独立的进程，我们的浏览器内核也就是渲染引擎就在其中工作。渲染引擎包括了如下一些部分：`GUI` 渲染线程，`JavaScript` 引擎，事件触发线程，定时器触发线程，异步请求线程等。我们的 `JavaScript` 引擎是工作在渲染引擎之下的。事件循环就可以理解为渲染引擎和 `JavaScript` 引擎之间为了协调工作而创造的一种模式。
 
-首先在浏览器中，我们的 `JavaScript` 脚本最终运行的目标都是改变页面，无论是改变页面的效果还是改变页面上的数据，所有的改动（不管是复杂的还是简单的）都会直接或间接的为页面上的某个或某些元素服务的。`JavaScript` 和渲染引擎的交互主要是依靠浏览器提供的一系列 `Web APIs`（可以参考 [Web API 接口参考 - MDN](https://developer.mozilla.org/zh-CN/docs/Web/API "Web API - MDN")），而渲染引擎和 `JavaScript` 引擎的交互就是依靠事件循环。
+首先在浏览器中，我们的 `JavaScript` 脚本最终运行的目标都是改变页面，无论是改变页面的效果还是改变页面上的数据，所有的改动（不管是复杂的还是简单的）都会直接或间接的为页面上的某个或某些元素服务的。`JavaScript` 和渲染引擎的交互主要是依靠浏览器提供的一系列 `Web APIs`（可以参考 [Web API 接口参考 - MDN](https://developer.mozilla.org/zh-CN/docs/Web/API 'Web API - MDN')），而渲染引擎和 `JavaScript` 引擎的交互就是依靠事件循环。
 
 用实际的例子来说明，我们打开一个 `tab`，输入一个网址回车。网络进程像服务器发起请求。获得请求的内容之后开一个新的渲染进程，渲染引擎开始工作。`GUI` 渲染线程进行 `HTML`，`CSS` 的解析，解析到 `<script>` 交给 `JavaScript` 引擎处理。`JavaScript` 创建全局环境，全局环境压入执行栈开始执行代码，当遇到 `setTimeout` 等定时器代码，交给定时器触发线程，遇到 `ajax` 请求交给异步请求线程，遇到事件绑定交给事件触发线程。按照这个逻辑，一直执行下去。我们可以看到，我们写的 `JavaScript` 代码利用浏览器提供的 `Web API` 把很多异步任务交给渲染引擎的其他线程进行处理。
 
@@ -51,31 +49,30 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 可以借助下图理解：
 
-![event-loop](./images/event-loop.png "event-loop")
+![event-loop](./images/event-loop.png 'event-loop')
 
 ## 规范
 
-[Event Loop - whatwg](https://html.spec.whatwg.org/multipage/webappapis.html#event-loops "HTML5") 规范对 `Event Loop` 进行了严格的定义。我们从规范来解读 `Event Loop` 的细节。这里我们直接把最关键的几步列出来（翻译来自[深入探究 eventloop 与浏览器渲染的时序问题](https://juejin.im/entry/6844903487700992007 "深入探究 eventloop 与浏览器渲染的时序问题")）：
+[Event Loop - whatwg](https://html.spec.whatwg.org/multipage/webappapis.html#event-loops 'HTML5') 规范对 `Event Loop` 进行了严格的定义。我们从规范来解读 `Event Loop` 的细节。这里我们直接把最关键的几步列出来（翻译来自[深入探究 eventloop 与浏览器渲染的时序问题](https://juejin.im/entry/6844903487700992007 '深入探究 eventloop 与浏览器渲染的时序问题')）：
 
 - `1-5` 条：从 `task` 队列（一个或多个）中选出最老的一个 `task`，执行它。
 - 第 `6` 条：执行 `microtask` 检查点。简单说，会执行 `microtask` 队列中的所有 `microtask`，直到队列为空。如果 `microtask` 中又添加了新的 `microtask`，直接放进本队列末尾。
 - `7`： 执行 `UI render` 操作：
-    
-    - `7.1-7.4`：判断 `document` 在此时间点渲染是否会『获益』。浏览器只需保证 `60Hz` 的刷新率即可（在机器负荷重时还会降低刷新率），若 `eventloop` 频率过高，即使渲染了浏览器也无法及时展示。所以并不是每轮 `eventloop` 都会执行 `UI Render`。
-    - `7.5-7.9`： 执行各种渲染所需工作，如 触发 `resize、scroll` 事件、建立媒体查询、运行 `CSS` 动画等等
-    - `7.10`： 执行 `animation frame callbacks`
-    - `7.11`： 执行 `IntersectionObserver callback`
-    - `7.12`： 渲染 `UI`
+  - `7.1-7.4`：判断 `document` 在此时间点渲染是否会『获益』。浏览器只需保证 `60Hz` 的刷新率即可（在机器负荷重时还会降低刷新率），若 `eventloop` 频率过高，即使渲染了浏览器也无法及时展示。所以并不是每轮 `eventloop` 都会执行 `UI Render`。
+  - `7.5-7.9`： 执行各种渲染所需工作，如 触发 `resize、scroll` 事件、建立媒体查询、运行 `CSS` 动画等等
+  - `7.10`： 执行 `animation frame callbacks`
+  - `7.11`： 执行 `IntersectionObserver callback`
+  - `7.12`： 渲染 `UI`
 
 ## 任务队列
 
-从标准中我们看出，一共有两种任务 `task` 和 `microtask`，`task` 很多时候也被称为 `macrotask`。关于 `task` 标准中有详细 [定义](https://html.spec.whatwg.org/multipage/webappapis.html#concept-task "定义")。
+从标准中我们看出，一共有两种任务 `task` 和 `microtask`，`task` 很多时候也被称为 `macrotask`。关于 `task` 标准中有详细 [定义](https://html.spec.whatwg.org/multipage/webappapis.html#concept-task '定义')。
 
 > An event loop has one or more task queues. For example, a user agent could have one task queue for mouse and key events (to which the user interaction task source is associated), and another to which all other task sources are associated. Then, using the freedom granted in the initial step of the event loop processing model, it could give keyboard and mouse events preference over other tasks three-quarters of the time, keeping the interface responsive but not starving other task queues. Note that in this setup, the processing model still enforces that the user agent would never process events from any one task source out of order.
 
 一个 `eventloop` 有一或多个 `task` 队列。每个 `task` 由一个确定的 `task` 源提供。从不同 `task` 源而来的 `task` 可能会放到不同的 `task` 队列中。例如，浏览器可能单独为鼠标键盘事件维护一个 `task` 队列，所有其他 `task` 都放到另一个 `task` 队列。通过区分 `task` 队列的优先级，使高优先级的 `task` 优先执行，保证更好的交互体验。
 
-`task` 源包括（ [generic-task-sources](https://html.spec.whatwg.org/multipage/webappapis.html#generic-task-sources "generic-task-sources")）：
+`task` 源包括（ [generic-task-sources](https://html.spec.whatwg.org/multipage/webappapis.html#generic-task-sources 'generic-task-sources')）：
 
 - `DOM` 操作任务源：如元素以非阻塞方式插入文档
 - 用户交互任务源：如鼠标键盘事件。用户输入事件（如 `click`） 必须使用 `task` 队列
@@ -99,9 +96,9 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 - `MutationObserver`
 - `process.nextTick`
 
-目前浏览器暴露了一个 [WindowOrWorkerGlobalScope.queueMicrotask()](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask "WindowOrWorkerGlobalScope.queueMicrotask()") 让我们能够用微任务执行我们的代码。
+目前浏览器暴露了一个 [WindowOrWorkerGlobalScope.queueMicrotask()](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask 'WindowOrWorkerGlobalScope.queueMicrotask()') 让我们能够用微任务执行我们的代码。
 
-##### 为什么有宏任务和微任务
+### 为什么有宏任务和微任务
 
 其实网上关于宏任务微任务的讲解非常多，基本都是讲一讲哪些属于宏任务，哪些属于微任务，然后执行顺序。但是几乎没有人说为什么要设计成这两种模式。
 
@@ -113,10 +110,9 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 - 一个微任务（`microtask`）就是一个简短的函数，当创建该函数的函数执行之后，并且只有当 `Javascript` 调用栈为空，而控制权尚未返还给被 `user agent` 用来驱动脚本执行环境的事件循环之前，该微任务才会被执行。 事件循环既可能是浏览器的主事件循环也可能是被一个 `web worker` 所驱动的事件循环。这使得给定的函数在没有其他脚本执行干扰的情况下运行，也保证了微任务能在用户代理有机会对该微任务带来的行为做出反应之前运行。`JavaScript` 中的 `promises` 和 `Mutation Observer API` 都使用微任务队列去运行它们的回调函数，但当能够推迟工作直到当前事件循环过程完结时，也是可以执行微任务的时机。
 - 一个任务就是由执行诸如从头执行一段程序、执行一个事件回调或一个 `interval/timeout` 被触发之类的标准机制而被调度的任意 `JavaScript` 代码。这些都在任务队列（`task queue`）上被调度。在以下时机，任务会被添加到任务队列：
-    
-    - 一段新程序或子程序被直接执行时（比如从一个控制台，或在一个 `<script>` 元素中运行代码）。
-    - 触发了一个事件，将其回调函数添加到任务队列时。
-    - 执行到一个由 `setTimeout()` 或 `setInterval()` 创建的 `timeout` 或 `interval`，以致相应的回调函数被添加到任务队列时。
+  - 一段新程序或子程序被直接执行时（比如从一个控制台，或在一个 `<script>` 元素中运行代码）。
+  - 触发了一个事件，将其回调函数添加到任务队列时。
+  - 执行到一个由 `setTimeout()` 或 `setInterval()` 创建的 `timeout` 或 `interval`，以致相应的回调函数被添加到任务队列时。
 
 `MDN` 也给出了使用微任务的建议：因为微任务自身可以入列更多的微任务，且事件循环会持续处理微任务直至队列为空，那么就存在一种使得事件循环无尽处理微任务的真实风险。如何处理递归增加微任务是要谨慎而行的。如果可能的话，大部分开发者并不应该过多的使用微任务。在基于现代浏览器的 `JavaScript` 开发中有一个高度专业化的特性，那就是允许你调度代码跳转到其他事情之前，而那些事情原本是处于用户计算机中一大堆等待发生的事情集合之中的。滥用这种能力将带来性能问题。
 
@@ -134,7 +130,7 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 `Event Loop` 会无限循环执行上面3步，这就是 `Event Loop` 的主要控制逻辑。其中第三部 `UI` 渲染不是每次事件循环都进行的。
 
-> 这个[可视化 JS 执行过程](http://latentflip.com/loupe/?code=ZnVuY3Rpb24gYygpIHt9CmZ1bmN0aW9uIGIoKSB7CgljKCk7Cn0KZnVuY3Rpb24gYSgpIHsKCXNldFRpbWVvdXQoYiwgMjAwMCkKfQphKCk7!!! "可视化 JS 执行过程")可以帮助你理解。
+> 这个[可视化 JS 执行过程](http://latentflip.com/loupe/?code=ZnVuY3Rpb24gYygpIHt9CmZ1bmN0aW9uIGIoKSB7CgljKCk7Cn0KZnVuY3Rpb24gYSgpIHsKCXNldFRpbWVvdXQoYiwgMjAwMCkKfQphKCk7!!! '可视化 JS 执行过程')可以帮助你理解。
 
 从逻辑上来看，浏览器倾向于尽可能快地执行完微任务，当全局任务（其实是全局函数中的同步任务）执行完之后，会立即执行微任务队列，即使微任务队列执行完了，在每次执行完一个宏任务之后都会检查微任务队列，如果就微任务就一直执行到微任务队列为空才会执行宏任务。
 
@@ -184,17 +180,17 @@ setTimeout
 
 ```javascript
 setTimeout(function () {
-    console.log(1);
-}, 1);
+  console.log(1)
+}, 1)
 setTimeout(function () {
-    console.log(2);
-}, 2);
+  console.log(2)
+}, 2)
 setTimeout(function () {
-    console.log(3);
-}, 3);
+  console.log(3)
+}, 3)
 requestAnimationFrame(function () {
-    console.log(4);
-});
+  console.log(4)
+})
 ```
 
 这道题的输出可能是 `4123`，`1423`，`1243` 或者 `1234`，主要愿意就是我们不知道浏览器在哪一次 `Event Loop` 进行渲染，所以 `requestAnimationFrame` 可能在任意一个 `setTimeout` 后面执行。
@@ -202,41 +198,41 @@ requestAnimationFrame(function () {
 再比如下面这题求输出：
 
 ```javascript
-console.log('1');
+console.log('1')
 
-setTimeout(function() {
-    console.log('2');
-    process.nextTick(function() {
-        console.log('3');
-    })
-    new Promise(function(resolve) {
-        console.log('4');
-        resolve();
-    }).then(function() {
-        console.log('5')
-    })
+setTimeout(function () {
+  console.log('2')
+  process.nextTick(function () {
+    console.log('3')
+  })
+  new Promise(function (resolve) {
+    console.log('4')
+    resolve()
+  }).then(function () {
+    console.log('5')
+  })
 })
-process.nextTick(function() {
-    console.log('6');
+process.nextTick(function () {
+  console.log('6')
 })
-new Promise(function(resolve) {
-    console.log('7');
-    resolve();
-}).then(function() {
-    console.log('8')
+new Promise(function (resolve) {
+  console.log('7')
+  resolve()
+}).then(function () {
+  console.log('8')
 })
 
-setTimeout(function() {
-    console.log('9');
-    process.nextTick(function() {
-        console.log('10');
-    })
-    new Promise(function(resolve) {
-        console.log('11');
-        resolve();
-    }).then(function() {
-        console.log('12')
-    })
+setTimeout(function () {
+  console.log('9')
+  process.nextTick(function () {
+    console.log('10')
+  })
+  new Promise(function (resolve) {
+    console.log('11')
+    resolve()
+  }).then(function () {
+    console.log('12')
+  })
 })
 //1，7，6，8，2，4，3，5，9，11，10，12
 ```
@@ -255,14 +251,14 @@ setTimeout(function() {
 
 ## 总结
 
-关于事件循环，网络上的文章都差不多，不过今天看了两篇文章：[深入探究 eventloop 与浏览器渲染的时序问题](https://juejin.im/entry/6844903487700992007 "深入探究 eventloop 与浏览器渲染的时序问题") 和 [深入解析 EventLoop 和浏览器渲染、帧动画、空闲回调的关系](https://zhuanlan.zhihu.com/p/142742003 "深入解析 EventLoop 和浏览器渲染、帧动画、空闲回调的关系") 发现自己懂得并不是很透彻。从标准的角度看，事件循环的逻辑也还是挺复杂的，其中还有很多细节没有掌握。当然，这也可能是事件循环还没有一个确定的标准导致的，各个浏览器的实现还不完全一致，包括 `ECMAScript` 关于 `Job` 的一些规定和 `HTML5` 标准对于时间循环的定义都是有冲突的，`Node` 的实现也和浏览器不同，还是要继续摸索。
+关于事件循环，网络上的文章都差不多，不过今天看了两篇文章：[深入探究 eventloop 与浏览器渲染的时序问题](https://juejin.im/entry/6844903487700992007 '深入探究 eventloop 与浏览器渲染的时序问题') 和 [深入解析 EventLoop 和浏览器渲染、帧动画、空闲回调的关系](https://zhuanlan.zhihu.com/p/142742003 '深入解析 EventLoop 和浏览器渲染、帧动画、空闲回调的关系') 发现自己懂得并不是很透彻。从标准的角度看，事件循环的逻辑也还是挺复杂的，其中还有很多细节没有掌握。当然，这也可能是事件循环还没有一个确定的标准导致的，各个浏览器的实现还不完全一致，包括 `ECMAScript` 关于 `Job` 的一些规定和 `HTML5` 标准对于时间循环的定义都是有冲突的，`Node` 的实现也和浏览器不同，还是要继续摸索。
 
 ## 参考文章
 
-1. [JavaScript 异步、栈、事件循环、任务队列](https://segmentfault.com/a/1190000011198232 "https://segmentfault.com/a/1190000011198232")
-2. [一次弄懂Event Loop](https://juejin.im/post/5c3d8956e51d4511dc72c200#heading-15 "一次弄懂Event Loop")
-3. [深入解析 EventLoop 和浏览器渲染、帧动画、空闲回调的关系](https://zhuanlan.zhihu.com/p/142742003 "深入解析 EventLoop 和浏览器渲染、帧动画、空闲回调的关系")
-4. [深入探究 eventloop 与浏览器渲染的时序问题](https://juejin.im/entry/6844903487700992007 "深入探究 eventloop 与浏览器渲染的时序问题")
-5. [requestAnimationFrame是一个宏任务么](https://ginobilee.github.io/blog/2019/02/01/requestAnimationFrame%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AE%8F%E4%BB%BB%E5%8A%A1%E4%B9%88/ "requestAnimationFrame是一个宏任务么")
-6. [浏览器与Node的事件循环(Event Loop)有何区别?](https://juejin.im/post/6844903761949753352 "浏览器与Node的事件循环(Event Loop)有何区别?")
-7. [浏览器和Node 事件循环的区别](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/26 "浏览器和Node 事件循环的区别")
+1. [JavaScript 异步、栈、事件循环、任务队列](https://segmentfault.com/a/1190000011198232 'https://segmentfault.com/a/1190000011198232')
+2. [一次弄懂Event Loop](https://juejin.im/post/5c3d8956e51d4511dc72c200#heading-15 '一次弄懂Event Loop')
+3. [深入解析 EventLoop 和浏览器渲染、帧动画、空闲回调的关系](https://zhuanlan.zhihu.com/p/142742003 '深入解析 EventLoop 和浏览器渲染、帧动画、空闲回调的关系')
+4. [深入探究 eventloop 与浏览器渲染的时序问题](https://juejin.im/entry/6844903487700992007 '深入探究 eventloop 与浏览器渲染的时序问题')
+5. [requestAnimationFrame是一个宏任务么](https://ginobilee.github.io/blog/2019/02/01/requestAnimationFrame%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AE%8F%E4%BB%BB%E5%8A%A1%E4%B9%88/ 'requestAnimationFrame是一个宏任务么')
+6. [浏览器与Node的事件循环(Event Loop)有何区别?](https://juejin.im/post/6844903761949753352 '浏览器与Node的事件循环(Event Loop)有何区别?')
+7. [浏览器和Node 事件循环的区别](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/26 '浏览器和Node 事件循环的区别')

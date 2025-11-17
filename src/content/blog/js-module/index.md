@@ -6,10 +6,8 @@ tags:
   - js
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./js-module.png","color":"#B4C6DA"}
+heroImage: { 'src': './js-module.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -32,11 +30,11 @@ heroImage: {"src":"./js-module.png","color":"#B4C6DA"}
 在我们刚学习 `JavaScript` 的时候，我们都是用一个个函数拼凑出我们的功能，代码大概都是下面这个样子（其实无论学什么语言都是一样，人的思维就是结构化的）：
 
 ```javascript
-function foo(){
-    //...
+function foo() {
+  //...
 }
-function bar(){
-    //...
+function bar() {
+  //...
 }
 ```
 
@@ -44,42 +42,42 @@ function bar(){
 
 ```javascript
 var MYAPP = {
-    foo: function(){},
-    bar: function(){}
+  foo: function () {},
+  bar: function () {}
 }
 
-MYAPP.foo();
+MYAPP.foo()
 ```
 
 后面就发展到了以前经常被问到的一个问题 `IIEF`，立即执行函数。在 `ES6` 之前，`JS` 没有块级作用域，函数很多时候就被当成了块级作用域的替代品。在函数外部只能访问我们返回的值，而我们在函数内部定义的变量方法是无法被访问到的。函数的作用相当于产生一个局部作用域。同时我们可以通过 `IIEF` 向函数内部传递参数，相当于一种引入依赖的方式，这样做除了保证模块的独立性，还使得模块之间的依赖关系变得明显。
 
 ```javascript
-var Module = (function($){
-    var _$body = $("body");     // we can use jQuery now!
-    var foo = function(){
-        console.log(_$body);    // 特权方法
-    }
+var Module = (function ($) {
+  var _$body = $('body') // we can use jQuery now!
+  var foo = function () {
+    console.log(_$body) // 特权方法
+  }
 
-    // Revelation Pattern
-    return {
-        foo: foo
-    }
+  // Revelation Pattern
+  return {
+    foo: foo
+  }
 })(jQuery)
 
-Module.foo();
+Module.foo()
 ```
 
 发展到这里的时候我们实际上已经实现了模块化的主要目的，就是将对应的功能封装到一个局部作用于中，我们可以向其中注入依赖，我们也只能使用它返回给我们的内容，而不关心它内部如何实现的。模块就相当于一个黑盒，我们只关心它的输入输出，而不关心它如何实现。
 
 后面出现的问题就是当项目庞大以后，可能有几十个 `js` 文件需要加载，而 `DOM` 文档中加载顺序就是执行顺序，这么多文件之间的依赖关系会非常复杂。比如一个文件的执行可能都要依赖好几个文件，那么这些依赖的文件必须在这个文件执行之前加载完毕，这在文件比较少的时候还好处理，但是一旦文件增多依赖关系将错综复杂，很容易出错。如果要对其中的功能进行修改，处理依赖的关系都会花很长时间，而且每一个文件都是一个 `HTTP` 请求，文件过多也会造成请求过多。
 
-为了解决依赖问题产生了很多工具，比如 `Yahoo` 的 `YUI`，关于 `YUI` 的原理可以参考 [YUI模块开发原理详解](https://www.jb51.net/article/43336.htm "YUI模块开发原理详解")
+为了解决依赖问题产生了很多工具，比如 `Yahoo` 的 `YUI`，关于 `YUI` 的原理可以参考 [YUI模块开发原理详解](https://www.jb51.net/article/43336.htm 'YUI模块开发原理详解')
 
 进行一个总结，其实模块化的目标就是把页面的功能进行分割，不同的功能之间解耦独立，互不干扰。并且模块能够按需加载，根据模块的依赖进行整合让请求数量变少。但是由于浏览器的特性，很多问题并不能得到根本性的解决，所以后面的模块化思路就跳出浏览器了。这也是现在还在流行的模块化方案。
 
 ## 模块化规范
 
-![module](./images/module.png "module")
+![module](./images/module.png 'module')
 
 ## CommonJS
 
@@ -87,13 +85,13 @@ Module.foo();
 
 ```javascript
 // math.js
-exports.add = function(a, b){
-    return a + b;
+exports.add = function (a, b) {
+  return a + b
 }
 
 // main.js
-var math = require('math')      // ./math in node
-console.log(math.add(1, 2));    // 3
+var math = require('math') // ./math in node
+console.log(math.add(1, 2)) // 3
 ```
 
 每个文件就是一个模块，有自己的作用域。在一个文件里面定义的变量、函数、类，都是私有的，对其他文件不可见。在服务器端，模块的加载是运行时同步加载的；在浏览器端，模块需要提前编译打包处理。所有代码都运行在模块作用域，不会污染全局作用域。模块可以多次加载，但是只会在第一次加载时运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果。要想让模块再次运行，必须清除缓存。模块加载的顺序，按照其在代码中出现的顺序。
@@ -125,19 +123,19 @@ console.log(math.add(1, 2));    // 3
 ```javascript
 // 准备module对象:
 var module = {
-    id: 'hello',
-    exports: {}
-};
+  id: 'hello',
+  exports: {}
+}
 var load = function (module) {
-    // 读取的模块代码并执行
+  // 读取的模块代码并执行
 
-    module.exports = obj;
-    // 模块代码结束 返回module.exports
-    return module.exports;
-};
-var exported = load(module);
+  module.exports = obj
+  // 模块代码结束 返回module.exports
+  return module.exports
+}
+var exported = load(module)
 // 保存module:
-save(module, exported);
+save(module, exported)
 ```
 
 所以在模块中我们打印 `module.exports` 是一个空对象，其 `[[prototype]]` 是 `Object.prototype`。我们也可以直接将 `module.exports` 赋值为一个基本类型，因为最终保存的知识这个返回值，是不是对象都可以。
@@ -204,21 +202,19 @@ define(['dataService'], function (dataService) {
 
 ```javascript
 define(function (require) {
-    var dependency1 = require('dependency1'),
-        dependency2 = require('dependency2');
+  var dependency1 = require('dependency1'),
+    dependency2 = require('dependency2')
 
-    return function () {};
-});
+  return function () {}
+})
 
 // parse out require...
-define(
-    ['require', 'dependency1', 'dependency2'],
-function (require) {
-    var dependency1 = require('dependency1'),
-        dependency2 = require('dependency2');
+define(['require', 'dependency1', 'dependency2'], function (require) {
+  var dependency1 = require('dependency1'),
+    dependency2 = require('dependency2')
 
-    return function () {};
-});
+  return function () {}
+})
 ```
 
 比较 `require.js` 和 `CommonJS`，两者一个是用于浏览器，一个是用于 `Node`，写法上 `CommonJS` 是依赖就近（需要时再写也可以），`require.js` 是依赖前置。并且前者是同步加载，而后者是异步加载，在 `CommonJS` 中，当执行到 `require` 语句的时候才会去加载执行模块，而在 `require.js` 中，在执行到 `require` 之前依赖的模块就已经加载并执行完毕了，这是浏览器特性所致。
@@ -231,59 +227,57 @@ function (require) {
 
 ```javascript
 //index.html
-<body>
-    <script type="text/javascript" src="sea.js"></script>
-    <script type="text/javascript">
-        seajs.use('./index');
-    </script>
+;<body>
+  <script type='text/javascript' src='sea.js'></script>
+  <script type='text/javascript'>seajs.use('./index');</script>
 </body>
 
 //index.js
 define(function (require) {
-    var m1 = require('./module1');
-    var m4 = require('./module4');
-    m1.show();
-    m4.show();
-});
+  var m1 = require('./module1')
+  var m4 = require('./module4')
+  m1.show()
+  m4.show()
+})
 
 //module1.js
 define(function (require, exports, module) {
-    //内部变量数据
-    var data = 'clloz.com';
-    //内部函数
-    function show() {
-        console.log('module1 show() ' + data);
-    }
-    //向外暴露
-    exports.show = show;
-});
+  //内部变量数据
+  var data = 'clloz.com'
+  //内部函数
+  function show() {
+    console.log('module1 show() ' + data)
+  }
+  //向外暴露
+  exports.show = show
+})
 
 //module2.js
 define(function (require, exports, module) {
-    module.exports = {
-        msg: 'I Will Back',
-    };
-});
+  module.exports = {
+    msg: 'I Will Back'
+  }
+})
 
 //module3.js
 define(function (require, exports, module) {
-    const API_KEY = 'clloz1992';
-    exports.API_KEY = API_KEY;
-});
+  const API_KEY = 'clloz1992'
+  exports.API_KEY = API_KEY
+})
 
 //module4.js
 define(function (require, exports, module) {
-    //引入依赖模块(同步)
-    var module2 = require('./module2');
-    function show() {
-        console.log('module4 show() ' + module2.msg);
-    }
-    exports.show = show;
-    //引入依赖模块(异步)
-    require.async('./module3', function (m3) {
-        console.log('异步引入依赖模块3  ' + m3.API_KEY);
-    });
-});
+  //引入依赖模块(同步)
+  var module2 = require('./module2')
+  function show() {
+    console.log('module4 show() ' + module2.msg)
+  }
+  exports.show = show
+  //引入依赖模块(异步)
+  require.async('./module3', function (m3) {
+    console.log('异步引入依赖模块3  ' + m3.API_KEY)
+  })
+})
 
 //输出
 //module1 show() clloz.com
@@ -299,7 +293,7 @@ define(function (require, exports, module) {
 
 ## ES6
 
-`ES6` 模块化早期叫做 `ES Harmony`，现在一般就叫做 `ES6` 模块。这很可能成为浏览器和服务端的最终模块化方案，目前的支持已经越来越好，不过还是要借助一些工具和特殊语法。兼容性可以查看 [Can I use](https://caniuse.com/mdn-javascript_statements_import "Can I use")。我们平时在 `Webpack` 中使用的 `export` 和 `import`，会经过 `Babel` 转换为 `CommonJS` 规范。在使用上的差别主要有：
+`ES6` 模块化早期叫做 `ES Harmony`，现在一般就叫做 `ES6` 模块。这很可能成为浏览器和服务端的最终模块化方案，目前的支持已经越来越好，不过还是要借助一些工具和特殊语法。兼容性可以查看 [Can I use](https://caniuse.com/mdn-javascript_statements_import 'Can I use')。我们平时在 `Webpack` 中使用的 `export` 和 `import`，会经过 `Babel` 转换为 `CommonJS` 规范。在使用上的差别主要有：
 
 `ES6` 的模块主要是用 `import` 和 `export` 两个命令来导入和导出模块。表面上看和 `CommonJS` 并没有什么不同，但是实际上它们的原理并不相同。它们的不同点主要有以下：
 
@@ -312,21 +306,21 @@ define(function (require, exports, module) {
 7. `require()` 是同步加载，后面的代码必须等待这个命令执行完，才会执行。`import` 命令则是异步加载，或者更准确地说，`ES6` 模块有一个独立的静态解析阶段，依赖关系的分析是在那个阶段完成的，最底层的模块第一个执行。
 8. `import` 和 `export` 的变量或方法名要对应，`CommonJS` 的 `require` 和 `module.exports` 则不必。主要原因就是 `ES6` 是根据对应的标识符去模块中找，而 `require` 只是到保存模块返回值的对象中找对应的模块。
 
-`ES6` 模块的设计思想，是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。这样当然效率更高，但是相应的就是所有的依赖就要在模块顶部声明，且不能按需加载（将依赖写进判断中），`CommonJS` 的 `require` 则可以按需加载。为了解决这个问题，也提出了动态 `import()` 的概念，不过目前还没有很好的兼容性，兼容性查看 [Can I use](https://caniuse.com/es6-module-dynamic-import "Can I use")。
+`ES6` 模块的设计思想，是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。这样当然效率更高，但是相应的就是所有的依赖就要在模块顶部声明，且不能按需加载（将依赖写进判断中），`CommonJS` 的 `require` 则可以按需加载。为了解决这个问题，也提出了动态 `import()` 的概念，不过目前还没有很好的兼容性，兼容性查看 [Can I use](https://caniuse.com/es6-module-dynamic-import 'Can I use')。
 
 还有一点很重要的区分就是 `CommonJS` 中我们输出的其实就是 `module.exports` 这个对象，而 `ES6` 模块不是对象，而是通过 `export` 命令显式指定输出的代码，再通过 `import` 命令输入。
 
-##### export
+### export
 
 一个模块就是一个独立的文件。该文件内部的所有变量，外部无法获取。如果你希望外部能够读取模块内部的某个变量，就必须使用 `export` 关键字输出该变量。
 
 ```javascript
 // profile.js
-export var firstName = 'Michael';
-export var lastName = 'Jackson';
-export var year = 1958;
+export var firstName = 'Michael'
+export var lastName = 'Jackson'
+export var year = 1958
 
-export {firstName, lastName, year};
+export { firstName, lastName, year }
 ```
 
 上面的代码就是模块的输出接口，我们可以看到有两种写法，一种是单独 `export` 每一个变量，还有一种是一次 `export` 多个变量。尽量使用后一种，这样我们能在脚本中很清晰的了解到输出了哪些变量和方法。
@@ -370,26 +364,25 @@ export {f};
 其实所谓的输出接口不是很好理解，下面一个例子可以帮助大家理解。在 `CommonJS` 中，我们引入一个模块的输出的非引用类型的值，这个值就和原来的模块没有关系了，`CommonJS` 模块输出的是值的缓存。但是在 `ES6 Module` 中我们取到的就是原模块中的值，所以想修改依赖模块中的 `const` 变量将会报错。可以看下面的例子：
 
 ```javascript
-import { foo } from './export.js';
+import { foo } from './export.js'
 
 setTimeout(() => {
-    console.log(foo);
-}, 500);
+  console.log(foo)
+}, 500)
 //123
 //baz
 
-
 //export.js
-console.log(123);
-export let foo = 'bar';
-setTimeout(() => (foo = 'baz'), 0);
+console.log(123)
+export let foo = 'bar'
+setTimeout(() => (foo = 'baz'), 0)
 ```
 
 我们在依赖的模块 `export.js` 中异步修改 `foo` 的值，最后我们在执行输出的时候，发现这个值也随着元模块的改变而改变了。使用 `CommonJS` 则依然会输出 `bar`。当然如果输出的本身是一个引用类型，但让指向的都是同一个对象。
 
 最后， `export` 命令可以出现在模块的任何位置，只要处于模块顶层就可以。如果处于块级作用域内，就会报错，下一节的 `import` 命令也是如此。这是因为处于条件代码块之中，就没法做静态优化了，违背了 `ES6` 模块的设计初衷。
 
-##### import
+### import
 
 使用 `export` 命令定义了模块的对外接口以后，其他 `JS` 文件就可以通过 `import` 命令加载这个模块。`import` 命令接受一对大括号，里面指定要从其他模块导入的变量名。大括号里面的变量名，必须与被导入模块对外接口的名称相同。和 `export` 一样，`import` 也支持 `as` 关键字，如果你想要一个新的名字可以用 `as` 重新命名。
 
@@ -398,8 +391,9 @@ setTimeout(() => (foo = 'baz'), 0);
 `import` 命令具有提升效果，会提升到整个模块的头部，首先执行。比如下面的写法并不会报错，这种行为的本质是， `import` 命令是编译阶段执行的，在代码运行之前。
 
 ```javascript
-foo();
-import { foo } from 'my_module';
+import { foo } from 'my_module'
+
+foo()
 ```
 
 由于 `import` 存在静态分析，所以不能使用表达式和变量，这些只有在运行时才能得到结果的语法结构。下面三种写法都会报错，因为它们用到了表达式、变量和 `if` 结构。在静态分析阶段，这些语法都是没法得到值的。
@@ -408,7 +402,7 @@ import { foo } from 'my_module';
 // 报错
 import { 'f' + 'oo' } from 'my_module';
 // 报错
-let module = 'my_module'; 
+let module = 'my_module';
 import { foo } from module;
 // 报错
 if (x === 1) {
@@ -421,24 +415,23 @@ if (x === 1) {
 `import` 和 `require` 都会执行加载的模块。多次执行同一句 `import` 或者 `require` 都只会执行一次对应的模块。对于同一个模块中输出的不同变量，可以在一条 `import` 中引入，也可以分多条引入，他们是等价的。
 
 ```javascript
-import { foo } from 'my_module'; 
-import { bar } from 'my_module';
 // 等同于
-import { foo, bar } from 'my_module';
+import { bar, bar, foo, foo } from 'my_module'
 ```
 
 `import` 支持用 `*` 指定一个对象，所有输出值都加载在这个对象上面。使用 `*` 用 `as` 指定一个生成的对象名。使用 `*` 整体载入的对象，应该是可以静态分析 的，所以不允许运行时改变。下面的写法都是不允许的（一般会提示，`The members of xxx are read-only`。
 
 ```javascript
-import * as circle from './circle';
+import * as circle from './circle'
+
 // 下面两行都是不允许的
-circle.foo = 'hello';
-circle.area = function () {};
+circle.foo = 'hello'
+circle.area = function () {}
 ```
 
 > 关于 `import` 的 `from` 后面引入的模块是不是要加 `.js` 后缀的问题，我在 `node` 中测试是不加会报错。这一点我也感觉很奇怪。
 
-##### export default
+### export default
 
 前面的例子可以看出，和 `require` 不一样，我们使用 `import` 必须知道对应的模块输出的变量的名字，否则无法进行 `import`。不过 `ES6 Module` 也提供了一种让我们直接加载模块的方法，就是 `export default`，指定模块的默认输出。
 
@@ -447,15 +440,17 @@ circle.area = function () {};
 `export default` 命令用于指定模块的默认输出。显然，一个模块只能有一个默认输出，因此命令只能使用一次。所以， `import` 命令后面才不用加大括号，因为只可能对应一个方法。本质上，`export default` 就是输出一个叫做 `default` 的变量或方法，然后系统允许你为它取任意名字。所以，下面的写法是有效的。
 
 ```javascript
-// modules.js
-function add(x, y) {
-    return x * y;
-}
-export {add as default};
 // 等同于 export default add;
 
 // app.js
-import { default as xxx } from 'modules';
+import { default as xxx } from 'modules'
+
+// modules.js
+function add(x, y) {
+  return x * y
+}
+export { add as default }
+
 // 等同于  import xxx from 'modules';
 ```
 
@@ -476,7 +471,7 @@ export default var a = 1;
 ```javascript
 // 正确
 export default 42;
-// 报错 
+// 报错
 export 42;
 ```
 
@@ -487,7 +482,7 @@ export 42;
 ```javascript
 export { foo, bar } from 'my_module';
 // 等同于
-import { foo, bar } from 'my_module'; 
+import { foo, bar } from 'my_module';
 export { foo, bar };
 
 //模块的接口改名和整体输出，也可以采用这种写法。
@@ -502,7 +497,7 @@ export { default } from 'foo';
 //具名接口输入改为默认接口输出
 export { es6 as default } from './someModule';
 // 等同于
-import { es6 } from './someModule'; 
+import { es6 } from './someModule';
 export default es6;
 
 //默认接口输入改为具名接口输出
@@ -512,30 +507,31 @@ export { default as es6 } from './someModule';
 还有三种语句不具备复合写法：
 
 ```javascript
-import * as someIdentifier from "someModule";
-import someIdentifier from "someModule";
-import someIdentifier, { namedIdentifier } from "someModule";
+import * as someIdentifier from 'someModule'
+import someIdentifier from 'someModule'
+import someIdentifier, { namedIdentifier } from 'someModule'
 ```
 
-##### import()
+### import()
 
 动态 `import` 的语法是 `import()`，静态的 `import` 没法像 `require` 那样按需加载，写在条件语句中。`ES6 Module` 要取代 `CommonJS` 这也是必须解决的一个问题，所以提出了动态 `import`。比如下面的代码，`require` 可以进行动态加载，要加载哪个模块只有运行时才知道。
 
 ```javascript
-const path = './' + fileName; 
-const myModual = require(path);
+const path = './' + fileName
+const myModual = require(path)
 ```
 
 `import()` 是一个函数，返回一个 `Promise` 对象。下面是一个例子。
 
 ```javascript
-const main = document.querySelector('main');
-import(`./section-modules/${someVariable}.js`) .then(module => {
-        module.loadPageInto(main); 
-    })
-    .catch(err => {
-        main.textContent = err.message;
-    });
+const main = document.querySelector('main')
+import(`./section-modules/${someVariable}.js`)
+  .then((module) => {
+    module.loadPageInto(main)
+  })
+  .catch((err) => {
+    main.textContent = err.message
+  })
 ```
 
 `import()` 函数可以用在任何地方，不仅仅是模块，非模块的脚本也可以使用。它是运行时执行，也就是说，什么时候运行到这一句，也会加载指定的模块。另外，`import()` 函数与所加载的模块没有静态连接关系，这点也是与 `import` 语句不相同。`import()` 类似于 `Node` 的 `require` 方法，区别主要是前者是异步加载，后者是同步加载。
@@ -545,20 +541,19 @@ import(`./section-modules/${someVariable}.js`) .then(module => {
 `import()` 加载模块成功以后，这个模块会作为一个对象，当作 `then` 方法的参 数。因此，可以使用对象解构赋值的语法，获取输出接口。
 
 ```javascript
-import('./myModule.js')
-.then(({export1, export2}) => {
-// ...·
-});
+import('./myModule.js').then(({ export1, export2 }) => {
+  // ...·
+})
 
 //default
-import('./myModule.js')
-.then(myModule => {
-console.log(myModule.default); });
+import('./myModule.js').then((myModule) => {
+  console.log(myModule.default)
+})
 ```
 
 目前在浏览器中使用 `ES6 Module` 必须要增加一个标签属性 `type="module"`，并且要启动 `web` 服务器进行访问，否则会有跨域报错。`ES6 Module` 的加载机制和加了 `defer` 的标签一样，不会堵塞 `DOM` 的解析和渲染，在 `DOM` 构建完成，触发 `DOMContentLoaded` 事件以后按照标签的顺序执行对应的模块。
 
-```javascript
+````javascript
 <script type="module" src="foo.js"></script>
 <!-- 等同于 -->
 <script type="module" src="foo.js" defer></script>
@@ -573,7 +568,7 @@ console.log(myModule.default); });
     import utils from "./utils.js";
     // other code
 </script>
-```
+````
 
 对于外部加载的模块脚本，有几点需要注意：
 
@@ -603,11 +598,15 @@ console.log(myModule.default); });
 ## umd 模块（通用模块）
 
 ```javascript
-(function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (global.libName = factory());
-}(this, (function () { 'use strict';})));
+;(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined'
+    ? (module.exports = factory())
+    : typeof define === 'function' && define.amd
+      ? define(factory)
+      : (global.libName = factory())
+})(this, function () {
+  'use strict'
+})
 ```
 
 如果你在 `js` 文件头部看到这样的代码，那么这个文件使用的就是 `UMD Universal Module Definition` 规范。实际上就是 `amd + commonjs + 全局变量` 这三种风格的结合。
@@ -629,19 +628,19 @@ console.log(myModule.default); });
 
 ```javascript
 //a.js
-const { bar } = require('./b.js');
+const { bar } = require('./b.js')
 
-console.log(bar.count);
-bar.count++;
+console.log(bar.count)
+bar.count++
 
 //b.js
 exports.bar = {
-    count: 0,
-};
+  count: 0
+}
 
 setTimeout(() => {
-    console.log(exports.bar.count);
-}, 1000);
+  console.log(exports.bar.count)
+}, 1000)
 
 //运行 a.js 得到的结果是 1 2，可见 a.js 中的 bar.count++ 还是传递到了 b.js 中
 ```
@@ -651,28 +650,31 @@ setTimeout(() => {
 第一个差异是 `ES6` 模块的运行机制与 `CommonJS` 不一样。**`JS` 引擎对脚本静态分析的时候，遇到模块加载命令 `import` ，就会生成一个只读引用。等到脚本真正执行时，再根据这个只读引用，到被加载的那个模块里面去取值。**换句话说，`ES6` 的 `import` 有点 像 `Unix` 系统的“符号连接”，原始值变了， `import` 加载的值也会跟着变。因此， `ES6` 模块是动态引用，并且不会缓存值，模块里面的变量绑定其所在的模块。
 
 ```javascript
-// lib.js
-export let counter = 3;
-export function incCounter() {
-    counter++;
-}
 // main.js
-import { counter, incCounter } from './lib';
-console.log(counter); // 3
-incCounter();
-console.log(counter); // 4
+import { counter, incCounter } from './lib'
+
+// lib.js
+export let counter = 3
+export function incCounter() {
+  counter++
+}
+
+console.log(counter) // 3
+incCounter()
+console.log(counter) // 4
 ```
 
 `ES6` 模块不会缓存运行结果，而是动态地去被加载的模块取值，并且变量总是绑定其所在的模块。由于 `ES6` 输入的模块变量，只是一个“符号连接”，所以这个变量是只读的，对它进行重新赋值会报错。
 
 ```javascript
-// lib.js
-export let obj = {};
-
 // main.js
-import { obj } from './lib';
-obj.prop = 123; // OK
-obj = {}; // TypeError: Assignment to constant variable.
+import { obj } from './lib'
+
+// lib.js
+export let obj = {}
+
+obj.prop = 123 // OK
+obj = {} // TypeError: Assignment to constant variable.
 ```
 
 上面代码中， `main.js` 从 `li'b.js` 输入变量 `obj` ，可以对 `obj` 添加属性，但是重新赋值就会报错。因为变量 `obj` 指向的地址是只读的，不能重新赋值，这就好比 `main.js` 创造了一个名为 `obj` 的 `const` 变量。
@@ -684,13 +686,14 @@ obj = {}; // TypeError: Assignment to constant variable.
 目前在 `NodeJS` 中直接使用 `ES6` 有两种方式，一种是在 `package.json` 中添加字段 `type="module"`，另一种是设置文件后缀为 `mjs`。模块寻找顺序：
 
 ```javascript
-import './foo'; 
+import './foo'
 // 依次寻找
 // ./foo.js
 // ./foo/package.json
 // ./foo/index.js
 
-import 'baz';
+import 'baz'
+
 // 依次寻找
 // ./node_modules/baz.js
 // ./node_modules/baz/package.json
@@ -708,14 +711,13 @@ import 'baz';
 
 ```javascript
 // es.js
-let foo = {bar:'my-default'};
-export default foo;
-foo = null;
-
+let foo = { bar: 'my-default' }
+export default foo
+foo = null
 
 // cjs.js
-const es_namespace = require('./es');
-console.log(es_namespace.default);
+const es_namespace = require('./es')
+console.log(es_namespace.default)
 // {bar:'my-default'}
 ```
 
@@ -742,16 +744,18 @@ console.log(es_namespace.default);
 
 ```javascript
 //a.js
-exports.done = false;
-var b = require('./b.js');
-console.log('在 a.js 之中，b.done = %s', b.done); exports.done = true;
-console.log('a.js 执行完毕');
+exports.done = false
+var b = require('./b.js')
+console.log('在 a.js 之中，b.done = %s', b.done)
+exports.done = true
+console.log('a.js 执行完毕')
 
 //b.js
-exports.done = false;
-var a = require('./a.js');
-console.log('在 b.js 之中，a.done = %s', a.done); exports.done = true;
-console.log('b.js 执行完毕');
+exports.done = false
+var a = require('./a.js')
+console.log('在 b.js 之中，a.done = %s', a.done)
+exports.done = true
+console.log('b.js 执行完毕')
 ```
 
 上面的例子是 `NodeJS` 官方给出的例子，当执行 `a` 时执行到 `require b` 会立即执行 `b`，在 `b` 中执行到 `require a` 的时候只会直接返回当前 `a` 已经执行的部分，系统也只能取到第一个 `exports.done = false` 交给 `b`，然后 `b` 继续执行，执行完之后再把执行权交给 `a`。如果我们这里连 `exports.done` 都没有，那么 `b` 拿到的就是一个空对象，因为实际上取得就是 `module.exports` 对象。
@@ -760,9 +764,9 @@ console.log('b.js 执行完毕');
 
 ```javascript
 //main.js
-var a = require('./a.js');
-var b = require('./b.js');
-console.log('在 main.js 之中, a.done=%s, b.done=%s', a.done, b.done);
+var a = require('./a.js')
+var b = require('./b.js')
+console.log('在 main.js 之中, a.done=%s, b.done=%s', a.done, b.done)
 
 //在 b.js 之中，a.done = false
 //b.js 执行完毕
@@ -773,21 +777,24 @@ console.log('在 main.js 之中, a.done=%s, b.done=%s', a.done, b.done);
 
 上面的代码证明了两件事。一是，在 `b.js` 之中， `a.js` 没有执行完毕，只执行了第一行。二是， `main.js` 执行到第二行时，不会再次执行 `b.js` ，而是输出缓存的 `b.js` 的执行结果（每个模块只会执行一次），即它的第四行。
 
-* * *
+---
 
 `ES6` 处理“循环加载”与 `CommonJS` 有本质的不同。`ES6` 模块是动态引用，如果使用 `import` 从一个模块加载变量(即 `import foo from 'foo'` )，那些变量不会被缓存，而是成为一个指向被加载模块的引用，需要开发者自己保证，真正取值的时候能够取到值。
 
 ```javascript
 // a.js如下
-import {bar} from './b.js';
-console.log('a.js');
-console.log(bar);
-export let foo = 'foo';
+
 // b.js
-import {foo} from './a.js';
-console.log('b.js');
-console.log(foo);
-export let bar = 'bar';
+import { foo } from './a.js'
+import { bar } from './b.js'
+
+console.log('a.js')
+console.log(bar)
+export let foo = 'foo'
+
+console.log('b.js')
+console.log(foo)
+export let bar = 'bar'
 
 //执行a.js 后输出如下
 //b.js
@@ -798,30 +805,33 @@ export let bar = 'bar';
 
 执行 `a.js`，第一行就是 `import` 加载 `b.js`，所以进入会执行 `b.js`。`b.js` 的第一行是加载 `a.js`，这时由于 `a.js` 已经执行，所以不会把执行权交给 `a`，而是继续执行 `b`，此时 `b` 中的 `import` 相当于记录了 `a` 中的一个接口 `foo`，等到代码调用到这个接口的时候，会到 `a` 的执行环境中去找这个接口对应的值。当执行到 `console.log(foo)` 的时候，引擎会去找 `a` 中有没有 `export` 的 `foo`（注意，此时引擎肯定已经完成了对 `a` 的静态分析和执行环境的生成，也就是变量提升都完成了），如果我们在 `a` 中的 `foo` 是用 `let` 声明的，那么这里会报错 `ReferenceError: Cannot access 'foo' before initialization`，因为 `let` 的暂时性死区。如果是用 `var` 声明的，那么我们会获得 `undefined`。执行完 `b` 之后回到 `a` 执行，一切恢复正常。
 
-这里我总结一下，当一个模块开始执行，那么它的静态分析和执行上下文（即环境记录 `environment records` 已经生成，新标准中称为环境记录，你也可以用以前的变量对象活动对象理解，即变量声明提升已经完成）肯定都构建完成了，而当我们执行到 `import` 的时候主要就是做两件事，一件就是去执行引入的模块（如果模块正在执行栈中就略过这一步），另一件事就是将引入的接口保存，比如 `a` 中的 `bar`，这一步不会去访问这个 `bar` 是什么，只是记住有这个 `bar`，下面调用这个 `bar` 的时候才会去 `b` 的环境记录中去取。如果你对变量提升的细节不清楚，可以看我的另一篇文章 [var，let，const和变量提升（hoist）](https://www.clloz.com/programming/front-end/js/2020/07/01/variable-hoist/ "var，let，const和变量提升（hoist）")，主要要注意的就是每一个模块都是一个单独的环境，在浏览器中我们只有一个全局环境，和块级作用域，函数作用域，在 `node` 中每个模块都会是一个单的的作用域，`var` 声明的全局变量也只在这个模块下生效（注意 `es6 module` 自动运行在严格模式下，模块环境下 `this` 指向 `undefined`）。
+这里我总结一下，当一个模块开始执行，那么它的静态分析和执行上下文（即环境记录 `environment records` 已经生成，新标准中称为环境记录，你也可以用以前的变量对象活动对象理解，即变量声明提升已经完成）肯定都构建完成了，而当我们执行到 `import` 的时候主要就是做两件事，一件就是去执行引入的模块（如果模块正在执行栈中就略过这一步），另一件事就是将引入的接口保存，比如 `a` 中的 `bar`，这一步不会去访问这个 `bar` 是什么，只是记住有这个 `bar`，下面调用这个 `bar` 的时候才会去 `b` 的环境记录中去取。如果你对变量提升的细节不清楚，可以看我的另一篇文章 [var，let，const和变量提升（hoist）](https://www.clloz.com/programming/front-end/js/2020/07/01/variable-hoist/ 'var，let，const和变量提升（hoist）')，主要要注意的就是每一个模块都是一个单独的环境，在浏览器中我们只有一个全局环境，和块级作用域，函数作用域，在 `node` 中每个模块都会是一个单的的作用域，`var` 声明的全局变量也只在这个模块下生效（注意 `es6 module` 自动运行在严格模式下，模块环境下 `this` 指向 `undefined`）。
 
 > 这里我之前对模块执行完之后垃圾回收有点疑问，不过我后来的理解就是模块也是一个单独的环境，就是比原来浏览器环境的 `js` 多了一个模块级作用域，垃圾回收机制还是一样，只要存在引用就不会回收。
 
-* * *
+---
 
 再来一个复杂一点的例子，求执行 `a.js` 的输出
 
 ```javascript
 // a.js
-import { bar } from './b.js';
-export function foo() {
-    console.log('foo');
-    bar();
-    console.log('执行完毕');
-}
-foo();
+
 // b.js
-import { foo } from './a.js';
+import { foo } from './a.js'
+import { bar } from './b.js'
+
+export function foo() {
+  console.log('foo')
+  bar()
+  console.log('执行完毕')
+}
+foo()
+
 export function bar() {
-    console.log('bar');
-    if (Math.random() > 0.5) {
-        foo();
-    }
+  console.log('bar')
+  if (Math.random() > 0.5) {
+    foo()
+  }
 }
 ```
 
@@ -829,25 +839,25 @@ export function bar() {
 
 ```javascript
 //a.js
-const { bar } = require('./b.js');
+const { bar } = require('./b.js')
 function foo() {
-    console.log('foo');
-    bar();
-    console.log('执行完毕');
+  console.log('foo')
+  bar()
+  console.log('执行完毕')
 }
-foo();
-module.exports.foo = foo;
+foo()
+module.exports.foo = foo
 
 //b.js
-const { foo } = require('./a.js');
+const { foo } = require('./a.js')
 function bar() {
-    console.log('bar');
-    if (Math.random() > 0.5) {
-        console.log(foo);
-        foo();
-    }
+  console.log('bar')
+  if (Math.random() > 0.5) {
+    console.log(foo)
+    foo()
+  }
 }
-module.exports.bar = bar;
+module.exports.bar = bar
 ```
 
 但是在 `ES6` 的模块机制中这段代码使能执行的。为什么呢，其实我们就把 `ES6` 中的 `import` 看得简单一点，`import` 语句的功能就是执行对应模块，然后留下一个接口。**最关键的地方就是当这个接口被使用时，才会去对应的模块 `export` 的变量方法中找这个接口对应的变量或方法，记住这个接口只是对模块的一个引用。**这是我个人的理解。
@@ -858,18 +868,20 @@ module.exports.bar = bar;
 
 ```javascript
 //a.js
-import { bar } from './b.js';
-export function foo() {
-    console.log('foo');
-    console.log('执行完毕');
-}
 
 // b.js
-import { foo } from './a.js';
-export function bar() {
-    console.log('bar');
+import { foo } from './a.js'
+import { bar } from './b.js'
+
+export function foo() {
+  console.log('foo')
+  console.log('执行完毕')
 }
-foo();
+
+export function bar() {
+  console.log('bar')
+}
+foo()
 
 //执行结果
 //foo
@@ -881,36 +893,37 @@ foo();
 
 ```javascript
 //a.js
-import { bar } from './b.js';
-
-bar();
-
-export function m() {
-    return {
-        name: 'clloz',
-    };
-}
-var name = m();
-export let str = 'clloz';
-export let obj = {};
-export { name };
 
 // b.js
-import { m, name, str, obj } from './a.js';
-export function bar() {
-    console.log('bar');
+import { m, name, obj, str } from './a.js'
+import { bar } from './b.js'
+
+bar()
+
+export function m() {
+  return {
+    name: 'clloz'
+  }
 }
-console.log(m); //[Function: m]
-console.log(str); //ReferenceError: Cannot access 'str' before initialization
-console.log(obj); //ReferenceError: Cannot access 'obj' before initialization
-console.log(name); //undefined
+var name = m()
+export let str = 'clloz'
+export let obj = {}
+export { name }
+
+export function bar() {
+  console.log('bar')
+}
+console.log(m) //[Function: m]
+console.log(str) //ReferenceError: Cannot access 'str' before initialization
+console.log(obj) //ReferenceError: Cannot access 'obj' before initialization
+console.log(name) //undefined
 ```
 
 这里面 `m` 是一个函数声明，`str` 是一个 `let` 声明的字符串，`obj` 是一个 `let` 声明的对象，`name` 是一个 `var` 声明的变量，它的值是执行 `m` 后返回的对象。最后在 `b` 中的执行结果看上面的代码，`m` 成功输出 `a` 中的 `m` 函数；`str` 和 `obj` 都是 `ReferenceError`，`name` 是 `undefined`。看出来了没有，他们都是根据变量提升的规则获得了对应的值。
 
-当执行 `b` 的时候，模块 `a` 中的代码其实只执行了一句，就是 `import` 语句，但此时模块内的变量提升肯定已经完成了（变量提升在执行之前），关于变量提升的规则这里不细讲了，不清楚的同学看另一片文章 [var，let，const和变量提升（hoist）](https://www.clloz.com/programming/front-end/js/2020/07/01/variable-hoist/ "var，let，const和变量提升（hoist）")。
+当执行 `b` 的时候，模块 `a` 中的代码其实只执行了一句，就是 `import` 语句，但此时模块内的变量提升肯定已经完成了（变量提升在执行之前），关于变量提升的规则这里不细讲了，不清楚的同学看另一片文章 [var，let，const和变量提升（hoist）](https://www.clloz.com/programming/front-end/js/2020/07/01/variable-hoist/ 'var，let，const和变量提升（hoist）')。
 
-* * *
+---
 
 这里我补充一个我发现的循环依赖的问题，是关于 `export default` 的。看下面这个例子：
 
@@ -944,7 +957,7 @@ export default bar;
 
 这里我猜想是不是 `export default` 也只是把后面的值传给 `default`（假想成一个变量之类的），然后这个 `default` 类似于 `let` 有暂时性死区，只有执行到 `export default` 这一句时才给 `default` 赋值，所以会造成上面的现象。我们在 `b` 中加一句 `console.log(foo);` 的话，即使把 `foo()` 移动到 `export default` 下面，也会报错，因为执行 `b.mjs` 的时候，`export default` 还没有执行，这也印证了我的想法。
 
-* * *
+---
 
 通过这几个例子，`ES6` 的模块规则其实已经非常清晰了。当我们执行 `import` 的时候，会做两件事：执行 `import` 的模块，在当前模块添加一个指向依赖模块的引用，比如上面的例子中，`import {bar} from 'b.js'`，就是在 `a` 中添加了一个 `b` 的引用 `bar`，当后面用到这个 `bar` 的时候会去 `b` 中找。注意一点，这个引用在没有使用之前，不必关心它是什么，`a` 也不知道 `bar` 是什么。当 `a` 的语句执行用到 `bar` 的时候，引擎就会去 `b` 的**当前环境**中去找有没有 `export` 的 `bar`，找到则返回，找不到则抛错。注意这个当前环境，这是循环加载的中点，上面的例子 `a` 的 `import` 后面的语句并没与执行，但是此时由于变量提升机制，我们已经能取到这些值了，所以成功返回。只是由于 `str` 和 `obj` 是用 `let` 声明的，所以不能在声明语句前使用。其实我们完全可以把那几句 `console.log` 语句放到 `a` 中的 `import` 语句下方执行，得到的结果是相同的。
 
@@ -959,8 +972,9 @@ export default bar;
 对于这类文件，我们如果想用打包工具进行处理，直接引入即可：
 
 ```javascript
-import './jquery.min.js';
-require('./jquery.min.js');
+import './jquery.min.js'
+
+require('./jquery.min.js')
 ```
 
 其实不止这些非模块化文件，我们如果有什么不需要明确导出值，而只是要其执行的 `js`，甚至是一些静态文件（比如图片），都可以这样引入。一般来说，`jQuery` 这类库都会将其接口绑定在全局（我们可以通过 `window.jQuery` 获取 `jQuery`），因此无论从 `script` 标签引入，还是使用 `webpack` 打包引入，效果都是一样的，即只要在使用前执行即可。
@@ -973,9 +987,9 @@ require('./jquery.min.js');
 
 ## 参考文章
 
-1. [AMD，CMD 规范详解](https://neveryu.github.io/2017/03/20/amd-cmd/ "AMD，CMD 规范详解")
-2. [从 RequireJs 源码剖析脚本加载原理](https://www.cnblogs.com/dong-xu/p/7160919.html "从 RequireJs 源码剖析脚本加载原理")
-3. [模块化之AMD与CMD原理(附源码)](https://juejin.im/post/6844903759009595405 "模块化之AMD与CMD原理(附源码)")
-4. [使用 AMD、CommonJS 及 ES Harmony 编写模块化的 JavaScript](https://justineo.github.io/singles/writing-modular-js/ "使用 AMD、CommonJS 及 ES Harmony 编写模块化的 JavaScript")
+1. [AMD，CMD 规范详解](https://neveryu.github.io/2017/03/20/amd-cmd/ 'AMD，CMD 规范详解')
+2. [从 RequireJs 源码剖析脚本加载原理](https://www.cnblogs.com/dong-xu/p/7160919.html '从 RequireJs 源码剖析脚本加载原理')
+3. [模块化之AMD与CMD原理(附源码)](https://juejin.im/post/6844903759009595405 '模块化之AMD与CMD原理(附源码)')
+4. [使用 AMD、CommonJS 及 ES Harmony 编写模块化的 JavaScript](https://justineo.github.io/singles/writing-modular-js/ '使用 AMD、CommonJS 及 ES Harmony 编写模块化的 JavaScript')
 5. 《ES6 标准入门》 —— 阮一峰
-6. [深入 CommonJs 与 ES6 Module](https://segmentfault.com/a/1190000017878394 "深入 CommonJs 与 ES6 Module")
+6. [深入 CommonJs 与 ES6 Module](https://segmentfault.com/a/1190000017878394 '深入 CommonJs 与 ES6 Module')

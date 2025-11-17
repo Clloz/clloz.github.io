@@ -6,14 +6,12 @@ tags:
   - assorted
   - 软件工具
 language: '中文'
-heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './macos.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
-在 [Linux常用命令](https://www.clloz.com/programming/computer-science/operating-system/2020/08/18/linux-command/ "Linux常用命令") 中介绍了一些在 `Linux` 中的常用命令。虽然 `Mac OS X` 和 `Linux` 都是基于 `Unix` 的，但是有些系统命令并不是通用的，本文就介绍一些只有 `Mac` 上可以使用的比较有用的命令。
+在 [Linux常用命令](https://www.clloz.com/programming/computer-science/operating-system/2020/08/18/linux-command/ 'Linux常用命令') 中介绍了一些在 `Linux` 中的常用命令。虽然 `Mac OS X` 和 `Linux` 都是基于 `Unix` 的，但是有些系统命令并不是通用的，本文就介绍一些只有 `Mac` 上可以使用的比较有用的命令。
 
 ## pbcopy 和 pbpaste
 
@@ -58,7 +56,7 @@ sudo launchctl stop <<Service Name>>
 #开始
 sudo launchctl start <<Service Name>>
 #kill
-sudo launchctl kill <<Service Name>> 
+sudo launchctl kill <<Service Name>>
 ```
 
 ## say
@@ -67,4 +65,4 @@ sudo launchctl kill <<Service Name>>
 
 ## 参考文章
 
-1. [8个不可不知的Mac OS X专用命令行工具](https://segmentfault.com/a/1190000000509514 "8个不可不知的Mac OS X专用命令行工具")
+1. [8个不可不知的Mac OS X专用命令行工具](https://segmentfault.com/a/1190000000509514 '8个不可不知的Mac OS X专用命令行工具')

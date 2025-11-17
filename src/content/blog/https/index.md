@@ -9,8 +9,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 在上一篇介绍 `HTTP` 的文章中，我们了解了 `HTTP` 协议在通信过程中的细节，但是其实 `HTTP` 除了我们说的一些性能瓶颈之外，还有一些安全性的问题。
@@ -25,11 +23,11 @@ language: '中文'
 
 我们计算机之间的通信要经过很多中间设备才能传输到对方，这些数据包在中间设备上流动的时候是能够被看到的，如果我们遇到了恶意窥视，那么我们的信息就会被别人获取，如果这个信息是明文传输的，那么对方就直接能够知道我们所发送的内容。即使是信息加密过了，依然能够被通信线路上的其他人获取，但是如果我们通过安全的方法加密，那么黑客即使拿到我们的数据包也不能破解报文中的内容，那么就是没意义的，我们的数据仍然是安全的。就好像我们寄快递，如果没有包装，每个人人都能直接看到我们寄的什么，但是如果我们用纸箱抱起来（相当于简单加密，很容易被破解），那么我们寄的东西不那么容易被看到了，但是对于别有用心的人还是可以打开箱子看到里面的内容。所以我们可以采取更安全的加密方式，用密码箱把我们的东西放进去，然后再寄这个密码箱就可以了，现在除非有人能够知道我们密码箱的密码，否则是不能破解我们的内容了，基本就是安全的了。
 
-![http-danger](./images/http-danger.png "http-danger")
+![http-danger](./images/http-danger.png 'http-danger')
 
 对于 `HTTP` 请求，我们可以非常容易地获得报文中地内容，比如下图就是我用 `wireshark` 捕获的我本地的 `HTTP` 请求报文，我们可以看出报文是直接可以从 `16` 进制翻译过来地，我们的首部字段以及请求链接等信息都能看的一清二楚。
 
-![wireshark-http](./images/wireshark-http.png "wireshark-http")
+![wireshark-http](./images/wireshark-http.png 'wireshark-http')
 
 ## 身份地伪装
 
@@ -43,7 +41,7 @@ language: '中文'
 
 像这样，请求或响应在传输途中，遭攻击者拦截并篡改内容的攻击 称为中间人攻击( `Man-in-the-Middle attack`，`MITM` )。
 
-![middle-attack](./images/middle-attack.png "middle-attack")
+![middle-attack](./images/middle-attack.png 'middle-attack')
 
 ## HTTPS
 
@@ -51,7 +49,7 @@ language: '中文'
 
 `HTTP` 协议加上这三个技术就是我们所说的 `HTTPS`，`HTTPS` 并不是一个全新的协议，它只是在 `HTTP` 协议上增加了加密，认证和完整性保护机制的 `HTTP` 协议（将 `HTTP` 通信接口部分用 `SSL` ( `Secure Socket Layer` )和 `TLS` ( `Transport Layer Security` )协议代替），全称叫做 `HTTP Secure`。
 
-![https](./images/https.png "https")
+![https](./images/https.png 'https')
 
 经常会在 `Web` 的登录页面和购物结算界面等使用 `HTTPS` 通信。使用 `HTTPS` 通信时，不再用 `http://`，而是改用 `https://`。另外，当浏览器 访问 `HTTPS` 通信有效的 `Web` 网站时，浏览器的地址栏内会出现一个带 锁的标记。对 `HTTPS` 的显示方式会因浏览器的不同而有所改变。
 
@@ -59,25 +57,25 @@ language: '中文'
 
 `SSL` `Secure Sockets Layer` 是独立于 `HTTP` 的协议，和 `HTTP` 协议一样都是应用层协议，所以不光是 `HTTP` 协议，其他运行在 应用层的 `SMTP` 和 `Telnet` 等协议均可配合 `SSL` 协议使用。可以说 `SSL` 是当今世界上应用最为广泛的网络安全技术。
 
-![ssl](./images/ssl.png "ssl")
+![ssl](./images/ssl.png 'ssl')
 
 ## 加密
 
 加密的方式有两种，一种是对称加密，加密和解密用同一个密钥；另一种是非对称加密，加密和解密用不同的密钥。对称加密需要把密钥通过网络进行发送，既然报文能被监听，那么密钥同样也会被监听，密钥被攻击者获取，我们的加密报文和没加密没区别，换句话说，如果密钥能够安全传递，那么我们的报文也能安全传递，对称加密是行不通的。
 
-![Symmetric-key](./images/Symmetric-key.png "Symmetric-key")
+![Symmetric-key](./images/Symmetric-key.png 'Symmetric-key')
 
-非对称加密是运用数学原理生成的一对公钥和私钥，公钥可以交给任何人，只能用来加密，而私钥保存在服务器，只能用来解密。公钥加密后的内容用公钥是无法解开的，这一点是非常重要的，至于为什么，你可以这么理解，有一个函数$ f(x) = a + b $，当你知道a和b的时候要你计算$ f(x) $很容易，但是如果给你$ f(x) $要你求a和b的值就有非常多的可能行，特别是当这个值足够大的时候，拿几乎就是不可能的，公钥的作用就是这样，给你公钥你进行加密非常容易，但是如果给你加密后的结果你是无法解密的。公钥和私钥是存在数学联系的，比如常用的RSA加密算法，就是利用大整数因式分解难以破解的性质来设计的，如果你对非对称加密的设计细节很感兴趣可以看这两篇文章： 1. [RSA算法原理（一）](https://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html "RSA算法原理（一）") 2. [RSA算法原理（二）](https://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html "RSA算法原理（二）")
+非对称加密是运用数学原理生成的一对公钥和私钥，公钥可以交给任何人，只能用来加密，而私钥保存在服务器，只能用来解密。公钥加密后的内容用公钥是无法解开的，这一点是非常重要的，至于为什么，你可以这么理解，有一个函数$ f(x) = a + b $，当你知道a和b的时候要你计算$ f(x) $很容易，但是如果给你$ f(x) $要你求a和b的值就有非常多的可能行，特别是当这个值足够大的时候，拿几乎就是不可能的，公钥的作用就是这样，给你公钥你进行加密非常容易，但是如果给你加密后的结果你是无法解密的。公钥和私钥是存在数学联系的，比如常用的RSA加密算法，就是利用大整数因式分解难以破解的性质来设计的，如果你对非对称加密的设计细节很感兴趣可以看这两篇文章： 1. [RSA算法原理（一）](https://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html 'RSA算法原理（一）') 2. [RSA算法原理（二）](https://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html 'RSA算法原理（二）')
 
-李永乐老师的这个视频也能让你对 `RSA加密算法` 有一个简单的了解 [银行的密码系统安全吗](https://www.bilibili.com/video/av26639065 "银行的密码系统安全吗")
+李永乐老师的这个视频也能让你对 `RSA加密算法` 有一个简单的了解 [银行的密码系统安全吗](https://www.bilibili.com/video/av26639065 '银行的密码系统安全吗')
 
-![Public-key](./images/Public-key.png "Public-key")
+![Public-key](./images/Public-key.png 'Public-key')
 
 HTTP协议没有加密功能但可以通 过和 `SSL` (`Secure Socket Layer` ，安全套接层)或 `TLS` ( `Transport Layer Security`，安全传输层协议)的组合使用，加密 `HTTP` 的通信内容。用 `SSL` 建立安全通信线路之后，就可以在这条线路上进行 `HTTP` 通信了。与 `SSL` 组合使用的 `HTTP` 被称为 `HTTPS` ( `HTTP Secure`，超文 本传输安全协议)或 `HTTP over SSL`。
 
 `HTTPS` 在通信过程中并不是一直采用非对称加密，而是采取一种混合加密的方式，也就是说我们将对称加密的密钥用非对称加密的方式进行传递，当确保对称加密的密钥安全地送达之后，我们就可以安全地使用对称加密来通信了，这样做的目的是因为非对称加密虽然安全，但是因为处理的过程要比对称加密更加复杂，所以效率比较低。混合加密的大致过程如下：客户端拿到服务端的公钥后，产生一个随机的 `key` 作为对称加密的共享密钥，然后用服务端的公钥加密传递给服务端，服务端拿到加密后的 `key`，利用服务端原有的私钥解密，得到 `key` 的原文。然后后面跟客户端通讯就使用key作为对称加密的私钥，进行通讯了。其实 `https` 真正的数据传递过程，走的是对称加密。
 
-![mix-key](./images/mix-key.png "mix-key")
+![mix-key](./images/mix-key.png 'mix-key')
 
 ## 身份认证
 
@@ -87,7 +85,7 @@ HTTP协议没有加密功能但可以通 过和 `SSL` (`Secure Socket Layer` ，
 
 之所以数字签名是可靠的，是因为私钥只有 `CA` 知道，而对摘要的加密只有私钥才能做到，所以只要验证出加密内容没问题，说明证书就是可靠的。而即使攻击者截获证书，将内容 `M` 改掉，由于数字签名 `S` 攻击者无法篡改，当客户端进行验证的时候就能够发现内容被篡改。
 
-![ca-secure](./images/ca-secure.png "ca-secure")
+![ca-secure](./images/ca-secure.png 'ca-secure')
 
 > 私钥可以用来解密和签名，公钥可以用来加密和验证。
 
@@ -97,7 +95,7 @@ HTTP协议没有加密功能但可以通 过和 `SSL` (`Secure Socket Layer` ，
 
 运用SSL的加密和证书验证，我们已经能够确保通信的安全了，回顾一下HTTPS安全通信的全过程：
 
-![https-process](./images/https-process.png "https-process")
+![https-process](./images/https-process.png 'https-process')
 
 1. 客户端通过发送 `Client Hello` 报文开始 `SSL` 通信。报文中 包含客户端支持的 `SSL` 的指定版本、加密组件( `Cipher Suite` )列表(所使用的加密算法及密钥长度等)。
 2. 服务器可进行 `SSL` 通信时，会以 `Server Hello` 报文作为应 答。和客户端一样，在报文中包含 `SSL` 版本以及加密组 件。服务器的加密组件内容是从接收到的客户端加密组件 内筛选出来的。
@@ -115,8 +113,8 @@ HTTP协议没有加密功能但可以通 过和 `SSL` (`Secure Socket Layer` ，
 
 在以上流程中，应用层发送数据时会附加一种叫做 `MAC` ( `Message Authentication Code` )的报文摘要。`MAC` 能够查知报文是否遭到篡改， 从而保护报文的完整性。
 
-![http-process2](./images/https-process2.png "http-process2")
+![http-process2](./images/https-process2.png 'http-process2')
 
 ## 参考文章
 
-1. [rsa加密算法](https://blog.csdn.net/u014401141/article/details/74219479 "rsa加密算法")
+1. [rsa加密算法](https://blog.csdn.net/u014401141/article/details/74219479 'rsa加密算法')

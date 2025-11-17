@@ -6,10 +6,8 @@ tags:
   - assorted
   - 奇技淫巧
 language: '中文'
-heroImage: {"src":"./gift-card.png","color":"#B4C6DA"}
+heroImage: { 'src': './gift-card.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -25,23 +23,23 @@ heroImage: {"src":"./gift-card.png","color":"#B4C6DA"}
 
 进入 [apple-gift-cards](https://www.apple.com/shop/gift-cards) 页面，滚动到下方，点击下图中的 `Email a gift card`。
 
-![gift1](./images/giftcard1.png "gift1")
+![gift1](./images/giftcard1.png 'gift1')
 
 然后进入下图所示的页面，上面的 `design` 随便选择一个即可，然后填入要充值的金额，最小金额为 `$10`，在最下面填入发送和接收的邮箱，红框标注的位置是接收的邮箱，注意不要写错。
 
-![gift2](./images/giftcard2.png "gift2")
+![gift2](./images/giftcard2.png 'gift2')
 
 接下来进入检查的页面，看看自己的邮箱信息是否有填错，没错的话就 `check out`。
 
-![gift3](./images/giftcard3.png "gift3")
+![gift3](./images/giftcard3.png 'gift3')
 
 选择 `check out` 以后会让你登录，这里不要登录，直接选择 `continue as a guest` 即可。
 
-![gift4](./images/giftcard4.png "gift4")
+![gift4](./images/giftcard4.png 'gift4')
 
 然后就进入付款页面了，选择信用卡，用国内的信用卡即可，我使用的是工行的 `visa`。下面会有一个账单地址，随便到往上找一个美国地址就可以了。
 
-![gift6](./images/giftcard6.png "gift6")
+![gift6](./images/giftcard6.png 'gift6')
 
 到这一步完成以后，我们的付款就结束了，你的邮箱也会收到 `apple` 发来的邮件，然后会有一个账单好，你可以查看你的充值是否到账，我印象中大概扣款后 `10 ~ 15` 分钟充值就到账了。
 

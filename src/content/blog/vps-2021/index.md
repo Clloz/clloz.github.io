@@ -6,32 +6,31 @@ tags:
   - assorted
   - 软件工具
 language: '中文'
-heroImage: {"src":"./v2ray.png","color":"#B4C6DA"}
+heroImage: { 'src': './v2ray.png', 'color': '#B4C6DA' }
+draft: true
 ---
-
-\[toc\]
 
 ## 前言
 
-`19` 年的时候写过一篇 [v2ray 的安装配置教程](https://www.clloz.com/programming/assorted/2019/11/24/v2ray-install-configuration/ "v2ray 的安装配置教程")，今年在部署几台新服务器的时候发现里面有些内容已经不适用了，所以决定整理出一套新的教程。
+`19` 年的时候写过一篇 [v2ray 的安装配置教程](https://www.clloz.com/programming/assorted/2019/11/24/v2ray-install-configuration/ 'v2ray 的安装配置教程')，今年在部署几台新服务器的时候发现里面有些内容已经不适用了，所以决定整理出一套新的教程。
 
 > 本教程使用的是 `CentOS 7` 系统，使用其他系统的同学请自行修改对应的命令。
 
 ## 购买域名和 VPS 并添加域名解析
 
-由于要开启 `TLS` 进行加密，所以我们需要注册一个域名并且解析到我们的 `VPS`，我们可以到 [万网 - 阿里云](https://wanwang.aliyun.com/domain/searchresult#/?keyword=&suffix=com "万网") 选一个自己喜欢的域名购买。注意的是阿里云的域名购买后想要添加解析需要**实名认证**才能使用，如果没有实名认证，即使你添加了解析也是不生效的。
+由于要开启 `TLS` 进行加密，所以我们需要注册一个域名并且解析到我们的 `VPS`，我们可以到 [万网 - 阿里云](https://wanwang.aliyun.com/domain/searchresult#/?keyword=&suffix=com '万网') 选一个自己喜欢的域名购买。注意的是阿里云的域名购买后想要添加解析需要**实名认证**才能使用，如果没有实名认证，即使你添加了解析也是不生效的。
 
-有了域名我们还需要一个海外的 `VPS`，我已经使用了三四年的搬瓦工了，还是比较稳定的，也推荐大家使用，最便宜的配置是一年 `50$`(以前有 `20$` 的配置，现在取消了，我用的就是这个，只要一直续费就可以一直用），搬瓦工的网站是 [bandwagonhost](https://bandwagonhost.com/ "bandwagonhost")。
+有了域名我们还需要一个海外的 `VPS`，我已经使用了三四年的搬瓦工了，还是比较稳定的，也推荐大家使用，最便宜的配置是一年 `50$`(以前有 `20$` 的配置，现在取消了，我用的就是这个，只要一直续费就可以一直用），搬瓦工的网站是 [bandwagonhost](https://bandwagonhost.com/ 'bandwagonhost')。
 
 购买好 `VPS` 并且认证好域名之后就是添加域名的解析了，这里我们添加一个 `A` 记录，记录值为 `VPS` 的 `IP` 即可。
 
-[![vps-2021-resolve](./images/vps-2021-resolve.png "vps-2021-resolve")](https://img.clloz.com/blog/writing/vps-2021-resolve.png "vps-2021-resolve")
+[![vps-2021-resolve](./images/vps-2021-resolve.png 'vps-2021-resolve')](https://img.clloz.com/blog/writing/vps-2021-resolve.png 'vps-2021-resolve')
 
 此时我们已经完成外部的工作，需要连接到 `VPS` 进行安装配置了，使用 `ssh root@vps-ip -p port`，`VPS` 的 `IP` 可以登录到你购买 `VPS` 的网站后台查看，注意的是 `bandwagon` 的 `VPS` 的 `ssh` 端口不是默认的 `22` 而是随机生成的一个端口，如果是默认的 `22` 则命令的 `-p port` 就不需要输入。
 
 ## 安装配置 v2ray
 
-`v2ray` 的安装很简单，安装脚本来自 [fhs-install-v2ray](https://github.com/v2fly/fhs-install-v2ray "fhs-install-v2ray")，如要移除，请参考 `README`。
+`v2ray` 的安装很简单，安装脚本来自 [fhs-install-v2ray](https://github.com/v2fly/fhs-install-v2ray 'fhs-install-v2ray')，如要移除，请参考 `README`。
 
 ```bash
 // 安裝執行檔和 .dat 資料檔
@@ -74,16 +73,16 @@ heroImage: {"src":"./v2ray.png","color":"#B4C6DA"}
 }
 ```
 
-直接赋值这个内容粘贴到 `v2ray` 的配置文件中即可，只有两个地方时要修改的，一个的端口（也可以不修改），一个是 `id`。`id` 的生成可以到 [https://www.uuidgenerator.net](https://www.uuidgenerator.net "https://www.uuidgenerator.net")
+直接赋值这个内容粘贴到 `v2ray` 的配置文件中即可，只有两个地方时要修改的，一个的端口（也可以不修改），一个是 `id`。`id` 的生成可以到 [https://www.uuidgenerator.net](https://www.uuidgenerator.net 'https://www.uuidgenerator.net')
 
 ## 证书的生成和自动续签
 
-`TLS` 是需要证书的，这里我们使用 `certbot` 来帮我们申请免费的 `Let's Encrypt` 证书，`Let's Encrypt` 是一家免费，开放，自动化的证书颁发机构，官方文档参考 [Let’s Encrypt 快速入门](https://letsencrypt.org/zh-cn/getting-started/ "Let’s Encrypt 快速入门")。`Let's Encrypt` 官方建议使用 `certbot` 来进行证书的获取。安装 `certbot` 需要先安装 `epel` 仓库，命令如下：
+`TLS` 是需要证书的，这里我们使用 `certbot` 来帮我们申请免费的 `Let's Encrypt` 证书，`Let's Encrypt` 是一家免费，开放，自动化的证书颁发机构，官方文档参考 [Let’s Encrypt 快速入门](https://letsencrypt.org/zh-cn/getting-started/ 'Let’s Encrypt 快速入门')。`Let's Encrypt` 官方建议使用 `certbot` 来进行证书的获取。安装 `certbot` 需要先安装 `epel` 仓库，命令如下：
 
 ```bash
-$ sudo yum install epel-release
+sudo yum install epel-release
 
-$ sudo yum install certbot
+sudo yum install certbot
 ```
 
 由于我们的 `VPS` 上并没有一个真实运行的网站（只是用来进行流量的伪装），所以我们需要用 `certbot` 的 `standalone` 参数来运行一个独立的网页服务器进行身份验证（`certbot` 需要确定你拥有域名指向的服务器的所有权），该网页服务器会使用 `VPS` 的 `80` 端口，所以你需要关闭 `VPS` 上的 `web` 服务器（比如 `nginx`）。申请证书的命令如下
@@ -102,7 +101,7 @@ certbot certificates
 
 这里注意，如果出现红字说生成失败，那么要检查一下域名解析填的 `IP` 是否正确，也可以在 `VPS` 中 `ping` 一下你的域名看看能不能 `ping` 通，并且指向的 `IP` 是不是当前 `VPS` 的 `IP`。
 
-[![vps-2021-certbot](./images/vps-2021-certbot.png "vps-2021-certbot")](https://img.clloz.com/blog/writing/vps-2021-certbot.png "vps-2021-certbot")
+[![vps-2021-certbot](./images/vps-2021-certbot.png 'vps-2021-certbot')](https://img.clloz.com/blog/writing/vps-2021-certbot.png 'vps-2021-certbot')
 
 如果你的域名解析正确并且能够在 `VPS` 上 `ping` 通，但是还是一直红字提示失败，那么你需要检查一下 `VPS` 的防火墙，可以用 `systemctl status firewalld` 来查看是否开启了防火墙。一般来说出现这种情况都是因为防火墙的开启，比较简单的解决方法就是关闭防火墙：
 
@@ -111,7 +110,7 @@ systemctl stop firewalld
 systemctl disable firewalld
 ```
 
-如果你不想关闭防火墙可以试一试让防火墙开放指定端口（**我是直接关闭防火墙的，该方法没有实际测试**），以下命令均来自 [Linux CentOS7 开启80，443端口外网访问权限](https://blog.csdn.net/u011477914/article/details/88862041 "Linux CentOS7 开启80，443端口外网访问权限")
+如果你不想关闭防火墙可以试一试让防火墙开放指定端口（**我是直接关闭防火墙的，该方法没有实际测试**），以下命令均来自 [Linux CentOS7 开启80，443端口外网访问权限](https://blog.csdn.net/u011477914/article/details/88862041 'Linux CentOS7 开启80，443端口外网访问权限')
 
 ```bash
 # 检查防火墙状态
@@ -210,13 +209,13 @@ nginx: configuration file /opt/homebrew/etc/nginx/nginx.conf test is successful
 systemctl restart nginx
 ```
 
-> `caddy` 是一个比较新的用 `golang` 实现的 `web` 服务器，我不是很熟悉，不过它可以自动签发 `https` 证书，这一点来说比较方便，如果你不想自己配置证书可以使用 `caddy`。`caddy` 的配置参考 [新 V2Ray 白话文指南](https://guide.v2fly.org/advanced/wss_and_web.html#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE "新 V2Ray 白话文指南")
+> `caddy` 是一个比较新的用 `golang` 实现的 `web` 服务器，我不是很熟悉，不过它可以自动签发 `https` 证书，这一点来说比较方便，如果你不想自己配置证书可以使用 `caddy`。`caddy` 的配置参考 [新 V2Ray 白话文指南](https://guide.v2fly.org/advanced/wss_and_web.html#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE '新 V2Ray 白话文指南')
 
 ## SELinux
 
 上面的步骤都执行完了，一般来说我们的配置就已经完成了，此时在客户端上正确配置就能够访问 `Google` 了。如果此时你的 `v2ray` 客户端显示服务器连接正常，但是你还是不能访问 `Google`，很可能是 `SELinux` 的问题，此时我们只要去 `/var/log/nginx/` 查看 `access.log` 可以看到很多的 `Permission Denied`，说明 `VPS` 收到了我们的请求但是由于 `SELinux` 无法转发给 `v2ray`，此时我们可以关闭 `SELinux`，也可以直接执行 `setsebool -P httpd_can_network_connect 1` 来开启内网转发的权限。
 
-> 关于 `SELinux` 的介绍可以参考 [阿里云](https://help.aliyun.com/document_detail/157022.html "阿里云")
+> 关于 `SELinux` 的介绍可以参考 [阿里云](https://help.aliyun.com/document_detail/157022.html '阿里云')
 
 ## clash
 
@@ -232,6 +231,6 @@ systemctl restart nginx
 
 ## 参考文章
 
-1. [新 V2Ray 白话文指南](https://guide.v2fly.org/advanced/wss_and_web.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE "新 V2Ray 白话文指南")
-2. [Linux CentOS7 开启80，443端口外网访问权限](https://blog.csdn.net/u011477914/article/details/88862041 "Linux CentOS7 开启80，443端口外网访问权限")
-3. [开启或关闭SELinux](https://help.aliyun.com/document_detail/157022.html "开启或关闭SELinux")
+1. [新 V2Ray 白话文指南](https://guide.v2fly.org/advanced/wss_and_web.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE '新 V2Ray 白话文指南')
+2. [Linux CentOS7 开启80，443端口外网访问权限](https://blog.csdn.net/u011477914/article/details/88862041 'Linux CentOS7 开启80，443端口外网访问权限')
+3. [开启或关闭SELinux](https://help.aliyun.com/document_detail/157022.html '开启或关闭SELinux')

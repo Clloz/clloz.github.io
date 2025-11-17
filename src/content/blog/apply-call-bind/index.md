@@ -7,10 +7,8 @@ tags:
   - 实用技巧
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -39,12 +37,12 @@ function.call(thisArg, arg1, arg2, ...)
 `JavaScript` 中有类数组对象，最常见的就是所有非箭头函数中都可以使用的局部变量 `arguments`，还有 `DOM` 操作返回的 `NodeList` 集合，它类似于 `Array`，但除了 `length` 属性和索引元素之外没有任何 `Array` 属性。例如，它没有 `pop` 方法。但是它可以被转换为一个真正的 `Array`。
 
 ```javascript
-var args = Array.prototype.slice.call(arguments);
-var args = [].slice.call(arguments);
+var args = Array.prototype.slice.call(arguments)
+var args = [].slice.call(arguments)
 
 // ES2015
-const args = Array.from(arguments);
-const args = [...arguments]; //扩展运算符
+const args = Array.from(arguments)
+const args = [...arguments] //扩展运算符
 ```
 
 > 实际上我们也可以自己定义类数组对象，只要有索引和 `length` 即可，`{'length': 2, '0': 'eat', '1': 'bananas'}`。
@@ -54,10 +52,10 @@ const args = [...arguments]; //扩展运算符
 我们可以用 `push` 方法为数组添加新的元素，虽然 `push` 方法接受可变参数，但是如果我们以数组作为参数的话，它只是把这个数组所谓一个元素添加，如果想把两个数组进行拼接，那么可以用 `concat`，但是 `concat` 是返回一个新的数组，如果只是想要将两个数组拼接，可以用 `apply`。
 
 ```javascript
-var array = ['a', 'b'];
-var elements = [0, 1, 2];
-array.push.apply(array, elements);
-console.info(array); // ["a", "b", 0, 1, 2]
+var array = ['a', 'b']
+var elements = [0, 1, 2]
+array.push.apply(array, elements)
+console.info(array) // ["a", "b", 0, 1, 2]
 ```
 
 ##### 用数组替代参数列表
@@ -66,11 +64,14 @@ console.info(array); // ["a", "b", 0, 1, 2]
 
 ```javascript
 /* 找出数组中最大/小的数字 */
-var numbers = [5, 6, 2, 3, 7];
+var numbers = [5, 6, 2, 3, 7]
 
 /* 应用(apply) Math.min/Math.max 内置函数完成 */
-var max = Math.max.apply(null, numbers); /* 基本等同于 Math.max(numbers[0], ...) 或 Math.max(5, 6, ..) */
-var min = Math.min.apply(null, numbers);
+var max = Math.max.apply(
+  null,
+  numbers
+) /* 基本等同于 Math.max(numbers[0], ...) 或 Math.max(5, 6, ..) */
+var min = Math.min.apply(null, numbers)
 ```
 
 > 这样使用的风险就是如果数组非常大，在函数调用的时候可能参数个数会超出引擎的限制（JavaScript 核心中已经做了硬编码 参数个数限制在 `65536`，具体数值由引擎决定），如果遇到这种情况可以把数组切块循环执行。
@@ -78,15 +79,15 @@ var min = Math.min.apply(null, numbers);
 ##### 继承
 
 ```javascript
-function Animal(name){
-    this.name = name;
-    this.showName = function(){
-        console.log(this.name);
-    }
+function Animal(name) {
+  this.name = name
+  this.showName = function () {
+    console.log(this.name)
+  }
 }
 
-function Cat(name){
-    Animal.call(this, name);
+function Cat(name) {
+  Animal.call(this, name)
 }
 ```
 
@@ -100,13 +101,13 @@ function Cat(name){
 
 ```javascript
 function Bound(a, b) {
-    console.log(this.a, this.b);
-    this.a = a;
-    this.b = b;
-    console.log(this.a, this.b);
+  console.log(this.a, this.b)
+  this.a = a
+  this.b = b
+  console.log(this.a, this.b)
 }
 
-let obj = {a: 10, b: 20}
+let obj = { a: 10, b: 20 }
 
 let bFun = Bound.bind(obj, 1, 2)
 bFun() //10 20   1 2
@@ -127,22 +128,24 @@ console.log(bFun.prototype) //undefined
 ##### 创建绑定函数
 
 ```javascript
-this.x = 9;    // 在浏览器中，this 指向全局的 "window" 对象
+this.x = 9 // 在浏览器中，this 指向全局的 "window" 对象
 var module = {
   x: 81,
-  getX: function() { return this.x; }
-};
+  getX: function () {
+    return this.x
+  }
+}
 
-module.getX(); // 81
+module.getX() // 81
 
-var retrieveX = module.getX;
-retrieveX();
+var retrieveX = module.getX
+retrieveX()
 // 返回 9 - 因为函数是在全局作用域中调用的
 
 // 创建一个新函数，把 'this' 绑定到 module 对象
 // 新手可能会将全局变量 x 与 module 的属性 x 混淆
-var boundGetX = retrieveX.bind(module);
-boundGetX(); // 81
+var boundGetX = retrieveX.bind(module)
+boundGetX() // 81
 ```
 
 ##### 预设函数初始参数
@@ -151,33 +154,33 @@ boundGetX(); // 81
 
 ```javascript
 function list() {
-  return Array.prototype.slice.call(arguments);
+  return Array.prototype.slice.call(arguments)
 }
 
 function addArguments(arg1, arg2) {
-    return arg1 + arg2
+  return arg1 + arg2
 }
 
-var list1 = list(1, 2, 3); // [1, 2, 3]
+var list1 = list(1, 2, 3) // [1, 2, 3]
 
-var result1 = addArguments(1, 2); // 3
+var result1 = addArguments(1, 2) // 3
 
 // 创建一个函数，它拥有预设参数列表。
-var leadingThirtysevenList = list.bind(null, 37);
+var leadingThirtysevenList = list.bind(null, 37)
 
 // 创建一个函数，它拥有预设的第一个参数
-var addThirtySeven = addArguments.bind(null, 37); 
+var addThirtySeven = addArguments.bind(null, 37)
 
-var list2 = leadingThirtysevenList(); 
+var list2 = leadingThirtysevenList()
 // [37]
 
-var list3 = leadingThirtysevenList(1, 2, 3); 
+var list3 = leadingThirtysevenList(1, 2, 3)
 // [37, 1, 2, 3]
 
-var result2 = addThirtySeven(5); 
-// 37 + 5 = 42 
+var result2 = addThirtySeven(5)
+// 37 + 5 = 42
 
-var result3 = addThirtySeven(5, 10);
+var result3 = addThirtySeven(5, 10)
 // 37 + 5 = 42 ，第二个参数被忽略
 ```
 
@@ -186,26 +189,26 @@ var result3 = addThirtySeven(5, 10);
 这是一个 `mdn` 上给出的示例。当我们需要频繁调用一个指定 `this` 的函数，我们可以用 `bind` 来实现快捷调用。举个例子子，我们相对类数组对象（比如 `arguments`）执行数组方法（比如 `slice`），我们一般是 `Array.prototype.slice.apply(arguments)`，当我们需要频繁使用这个方法的时候，我们可能会这样 `let slice = Array.prototype.slice; slice.apply(arguments);`。如果我们使用 `bind`，我们可以直接 `slice(arguments)` 这样调用，更方便，具体实现看下面的代码。
 
 ```javascript
-var slice = Array.prototype.slice;
+var slice = Array.prototype.slice
 
 // ...
 
-slice.apply(arguments);
+slice.apply(arguments)
 
 // 与前一段代码的 "slice" 效果相同
-var unboundSlice = Array.prototype.slice;
-var slice = Function.prototype.apply.bind(unboundSlice);
+var unboundSlice = Array.prototype.slice
+var slice = Function.prototype.apply.bind(unboundSlice)
 
 // ...
 
-slice(arguments);
+slice(arguments)
 ```
 
 要理解这段代码我们需要理解 `apply` 本身也是一个函数，它是在 `Function.prototype` 上定义的一个函数，所有函数都能调用它。当我们用 `func.apply()` 调用 `apply` 的时候，本质就是以 `func` 作为 `this` 调用 `apply`。那么第二种实现就是用 `Array.prototype.slice` 作为 `this` 创建 `apply` 的一个绑定函数。当我们调用这个绑定函数的时候就相当于调用 `Array.prototype.slice.apply()`。
 
 ## 模拟实现 call，apply 和 bind
 
-关于如何手写 `call， apply，bind` 我在另一篇文章中写下了详细的过程，点击查看 [模拟实现call，apply 和 bind](https://www.clloz.com/programming/front-end/js/2020/10/07/simulation-of-call-apply-bind/ "模拟实现call，apply 和 bind")。
+关于如何手写 `call， apply，bind` 我在另一篇文章中写下了详细的过程，点击查看 [模拟实现call，apply 和 bind](https://www.clloz.com/programming/front-end/js/2020/10/07/simulation-of-call-apply-bind/ '模拟实现call，apply 和 bind')。
 
 ## 参考文章
 

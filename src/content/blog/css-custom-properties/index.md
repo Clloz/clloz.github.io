@@ -7,10 +7,8 @@ tags:
   - 奇技淫巧
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './css.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -18,7 +16,7 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 
 ## 兼容性
 
-我们可以在[Can I use](https://caniuse.com/#feat=css-variables "Can I use")上查看到目前的 `CSS variable` 的兼容性，除了 `IE`、 `QQ` 和 `baidu`，其他的主流浏览器都已经支持该特性。该特性目前处于[CR](https://www.clloz.com/programming/front-end/2018/10/03/w3c-standard-drafts/ "CR")状态。
+我们可以在[Can I use](https://caniuse.com/#feat=css-variables 'Can I use')上查看到目前的 `CSS variable` 的兼容性，除了 `IE`、 `QQ` 和 `baidu`，其他的主流浏览器都已经支持该特性。该特性目前处于[CR](https://www.clloz.com/programming/front-end/2018/10/03/w3c-standard-drafts/ 'CR')状态。
 
 ## 使用方法
 
@@ -43,7 +41,7 @@ selector {
 
 /* 设置全局变量 */
 :root {
-    --theme-color: gray;
+  --theme-color: gray;
 }
 
 /* 使用变量 */
@@ -62,7 +60,7 @@ selector {
 
 自定义属性并不是你在其他编程语言中遇到的实际的变量。这些值仅当需要的时候才会计算，而并不会按其他规则进行保存。比如，你不能为元素设置一个属性，然后让它从兄弟或旁支子孙规则上获取值。属性仅用于匹配当前选择器及其子孙，这和通常的 `CSS` 是一样的。
 
-* * *
+---
 
 自定义属性的回退值允许使用逗号。例如， `var(--foo, red, blue)` 将 `red, blue` 同时指定为回退值；即是说任何在第一个逗号之后到函数结尾前的值都会被考虑为回退值。
 
@@ -76,7 +74,10 @@ selector {
 }
 
 .three {
-  background-color: var(--my-var, var(--my-background, pink)); /* pink if --my-var and --my-background are not defined */
+  background-color: var(
+    --my-var,
+    var(--my-background, pink)
+  ); /* pink if --my-var and --my-background are not defined */
 }
 
 .three {
@@ -84,20 +85,26 @@ selector {
 }
 ```
 
-* * *
+---
 
 当浏览器遇到无效的 `var()` 时（比如变量未设定并且没给出缺省值，或者当前元素不支持该属性），会使用继承值或初始值代替。
 
 ```css
 /*若为一个p元素设置如下的CSS*/
-:root { --text-color: 16px; }
-p { color: blue; }
-p { color: var(--text-color); }
+:root {
+  --text-color: 16px;
+}
+p {
+  color: blue;
+}
+p {
+  color: var(--text-color);
+}
 ```
 
 浏览器会将 `--text-color` 的值替换给了 `var(--text-color)`，但是 `16px` 并不是 `color` 的合法属性值。代换之后，该属性不会产生任何作用。当遇到一个无效的 `var()` 时，浏览器会先看父元素有没有设置对应的属性，有则继承；如果没有则使用该属性的默认值。
 
-* * *
+---
 
 自定义属性还可以和 `calc()` 结合实现更强大的功能。
 
@@ -124,19 +131,19 @@ p { color: var(--text-color); }
 }
 ```
 
-* * *
+---
 
 在 `JavaScript` 中获取或者修改 `CSS` 变量和操作普通 `CSS` 属性是一样的，并且有了自定义属性后我们也可以更抽象地用 `JavaScript` 控制 `CSS` 了，一定程度上实现 `JavaScript` 和 `CSS` 的解耦，将一些需要用 `JavaScript` 操作的 `CSS` 属性用变量代替，我们只要操作这个变量即可，而不用管在哪些元素中使用了这个变量。
 
 ```javascript
 // 获取一个 Dom 节点上的 CSS 变量
-element.style.getPropertyValue("--my-var");
+element.style.getPropertyValue('--my-var')
 
 // 获取任意 Dom 节点上的 CSS 变量
-getComputedStyle(element).getPropertyValue("--my-var");
+getComputedStyle(element).getPropertyValue('--my-var')
 
 // 修改一个 Dom 节点上的 CSS 变量
-element.style.setProperty("--my-var", jsVar + 4);
+element.style.setProperty('--my-var', jsVar + 4)
 ```
 
 ## 作用
@@ -202,6 +209,6 @@ element.style.setProperty("--my-var", jsVar + 4);
 
 ## 参考文章
 
-1. [使用CSS自定义属性（变量）](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Using_CSS_custom_properties "使用CSS自定义属性（变量）")
-2. [CSS自定义属性（变量）](https://developer.mozilla.org/zh-CN/docs/Web/CSS/--* "CSS自定义属性（变量）")
-3. [CSS自定义属性](https://zhuanlan.zhihu.com/p/25714131 "CSS自定义属性")
+1. [使用CSS自定义属性（变量）](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Using_CSS_custom_properties '使用CSS自定义属性（变量）')
+2. [CSS自定义属性（变量）](https://developer.mozilla.org/zh-CN/docs/Web/CSS/--* 'CSS自定义属性（变量）')
+3. [CSS自定义属性](https://zhuanlan.zhihu.com/p/25714131 'CSS自定义属性')

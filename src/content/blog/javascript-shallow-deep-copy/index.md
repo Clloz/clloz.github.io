@@ -7,10 +7,8 @@ tags:
   - 实用技巧
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -23,10 +21,10 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 每一个数据都需要分配一块内存空间，内存空间分为两种：栈 `stack` 和 堆 `heap`：`stack` 为自动分配的内存空间，它由系统自动释放；而 `heap` 则是动态分配的内存，大小不定也不会自动释。基本类型值是存储在栈中的简单数据段，也就是说，他们的值直接存储在变量访问的位置。堆是存放数据的基于散列算法的数据结构，在 `javascript` 中，引用值是存放在堆中的。
 
 ```javascript
-let a = 10;
-let b = 20;
+let a = 10
+let b = 20
 let obj = {
-    name: 'clloz'
+  name: 'clloz'
 }
 let obj2 = obj
 ```
@@ -76,73 +74,75 @@ let obj2 = obj
 
 ```javascript
 let a = {
-    p1: 10,
-    p2: 20,
-    p3: {
-        m: 100,
-        n: 200
-    }
+  p1: 10,
+  p2: 20,
+  p3: {
+    m: 100,
+    n: 200
+  }
 }
-let b = Object.assign({}, a);
+let b = Object.assign({}, a)
 console.log(b) //{ p1: 10, p2: 20, p3: { m: 100, n: 200 } }
-b.p1 = 'teste';
+b.p1 = 'teste'
 console.log(a) //{ p1: 10, p2: 20, p3: { m: 100, n: 200 } } a中的p1没有改变
 b.p3.m = 'test'
 console.log(a) //{ p1: 10, p2: 20, p3: { m: 'test', n: 200 } } a.m是一个嵌套对象，浅拷贝
 ```
 
-* * *
+---
 
 关于 `Object.assign()` 还有需要注意的点就是，该方法只能拷贝源对象的可枚举的自身属性，同时拷贝时无法拷贝属性的特性，而且访问器属性会被转换成数据属性（值为访问器属性的 `getter` 的返回值，如果访问器属性没有设置 `getter`，那么值为 `undefined`）。看下面的例子：
 
 ```javascript
 //'use strict'
 let a_p = {
-    fun: () => console.log('a.[[prototype]]')
+  fun: () => console.log('a.[[prototype]]')
 }
-let a = Object.create(a_p);
+let a = Object.create(a_p)
 let out_var = 'out variable'
 
 Object.defineProperty(a, Symbol('symbol'), {
-    value: 'symbol',
-    enumerable: true
+  value: 'symbol',
+  enumerable: true
 })
 
-Object.defineProperty(a, 'val', { //不可枚举属性
-    value: 100,
-    configurable: false,
-    enumerable: false,
-    writable: true
+Object.defineProperty(a, 'val', {
+  //不可枚举属性
+  value: 100,
+  configurable: false,
+  enumerable: false,
+  writable: true
 })
 
-Object.defineProperty(a, 'enum', {//可枚举属性
-    value: 'enumerable',
-    configurable: false,
-    enumerable: true,
-    writable: false
+Object.defineProperty(a, 'enum', {
+  //可枚举属性
+  value: 'enumerable',
+  configurable: false,
+  enumerable: true,
+  writable: false
 })
 
-
-Object.defineProperty(a, 'm', { //不可枚举的访问器属性
-    enumerable: false,
-    set(val) {
-        this.val = val;
-    },
-    get() {
-        return this.val;
-    }
+Object.defineProperty(a, 'm', {
+  //不可枚举的访问器属性
+  enumerable: false,
+  set(val) {
+    this.val = val
+  },
+  get() {
+    return this.val
+  }
 })
 
-Object.defineProperty(a, 'n', { //可枚举的访问器属性
-    enumerable: true,
-    set(val) {
-        a.val = val
-    },
-    get() {
-        return a.val
-    }
+Object.defineProperty(a, 'n', {
+  //可枚举的访问器属性
+  enumerable: true,
+  set(val) {
+    a.val = val
+  },
+  get() {
+    return a.val
+  }
 })
-
 
 let b = Object.assign({}, a)
 console.log(b) //{ enum: 'enumerable', n: 100, [Symbol(symbol)]: 'symbol' } 只有可枚举的数据属性和访问器属性是会被复制的。访问器属性被转换成数据属性，值是调用访问器属性getter的返回值
@@ -159,20 +159,17 @@ console.log(Object.getPrototypeOf(b) === Object.prototype) //true 没有复制�
 如果想要实现复制属性的特性，访问器属性以及链接原型，可用如下的方法：
 
 ```javascript
-let c = Object.create(
-    Object.getPrototypeOf(a),
-    Object.getOwnPropertyDescriptors(a)
-);
+let c = Object.create(Object.getPrototypeOf(a), Object.getOwnPropertyDescriptors(a))
 ```
 
 原始数据类型作为 `source` 的时候，字符串会以数组形式，拷贝入目标对象，数字和布尔值则没有效果，这是因为只有字 符串的包装对象，会产生可枚举属性。
 
 ```javascript
-var v1 = 'abc';
-var v2 = true;
-var v3 = 10;
-var obj = Object.assign({}, v1, v2, v3);
-console.log(obj); // { "0": "a", "1": "b", "2": "c" }
+var v1 = 'abc'
+var v2 = true
+var v3 = 10
+var obj = Object.assign({}, v1, v2, v3)
+console.log(obj) // { "0": "a", "1": "b", "2": "c" }
 ```
 
 ## Object.create()
@@ -180,12 +177,13 @@ console.log(obj); // { "0": "a", "1": "b", "2": "c" }
 用 `Object.create()` 也可以实现对象的浅拷贝。主要是结合对象的属性类型和赋值特性，主要是配合 `Object.getOwnPropertyDescriptors()` 方法获取要拷贝的对象的属性。
 
 ```javascript
-const clone = Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
+const clone = Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj))
 // 或者
-const shallowClone = obj => Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
+const shallowClone = (obj) =>
+  Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj))
 ```
 
-当然其实直接用 `Object.create(source)` 也可以实现 `拷贝`，我们可以通过访问原型访问到对应的属性，并且如果我们如果给属性赋值，不会影响到原型，具体可以参考另一篇文章：[JavaScript对象属性类型和赋值细节](https://www.clloz.com/programming/front-end/js/2020/09/09/javascript-object-prop-assign/#i-8 "JavaScript对象属性类型和赋值细节")。当然这不算传统意义上的 **拷贝**，并且对访问器属性无效。
+当然其实直接用 `Object.create(source)` 也可以实现 `拷贝`，我们可以通过访问原型访问到对应的属性，并且如果我们如果给属性赋值，不会影响到原型，具体可以参考另一篇文章：[JavaScript对象属性类型和赋值细节](https://www.clloz.com/programming/front-end/js/2020/09/09/javascript-object-prop-assign/#i-8 'JavaScript对象属性类型和赋值细节')。当然这不算传统意义上的 **拷贝**，并且对访问器属性无效。
 
 ## 遍历
 
@@ -193,13 +191,13 @@ const shallowClone = obj => Object.create(Object.getPrototypeOf(obj), Object.get
 
 ```javascript
 function shallowClone(source) {
-    var target = {};
-    for(var i in source) {
-        if (source.hasOwnProperty(i)) {
-            target[i] = source[i];
-        }
+  var target = {}
+  for (var i in source) {
+    if (source.hasOwnProperty(i)) {
+      target[i] = source[i]
     }
-    return target;
+  }
+  return target
 }
 ```
 
@@ -287,81 +285,81 @@ console.log(a.arr === testObj.arr) //false
 ```javascript
 //创建一个指定深度和宽度的对象
 function createData(deep, breadth) {
-    var data = {};
-    var temp = data;
+  var data = {}
+  var temp = data
 
-    for (var i = 0; i < deep; i++) {
-        temp = temp['data'] = {};
-        for (var j = 0; j < breadth; j++) {
-            temp[j] = j;
-        }
+  for (var i = 0; i < deep; i++) {
+    temp = temp['data'] = {}
+    for (var j = 0; j < breadth; j++) {
+      temp[j] = j
     }
+  }
 
-    return data;
+  return data
 }
 function clone(source) {
-    var target = {};
-    for (var i in source) {
-        if (source.hasOwnProperty(i)) {
-            if (typeof source[i] === 'object') {
-                target[i] = clone(source[i]); // 注意这里
-            } else {
-                target[i] = source[i];
-            }
-        }
+  var target = {}
+  for (var i in source) {
+    if (source.hasOwnProperty(i)) {
+      if (typeof source[i] === 'object') {
+        target[i] = clone(source[i]) // 注意这里
+      } else {
+        target[i] = source[i]
+      }
     }
+  }
 
-    return target;
+  return target
 }
-clone(createData(1000)); // ok
-clone(createData(10000)); // Maximum call stack size exceeded
-clone(createData(10, 100000)); // ok 广度不会溢出
+clone(createData(1000)) // ok
+clone(createData(10000)) // Maximum call stack size exceeded
+clone(createData(10, 100000)) // ok 广度不会溢出
 ```
 
 解决的方案就是用循环代替递归，把横向的嵌套对象想象成一个纵向的树，然后用栈和循环来处理。开始将跟元素放入栈中，每次从栈中取一个节点进行拷贝，如果拷贝过程中遇到对象则放入栈中，循环从栈中取元素，知道栈空，则拷贝完毕。
 
 ```javascript
 function clone(obj) {
-    if (!isObject(obj)) return obj;
-    //创建一个新对象用来复制
-    let root = {};
+  if (!isObject(obj)) return obj
+  //创建一个新对象用来复制
+  let root = {}
 
-    //创建一个栈，栈中的第一个元素就是 root，不断从栈中取出元素，遍历元素的 data 中的属性复制到 parent 中
-    let stack = [
-        {
-            parent: root, //这里栈中第一个元素设置 key 为 undefined，用来判断是否是跟节点
-            key: undefined,
-            data: obj,
-        },
-    ];
-
-    while (stack.length) {
-        const node = stack.pop();
-        const parent = node.parent;
-        const key = node.key;
-        const data = node.data;
-
-        let res = parent;
-        if (key !== undefined) res = parent[key] = {};
-
-        for (let key in data) {
-            if (Object.prototype.hasOwnProperty.call(data, key)) {
-                if (isObject(data[key])) {
-                    stack.push({
-                        parent: res,
-                        key: key,
-                        data: data[key],
-                    });
-                } else {
-                    res[key] = data[key];
-                }
-            }
-        }
+  //创建一个栈，栈中的第一个元素就是 root，不断从栈中取出元素，遍历元素的 data 中的属性复制到 parent 中
+  let stack = [
+    {
+      parent: root, //这里栈中第一个元素设置 key 为 undefined，用来判断是否是跟节点
+      key: undefined,
+      data: obj
     }
+  ]
+
+  while (stack.length) {
+    const node = stack.pop()
+    const parent = node.parent
+    const key = node.key
+    const data = node.data
+
+    let res = parent
+    if (key !== undefined) res = parent[key] = {}
+
+    for (let key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        if (isObject(data[key])) {
+          stack.push({
+            parent: res,
+            key: key,
+            data: data[key]
+          })
+        } else {
+          res[key] = data[key]
+        }
+      }
+    }
+  }
 }
 
 function isObject(obj) {
-    return (typeof obj === 'function' || typeof obj === 'object') && obj !== null;
+  return (typeof obj === 'function' || typeof obj === 'object') && obj !== null
 }
 ```
 
@@ -374,35 +372,34 @@ function isObject(obj) {
 如果你用了 `lodash` 的 `baseClone` 会发现它的执行不会报错，因为它用栈来保存克隆的对象，用来检测循环引用。
 
 ```javascript
-  // Check for circular references and return its corresponding clone.
-  stack || (stack = new Stack)
-  const stacked = stack.get(value)
-  if (stacked) {
-    return stacked
-  }
+// Check for circular references and return its corresponding clone.
+stack || (stack = new Stack())
+const stacked = stack.get(value)
+if (stacked) {
+  return stacked
+}
 ```
 
 我这里写了一个简单的实现，用一个 `WeakMap` 来保存嵌套的对象，每进入一层对象就在 `Set` 中保存起来，每次要递归之前，检测该对象是否已在 `Set` 中，如果不在才进行递归。每次递归完一个对象时，将该对象从 `set` 中删除。
 
 ```javascript
 function cloneDeep3(source, hash = new WeakMap()) {
+  if (!isObject(source)) return source
+  if (hash.has(source)) return hash.get(source) //查询该对象是否在 WeakMap 中
 
-    if (!isObject(source)) return source; 
-    if (hash.has(source)) return hash.get(source); //查询该对象是否在 WeakMap 中
+  var target = Array.isArray(source) ? [] : {}
+  hash.set(source, target) // 注意这里的键名是源对象中的对象，键值是新对象中的
 
-    var target = Array.isArray(source) ? [] : {};
-    hash.set(source, target); // 注意这里的键名是源对象中的对象，键值是新对象中的
-
-    for(var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-            if (isObject(source[key])) {
-                target[key] = cloneDeep3(source[key], hash); // 新增代码，传入哈希表
-            } else {
-                target[key] = source[key];
-            }
-        }
+  for (var key in source) {
+    if (Object.prototype.hasOwnProperty.call(source, key)) {
+      if (isObject(source[key])) {
+        target[key] = cloneDeep3(source[key], hash) // 新增代码，传入哈希表
+      } else {
+        target[key] = source[key]
+      }
     }
-    return target;
+  }
+  return target
 }
 ```
 
@@ -410,49 +407,48 @@ function cloneDeep3(source, hash = new WeakMap()) {
 
 ```javascript
 function cloneDeep3(source, uniqueList) {
-    if (!isObject(source)) return source;
-    if (!uniqueList) uniqueList = []; // 新增代码，初始化数组
+  if (!isObject(source)) return source
+  if (!uniqueList) uniqueList = [] // 新增代码，初始化数组
 
-    var target = Array.isArray(source) ? [] : {};
+  var target = Array.isArray(source) ? [] : {}
 
-    // ============= 新增代码
-    // 数据已经存在，返回保存的数据
-    var uniqueData = find(uniqueList, source);
-    if (uniqueData) {
-        return uniqueData.target;
+  // ============= 新增代码
+  // 数据已经存在，返回保存的数据
+  var uniqueData = find(uniqueList, source)
+  if (uniqueData) {
+    return uniqueData.target
+  }
+
+  // 数据不存在，保存源数据，以及对应的引用
+  uniqueList.push({
+    source: source,
+    target: target
+  })
+  // =============
+
+  for (var key in source) {
+    if (Object.prototype.hasOwnProperty.call(source, key)) {
+      if (isObject(source[key])) {
+        target[key] = cloneDeep3(source[key], uniqueList) // 新增代码，传入数组
+      } else {
+        target[key] = source[key]
+      }
     }
-
-    // 数据不存在，保存源数据，以及对应的引用
-    uniqueList.push({
-        source: source,
-        target: target,
-    });
-    // =============
-
-    for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-            if (isObject(source[key])) {
-                target[key] = cloneDeep3(source[key], uniqueList); // 新增代码，传入数组
-            } else {
-                target[key] = source[key];
-            }
-        }
-    }
-    return target;
+  }
+  return target
 }
 
 // 新增方法，用于查找
 function find(arr, item) {
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i].source === item) {
-            return arr[i];
-        }
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i].source === item) {
+      return arr[i]
     }
-    return null;
+  }
+  return null
 }
 
 // 用上面测试用例已测试通过
-
 ```
 
 ## JSON 序列化和反序列化
@@ -465,7 +461,7 @@ function find(arr, item) {
 
 ## 第三方库
 
-`jQuery.extend`, [baseClone -lodash](https://github.com/lodash/lodash/blob/master/.internal/baseClone.js "baseClone -lodash")，还有 `lodash`自定义深拷贝方法 [cloneDeepWith](https://lodash.com/docs/4.17.15#cloneDeepWith "cloneDeepWith")。有兴趣可以去阅读以下源码。
+`jQuery.extend`, [baseClone -lodash](https://github.com/lodash/lodash/blob/master/.internal/baseClone.js 'baseClone -lodash')，还有 `lodash`自定义深拷贝方法 [cloneDeepWith](https://lodash.com/docs/4.17.15#cloneDeepWith 'cloneDeepWith')。有兴趣可以去阅读以下源码。
 
 ## Symbol
 
@@ -473,17 +469,17 @@ function find(arr, item) {
 
 ```javascript
 function deepClone(obj) {
-    if (!isObject(obj)) {
-        throw new Error('obj 不是一个对象！')
-    }
+  if (!isObject(obj)) {
+    throw new Error('obj 不是一个对象！')
+  }
 
-    let isArray = Array.isArray(obj)
-    let newObj = isArray ? [...obj] : { ...obj }
-    Reflect.ownKeys(newObj).forEach(key => {
-        newObj[key] = isObject(obj[key]) ? deepClone(obj[key]) : obj[key]
-    })
+  let isArray = Array.isArray(obj)
+  let newObj = isArray ? [...obj] : { ...obj }
+  Reflect.ownKeys(newObj).forEach((key) => {
+    newObj[key] = isObject(obj[key]) ? deepClone(obj[key]) : obj[key]
+  })
 
-    return newObj
+  return newObj
 }
 ```
 
@@ -493,68 +489,72 @@ function deepClone(obj) {
 
 ```javascript
 let testObj = {
-    num: 0,
-    str: 'clloz',
-    boolean: true,
-    unf: undefined,
-    nul: null,
-    obj: {
-        name: 'clloz',
-        id: 1
-    },
-    arr: [0, 1, 2],
-    func: function() {
-        console.log('clloz')
-    },
-    date: new Date(0),
-    reg: new RegExp('/clloz/ig'),
-    err: new Error('clloz')
+  num: 0,
+  str: 'clloz',
+  boolean: true,
+  unf: undefined,
+  nul: null,
+  obj: {
+    name: 'clloz',
+    id: 1
+  },
+  arr: [0, 1, 2],
+  func: function () {
+    console.log('clloz')
+  },
+  date: new Date(0),
+  reg: new RegExp('/clloz/ig'),
+  err: new Error('clloz')
 }
 Object.defineProperty(testObj, 'test', {
-    value: {
-        name: 'clloz',
-        age: 28
-    },
-    writable: true,
-    enumerable: false,
-    configurable: true,
+  value: {
+    name: 'clloz',
+    age: 28
+  },
+  writable: true,
+  enumerable: false,
+  configurable: true
 })
 
 function isObject(obj) {
-    return (typeof obj === 'object') && obj !== null && obj instanceof RegExp !== true && obj instanceof Date !== true;
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    obj instanceof RegExp !== true &&
+    obj instanceof Date !== true
+  )
 }
 
 function deepClone(obj) {
-    if (!isObject(obj)) {
-        throw new Error('obj is not a Object!');
+  if (!isObject(obj)) {
+    throw new Error('obj is not a Object!')
+  }
+
+  let isArray = Array.isArray(obj)
+
+  let newObj = isArray ? [] : {}
+
+  let keys = Object.getOwnPropertyNames(obj)
+
+  for (let key of keys) {
+    if (isObject(Object.getOwnPropertyDescriptor(obj, key).value)) {
+      Object.defineProperty(newObj, key, {
+        value: deepClone(obj[key]),
+        configurable: Object.getOwnPropertyDescriptor(obj, key).configurable,
+        enumerable: Object.getOwnPropertyDescriptor(obj, key).enumerable,
+        writable: Object.getOwnPropertyDescriptor(obj, key).writable
+      })
+    } else {
+      Object.defineProperty(newObj, key, Object.getOwnPropertyDescriptor(obj, key))
     }
-
-    let isArray = Array.isArray(obj);
-
-    let newObj = isArray ? [] : {};
-
-    let keys = Object.getOwnPropertyNames(obj);
-
-    for (let key of keys) {
-        if (isObject(Object.getOwnPropertyDescriptor(obj, key).value)) {
-            Object.defineProperty(newObj, key, {
-                value: deepClone(obj[key]),
-                configurable: Object.getOwnPropertyDescriptor(obj, key).configurable,
-                enumerable: Object.getOwnPropertyDescriptor(obj, key).enumerable,
-                writable: Object.getOwnPropertyDescriptor(obj, key).writable,
-            })
-        } else {
-            Object.defineProperty(newObj, key, Object.getOwnPropertyDescriptor(obj, key))
-        }
-    }
-    return newObj;
+  }
+  return newObj
 }
 
 let a = deepClone(testObj)
 console.log(Object.getOwnPropertyDescriptors(a))
 console.log(a.obj === testObj.obj) //false
 console.log(a.arr === testObj.arr) //false
-
 ```
 
 这个实现在加上 `Symbol`的处理，循环引用的处理基本就可以应对大多数情况了。如果你还想增加对原型的支持，那么可以在创建对象的时候用 `Object.create()`。
@@ -573,10 +573,10 @@ console.log(a.arr === testObj.arr) //false
 
 ## 参考文章
 
-1. [JS数据类型和内存堆栈](https://segmentfault.com/a/1190000015830451 "JS数据类型和内存堆栈")
-2. [JS的栈与堆的讲解](https://blog.csdn.net/jingtian678/article/details/83902819 "JS的栈与堆的讲解")
-3. [Object.getOwnPropertyDescriptors() - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors "Object.getOwnPropertyDescriptors() - MDN")
-4. [Object.assign() - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/assign "Object.assign() - MDN")
-5. [深入深入在深入JS深拷贝对象](https://juejin.im/post/6844903592587952135#heading-6 "深入深入在深入JS深拷贝对象")
-6. [面试题之如何实现一个深拷贝](https://github.com/yygmind/blog/issues/29 "面试题之如何实现一个深拷贝")
-7. [深拷贝的终极探索（99%的人都不知道）](https://segmentfault.com/a/1190000016672263 "深拷贝的终极探索（99%的人都不知道）")
+1. [JS数据类型和内存堆栈](https://segmentfault.com/a/1190000015830451 'JS数据类型和内存堆栈')
+2. [JS的栈与堆的讲解](https://blog.csdn.net/jingtian678/article/details/83902819 'JS的栈与堆的讲解')
+3. [Object.getOwnPropertyDescriptors() - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors 'Object.getOwnPropertyDescriptors() - MDN')
+4. [Object.assign() - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/assign 'Object.assign() - MDN')
+5. [深入深入在深入JS深拷贝对象](https://juejin.im/post/6844903592587952135#heading-6 '深入深入在深入JS深拷贝对象')
+6. [面试题之如何实现一个深拷贝](https://github.com/yygmind/blog/issues/29 '面试题之如何实现一个深拷贝')
+7. [深拷贝的终极探索（99%的人都不知道）](https://segmentfault.com/a/1190000016672263 '深拷贝的终极探索（99%的人都不知道）')

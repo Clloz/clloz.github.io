@@ -9,8 +9,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 几个星期前我们开始了旨在深度挖掘 `JavaScript` 以及它是如何工作的系列文章，我们相信通过了解 `JavaScript` 的底层构建模块以及它们是如何工作的能够帮助我们写出更好的代码和应用。
 
 第一篇文章主要关注的是引擎，运行时 `runtime` 和调用栈的概述。第二篇文章将深入剖析谷歌 `V8` 引擎的内部，我们还提供了一些关于如何编写更好的 `JavaScript` 代码的快速技巧 —— 我们 `SessionStack` 开发团队在开发产品的时候遵循的最佳实践。
@@ -21,21 +19,21 @@ language: '中文'
 
 下面是一些流行的实现 `JavaScript` 引擎的项目：
 
-- [V8](https://en.wikipedia.org/wiki/V8_%28JavaScript_engine%29 "V8") — 由 Google 开发，使用 C++ 编写的开源引擎
-- [Rhino](https://en.wikipedia.org/wiki/Rhino_%28JavaScript_engine%29 "Rhino") — 由 Mozilla 基金会管理，完全使用 Java 开发的开源引擎
-- [SpiderMonkey](https://en.wikipedia.org/wiki/SpiderMonkey_%28JavaScript_engine%29 "SpiderMonkey") — 第一个 JavaScript 引擎，在当时支持了 Netscape Navigator，现在是 Firefox 的引擎
-- [JavaScriptCore](https://en.wikipedia.org/wiki/JavaScriptCore "JavaScriptCore") — 由苹果公司为 Safari 浏览器开发，并以 Nitro 的名字推广的开源引擎。
-- [KJS](https://en.wikipedia.org/wiki/KJS_%28KDE%29 "KJS ") — KDE 的引擎，最初是由 Harri Porten 为 KDE 项目的 Konqueror 网络浏览器开发
-- [Chakra](https://en.wikipedia.org/wiki/Chakra_%28JScript_engine%29 "Chakra") (JScript9) — IE 引擎
-- [Chakra](https://en.wikipedia.org/wiki/Chakra_%28JavaScript_engine%29 "Chakra") (JavaScript) — 微软 Edge 的引擎
-- [Nashorn](https://en.wikipedia.org/wiki/Nashorn_%28JavaScript_engine%29 "Nashorn") — 开源引擎，由 Oracle 的 Java 语言工具组开发，是 OpenJDK 的一部分
-- [JerryScript](https://en.wikipedia.org/wiki/JerryScript "JerryScript") — 这是物联网的一个轻量级引擎
+- [V8](https://en.wikipedia.org/wiki/V8_%28JavaScript_engine%29 'V8') — 由 Google 开发，使用 C++ 编写的开源引擎
+- [Rhino](https://en.wikipedia.org/wiki/Rhino_%28JavaScript_engine%29 'Rhino') — 由 Mozilla 基金会管理，完全使用 Java 开发的开源引擎
+- [SpiderMonkey](https://en.wikipedia.org/wiki/SpiderMonkey_%28JavaScript_engine%29 'SpiderMonkey') — 第一个 JavaScript 引擎，在当时支持了 Netscape Navigator，现在是 Firefox 的引擎
+- [JavaScriptCore](https://en.wikipedia.org/wiki/JavaScriptCore 'JavaScriptCore') — 由苹果公司为 Safari 浏览器开发，并以 Nitro 的名字推广的开源引擎。
+- [KJS](https://en.wikipedia.org/wiki/KJS_%28KDE%29 'KJS ') — KDE 的引擎，最初是由 Harri Porten 为 KDE 项目的 Konqueror 网络浏览器开发
+- [Chakra](https://en.wikipedia.org/wiki/Chakra_%28JScript_engine%29 'Chakra') (JScript9) — IE 引擎
+- [Chakra](https://en.wikipedia.org/wiki/Chakra_%28JavaScript_engine%29 'Chakra') (JavaScript) — 微软 Edge 的引擎
+- [Nashorn](https://en.wikipedia.org/wiki/Nashorn_%28JavaScript_engine%29 'Nashorn') — 开源引擎，由 Oracle 的 Java 语言工具组开发，是 OpenJDK 的一部分
+- [JerryScript](https://en.wikipedia.org/wiki/JerryScript 'JerryScript') — 这是物联网的一个轻量级引擎
 
 ## 为什么要创建 `V8` 引擎
 
 由谷歌创建的 `V8` 引擎是一款用 `C++` 开发的开源引擎，这款引擎被用在了谷歌的 `Chrome` 浏览器中。但是不同于其他引擎的是，`V8` 引擎同样被用到了非常流行的 `Node.js` 中。
 
-![v8](./images/v8.png "v8")
+![v8](./images/v8.png 'v8')
 
 最穿创建 `V8` 引擎是为了提高浏览器执行 `JavaScript` 的性能。为了获得更快的速度，`V8` 并没有使用解释器而是将 `JavaScript` 代码编译成了更有效率的机器码。它就像 `SpiderMonkey` 或者 `Rhino` (`Mozilla`) 等许多现代 `JavaScript` 引擎一样，通过运用即时编译器（ `Just-In-Time Complier` ）将 `JavaScript` 代码编译为机器码。而这之中最主要的区别就是 `V8` 不生成字节码或者任何中间代码。
 
@@ -63,53 +61,53 @@ language: '中文'
 
 优化的第一步是尽可能多地提前嵌入代码。代码嵌入就是把调用函数的地方（函数被调用的行）用调用函数的函数体替换的过程。这简单的一步会使接下来的优化更有用。
 
-![inlining](./images/inlining.png "inlining")
+![inlining](./images/inlining.png 'inlining')
 
 ## 隐藏类 `Hidden Classes`
 
 `JavaScript` 是基于原型的语言：没有类或者对象是通过克隆的方法创建的。同时 `JavaScript` 也是一门动态的编程语言，这意味着为一个实例化的对象添加或删除属性是非常容易的。
 
-大多数 `JavaScript` 解释器使用类似字典的结构 (基于[散列函数](http://en.wikipedia.org/wiki/Hash_function "散列函数")) 去存储对象属性值在内存中的位置。这种结构使得在 `JavaScript` 中检索一个属性值比在像 `Java` 或者 `C#` 这种非动态语言中计算量大得多。在 `Java` 中, 编译之前所有的属性值以一种固定的对象布局确定下来了，并且在运行时不能动态的增加或者删除 (当然，`C#` 也有 动态类型，但这是另外一个话题了)。因此，属性值 (或者说指向这些属性的指针) 能够以连续的 `buffer` 存储在内存中，并且每个值之间有一个固定的偏移量。根据属性类型可以很容易地确定偏移量的长度，而在 `JavaScript` 中这是不可能的，因为属性类型可以在运行时更改。
+大多数 `JavaScript` 解释器使用类似字典的结构 (基于[散列函数](http://en.wikipedia.org/wiki/Hash_function '散列函数')) 去存储对象属性值在内存中的位置。这种结构使得在 `JavaScript` 中检索一个属性值比在像 `Java` 或者 `C#` 这种非动态语言中计算量大得多。在 `Java` 中, 编译之前所有的属性值以一种固定的对象布局确定下来了，并且在运行时不能动态的增加或者删除 (当然，`C#` 也有 动态类型，但这是另外一个话题了)。因此，属性值 (或者说指向这些属性的指针) 能够以连续的 `buffer` 存储在内存中，并且每个值之间有一个固定的偏移量。根据属性类型可以很容易地确定偏移量的长度，而在 `JavaScript` 中这是不可能的，因为属性类型可以在运行时更改。
 
 因为用字典的方式在内存中查找对象属性值的方法效率非常低，所以 `V8` 使用了一个不同的方法：隐藏类（ `Hidden classes` ）。隐藏类的工作方式和 `Java` 中的固定对象布局（类）类似，除了它是在运行时 `runtime` 创建的。现在，让我们来看看他们实际的样子：
 
 ```javascript
 function Point(x, y) {
-    this.x = x;
-    this.y = y;
+  this.x = x
+  this.y = y
 }
-var p1 = new Point(1, 2);
+var p1 = new Point(1, 2)
 ```
 
 一旦 `new Point(1, 2)` 被调用， `V8` 会创建一个隐藏类叫做 `C0`。
 
-![hidden-class](./images/hidden-class.png "hidden-class")
+![hidden-class](./images/hidden-class.png 'hidden-class')
 
 由于`Point` 还没有被定义任何属性，所以 `C0` 是空的。
 
-只要第一条语句被执行 `this.x = x`（在 `Point` 函数内），`V8` 将会基于 `C0` 创建第二个隐藏类叫做 `C1`。`C1` 描述了 `x` 属性在内存中的位置（相对于对象指针）。在这个例子中，`x`被保存在[偏移量](http://en.wikipedia.org/wiki/Offset_%28computer_science%29 "偏移量")为 `0` 的位置。这意味着当把一个 `point` 对象看作内存中的连续 `buffer` 时，第一个偏移量对应的就是 `x` 属性。`V8` 也会使用类转换来更新 `C0`，当 `x` 属性被添加到一个 `point` 对象中的时候，隐藏类就从 `C0` 切换到 `c1`，此时 `point` 对象的隐藏类就是 `c1` 了。
+只要第一条语句被执行 `this.x = x`（在 `Point` 函数内），`V8` 将会基于 `C0` 创建第二个隐藏类叫做 `C1`。`C1` 描述了 `x` 属性在内存中的位置（相对于对象指针）。在这个例子中，`x`被保存在[偏移量](http://en.wikipedia.org/wiki/Offset_%28computer_science%29 '偏移量')为 `0` 的位置。这意味着当把一个 `point` 对象看作内存中的连续 `buffer` 时，第一个偏移量对应的就是 `x` 属性。`V8` 也会使用类转换来更新 `C0`，当 `x` 属性被添加到一个 `point` 对象中的时候，隐藏类就从 `C0` 切换到 `c1`，此时 `point` 对象的隐藏类就是 `c1` 了。
 
-![hidden-class2](./images/hidden-class2.png "hidden-class2")
+![hidden-class2](./images/hidden-class2.png 'hidden-class2')
 
 每当一个新属性添加到对象，老的隐藏类就会通过一个转换路径更新成一个新的隐藏类。隐藏类转换非常重要，因为它们允许以相同方法创建的对象共享隐藏类。如果两个对象共享一个隐藏类，并给它们添加相同的属性，隐藏类转换能够确保这两个对象都获得新的隐藏类以及与之相关联的优化代码。
 
 当执行语句 `this.y = y` (同样，在 `Point` 函数内部，`this.x = x` 语句之后) 时，将重复此过程。一个新的隐藏类 `C2` 被创建了，如果属性 `y` 被添加到 `Point` 对象(已经包含了 `x` 属性)，同样的过程，类型转换被添加到 `C1` 上，然后隐藏类开始更新成 `C2`，并且 `Point` 对象的隐藏类就要更新成 `C2` 了。
 
-![hidden-class-3](./images/hidden-class3.png "hidden-class-3")
+![hidden-class-3](./images/hidden-class3.png 'hidden-class-3')
 
 隐藏类的转换是根据属性添加到对象上的顺序来进行的，看看下面这段代码：
 
 ```javascript
 function Point(x, y) {
-    this.x = x;
-    this.y = y;
+  this.x = x
+  this.y = y
 }
-var p1 = new Point(1, 2);
-p1.a = 5;
-p1.b = 6;
-var p2 = new Point(3, 4);
-p2.b = 7;
-p2.a = 8;
+var p1 = new Point(1, 2)
+p1.a = 5
+p1.b = 6
+var p2 = new Point(3, 4)
+p2.b = 7
+p2.a = 8
 ```
 
 现在你可能认为 `p1` 和 `p2` 使用相同的隐藏类和转换。事实上并不是，对于 `p1` 来说首先是 `a` 属性被添加然后是 `b` 属性。对于 `p2` 来说，首先分配 `b`， 然后才是 `a`。因此，`p1` 和 `p2` 会以不同的隐藏类和转化路径来执行。从这个例子中我们可以看出，以相同的顺序来初始化动态属性是更好的，因为这样隐藏类可以复用。
@@ -118,7 +116,7 @@ p2.a = 8;
 
 ## 内联缓存 `inline caching`
 
-`V8` 还利用了另一种叫做内联缓存的技术来优化动态语言。内联缓存依赖于一个现象：同一个方法的重复调用是发生在相同类型的对象上的。关于内联缓存更深层次的解读请看[这里](https://github.com/sq/JSIL/wiki/Optimizing-dynamic-JavaScript-with-inline-caches "这里")。
+`V8` 还利用了另一种叫做内联缓存的技术来优化动态语言。内联缓存依赖于一个现象：同一个方法的重复调用是发生在相同类型的对象上的。关于内联缓存更深层次的解读请看[这里](https://github.com/sq/JSIL/wiki/Optimizing-dynamic-JavaScript-with-inline-caches '这里')。
 
 我们来大致了解一下内联缓存的基本概念 (如果你没有时间去阅读上面的深层次的解读)。
 

@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 我们在前端开发当中经常使用 `font-awesome` 和`iconfont` 等字体图标，今天来说一说字体图标的原理。
@@ -25,26 +23,37 @@ language: '中文'
 我们目前接触的字体图标包括 `iconfont` `fontAwesom`都是这样的原理，用 `font-face` 引入自定义的字体文件，然后对要应用字体的元素约束自定义的 `font-family`，最后用伪元素 `:before` 的 `content` 来给定元素的 `unicode` 码来设置对应的图标，其实如果我们不用伪元素，直接在元素中输入字符 `unicode` 码对应的HTML实体（ `HTML entity` ）也可以实现效果，`<span class="iconfont icon-alipay"></span>` 也可以写成 `<span class="iconfont"></span>`,效果一样。
 
 ```css
-@font-face {font-family: "iconfont";
+@font-face {
+  font-family: 'iconfont';
   src: url('//at.alicdn.com/t/font_958524_6v80ih0o45k.eot?t=1544418917327'); /* IE9*/
-  src: url('//at.alicdn.com/t/font_958524_6v80ih0o45k.eot?t=1544418917327#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//at.alicdn.com/t/font_958524_6v80ih0o45k.ttf?t=1544418917327') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('//at.alicdn.com/t/font_958524_6v80ih0o45k.svg?t=1544418917327#iconfont') format('svg'); /* iOS 4.1- */
+  src:
+    url('//at.alicdn.com/t/font_958524_6v80ih0o45k.eot?t=1544418917327#iefix')
+      format('embedded-opentype'),
+    /* IE6-IE8 */ url('//at.alicdn.com/t/font_958524_6v80ih0o45k.ttf?t=1544418917327')
+      format('truetype'),
+    /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+      url('//at.alicdn.com/t/font_958524_6v80ih0o45k.svg?t=1544418917327#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
-  font-family:"iconfont" !important;
-  font-size:16px;
-  font-style:normal;
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-alipay:before { content: "\e63b"; }
+.icon-alipay:before {
+  content: '\e63b';
+}
 
-.icon-wechat:before { content: "\e658"; }
+.icon-wechat:before {
+  content: '\e658';
+}
 
-.icon-qq:before { content: "\e603"; }
+.icon-qq:before {
+  content: '\e603';
+}
 ```
 
 ## 其他实现方法

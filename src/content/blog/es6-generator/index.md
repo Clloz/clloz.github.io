@@ -6,10 +6,8 @@ tags:
   - js
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -29,10 +27,10 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ```javascript
 function* demo() {
-    console.log('Hello' + yield); // SyntaxError 
+    console.log('Hello' + yield); // SyntaxError
     console.log('Hello' + yield 123); // SyntaxError
     console.log('Hello' + (yield)); // OK
-    console.log('Hello' + (yield 123)); // OK 
+    console.log('Hello' + (yield 123)); // OK
 }
 ```
 
@@ -42,13 +40,13 @@ function* demo() {
 
 ## Generator 对象
 
-`Generator` 对象也是 `JavaScript` 的一个内置对象，它由生成器函数 `generator function` 执行后生成，我们不能像其他内置对象一样，直接访问到 `Generator` ，它是一个生成器对象，同时也是一个符合可迭代协议和迭代协议的迭代器（可以参考 [ES6 迭代器 Iterator](https://www.clloz.com/programming/front-end/js/2020/10/31/es6-iterator/ "ES6 迭代器 Iterator")）。注意的是生成器函数不是构造函数，所以不能进行 `new` 调用。
+`Generator` 对象也是 `JavaScript` 的一个内置对象，它由生成器函数 `generator function` 执行后生成，我们不能像其他内置对象一样，直接访问到 `Generator` ，它是一个生成器对象，同时也是一个符合可迭代协议和迭代协议的迭代器（可以参考 [ES6 迭代器 Iterator](https://www.clloz.com/programming/front-end/js/2020/10/31/es6-iterator/ 'ES6 迭代器 Iterator')）。注意的是生成器函数不是构造函数，所以不能进行 `new` 调用。
 
 ```javascript
-let gen = function* () {};
-let g = gen();
-console.log(g[Symbol.iterator]() === g); //true
-console.log(typeof g.next); //function
+let gen = function* () {}
+let g = gen()
+console.log(g[Symbol.iterator]() === g) //true
+console.log(typeof g.next) //function
 ```
 
 ## Generator.prototype.next()
@@ -59,57 +57,57 @@ console.log(typeof g.next); //function
 
 ```javascript
 function* f() {
-    for (var i = 0; true; i++) {
-        var reset = yield i;
-        if (reset) {
-            i = -1;
-        }
+  for (var i = 0; true; i++) {
+    var reset = yield i
+    if (reset) {
+      i = -1
     }
+  }
 }
-var g = f();
-g.next();
-g.next();
-g.next(true);
+var g = f()
+g.next()
+g.next()
+g.next(true)
 ```
 
 这个生成器可以随着 `i` 无限执行。但是让我们用 `next` 向内传入一个 `true` 就可以中断执行。`next` 传入参数这个机制，让我们可以在生成器外部更好的控制函数执行的逻辑。再来看一个更有趣的例子：
 
 ```javascript
 function* dataConsumer() {
-    console.log('Started');
-    console.log(`1. ${yield}`);
-    console.log(`2. ${yield}`);
-    return 'result';
+  console.log('Started')
+  console.log(`1. ${yield}`)
+  console.log(`2. ${yield}`)
+  return 'result'
 }
-let genObj = dataConsumer();
-genObj.next();
+let genObj = dataConsumer()
+genObj.next()
 // Started
-genObj.next('a');
+genObj.next('a')
 // 1. a
-genObj.next('b'); // 2. b
+genObj.next('b') // 2. b
 ```
 
 这个例子更直观，我们直接用 `console.log` 配合模版字符串，直接输出 `yield`。如果我们不在 `next` 中传入参数的话，输出将会是 `undefined`。注意，由于 `next` 传入的参数是上一个 `yield` 表达式的返回值，所以第一次执行 `next` 传入参数是没意义的，因为第一次执行 `next` 只是启动函数执行到第一个 `yield`。如果你想要实现第一次 `next` 就能传入值，可以用一个函数包装生成器函数，然后在内部完成函数的启动即可。
 
 ```javascript
 function* dataConsumer() {
-    console.log('Started');
-    console.log(`1. ${yield}`);
-    console.log(`2. ${yield}`);
-    return 'result';
+  console.log('Started')
+  console.log(`1. ${yield}`)
+  console.log(`2. ${yield}`)
+  return 'result'
 }
 
 function wrapper(gen) {
-    return function (...args) {
-        let g = gen(...args);
-        g.next();
-        return g;
-    };
+  return function (...args) {
+    let g = gen(...args)
+    g.next()
+    return g
+  }
 }
 
-let wrapped = wrapper(dataConsumer);
-wrapped().next('hello');
-wrapped().next('world');
+let wrapped = wrapper(dataConsumer)
+wrapped().next('hello')
+wrapped().next('world')
 // Started
 // 1. hello
 // Started
@@ -122,15 +120,15 @@ wrapped().next('world');
 
 ```javascript
 function* foo() {
-    yield 1;
-    yield 2;
-    yield 3;
-    yield 4;
-    yield 5;
-    return 6;
+  yield 1
+  yield 2
+  yield 3
+  yield 4
+  yield 5
+  return 6
 }
 for (let v of foo()) {
-    console.log(v);
+  console.log(v)
 }
 // 1 2 3 4 5
 ```
@@ -139,15 +137,15 @@ for (let v of foo()) {
 
 ```javascript
 function* fibonacci() {
-    let [prev, curr] = [0, 1];
-    for (;;) {
-        [prev, curr] = [curr, prev + curr];
-        yield curr;
-    }
+  let [prev, curr] = [0, 1]
+  for (;;) {
+    ;[prev, curr] = [curr, prev + curr]
+    yield curr
+  }
 }
 for (let n of fibonacci()) {
-    if (n > 1000) break;
-    console.log(n);
+  if (n > 1000) break
+  console.log(n)
 }
 ```
 
@@ -159,21 +157,21 @@ for (let n of fibonacci()) {
 
 ```javascript
 var g = function* () {
-    try {
-        yield;
-    } catch (e) {
-        console.log('内部捕获', e);
-    }
-};
-var i = g();
-i.next();
+  try {
+    yield
+  } catch (e) {
+    console.log('内部捕获', e)
+  }
+}
+var i = g()
+i.next()
 try {
-    i.throw('a');
-    console.log(234); //成功输出
-    i.throw('b');
-    console.log(123); //不会执行
+  i.throw('a')
+  console.log(234) //成功输出
+  i.throw('b')
+  console.log(123) //不会执行
 } catch (e) {
-    console.log('外部捕获', e);
+  console.log('外部捕获', e)
 }
 // 内部捕获 a
 // 外部捕获 b
@@ -189,43 +187,43 @@ try {
 
 ```javascript
 function* gen() {
-    try {
-        yield 1;
-        yield 2;
-    } catch (e) {
-        console.log(e);
-        yield 'catch';
-    } finally {
-        yield 3;
-    }
-    yield 4;
+  try {
+    yield 1
+    yield 2
+  } catch (e) {
+    console.log(e)
+    yield 'catch'
+  } finally {
+    yield 3
+  }
+  yield 4
 }
-let g = gen();
+let g = gen()
 
-console.log(g.next()); //{ value: 1, done: false }
-console.log(g.throw(new Error('error'))); // 先抛错，然后执行到下一个 yield 在暂停返回 Error: error { value: 'catch', done: false }
-console.log(g.next()); //{ value: 3, done: false }
-console.log(g.next()); //{ value: 4, done: false }
-console.log(g.next()); //{ value: undefined, done: true }
+console.log(g.next()) //{ value: 1, done: false }
+console.log(g.throw(new Error('error'))) // 先抛错，然后执行到下一个 yield 在暂停返回 Error: error { value: 'catch', done: false }
+console.log(g.next()) //{ value: 3, done: false }
+console.log(g.next()) //{ value: 4, done: false }
+console.log(g.next()) //{ value: undefined, done: true }
 ```
 
 当然也不一定要我们手动进行执行 `throw` 方法，如果在 `next` 的过程中，内部代码抛错也能被正常捕获。
 
 ```javascript
 function* foo() {
-    var x = yield 3;
-    var y = x.toUpperCase();
-    yield y;
-    yield 1;
+  var x = yield 3
+  var y = x.toUpperCase()
+  yield y
+  yield 1
 }
-var it = foo();
-console.log(it.next()); // { value:3, done:false }
+var it = foo()
+console.log(it.next()) // { value:3, done:false }
 try {
-    console.log(it.next(42));
+  console.log(it.next(42))
 } catch (err) {
-    console.log(err); //TypeError: x.toUpperCase is not a function
+  console.log(err) //TypeError: x.toUpperCase is not a function
 }
-console.log(it.next()); //{ value: undefined, done: true }
+console.log(it.next()) //{ value: undefined, done: true }
 ```
 
 一旦内部的错误被外部捕获，那么这个生成器就不能再进行迭代了，也就是说内部的代码不会在执行了。再次调用 `next` 方法只会返回一个 `value` 为 `undefined`，`done` 为 `true` 的对象。
@@ -236,23 +234,22 @@ console.log(it.next()); //{ value: undefined, done: true }
 
 ```javascript
 function* numbers() {
-    yield 1;
-    try {
-        yield 2;
-        yield 3;
-    } finally {
-        yield 4;
-        yield 5;
-    }
-    yield 6;
+  yield 1
+  try {
+    yield 2
+    yield 3
+  } finally {
+    yield 4
+    yield 5
+  }
+  yield 6
 }
-var g = numbers();
-g.next(); // { value: 1, done: false }
-g.next(); // { value: 2, done: false }
-g.return(7); // { value: 4, done: false }
-g.next(); // { value: 5, done: false }
-g.next(); // { value: 7, done: true }
-
+var g = numbers()
+g.next() // { value: 1, done: false }
+g.next() // { value: 2, done: false }
+g.return(7) // { value: 4, done: false }
+g.next() // { value: 5, done: false }
+g.next() // { value: 7, done: true }
 ```
 
 ## yield\*
@@ -263,34 +260,34 @@ g.next(); // { value: 7, done: true }
 
 ```javascript
 function* foo() {
-    yield 'a';
-    yield 'b';
+  yield 'a'
+  yield 'b'
 }
 
 function* bar() {
-    yield 'x';
-    yield* foo();
-    yield 'y';
-}
-
-// 等同于
-function* bar() {
-    yield 'x';
-    yield 'a';
-    yield 'b';
-    yield 'y';
+  yield 'x'
+  yield* foo()
+  yield 'y'
 }
 
 // 等同于
 function* bar() {
-    yield 'x';
-    for (let v of foo()) {
-        yield v;
-    }
-    yield 'y';
+  yield 'x'
+  yield 'a'
+  yield 'b'
+  yield 'y'
+}
+
+// 等同于
+function* bar() {
+  yield 'x'
+  for (let v of foo()) {
+    yield v
+  }
+  yield 'y'
 }
 for (let v of bar()) {
-    console.log(v);
+  console.log(v)
 }
 // "x"
 // "a"
@@ -302,17 +299,17 @@ for (let v of bar()) {
 
 ```javascript
 function* concat(iter1, iter2) {
-    yield* iter1;
-    yield* iter2;
+  yield* iter1
+  yield* iter2
 }
 // 等同于
 function* concat(iter1, iter2) {
-    for (var value of iter1) {
-        yield value;
-    }
-    for (var value of iter2) {
-        yield value;
-    }
+  for (var value of iter1) {
+    yield value
+  }
+  for (var value of iter2) {
+    yield value
+  }
 }
 ```
 
@@ -320,22 +317,22 @@ function* concat(iter1, iter2) {
 
 ```javascript
 function* inner() {
-    yield 'hello!';
+  yield 'hello!'
 }
 function* outer1() {
-    yield 'open';
-    yield inner();
-    yield 'close';
+  yield 'open'
+  yield inner()
+  yield 'close'
 }
-var gen = outer1();
-let g;
-console.log(gen.next().value); // "open"
-console.log((g = gen.next().value)); // Object [Generator] {}
-console.log(gen.next().value); // "close"
+var gen = outer1()
+let g
+console.log(gen.next().value) // "open"
+console.log((g = gen.next().value)) // Object [Generator] {}
+console.log(gen.next().value) // "close"
 
-console.log(g.toString()); //object Generator
+console.log(g.toString()) //object Generator
 for (let c of g) {
-    console.log(c); //hello!
+  console.log(c) //hello!
 }
 ```
 
@@ -343,36 +340,36 @@ for (let c of g) {
 
 ```javascript
 let it = {
-    num: 0,
-    [Symbol.iterator]() {
-        return this;
-    },
-    next() {
-        if (this.num < 3) {
-            return {
-                value: this.num++,
-                done: false,
-            };
-        } else {
-            return {
-                value: 'clloz',
-                done: true,
-            };
-        }
-    },
-};
-
-function* gen() {
-    yield 'a';
-    console.log(yield* it); //表达式的返回值是 clloz
-    yield 'b';
-    yield 'c';
+  num: 0,
+  [Symbol.iterator]() {
+    return this
+  },
+  next() {
+    if (this.num < 3) {
+      return {
+        value: this.num++,
+        done: false
+      }
+    } else {
+      return {
+        value: 'clloz',
+        done: true
+      }
+    }
+  }
 }
 
-let g = gen();
+function* gen() {
+  yield 'a'
+  console.log(yield* it) //表达式的返回值是 clloz
+  yield 'b'
+  yield 'c'
+}
+
+let g = gen()
 
 for (let c of g) {
-    console.log(c);
+  console.log(c)
 }
 ```
 
@@ -384,11 +381,11 @@ for (let c of g) {
 
 ```javascript
 let obj = {
-    *myGeneratorMethod() {},
-};
+  *myGeneratorMethod() {}
+}
 let obj = {
-    myGeneratorMethod: function* () {},
-};
+  myGeneratorMethod: function* () {}
+}
 ```
 
 生成器函数不是一个构造函数，所以它不能进行 `new` 操作。执行生成器函数它总是返回生成器对象（也是一个迭代器），这个生成器对象是 `Generator` 对象的实例（我们不能直接访问 `Generator`），继承了 `Generator.prototype` 上的方法，`next`，`return` 和 `throw`，同时它也是生成器函数的实例，也继承了生成器函数原型上定义的方法。
@@ -396,47 +393,47 @@ let obj = {
 ```javascript
 function* g() {}
 g.prototype.hello = function () {
-    return 'hi!';
-};
-let obj = g();
-console.log(obj instanceof g); // true
-console.log(obj.hello()); // 'hi!'
+  return 'hi!'
+}
+let obj = g()
+console.log(obj instanceof g) // true
+console.log(obj.hello()) // 'hi!'
 ```
 
 由于不能进行 `new` 调用，所以生成器函数内的 `this` 就没有效果。想要让这个 `this` 生效我们可以利用 `call`。
 
 ```javascript
 function* F() {
-    this.a = 1;
-    yield (this.b = 2);
-    yield (this.c = 3);
+  this.a = 1
+  yield (this.b = 2)
+  yield (this.c = 3)
 }
-var obj = {};
-var f = F.call(obj);
-console.log(f.next()); // Object {value: 2, done: false}
-console.log(f.next()); // Object {value: 3, done: false}
-console.log(f.next()); // Object {value: undefined, done: true}
-console.log(obj.a); // 1 obj.b // 2 obj.c // 3
+var obj = {}
+var f = F.call(obj)
+console.log(f.next()) // Object {value: 2, done: false}
+console.log(f.next()) // Object {value: 3, done: false}
+console.log(f.next()) // Object {value: undefined, done: true}
+console.log(obj.a) // 1 obj.b // 2 obj.c // 3
 ```
 
 还可以进一步改造成一个可以用 `new` 调用的函数：
 
 ```javascript
 function* gen() {
-    this.a = 1;
-    yield (this.b = 2);
-    yield (this.c = 3);
+  this.a = 1
+  yield (this.b = 2)
+  yield (this.c = 3)
 }
 function F() {
-    return gen.call(gen.prototype);
+  return gen.call(gen.prototype)
 }
-var f = new F();
-console.log(f.next()); // Object {value: 2, done: false}
-console.log(f.next()); // Object {value: 3, done: false}
-console.log(f.next()); // Object {value: undefined, done: true}
-console.log(f.a); // 1
-console.log(f.b); // 2
-console.log(f.c); // 3
+var f = new F()
+console.log(f.next()) // Object {value: 2, done: false}
+console.log(f.next()) // Object {value: 3, done: false}
+console.log(f.next()) // Object {value: undefined, done: true}
+console.log(f.a) // 1
+console.log(f.b) // 2
+console.log(f.c) // 3
 ```
 
 这里其实就是利用的生成器函数 `gen` 生成的生成器是 `gen` 的实例，利用 `call` 将 `gen` 的 `this` 绑定到 `gen.prototype` 上（`this` 上的属性被设置到原型上），那么最后生成的生成器自然能通过原型链访问到对应的属性。
@@ -448,14 +445,13 @@ console.log(f.c); // 3
 生成器函数返回的是一个迭代器对象，所以我们可以将一个生成器函数作为对象的 `Symbol.iterator` 方法，就能让对象变为一个可迭代对象。
 
 ```javascript
-var myIterable = {};
+var myIterable = {}
 myIterable[Symbol.iterator] = function* () {
-    yield 1;
-    yield 2;
-    yield 3;
-};
-console.log([...myIterable]); // [1, 2, 3]
-
+  yield 1
+  yield 2
+  yield 3
+}
+console.log([...myIterable]) // [1, 2, 3]
 ```
 
 ## 生成器函数 和 yield 位置
@@ -464,18 +460,18 @@ console.log([...myIterable]); // [1, 2, 3]
 
 ```javascript
 function* demo() {
-    function foo(a, b) {
-        console.log('this is foo output: ' + a, b); //this is foo output: hello world
-    }
-    foo(yield 'a', yield 'b');
-    let input = yield '123';
-    console.log('this is input: ' + input); //this is input: clloz
+  function foo(a, b) {
+    console.log('this is foo output: ' + a, b) //this is foo output: hello world
+  }
+  foo(yield 'a', yield 'b')
+  let input = yield '123'
+  console.log('this is input: ' + input) //this is input: clloz
 }
-let g = demo();
-console.log(g.next()); //{ value: 'a', done: false }
-console.log(g.next('hello')); //{ value: 'b', done: false }
-console.log(g.next('world')); //{ value: '123', done: false }
-console.log(g.next('clloz')); //{ value: undefined, done: true }
+let g = demo()
+console.log(g.next()) //{ value: 'a', done: false }
+console.log(g.next('hello')) //{ value: 'b', done: false }
+console.log(g.next('world')) //{ value: '123', done: false }
+console.log(g.next('clloz')) //{ value: undefined, done: true }
 ```
 
 ## 转换普通对象为可迭代对象
@@ -484,14 +480,14 @@ console.log(g.next('clloz')); //{ value: undefined, done: true }
 
 ```javascript
 function* objectEntries(obj) {
-    let propKeys = Reflect.ownKeys(obj);
-    for (let propKey of propKeys) {
-        yield [propKey, obj[propKey]];
-    }
+  let propKeys = Reflect.ownKeys(obj)
+  for (let propKey of propKeys) {
+    yield [propKey, obj[propKey]]
+  }
 }
-let jane = { first: 'Jane', last: 'Doe' };
+let jane = { first: 'Jane', last: 'Doe' }
 for (let [key, value] of objectEntries(jane)) {
-    console.log(`${key}: ${value}`);
+  console.log(`${key}: ${value}`)
 }
 // first: Jane
 // last: Doe
@@ -501,15 +497,15 @@ for (let [key, value] of objectEntries(jane)) {
 
 ```javascript
 function* objectEntries() {
-    let propKeys = Object.getOwnPropertyNames(this);
-    for (let propKey of propKeys) {
-        yield [propKey, this[propKey]];
-    }
+  let propKeys = Object.getOwnPropertyNames(this)
+  for (let propKey of propKeys) {
+    yield [propKey, this[propKey]]
+  }
 }
-let jane = { first: 'Jane', last: 'Doe', [Symbol.iterator]: objectEntries };
+let jane = { first: 'Jane', last: 'Doe', [Symbol.iterator]: objectEntries }
 
 for (let [key, value] of jane) {
-    console.log(key, value);
+  console.log(key, value)
 }
 // first: Jane
 // last: Doe
@@ -521,17 +517,17 @@ for (let [key, value] of jane) {
 
 ```javascript
 function* iterTree(tree) {
-    if (Array.isArray(tree)) {
-        for (let i = 0; i < tree.length; i++) {
-            yield* iterTree(tree[i]);
-        }
-    } else {
-        yield tree;
+  if (Array.isArray(tree)) {
+    for (let i = 0; i < tree.length; i++) {
+      yield* iterTree(tree[i])
     }
+  } else {
+    yield tree
+  }
 }
-const tree = ['a', ['b', 'c'], ['d', 'e']];
+const tree = ['a', ['b', 'c'], ['d', 'e']]
 for (let x of iterTree(tree)) {
-    console.log(x);
+  console.log(x)
 }
 // a b c d e
 ```
@@ -540,33 +536,33 @@ for (let x of iterTree(tree)) {
 
 ```javascript
 function Tree(left, label, right) {
-    this.left = left;
-    this.label = label;
-    this.right = right;
+  this.left = left
+  this.label = label
+  this.right = right
 }
 // 下面是中序(inorder)遍历函数。
 // 由于返回的是一个遍历器，所以要用generator函数。
 // 函数体内采用递归算法，所以左树和右树要用yield*遍历
 function* inorder(t) {
-    if (t) {
-        yield* inorder(t.left);
-        yield t.label;
-        yield* inorder(t.right);
-    }
+  if (t) {
+    yield* inorder(t.left)
+    yield t.label
+    yield* inorder(t.right)
+  }
 }
 // 下面生成二叉树
 function make(array) {
-    // 判断是否为叶节点
-    if (array.length == 1) return new Tree(null, array[0], null);
-    return new Tree(make(array[0]), array[1], make(array[2]));
+  // 判断是否为叶节点
+  if (array.length == 1) return new Tree(null, array[0], null)
+  return new Tree(make(array[0]), array[1], make(array[2]))
 }
-let tree = make([[['a'], 'b', ['c']], 'd', [['e'], 'f', ['g']]]);
+let tree = make([[['a'], 'b', ['c']], 'd', [['e'], 'f', ['g']]])
 // 遍历二叉树
-var result = [];
+var result = []
 for (let node of inorder(tree)) {
-    result.push(node);
+  result.push(node)
 }
-console.log(result);
+console.log(result)
 // ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 ```
 

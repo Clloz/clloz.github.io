@@ -7,10 +7,8 @@ tags:
   - 实用技巧
   - 硬件设备
 language: '中文'
-heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './macos.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -22,11 +20,11 @@ heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
 
 接力的意思就是对支持接力的 `apple` 应用或者第三方应用可以跨设备继承之前的应用状态，比如你正在手机上用 `Chrome` 浏览一个网页，这个网页的移动端支持不是很好，这时候可以在 `mac` 的 `dock` 栏直接看到一个如下图的图标，点击以后会直接打开你当前正在手机上浏览的网页。
 
-![connect1](./images/continuity-to-connect1.png "connect1")
+![connect1](./images/continuity-to-connect1.png 'connect1')
 
 同样，在 `mac` 上使用的应用只要支持 `handoff` 同样可以在手机上打开。见下图中的红框，点击最下方的横条，就可以打开当前在 `mac` 上浏览的网页，不过奇怪的是我在 `mac` 上是使用 `Chrome` 浏览的，在 `iphone` 上却是用 `Safari` 打开。
 
-![connect2](./images/continuity-to-connect2.jpeg "connect2")
+![connect2](./images/continuity-to-connect2.jpeg 'connect2')
 
 ## 通用剪贴板
 
@@ -36,7 +34,7 @@ heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
 
 ## 用 mac 接听和拨打电话
 
-这个功能我一直都在使用，具体的使用条件查阅[在 Mac、iPad 或 iPod touch 上拨打和接听电话](https://support.apple.com/zh-cn/HT209456 "在 Mac、iPad 或 iPod touch 上拨打和接听电话")。
+这个功能我一直都在使用，具体的使用条件查阅[在 Mac、iPad 或 iPod touch 上拨打和接听电话](https://support.apple.com/zh-cn/HT209456 '在 Mac、iPad 或 iPod touch 上拨打和接听电话')。
 
 > 利用 `mac` 收发短信的方式也和电话类似。智能热点的使用方法也类似。
 
@@ -67,7 +65,7 @@ heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
 
 使用方法就是找到要标记的图片或 `pdf`，然后按下空格键以打开预览窗口。点按窗口顶部的标记按钮 。 然后从预览窗口顶部的标记工具栏中，点按注解按钮。此时`iphone` 或 `ipad` 上将打开标记窗口。然后我们就可以利用 `Apple Pencil` 或手指与速绘工具搭配使用，或点按加号 并使用标记工具添加文本、签名、放大镜或形状和箭头。
 
-![connect3](./images/continuity-to-connect3.png "connect3")
+![connect3](./images/continuity-to-connect3.png 'connect3')
 
 ## 隔空投送 Airdrop
 
@@ -77,10 +75,10 @@ heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
 
 `Catalina` 已经取消了 `itunes`，现在 `iphone` 直接显示在 `finder` 测侧边栏中，我们要在电脑和 `iphone` 间传输文件，可以选择用 `usb连接`，也可以选择通过无线局域网同步，后者显然更方便，只要在 `finder` 的 `iphone` 中钩上如下选项即可。然后我们就可以在上方的 `file` 选项中进行文件的传输。
 
-![connect4](./images/continuity-to-connect4.png "connect4")
+![connect4](./images/continuity-to-connect4.png 'connect4')
 
 ## 参考文章
 
-1. [使用“连续互通”连接 Mac、iPhone、iPad、iPod touch 和 Apple Watch](https://support.apple.com/zh-cn/HT204681 "使用“连续互通”连接 Mac、iPhone、iPad、iPod touch 和 Apple Watch")
-2. [在 iPhone 和电脑之间传输文件](https://support.apple.com/zh-cn/guide/iphone/iphf2d851b9/ios "在 iPhone 和电脑之间传输文件")
-3. [将 iPhone 与电脑同步](https://support.apple.com/zh-cn/guide/iphone/iph875319a3a/13.0/ios/13.0#ipha85600a9b "将 iPhone 与电脑同步")
+1. [使用“连续互通”连接 Mac、iPhone、iPad、iPod touch 和 Apple Watch](https://support.apple.com/zh-cn/HT204681 '使用“连续互通”连接 Mac、iPhone、iPad、iPod touch 和 Apple Watch')
+2. [在 iPhone 和电脑之间传输文件](https://support.apple.com/zh-cn/guide/iphone/iphf2d851b9/ios '在 iPhone 和电脑之间传输文件')
+3. [将 iPhone 与电脑同步](https://support.apple.com/zh-cn/guide/iphone/iph875319a3a/13.0/ios/13.0#ipha85600a9b '将 iPhone 与电脑同步')

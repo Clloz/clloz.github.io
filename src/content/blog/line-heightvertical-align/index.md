@@ -6,10 +6,8 @@ tags:
   - css
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './css.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -25,14 +23,13 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 
 1. `content area` ：就是顶线和底线之间包裹的区域，高度只和 `font` 有关,宽度就和字数有关，就理解为包裹文字的一个区域。
 
-> The height of the content area should be based on the font, but this specification does not specify how.
+   The height of the content area should be based on the font, but this specification does not specify how.
 
 2. 行高、行距：行高就是相邻的文本行之间的基线的距离，这个高度包括了 `content area` 和行距。 行距就是行高减去 `content area` 的高度。
-    
+
 3. `inline box` (行内框)：所有的行内元素都会生成看不见的行内框，就是标准中的 `inline box` ，我们无法看到他，它是在浏览器渲染中使用的，在不设置其他样式的情况下， `inline box` 的高度和 `content area` 高度是一样的。我们理解 `inline box` 的时候,其实可以不必太刻意，他也有高度。为了排版行内元素，`inline box` 和 `line box` 都是 `css` 来规定的，`inline box` 水平方向排列在 `line box` 里。`inline box` 的高度并不会受内部元素的影响，我们只要设置了 `line-height` ，那么这个行内框的高度就已经确定了，就像 `div` 一样，我们只要设置了一个 `div` 的高度，不管里面的内容多长，`div` 的高度也不会产生变化，内容超出了那就溢出了，`line box` 也是一样，当 `line-height` 小于内部的文字的高度，内部的文字就会溢出了，见例 `5` ,我们可以看到红色背景的 `span` 超出了父元素的范围，这里的红色背景其实是 `content area` 的，不是 `inline box` 的，父元素的高度为`span` 的 `line-height` 。这里要注意的是，父元素要设置 `font-size` 为 `0` ，因为浏览器默认字体为 `16px` ，如果不设置 `font-size` 为 `0` 的话，父元素的高度就会为 `16+2(border)px`，还有就是要设置 `span` 的 `vertical-align` 为 `top` ，不然也会引起高度变化，原因下面讲。
-    
+
 4. `line box` 刚刚在 `inline box` 哪里我们就提到了行框 `line box` 的概念，`css` 规定了，所有的`inline box` 排列在`line box` 中，这个 `line box` 的高度就是非常关键的跟我们的 `vertical-align` 还有 `line-height` 相关的，`line box` 的高度怎么计算呢？网上大多的说法是 `line box` 中高度最高的那个 `inline box` 决定了 `line box` 的高度，我一直觉得这种说法不严谨，应该是以 `inline box` 最高的上边界线和最低的下边界构成 `line box` 的边界，不过我没有找到例子来证明这一点，`css` 的渲染是以 `line box` 的高度尽量小为目的，所以我想最高的 `inline box` 来决定高度也是有道理的，如果下次找到反例我会来补充。 `line-height` 决定了 `inline box` 的高度，而 `vertical-align` 则决定了 `inline box` 在 `line box` 中的位置。`line box` 的高度由行内最高的 `inline box` 决定，但同时也可以直接用 `line-height` 来决定，给父元素设置 `line-height` 就可以给 `line box` 设定高度，而我们知道浏览器有默认字体大小，也就有默认的 `line-height` ，所以行内元素一旦确定了高度和 `vertical-align` 我们就能确定它在行内的位置。
-    
 
 > `line box` 的高度和`inline box` 的`vertical-align` 是互相依赖的，他们两者的确定都要知道对方的值。
 

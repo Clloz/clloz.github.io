@@ -6,38 +6,36 @@ tags:
   - js
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
-我在 [深入Javascript类型转换](https://www.clloz.com/programming/front-end/js/2020/10/13/type-conversion/ "深入Javascript类型转换") 一文中从标准的角度对 `JavaScript` 中的类型转换的部分内容进行解读，主要是 `Number`，`String` 和 `Boolean` 这三个日常经常遇到的类型。昨天在阅读 `lodash` 的 `slice` 源码看到用无符号右移 `start >>> 0` 来确保 `start` 是一个 `Number` 类型的正整数。在 `JavaScript设计模式与开发实践` 中也看到了 `+new Date` 这样转换日期毫秒数的。我日常转换日期毫秒数都是用的 `Date.prototype.getTime()` 方法，强制转换数字我经常使用 `Number()` 构造器。在经过一番搜索之后发现很多文章说 `Number()` 是效率最低的一种方式，于是我决定自己对强制转换为 `Number` 类型的多种方法进行一下探究。
+我在 [深入Javascript类型转换](https://www.clloz.com/programming/front-end/js/2020/10/13/type-conversion/ '深入Javascript类型转换') 一文中从标准的角度对 `JavaScript` 中的类型转换的部分内容进行解读，主要是 `Number`，`String` 和 `Boolean` 这三个日常经常遇到的类型。昨天在阅读 `lodash` 的 `slice` 源码看到用无符号右移 `start >>> 0` 来确保 `start` 是一个 `Number` 类型的正整数。在 `JavaScript设计模式与开发实践` 中也看到了 `+new Date` 这样转换日期毫秒数的。我日常转换日期毫秒数都是用的 `Date.prototype.getTime()` 方法，强制转换数字我经常使用 `Number()` 构造器。在经过一番搜索之后发现很多文章说 `Number()` 是效率最低的一种方式，于是我决定自己对强制转换为 `Number` 类型的多种方法进行一下探究。
 
 ## 转换方法
 
 ## 一元操作符
 
-一元操作符有 `++, --, +, -, ~, !`，我在 [深入Javascript类型转换](https://www.clloz.com/programming/front-end/js/2020/10/13/type-conversion/ "深入Javascript类型转换") 中已经写过，除了 `!`，其他一元操作符都是会将类型转换为 `Number` 类型，[MDN](https://developer.mozilla.org/zh-CN/docs/conflicting/Web/JavaScript/Reference/Operators#Unary_plus "MDN") 中也推荐用一元 `+` 来讲其他类型转为 `Number`：一元正号是转换其他对象到数值的最快方法，也是最推荐的做法，因为它不会对数值执行任何多余操作。它可以将字符串转换成整数和浮点数形式，也可以转换非字符串值 `true`，`false` 和 `null`。小数和十六进制格式字符串也可以转换成数值。负数形式字符串也可以转换成数值（对于十六进制不适用）。如果它不能解析一个值，则计算结果为 `NaN`。
+一元操作符有 `++, --, +, -, ~, !`，我在 [深入Javascript类型转换](https://www.clloz.com/programming/front-end/js/2020/10/13/type-conversion/ '深入Javascript类型转换') 中已经写过，除了 `!`，其他一元操作符都是会将类型转换为 `Number` 类型，[MDN](https://developer.mozilla.org/zh-CN/docs/conflicting/Web/JavaScript/Reference/Operators#Unary_plus 'MDN') 中也推荐用一元 `+` 来讲其他类型转为 `Number`：一元正号是转换其他对象到数值的最快方法，也是最推荐的做法，因为它不会对数值执行任何多余操作。它可以将字符串转换成整数和浮点数形式，也可以转换非字符串值 `true`，`false` 和 `null`。小数和十六进制格式字符串也可以转换成数值。负数形式字符串也可以转换成数值（对于十六进制不适用）。如果它不能解析一个值，则计算结果为 `NaN`。
 
 ## 位运算
 
-对于 `JavaScript` 中的位运算不熟悉的同学可以先去看一看 [JavaScript 中的按位操作符](https://www.clloz.com/programming/front-end/js/2020/10/04/bitwise-operator/ "JavaScript 中的按位操作符")。`JavaScript` 中的按位操作符会将操作数转换成 `32` 位的二进制整数，所以也可以用来进行 `Number` 转换。但是需要注意的是 `32` 位有符号二进制整数所能表示的最大值为 $2^32 - 1$，即 `4294967295`，如果数字超过这个范围则会出错，超出 `32` 位的部分会直接被丢弃。所以我们使用连续的按位非 `~~`，或者无符号右移 `>>>`，以及 `|0` 都要注意操作数的范围。比如上面说的用 `+new Date` 可以获得毫秒数，如果使用 `>>>` 将会得到错误结果。
+对于 `JavaScript` 中的位运算不熟悉的同学可以先去看一看 [JavaScript 中的按位操作符](https://www.clloz.com/programming/front-end/js/2020/10/04/bitwise-operator/ 'JavaScript 中的按位操作符')。`JavaScript` 中的按位操作符会将操作数转换成 `32` 位的二进制整数，所以也可以用来进行 `Number` 转换。但是需要注意的是 `32` 位有符号二进制整数所能表示的最大值为 $2^32 - 1$，即 `4294967295`，如果数字超过这个范围则会出错，超出 `32` 位的部分会直接被丢弃。所以我们使用连续的按位非 `~~`，或者无符号右移 `>>>`，以及 `|0` 都要注意操作数的范围。比如上面说的用 `+new Date` 可以获得毫秒数，如果使用 `>>>` 将会得到错误结果。
 
 ```javascript
-const time = +new Date;
-console.log(+new Date) // 1615946620311
-const time_binary = time.toString(2);
-console.log(time_binary, time_binary.length); // 10111100000111101111011001100010001011011 41
-const time_bit = time >>> 0;
-console.log(time_bit); // 1038988502
+const time = +new Date()
+console.log(+new Date()) // 1615946620311
+const time_binary = time.toString(2)
+console.log(time_binary, time_binary.length) // 10111100000111101111011001100010001011011 41
+const time_bit = time >>> 0
+console.log(time_bit) // 1038988502
 console.log(parseInt(`${time_binary}`.slice(8), 2)) // 1038988502
 ```
 
 我们可以看到上面的代码 `time` 为当前时间毫秒数，是用 `+` 进行转换的，`time_binary` 是用 `Number.prototype.toString` 转换的二进制字符串，`time_bit` 则是用无符号右移获得的 `Number`。我们可以看到无符号右移只能保留低位的 `32` 位二进制，超出的高位都被丢弃。
 
-关于 `JavaScript` 中的进制的一些细节参考我的另一篇文章 [JS 中的数字进制](https://www.clloz.com/programming/front-end/js/2019/06/11/javascript-number/#JS "JS 中的数字进制")
+关于 `JavaScript` 中的进制的一些细节参考我的另一篇文章 [JS 中的数字进制](https://www.clloz.com/programming/front-end/js/2019/06/11/javascript-number/#JS 'JS 中的数字进制')
 
 ## parseInt
 
@@ -107,42 +105,42 @@ function filterInt(value) {
 
 ## Number
 
-作为原始包装对象，使用 `Number()` 可以将参数转换为 `Number`，转换规则参考 [类型转换细节](https://www.clloz.com/programming/front-end/js/2020/10/13/type-conversion/#Number "类型转换细节")
+作为原始包装对象，使用 `Number()` 可以将参数转换为 `Number`，转换规则参考 [类型转换细节](https://www.clloz.com/programming/front-end/js/2020/10/13/type-conversion/#Number '类型转换细节')
 
 ## 性能
 
-上面分析了这些方法的细节，那么这些方法的性能到底如何呢，是不是真的如有些文章说的 `Number` 的性能很差呢？我分别用 `benchmarkjs` 在本地的 `node` 环境中和 [jsbench](https://jsbench.me/ "jsbench") 上各跑了几次。`benchmarkjs` 的代码如下：
+上面分析了这些方法的细节，那么这些方法的性能到底如何呢，是不是真的如有些文章说的 `Number` 的性能很差呢？我分别用 `benchmarkjs` 在本地的 `node` 环境中和 [jsbench](https://jsbench.me/ 'jsbench') 上各跑了几次。`benchmarkjs` 的代码如下：
 
 ```javascript
-const Benchmark = require('benchmark');
+const Benchmark = require('benchmark')
 
-const suite = new Benchmark.Suite();
+const suite = new Benchmark.Suite()
 
 suite
-    .add('parseInt', () => {
-        parseInt('4294967295');
-    })
-    .add('parseFloat', () => {
-        parseFloat('4294967295');
-    })
-    .add('unary', () => {
-        +'4294967295';
-    })
-    .add('bit', () => {
-        '4294967295' >>> 0;
-    })
-    .add('Number', () => {
-        Number('4294967295');
-    })
-    // add listeners
-    .on('cycle', function (event) {
-        console.log(String(event.target));
-    })
-    .on('complete', function () {
-        console.log('Fastest is ' + this.filter('fastest').map('name'));
-    })
-    // run async
-    .run({ async: true });
+  .add('parseInt', () => {
+    parseInt('4294967295')
+  })
+  .add('parseFloat', () => {
+    parseFloat('4294967295')
+  })
+  .add('unary', () => {
+    ;+'4294967295'
+  })
+  .add('bit', () => {
+    '4294967295' >>> 0
+  })
+  .add('Number', () => {
+    Number('4294967295')
+  })
+  // add listeners
+  .on('cycle', function (event) {
+    console.log(String(event.target))
+  })
+  .on('complete', function () {
+    console.log('Fastest is ' + this.filter('fastest').map('name'))
+  })
+  // run async
+  .run({ async: true })
 ```
 
 跑的结果如下：
@@ -158,7 +156,7 @@ Fastest is bit,unary,Number
 
 `jsbench` 网站上的结果如下图
 
-![number-jsbench](./images/number-jsbench.png "number-jsbench")
+![number-jsbench](./images/number-jsbench.png 'number-jsbench')
 
 从两个结果上看我们可以看出一元操作符，位运算符和 `Number` 的性能是很接近的，而 `parseInt` 的性能则要差很多。而位操作符又有范围限制。所以最后的结论解释我们可以使用一元 `+` 或者 `Number` 都可以。
 

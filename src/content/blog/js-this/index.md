@@ -7,8 +7,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 `JS` 中的 `this` 指向是一个经常被问到的问题，网上也有很多文章是关于 `this` 的。本文整理一下我理解下的 `this` 以及一些我比较疑惑的关于 `this` 问题。
@@ -22,25 +20,25 @@ language: '中文'
 当我们直接调用一个已经声明的函数，那么在非严格模式下，该函数内部的 `this` 指向的是全局对象，浏览器环境下就是 `window` 对象。
 
 ```javascript
-function f1(){
-  return this;
+function f1() {
+  return this
 }
 //在浏览器中：
-f1() === window;   //在浏览器中，全局对象是window
+f1() === window //在浏览器中，全局对象是window
 
 //在Node中：
-f1() === global;
+f1() === global
 ```
 
 当函数是在全局环境下定义的时候，这种现象是可以理解的，因为全局环境下定义的函数其实就是挂载在全局对象上的一个属性，比附上面的 `f1` 也可以理解为 `window.f1`。但我认为严格模式下的行为才是更符合 `this` 这个关键字的目的的，特别是我们的函数可能是在非全局环境（比如另一个函数中）定义和调用的，这种情况下 `this` 还指向 `window` 是不太合理的。所以在严格模式下，一个函数直接调用，它的 `this` 指向的是 `undefined`，如果我们想要得到非严格模式下的结果，那我们调用函数的方法就要改为 `window.f1()`，而如果函数是在非全局环境下定义的话，那么始终返回的是 `undefined`。我认为这样的行为是更符合逻辑的。
 
 ```javascript
 'use strict'
-function d () {
-    function e() {
-        console.log(this)
-    }
+function d() {
+  function e() {
     console.log(this)
+  }
+  console.log(this)
 }
 
 d()
@@ -62,35 +60,35 @@ window.d()
 //在对象内部定义
 var o = {
   prop: 37,
-  f: function() {
-    return this.prop;
+  f: function () {
+    return this.prop
   }
-};
-
-console.log(o.f()); // 37
-
-//在对象外部定义
-var o = {prop: 37};
-
-function independent() {
-  return this.prop;
 }
 
-o.f = independent;
+console.log(o.f()) // 37
 
-console.log(o.f()); // 37
+//在对象外部定义
+var o = { prop: 37 }
+
+function independent() {
+  return this.prop
+}
+
+o.f = independent
+
+console.log(o.f()) // 37
 
 //在对象内部定义，但是给外部变量引用并执行
 var o = {
   prop: 37,
-  f: function() {
-      console.log(this)
-    return this.prop;
+  f: function () {
+    console.log(this)
+    return this.prop
   }
-};
-var prop = 100;
-var m = o.f;
-console.log(m());
+}
+var prop = 100
+var m = o.f
+console.log(m())
 //Window{}
 //100
 ```
@@ -99,26 +97,26 @@ console.log(m());
 
 ```javascript
 var o = {
-    a:10,
-    b:{
-        a:12,
-        fn:function(){
-            console.log(this.a); //12
-        }
+  a: 10,
+  b: {
+    a: 12,
+    fn: function () {
+      console.log(this.a) //12
     }
+  }
 }
-o.b.fn();
+o.b.fn()
 
 var o = {
-    a:10,
-    b:{
-        // a:12,
-        fn:function(){
-            console.log(this.a); //undefined
-        }
+  a: 10,
+  b: {
+    // a:12,
+    fn: function () {
+      console.log(this.a) //undefined
     }
+  }
 }
-o.b.fn();
+o.b.fn()
 ```
 
 为什么我说这个场景能够帮助我们理解，原因就是它反映出 `this` 这个关键字的本质。`JS` 中的函数也是一种对象，在我们的执行环境中的活动对象保存的也只是函数对象的一个引用，如果这个引用是保存在活动对象中的某个对象的属性中（即我们通过活动对象中的某个对象的属性找到该函数），那么函数执行的时候 `this` 就会指向这个对象，这也是为什么多层对象的调用，还是最靠近函数的那个对象作为 `this`。虽然在代码中我们的函数是在对象中定义的，但是实际在内存中，对象中只保存着函数的引用，函数自己是在一个单独的内存空间中。所以我们通过哪个对象找到函数并执行，函数中的 `this` 就指向这个对象。上面的直接调用 `this` 返回 `undefined` 也是说得通的。
@@ -129,15 +127,15 @@ o.b.fn();
 
 ```javascript
 var o = {
-  f: function() { 
-    return this.a + this.b; 
+  f: function () {
+    return this.a + this.b
   }
-};
-var p = Object.create(o);
-p.a = 1;
-p.b = 4;
+}
+var p = Object.create(o)
+p.a = 1
+p.b = 4
 
-console.log(p.f()); // 5
+console.log(p.f()) // 5
 ```
 
 ## 箭头函数
@@ -145,21 +143,21 @@ console.log(p.f()); // 5
 箭头函数不会创建自己的 `this`，它只会从自己的作用域链的上一层继承 `this` （`mdn` 写的是封闭的词法环境）。当你遇到箭头函数中的 `this` 不确定的时候，你可以想象把这个箭头函数换成 `console.log(this)`，这个 `console` 的输出就是箭头函数中 `this` 的值，并且箭头函数的 `this` 是绑定的，不会改变（有时候看上去改变了是所在的 `context` 改变了）。还有一点需要注意的是，用 `call`，`apply`，`bind` 来调用箭头函数，第一个参数是没有意义的，也就是无法改变 `this`，如果仍需要使用，第一个参数应该传 `null`。看 `mdn` 给出的示例。
 
 ```javascript
-var globalObject = this;
-var foo = (() => this);
-console.log(foo() === globalObject); // true
+var globalObject = this
+var foo = () => this
+console.log(foo() === globalObject) // true
 
 // 接着上面的代码
 // 作为对象的一个方法调用
-var obj = {foo: foo};
-console.log(obj.foo() === globalObject); // true
+var obj = { foo: foo }
+console.log(obj.foo() === globalObject) // true
 
 // 尝试使用call来设定this
-console.log(foo.call(obj) === globalObject); // true
+console.log(foo.call(obj) === globalObject) // true
 
 // 尝试使用bind来设定this
-foo = foo.bind(obj);
-console.log(foo() === globalObject); // true
+foo = foo.bind(obj)
+console.log(foo() === globalObject) // true
 
 // 创建一个含有bar方法的obj对象，
 // bar返回一个函数，
@@ -168,99 +166,99 @@ console.log(foo() === globalObject); // true
 // 所以它的this被永久绑定到了它外层函数的this。
 // bar的值可以在调用中设置，这反过来又设置了返回函数的值。
 var obj = {
-  bar: function() {
-    var x = (() => this);
-    return x;
+  bar: function () {
+    var x = () => this
+    return x
   }
-};
+}
 
 // 作为obj对象的一个方法来调用bar，把它的this绑定到obj。
 // 将返回的函数的引用赋值给fn。
-var fn = obj.bar();
+var fn = obj.bar()
 
 // 直接调用fn而不设置this，
 // 通常(即不使用箭头函数的情况)默认为全局对象
 // 若在严格模式则为undefined
-console.log(fn() === obj); // true
+console.log(fn() === obj) // true
 
 // 但是注意，如果你只是引用obj的方法，
 // 而没有调用它
-var fn2 = obj.bar;
+var fn2 = obj.bar
 // 那么调用箭头函数后，this指向window，因为它从 bar 继承了this。
-console.log(fn2()() == window); // true
+console.log(fn2()() == window) // true
 ```
 
-* * *
+---
 
 由于箭头函数没有自己的 `this`，所以在一些情况下不要使用箭头函数，会导出错误或者意外的行为。下面是一些总结的箭头函数的一些规则。关于 `this` 其实总的来说就是一条，箭头函数没有自己的 `this`，如果在箭头函数中使用 `this`，这个 `this` 指向函数定义时所在的环境中的 `this`，这一这个环境是可能变化的，这将导致箭头函数中的 `this` 发生变化。
 
 1. 对象的方法：对象的方法如果使用箭头函数则箭头函数中的 `this` 指向的是对象所在环境的 `this`。如果是在全局环境中创建的对象，`this` 指向全局对象 `window`。如果实在 `node` 模块中则指向 `module.exports` 对象。
 
-```javascript
-let outerObj = {
-    name: 'clloz',
-};
-function outer() {
-    console.log(this); // outerObj { name: 'clloz' }
-    const obj = {
-        arr: [1, 2, 3],
-        sun: () => {
-            console.log(this); // outerObj { name: 'clloz' }
-        },
-    };
-    obj.sun();
-}
-outer.apply(outerObj);
-```
+   ```javascript
+   let outerObj = {
+     name: 'clloz'
+   }
+   function outer() {
+     console.log(this) // outerObj { name: 'clloz' }
+     const obj = {
+       arr: [1, 2, 3],
+       sun: () => {
+         console.log(this) // outerObj { name: 'clloz' }
+       }
+     }
+     obj.sun()
+   }
+   outer.apply(outerObj)
+   ```
 
 2. 原型上的方法逻辑也和上面一样，不过要注意一点，在 `class` 中定义方法如果使用箭头函数的话，这个函数会被 `babel` 转换到构造函数中。结合上面一点，不要在对象的方法或类方法中使用箭头函数。
 
-```javascript
-class Point {
-  constructor(x, y) {
-    // ...
-    this.say = () => {
-      // ...
-    }
-  }
+   ```javascript
+   class Point {
+     constructor(x, y) {
+       // ...
+       this.say = () => {
+         // ...
+       }
+     }
 
-  toString() {
-    // ...
-  }
-}
+     toString() {
+       // ...
+     }
+   }
 
-//等同于
-class Point {
-  constructor(x, y) {
-    // ...
-    this.say = function() {
-      const _this = this
-      return function() {}.bind(_this)
-    }
-  }
+   //等同于
+   class Point {
+     constructor(x, y) {
+       // ...
+       this.say = function () {
+         const _this = this
+         return function () {}.bind(_this)
+       }
+     }
 
-  toString() {
-    // ...
-  }
-}
-```
+     toString() {
+       // ...
+     }
+   }
+   ```
 
 3. 箭头函数的 `this` 并不是不会变的，只是它确定指向它所在环境的 `this`，这个环境可能会变化。
 
-```javascript
-var handler = {
-    id: '123456',
-    init: function () {
-        let func = () => {
-            console.log(this);
-        };
-        func();
-    },
-};
-handler.init(); //{ id: '123456', init: [Function: init] }
-let m = handler.init;
-m(); //全局对象
-```
+   ```javascript
+   var handler = {
+     id: '123456',
+     init: function () {
+       let func = () => {
+         console.log(this)
+       }
+       func()
+     }
+   }
+   handler.init() //{ id: '123456', init: [Function: init] }
+   let m = handler.init
+   m() //全局对象
+   ```
 
 4. 箭头函数不能作为构造函数。
 5. 箭头函数没有自己的 `this`，`arguments`，`super` 或 `new.target`。
@@ -276,7 +274,7 @@ let callback;
 
 callback = callback || function() {}; // ok
 
-callback = callback || () => {};      
+callback = callback || () => {};
 // SyntaxError: invalid arrow-function arguments
 
 callback = callback || (() => {});    // ok
@@ -289,9 +287,9 @@ callback = callback || (() => {});    // ok
 ```javascript
 //...
 methods: {
-    func: throttle(function() {
-        // function body
-    })
+  func: throttle(function () {
+    // function body
+  })
 }
 //...
 ```
@@ -300,14 +298,14 @@ methods: {
 
 ```javascript
 const obj = {
-    func: getFunc(() => {
-        console.log(this);
-    })
+  func: getFunc(() => {
+    console.log(this)
+  })
 }
 
-function getFunc(func){
-    console.log(this)
-    return func;
+function getFunc(func) {
+  console.log(this)
+  return func
 }
 
 obj.func()
@@ -318,16 +316,16 @@ obj.func()
 当然我们的 `throttle` 实际返回的不是我们传入的参数，而是一个如下的形式
 
 ```javascript
-function throttle (fn, interval) {
-    var executing = false;
-    return function () {
-        if (executing) return;
-        executing = true;
-        setTimeout(() => {
-            fn.apply(this, arguments);
-            executing = false;
-        }, interval)
-    }
+function throttle(fn, interval) {
+  var executing = false
+  return function () {
+    if (executing) return
+    executing = true
+    setTimeout(() => {
+      fn.apply(this, arguments)
+      executing = false
+    }, interval)
+  }
 }
 ```
 
@@ -347,40 +345,40 @@ function throttle (fn, interval) {
 
 ```javascript
 //箭头函数
-let obj = Object.create(null);
+let obj = Object.create(null)
 obj.func = function () {
-    setTimeout(() => {
-        console.log(this);
-    }, 1000);
-};
-obj.func();
+  setTimeout(() => {
+    console.log(this)
+  }, 1000)
+}
+obj.func()
 
 // 使用中间变量
-let obj = Object.create(null);
+let obj = Object.create(null)
 obj.func = function () {
-    let that = this;
-    setTimeout(function () {
-        console.log(that);
-    }, 1000);
-};
-obj.func();
+  let that = this
+  setTimeout(function () {
+    console.log(that)
+  }, 1000)
+}
+obj.func()
 
 // 使用 bind
-let obj = Object.create(null);
+let obj = Object.create(null)
 obj.func = function () {
-    setTimeout(
-        function () {
-            console.log(this);
-        }.bind(this),
-        1000,
-    );
-};
-obj.func(); //[Object: null prototype] { func: [Function] }
+  setTimeout(
+    function () {
+      console.log(this)
+    }.bind(this),
+    1000
+  )
+}
+obj.func() //[Object: null prototype] { func: [Function] }
 ```
 
 ## 其他情况
 
-还有一些情况我觉得比较简单，就一笔带过。 1. 当函数被用作事件处理函数时，它的 `this` 指向触发事件的元素。 2. 当代码被内联 `on-event` 处理函数调用时，它的this指向监听器所在的 `DOM` 元素，需要注意的是只有最外层的 `this` 是这样，如果里面还有嵌套函数，则嵌套函数的 `this` 在非严格模式下仍然指向全局对象。 3. 构造函数中的 `this` 请看之前的文章[JavaScript中new操作符的解析和实现](https://www.clloz.com/programming/front-end/js/2020/06/29/new-operator/ "JavaScript中new操作符的解析和实现") 4. `bind`，`call` 和 `apply` 都一样，函数的 `this` 被绑定到第一个参数上。 5. 在全局作用域中的 `this` 无论是否在严格模式下，都指向 `window`。在全局作用域中用 `var` 声明的变量都是 `window` 对象上的属性，函数声明和 `var` 声明的函数表达式则是全局对象上的方法。（用 `var` 声明的变量虽然是全局对象上的属性，但是不能用 `delete` 删除）
+还有一些情况我觉得比较简单，就一笔带过。 1. 当函数被用作事件处理函数时，它的 `this` 指向触发事件的元素。 2. 当代码被内联 `on-event` 处理函数调用时，它的this指向监听器所在的 `DOM` 元素，需要注意的是只有最外层的 `this` 是这样，如果里面还有嵌套函数，则嵌套函数的 `this` 在非严格模式下仍然指向全局对象。 3. 构造函数中的 `this` 请看之前的文章[JavaScript中new操作符的解析和实现](https://www.clloz.com/programming/front-end/js/2020/06/29/new-operator/ 'JavaScript中new操作符的解析和实现') 4. `bind`，`call` 和 `apply` 都一样，函数的 `this` 被绑定到第一个参数上。 5. 在全局作用域中的 `this` 无论是否在严格模式下，都指向 `window`。在全局作用域中用 `var` 声明的变量都是 `window` 对象上的属性，函数声明和 `var` 声明的函数表达式则是全局对象上的方法。（用 `var` 声明的变量虽然是全局对象上的属性，但是不能用 `delete` 删除）
 
 ## NodeJS 中的 this
 
@@ -393,24 +391,24 @@ obj.func(); //[Object: null prototype] { func: [Function] }
 在 `NodeJS` 中，每一个模块中最外层的 `this` 指向的是 `module.exports`。这一点跟浏览器很不同，浏览器最外层的 `this` 是指向全局对象的，而且模块中用 `var` 声明的变量也不是 `module.exports` 的属性。`node` 中最外层的 `this` 和全局对象 `global` 没有关系。
 
 ```javascript
-console.log(this === module.exports); //true
-console.log(this === exports); //true
+console.log(this === module.exports) //true
+console.log(this === exports) //true
 ```
 
 而函数中的 `this` 则是指向全局对象，严格模式下则为 `undefined`，这和浏览器逻辑一致的。
 
 ```javascript
 function a() {
-    console.log(this === globalThis); //true
+  console.log(this === globalThis) //true
 }
-a();
-console.log(globalThis === global); //true
+a()
+console.log(globalThis === global) //true
 
 function a() {
-    'use strict';
-    console.log(this); //undefined
+  'use strict'
+  console.log(this) //undefined
 }
-a();
+a()
 ```
 
 其他的没有提到的，基本跟浏览器的逻辑保持一致。
@@ -421,6 +419,6 @@ a();
 
 ## 参考文章
 
-1. [this - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/this "this - MDN")
-2. [this 的值到底是什么？一次说清楚](https://zhuanlan.zhihu.com/p/23804247 "this 的值到底是什么？一次说清楚")
-3. [彻底理解JS中this的指向](cnblogs.com/pssp/p/5216085.html "彻底理解JS中this的指向")
+1. [this - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/this 'this - MDN')
+2. [this 的值到底是什么？一次说清楚](https://zhuanlan.zhihu.com/p/23804247 'this 的值到底是什么？一次说清楚')
+3. [彻底理解JS中this的指向](cnblogs.com/pssp/p/5216085.html '彻底理解JS中this的指向')

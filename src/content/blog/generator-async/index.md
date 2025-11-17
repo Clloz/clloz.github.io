@@ -6,16 +6,14 @@ tags:
   - js
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
 生成器有一个问题就是需要我们手动调用 `next` 来执行，这就表示我们需要单独写一段代码来管理生成器的执行与暂停，这是比较麻烦的。如何让我们写的生成器能够自动执行，本文就来讨论实现方法。
 
-> 如果你对生成器 `Generator` 还不了解，请先看另一篇详细介绍生成器的文章 [ES6 生成器 Generator](https://www.clloz.com/programming/front-end/js/2020/10/31/es6-generator/ "ES6 生成器 Generator")
+> 如果你对生成器 `Generator` 还不了解，请先看另一篇详细介绍生成器的文章 [ES6 生成器 Generator](https://www.clloz.com/programming/front-end/js/2020/10/31/es6-generator/ 'ES6 生成器 Generator')
 
 ## 生成器的关键
 
@@ -29,54 +27,54 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ```javascript
 var gen = function* () {
-    yield readFile('/etc/filea');
-};
+  yield readFile('/etc/filea')
+}
 
-let g = gen();
-let filea = g.next(); //此时我们实际已经丢失了异步任务的控制
+let g = gen()
+let filea = g.next() //此时我们实际已经丢失了异步任务的控制
 ```
 
 所以我们要对异步任务进行封装。封装的目标是什么？我们希望在生成器内部传入文件名，在生成器外部传入 `callback`。形式如下：
 
 ```javascript
 var gen = function* () {
-    yield readFileThunk('/etc/filea');
-};
+  yield readFileThunk('/etc/filea')
+}
 
-let g = gen();
-let filea = g.next();
+let g = gen()
+let filea = g.next()
 filea.value(function (err, data) {
-    //your code
-    g.next(data);
-});
+  //your code
+  g.next(data)
+})
 ```
 
 其实我们可以看出，内部的封装函数执行只不过是传入了一个参数，真正的查询文件操作并没有执行，只是返回了一个带参数的函数而已，真正的执行还是在外部我们传入了 `callback` 之后，所以我们能够在 `callback` 中将控制权传回生成器内。这就是 `Thunk` 的目标，逻辑也非常简单。
 
-一个 `Thunk` 函数我们大概要封装三层，第一层传入那个待执行的异步函数，然后传入参数，最后在生成器外部传入 `callback`。封装的实现我们可以参考 `tj` 实现的 [thunkify](https://github.com/tj/node-thunkify "thunkify")。
+一个 `Thunk` 函数我们大概要封装三层，第一层传入那个待执行的异步函数，然后传入参数，最后在生成器外部传入 `callback`。封装的实现我们可以参考 `tj` 实现的 [thunkify](https://github.com/tj/node-thunkify 'thunkify')。
 
 ```javascript
 function thunkify(fn) {
-    return function () {
-        var args = new Array(arguments.length);
-        var ctx = this;
-        for (var i = 0; i < args.length; ++i) {
-            args[i] = arguments[i];
-        }
-        return function (done) {
-            var called;
-            args.push(function () {
-                if (called) return;
-                called = true;
-                done.apply(null, arguments);
-            });
-            try {
-                fn.apply(ctx, args);
-            } catch (err) {
-                done(err);
-            }
-        };
-    };
+  return function () {
+    var args = new Array(arguments.length)
+    var ctx = this
+    for (var i = 0; i < args.length; ++i) {
+      args[i] = arguments[i]
+    }
+    return function (done) {
+      var called
+      args.push(function () {
+        if (called) return
+        called = true
+        done.apply(null, arguments)
+      })
+      try {
+        fn.apply(ctx, args)
+      } catch (err) {
+        done(err)
+      }
+    }
+  }
 }
 ```
 
@@ -89,26 +87,26 @@ function thunkify(fn) {
 有了这个 `thunkify` 函数对异步函数进行封装以后我们就可以向如下使用 `Generator` 封装异步任务了：
 
 ```javascript
-var fs = require('fs');
-var thunkify = require('thunkify');
-var readFileThunk = thunkify(fs.readFile);
+var fs = require('fs')
+var thunkify = require('thunkify')
+var readFileThunk = thunkify(fs.readFile)
 var gen = function* () {
-    var r1 = yield readFileThunk('/etc/fstab');
-    console.log(r1.toString());
-    var r2 = yield readFileThunk('/etc/shells');
-    console.log(r2.toString());
-};
+  var r1 = yield readFileThunk('/etc/fstab')
+  console.log(r1.toString())
+  var r2 = yield readFileThunk('/etc/shells')
+  console.log(r2.toString())
+}
 
-var g = gen();
-var r1 = g.next();
+var g = gen()
+var r1 = g.next()
 r1.value(function (err, data) {
-    if (err) throw err;
-    var r2 = g.next(data);
-    r2.value(function (err, data) {
-        if (err) throw err;
-        g.next(data);
-    });
-});
+  if (err) throw err
+  var r2 = g.next(data)
+  r2.value(function (err, data) {
+    if (err) throw err
+    g.next(data)
+  })
+})
 ```
 
 不过仔细看这个代码，好像比我们直接执行 `fs.readFile()` 复杂多了，而且最后的执行还是个回调嵌套，既不方便，也不优雅，兜了个大圈子还是跟原来一样。但其实我们仔细想一想，这里的回调函数不用像我们平时的嵌套回调一样，把所有的逻辑都写上，我们要做的就两件事，用 `next` 将回调结果传递到生成器内（数据处理的逻辑完全可以放到生成器内），同时将执行权交给生成器，当生成器返回一个新的异步任务后我们再重复这个步骤。也就是说每个回调的逻辑都是相同的。
@@ -117,13 +115,13 @@ r1.value(function (err, data) {
 
 ```javascript
 function run(fn) {
-    var gen = fn();
-    function next(err, data) {
-        var result = gen.next(data);
-        if (result.done) return;
-        result.value(next);
-    }
-    next();
+  var gen = fn()
+  function next(err, data) {
+    var result = gen.next(data)
+    if (result.done) return
+    result.value(next)
+  }
+  next()
 }
 run(gen)
 ```
@@ -136,12 +134,12 @@ run(gen)
 
 ```javascript
 var g = function* () {
-    var f1 = yield readFileThunk('fileA');
-    var f2 = yield readFileThunk('fileB'); 
-    // ...
-    var fn = yield readFileThunk('fileN');
-};
-run(g);
+  var f1 = yield readFileThunk('fileA')
+  var f2 = yield readFileThunk('fileB')
+  // ...
+  var fn = yield readFileThunk('fileN')
+}
+run(g)
 ```
 
 代码逻辑非常清晰，看上去就和同步代码一样。
@@ -152,31 +150,31 @@ run(g);
 
 其实包装 `Thunk` 函数还是有一点麻烦的，有没有其他更好的方法呢？当然可以，除了利用回调函数（`thunkify` 本身就是利用回调函数，在回调函数中将执行权交给生成器并且传递异步操作的记过），另一种就是 `Promise`。
 
-`Promise` 的详细介绍请看我的另一篇文章 [深入 Promise](https://www.clloz.com/programming/front-end/js/2020/10/28/deep-into-promise/ "深入 Promise")，`Promise` 本身就是对回调函数形式的异步任务的一种封装，它让嵌套的异步操作不再是回调地狱，而是以一种接近于同步的形式来编写。所以可以使用回调函数自然能够使用 `Promise` 来实现。而且 `Promise` 比回调函数更好的是，我们可以直接在生成器内部执行异步任务，只要返回 `Promise` 对象即可，因为 `Promise` 对象会保存异步任务的状态和结果，我们随时可以取到，而不是像回调函数一样，你错过了就无法再获得这个回调的结果。
+`Promise` 的详细介绍请看我的另一篇文章 [深入 Promise](https://www.clloz.com/programming/front-end/js/2020/10/28/deep-into-promise/ '深入 Promise')，`Promise` 本身就是对回调函数形式的异步任务的一种封装，它让嵌套的异步操作不再是回调地狱，而是以一种接近于同步的形式来编写。所以可以使用回调函数自然能够使用 `Promise` 来实现。而且 `Promise` 比回调函数更好的是，我们可以直接在生成器内部执行异步任务，只要返回 `Promise` 对象即可，因为 `Promise` 对象会保存异步任务的状态和结果，我们随时可以取到，而不是像回调函数一样，你错过了就无法再获得这个回调的结果。
 
 这里我们主要通过研究 `co` 模块的源码来理解其中的实现细节。`co` 模块是著名程序员 `TJ Holowaychuk` 在 `2013` 年编写的一个用于 `Generator` 自动执行的小工具。最初 `co` 是同时支持 `Thunk` 函数和 `Promise` 的，`4.0` 之后只支持 `Promise`了，我们这里主要从源码的角度看看它是如何基于 `Promise` 实现生成器的自动执行的。
 
 先看下面这个例子：
 
 ```javascript
-const co = require('./co');
-const fs = require('fs');
+const co = require('./co')
+const fs = require('fs')
 var gen = function* () {
-    var f1 = yield readFile('/Users/clloz/code/testing/.eslintrc.js');
-    var f2 = yield readFile('/Users/clloz/code/testing/package.json');
-    console.log(f1.toString()); //正常输出
-    console.log(f2.toString()); //正常输出
-};
+  var f1 = yield readFile('/Users/clloz/code/testing/.eslintrc.js')
+  var f2 = yield readFile('/Users/clloz/code/testing/package.json')
+  console.log(f1.toString()) //正常输出
+  console.log(f2.toString()) //正常输出
+}
 co(gen).then(function () {
-    console.log('Generator 函数执行完成');
-});
+  console.log('Generator 函数执行完成')
+})
 
 function readFile(filename) {
-    return new Promise(function (resolve, reject) {
-        fs.readFile(filename, function (err, data) {
-            resolve();
-        });
-    });
+  return new Promise(function (resolve, reject) {
+    fs.readFile(filename, function (err, data) {
+      resolve()
+    })
+  })
 }
 //Generator 函数执行完成
 ```
@@ -185,53 +183,53 @@ function readFile(filename) {
 
 ```javascript
 function run(gen) {
-    var g = gen();
-    function next(data) {
-        var result = g.next(data);
-        if (result.done) return result.value;
-        result.value.then(function (data) {
-            next(data);
-        });
-    }
-    next();
+  var g = gen()
+  function next(data) {
+    var result = g.next(data)
+    if (result.done) return result.value
+    result.value.then(function (data) {
+      next(data)
+    })
+  }
+  next()
 }
-run(gen);
+run(gen)
 ```
 
-`co` 其实就是对这个 `run` 的扩展，我们可以看一看 [源码](https://github.com/tj/co/blob/master/index.js "源码")，源码去掉注释一共不到 `130` 行。其中大部分都是一些判断和转 `Promise` 代码，`co` 函数大概就 `40` 行。
+`co` 其实就是对这个 `run` 的扩展，我们可以看一看 [源码](https://github.com/tj/co/blob/master/index.js '源码')，源码去掉注释一共不到 `130` 行。其中大部分都是一些判断和转 `Promise` 代码，`co` 函数大概就 `40` 行。
 
 `co` 函数内的结构是获取除了生成器函数以后的参数，然后返回一个 `Promise`，主要的逻辑都在 `Promise` 中完成。
 
 ```javascript
 function co(gen) {
-    var ctx = this;
-    var args = slice.call(arguments, 1);
+  var ctx = this
+  var args = slice.call(arguments, 1)
 
-    return new Promise(function (resolve, reject) {});
+  return new Promise(function (resolve, reject) {})
 }
 ```
 
 在返回的 `Promise` 中，首先是判断传入的参数是不是一个 `Generator` 函数。它的逻辑是，如果第一个参数是一个函数，先用保存的参数执行这个传入的函数，并保存执行结果。然后判断这个执行结果有没有 `next` 方法，如果没有直接 `resolve` 执行结果。如果有 `next` 的方法，那么我们已经获得了生成器，就是 `gen`。
 
 ```javascript
-if (typeof gen === 'function') gen = gen.apply(ctx, args);
-if (!gen || typeof gen.next !== 'function') return resolve(gen);
+if (typeof gen === 'function') gen = gen.apply(ctx, args)
+if (!gen || typeof gen.next !== 'function') return resolve(gen)
 ```
 
 > 注意这里 `resolve` 前面加了 `return`，表示后面的代码都不会执行了.这是一个小技巧，`Promise` 默认会执行到 `return` 或者到函数结束（如果没有 `return`），如果我们不想执行 `resolve` 或者 `reject` 之后的代码可以在他们之前加上 `return`。
 
-接下来是一个 `onFulfilled` 函数，这个函数内部用 `try ... catch` 来执行 `gen.next(res)`，目的就是为了捕获错误，生成器内部的错误也能捕获（如果生成器内部没有定义 `catch`，错误会抛到外面），如果抛错就直接 `reject(e)`。当生成器抛出的错误被外部的 `catch` 捕获，生成器就不会在执行了，其返回的对象的 `done` 会变成 `true`，相当于生成器执行完毕了，这个我在 [ES6 生成器 Generator](https://www.clloz.com/programming/front-end/js/2020/10/31/es6-generator/ "ES6 生成器 Generator") 有详细说明。这里在执行 `gen.next` 的时候像生成器内部传入了数据 `res`。
+接下来是一个 `onFulfilled` 函数，这个函数内部用 `try ... catch` 来执行 `gen.next(res)`，目的就是为了捕获错误，生成器内部的错误也能捕获（如果生成器内部没有定义 `catch`，错误会抛到外面），如果抛错就直接 `reject(e)`。当生成器抛出的错误被外部的 `catch` 捕获，生成器就不会在执行了，其返回的对象的 `done` 会变成 `true`，相当于生成器执行完毕了，这个我在 [ES6 生成器 Generator](https://www.clloz.com/programming/front-end/js/2020/10/31/es6-generator/ 'ES6 生成器 Generator') 有详细说明。这里在执行 `gen.next` 的时候像生成器内部传入了数据 `res`。
 
 ```javascript
 function onFulfilled(res) {
-    var ret;
-    try {
-        ret = gen.next(res);
-    } catch (e) {
-        return reject(e);
-    }
-    next(ret);
-    return null;
+  var ret
+  try {
+    ret = gen.next(res)
+  } catch (e) {
+    return reject(e)
+  }
+  next(ret)
+  return null
 }
 ```
 
@@ -239,17 +237,17 @@ function onFulfilled(res) {
 
 ```javascript
 function next(ret) {
-    if (ret.done) return resolve(ret.value);
-    var value = toPromise.call(ctx, ret.value);
-    if (value && isPromise(value)) return value.then(onFulfilled, onRejected);
-    return onRejected(
-        new TypeError(
-            'You may only yield a function, promise, generator, array, or object, ' +
-            'but the following object was passed: "' +
-            String(ret.value) +
-            '"',
-        ),
-    );
+  if (ret.done) return resolve(ret.value)
+  var value = toPromise.call(ctx, ret.value)
+  if (value && isPromise(value)) return value.then(onFulfilled, onRejected)
+  return onRejected(
+    new TypeError(
+      'You may only yield a function, promise, generator, array, or object, ' +
+        'but the following object was passed: "' +
+        String(ret.value) +
+        '"'
+    )
+  )
 }
 ```
 
@@ -266,17 +264,17 @@ function next(ret) {
 
 ```javascript
 function onRejected(err) {
-    var ret;
-    try {
-        ret = gen.throw(err);
-    } catch (e) {
-        return reject(e);
-    }
-    next(ret);
+  var ret
+  try {
+    ret = gen.throw(err)
+  } catch (e) {
+    return reject(e)
+  }
+  next(ret)
 }
 ```
 
-它其实是用 `gen.throw` 进行抛错，这个方法我们也在 [ES6 生成器 Generator](https://www.clloz.com/programming/front-end/js/2020/10/31/es6-generator/ "ES6 生成器 Generator") 进行了详细说明。简单的来说就是错误如果被生成器内部 `catch` 了，那么生成器还能继续执行，生成器会执行到下一个 `yield` 然后暂停。如果是被外部的 `catch` 捕获了，那么生成器就执行结束了。
+它其实是用 `gen.throw` 进行抛错，这个方法我们也在 [ES6 生成器 Generator](https://www.clloz.com/programming/front-end/js/2020/10/31/es6-generator/ 'ES6 生成器 Generator') 进行了详细说明。简单的来说就是错误如果被生成器内部 `catch` 了，那么生成器还能继续执行，生成器会执行到下一个 `yield` 然后暂停。如果是被外部的 `catch` 捕获了，那么生成器就执行结束了。
 
 这就是 `co` 的主要执行逻辑，当然后面还有一些判断和转换 `Promise` 的方法，这里我们说一说比较重要的并发实现。
 
@@ -284,28 +282,28 @@ function onRejected(err) {
 
 ```javascript
 function objectToPromise(obj) {
-    var results = new obj.constructor();
-    var keys = Object.keys(obj);
-    var promises = [];
-    for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        var promise = toPromise.call(this, obj[key]);
-        if (promise && isPromise(promise)) defer(promise, key);
-        else results[key] = obj[key];
-    }
-    return Promise.all(promises).then(function () {
-        return results;
-    });
+  var results = new obj.constructor()
+  var keys = Object.keys(obj)
+  var promises = []
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i]
+    var promise = toPromise.call(this, obj[key])
+    if (promise && isPromise(promise)) defer(promise, key)
+    else results[key] = obj[key]
+  }
+  return Promise.all(promises).then(function () {
+    return results
+  })
 
-    function defer(promise, key) {
-        // predefine the key in the result
-        results[key] = undefined;
-        promises.push(
-            promise.then(function (res) {
-                results[key] = res;
-            }),
-        );
-    }
+  function defer(promise, key) {
+    // predefine the key in the result
+    results[key] = undefined
+    promises.push(
+      promise.then(function (res) {
+        results[key] = res
+      })
+    )
+  }
 }
 ```
 

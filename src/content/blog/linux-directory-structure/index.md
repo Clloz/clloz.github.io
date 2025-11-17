@@ -6,10 +6,8 @@ tags:
   - operating-system
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './macos.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 

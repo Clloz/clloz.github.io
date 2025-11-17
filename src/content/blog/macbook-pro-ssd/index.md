@@ -6,16 +6,14 @@ tags:
   - hardware
   - 硬件设备
 language: '中文'
-heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './macos.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
 我的 `macbook pro` 是 `2015` 款的(`early`)，`ssd` 只有 `128GB`，当时买的时候买的最便宜的版本，空间着实不太够用，前两天无意间浏览到 `2015` 款的可以自己更换 `ssd`，在经过一番详细了解之后我决定自己来更换一块 `ssd`。
 
-**换 SSD 之前需要确定自己的系统在 10.13 以上，详细内容可以参考 [15款MacBook Pro升级1TB SSD 升级指南](https://post.smzdm.com/p/a783vk9g/ "15款MacBook Pro升级1TB SSD 升级指南")**
+**换 SSD 之前需要确定自己的系统在 10.13 以上，详细内容可以参考 [15款MacBook Pro升级1TB SSD 升级指南](https://post.smzdm.com/p/a783vk9g/ '15款MacBook Pro升级1TB SSD 升级指南')**
 
 ## 工具
 
@@ -25,7 +23,7 @@ heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
 
 ## 如何创建可引导的 macOS 安装器
 
-我安装的是最新的 `macOS Mojave` 系统，在 `app store` 中搜索下载，下载完成后不要选择安装，此时你的 `Applications` 文件夹中会有一个 `Install macOS Mojave.app` 的文件，大小差不多 `6G` 出头，然后根据 `mac` 官方的[网页](https://support.apple.com/zh-cn/HT201372 "网页")在`terminal`输入命令就可以了。
+我安装的是最新的 `macOS Mojave` 系统，在 `app store` 中搜索下载，下载完成后不要选择安装，此时你的 `Applications` 文件夹中会有一个 `Install macOS Mojave.app` 的文件，大小差不多 `6G` 出头，然后根据 `mac` 官方的[网页](https://support.apple.com/zh-cn/HT201372 '网页')在`terminal`输入命令就可以了。
 
 ## time machine备份
 
@@ -37,9 +35,9 @@ heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
 
 ## 开始更换
 
-如果你的机器版本跟我相同`macbook pro 2015 early`，那么你可以在[ifixit](https://zh.ifixit.com/Guide/MacBook+Pro+13+%E8%8B%B1%E5%AF%B8%E9%85%8D%E5%A4%87+Retina+%E6%98%BE%E7%A4%BA%E5%B1%8F2015%E5%B9%B4%E6%97%A9%E6%9C%9F%E7%89%88SSD%E6%9B%B4%E6%8D%A2/38520 "ifixit")上看到详细的更换教程，我只指出几点要注意的： 1. 背板上一共 `10` 个螺丝，靠近显示器的一边 `4` 个，中间两个，最下面 `4` 个，其中靠近显示器那边的 `4` 个的中间两个是和其他螺丝不同的比较短的，安装的时候记得区分。 2. 螺丝拆外以后从靠近显示器的那边揭开背板，是比较容易的，只要抓着靠着显示器那边的背板沿，稍稍用力就可以揭开（背板除了螺丝，就只有中间的两个卡扣固定，不是很紧，很容易揭开） 3. 换 `ssd` 为了安全起见不要带电操作，把电源先断开，在`ifixit`的那个页面也有看到，第一次拔那个电源可能有点紧，可以先在一边用力，会比较好拔一点，力气要稍微大一点。 4. 转接器的插入不是那么容易，要用点力，转接器和 `ssd` 一定要插好，不然螺丝不好上（固定 `ssd` 的就一个内五角螺丝） 5. 安装完成以后记得把电源线插回去
+如果你的机器版本跟我相同`macbook pro 2015 early`，那么你可以在[ifixit](https://zh.ifixit.com/Guide/MacBook+Pro+13+%E8%8B%B1%E5%AF%B8%E9%85%8D%E5%A4%87+Retina+%E6%98%BE%E7%A4%BA%E5%B1%8F2015%E5%B9%B4%E6%97%A9%E6%9C%9F%E7%89%88SSD%E6%9B%B4%E6%8D%A2/38520 'ifixit')上看到详细的更换教程，我只指出几点要注意的： 1. 背板上一共 `10` 个螺丝，靠近显示器的一边 `4` 个，中间两个，最下面 `4` 个，其中靠近显示器那边的 `4` 个的中间两个是和其他螺丝不同的比较短的，安装的时候记得区分。 2. 螺丝拆外以后从靠近显示器的那边揭开背板，是比较容易的，只要抓着靠着显示器那边的背板沿，稍稍用力就可以揭开（背板除了螺丝，就只有中间的两个卡扣固定，不是很紧，很容易揭开） 3. 换 `ssd` 为了安全起见不要带电操作，把电源先断开，在`ifixit`的那个页面也有看到，第一次拔那个电源可能有点紧，可以先在一边用力，会比较好拔一点，力气要稍微大一点。 4. 转接器的插入不是那么容易，要用点力，转接器和 `ssd` 一定要插好，不然螺丝不好上（固定 `ssd` 的就一个内五角螺丝） 5. 安装完成以后记得把电源线插回去
 
-如果你局的`ifixit`上面的图片还是有点不直观，这里还有两个`YouTube`视频，可以给你参考，注意的是，第一个视频的机型不是跟我的机型一样的，可能是更老一点的，具体型号我不太清楚，不过这个视频比较详细，包括系统的安装也告诉你了；第二个视频则是跟我型号相同的，不过两个视频都解释的很清楚，你可以作为参考。 1. [科技小巴跟换ssd](https://www.youtube.com/watch?v=5bCSczoWnek "科技小巴跟换ssd") 2. [一个视频更换ssd](https://www.youtube.com/watch?v=TG0mJDwVpuk "一个视频更换ssd") 基本把这两个视频看完你就知道具体流程了。
+如果你局的`ifixit`上面的图片还是有点不直观，这里还有两个`YouTube`视频，可以给你参考，注意的是，第一个视频的机型不是跟我的机型一样的，可能是更老一点的，具体型号我不太清楚，不过这个视频比较详细，包括系统的安装也告诉你了；第二个视频则是跟我型号相同的，不过两个视频都解释的很清楚，你可以作为参考。 1. [科技小巴跟换ssd](https://www.youtube.com/watch?v=5bCSczoWnek '科技小巴跟换ssd') 2. [一个视频更换ssd](https://www.youtube.com/watch?v=TG0mJDwVpuk '一个视频更换ssd') 基本把这两个视频看完你就知道具体流程了。
 
 ## 安装系统以及恢复
 
@@ -47,7 +45,7 @@ heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
 
 格式化好 `ssd` 以后此时 `ssd` 已经能被系统识别的，我们退出磁盘工具，选择安装 `macOS`，安装的位置就选择我们的新 `ssd`，安装过程很快我感觉没 `10` 分钟就安装好了。安装好系统以后就会进入到系统设置阶段（选择地区，键盘以及隐私政策），前面的直接下一步就行了，直到要你选择`是否要传输信息到这台mac`，接上你的备份硬盘，选择第一个从时间机器传输，然后选择最新的备份就可以了，恢复系统的时间比较长，我的系统文件就 `60` 多个G也恢复了一个小时，如果你的文件更多可能要更久。
 
-上面是我自己当时的做法，但是似乎不需要这么做，可以直接用 `time machine` 进行系统的恢复，参考文章 [15款MacBook Pro升级1TB SSD 指南](https://post.smzdm.com/p/a783vk9g/ "15款MacBook Pro升级1TB SSD 指南")
+上面是我自己当时的做法，但是似乎不需要这么做，可以直接用 `time machine` 进行系统的恢复，参考文章 [15款MacBook Pro升级1TB SSD 指南](https://post.smzdm.com/p/a783vk9g/ '15款MacBook Pro升级1TB SSD 指南')
 
 不需要制作系统 `u` 盘，只要在换 `SSD` 之前用 `time machine` 备份系统，换上新 `SSD` 之后，开机按住 `option+command+R` 直接进恢复模式，连上网，你什么都能干了，然后进磁盘工具把 `SSD` 格了，记得选择 `APFS` 分区，然后选择从 `time machine` 恢复系统就可以了
 

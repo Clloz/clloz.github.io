@@ -6,10 +6,8 @@ tags:
   - css
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './css.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -21,27 +19,28 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 
 ```css
 .wrap {
-    height: 250px;
-    margin-top: 30px;
-    position: relative;
-    font-size: 30px;
-    color: white;
+  height: 250px;
+  margin-top: 30px;
+  position: relative;
+  font-size: 30px;
+  color: white;
 }
-.wrap .left, .wrap .right {
-    width: 200px;
-    height: 200px;
+.wrap .left,
+.wrap .right {
+  width: 200px;
+  height: 200px;
 }
 .wrap .left {
-    background-color: pink;
+  background-color: pink;
 }
 .wrap .right {
-    background-color: lightblue;
+  background-color: lightblue;
 }
 .wrap .middle {
-    background-color: lightgreen;
-    padding: 10px;
-    box-sizing: border-box;
-    height: 100%;
+  background-color: lightgreen;
+  padding: 10px;
+  box-sizing: border-box;
+  height: 100%;
 }
 ```
 
@@ -51,9 +50,9 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 
 ```html
 <div class="wrap eg1">
-    <div class="left"></div>
-    <div class="right"></div>
-    <div class="middle">例一：左右元素float，中间元素margin</div>
+  <div class="left"></div>
+  <div class="right"></div>
+  <div class="middle">例一：左右元素float，中间元素margin</div>
 </div>
 ```
 
@@ -62,13 +61,13 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 ```css
 /* eg1 */
 .eg1 .left {
-    float: left;
+  float: left;
 }
 .eg1 .right {
-    float: right;
+  float: right;
 }
 .eg1 .middle {
-    margin: 0 210px;
+  margin: 0 210px;
 }
 ```
 
@@ -78,9 +77,9 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 
 ```html
 <div class="wrap eg2">
-    <div class="left"></div>
-    <div class="right"></div>
-    <div class="middle">例二：左右元素绝对定位，中间元素margin</div>
+  <div class="left"></div>
+  <div class="right"></div>
+  <div class="middle">例二：左右元素绝对定位，中间元素margin</div>
 </div>
 ```
 
@@ -89,16 +88,16 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 ```css
 /* eg2 */
 .eg2 .left {
-    position: absolute;
-    left: 0;
+  position: absolute;
+  left: 0;
 }
 .eg2 .right {
-    position: absolute;
-    right: 0;
-    top: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 .eg2 .middle {
-    margin: 0 210px;
+  margin: 0 210px;
 }
 ```
 
@@ -108,9 +107,9 @@ flex布局是最简单也是代码量最少的，兼容性也还不错。唯一�
 
 ```html
 <div class="wrap wrap-flex eg3">
-    <div class="left"></div>
-    <div class="middle">例三：中间元素flex-grow为1，自动放大</div>
-    <div class="right"></div>
+  <div class="left"></div>
+  <div class="middle">例三：中间元素flex-grow为1，自动放大</div>
+  <div class="right"></div>
 </div>
 ```
 
@@ -119,11 +118,11 @@ flex布局是最简单也是代码量最少的，兼容性也还不错。唯一�
 ```css
 /* eg3 */
 .wrap-flex {
-    display: flex;
+  display: flex;
 }
 .eg3 .middle {
-    flex: 1;
-    margin: 0 10px;
+  flex: 1;
+  margin: 0 10px;
 }
 ```
 
@@ -133,9 +132,11 @@ flex布局是最简单也是代码量最少的，兼容性也还不错。唯一�
 
 ```html
 <div class="wrap wrap-table eg4">
-    <div class="left"></div>
-    <div class="middle">例四：table布局，三栏高度一致，元素之间的缝隙只能通过border-collapse和border-spacing属性设置</div>
-    <div class="right"></div>
+  <div class="left"></div>
+  <div class="middle">
+    例四：table布局，三栏高度一致，元素之间的缝隙只能通过border-collapse和border-spacing属性设置
+  </div>
+  <div class="right"></div>
 </div>
 ```
 
@@ -144,13 +145,15 @@ flex布局是最简单也是代码量最少的，兼容性也还不错。唯一�
 ```css
 /* eg4 */
 .wrap-table {
-    display: table;
-    width: 100%;
-    border-collapse: separate; 
-    border-spacing: 10px 0px;
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 10px 0px;
 }
-.eg4 .left, .eg4 .middle, .eg4 .right {
-    display: table-cell;
+.eg4 .left,
+.eg4 .middle,
+.eg4 .right {
+  display: table-cell;
 }
 ```
 
@@ -160,9 +163,9 @@ flex布局是最简单也是代码量最少的，兼容性也还不错。唯一�
 
 ```html
 <div class="wrap wrap-inline eg5">
-    <div class="left"></div>
-    <div class="middle">例五： inline-block+calc函数和负margin</div>
-    <div class="right"></div>
+  <div class="left"></div>
+  <div class="middle">例五： inline-block+calc函数和负margin</div>
+  <div class="right"></div>
 </div>
 ```
 
@@ -171,17 +174,17 @@ flex布局是最简单也是代码量最少的，兼容性也还不错。唯一�
 ```css
 /* eg5 */
 .wrap-inline {
-    margin-left: -10px;
-    font-size: 0;
+  margin-left: -10px;
+  font-size: 0;
 }
 .wrap-inline div {
-    display: inline-block;
-    margin-left: 10px;
-    vertical-align: top;
-    font-size: 30px;
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: top;
+  font-size: 30px;
 }
 .wrap-inline .middle {
-    width: calc(100% - 430px);
+  width: calc(100% - 430px);
 }
 ```
 
@@ -191,9 +194,9 @@ flex布局是最简单也是代码量最少的，兼容性也还不错。唯一�
 
 ```html
 <div class="wrap eg6">
-    <div class="middle">例六： 圣杯布局</div>
-    <div class="left"></div>
-    <div class="right"></div>
+  <div class="middle">例六： 圣杯布局</div>
+  <div class="left"></div>
+  <div class="right"></div>
 </div>
 ```
 
@@ -202,23 +205,23 @@ flex布局是最简单也是代码量最少的，兼容性也还不错。唯一�
 ```css
 /* eg6 */
 .eg6 {
-    padding: 0 210px;
+  padding: 0 210px;
 }
 .eg6 div {
-    float: left;
+  float: left;
 }
 .eg6 .middle {
-    width: 100%;
+  width: 100%;
 }
 .eg6 .left {
-    margin-left: -100%;
-    position: relative;
-    left: -210px;
+  margin-left: -100%;
+  position: relative;
+  left: -210px;
 }
 .eg6 .right {
-    margin-left: -200px;
-    position: relative;
-    left: 210px;
+  margin-left: -200px;
+  position: relative;
+  left: 210px;
 }
 ```
 
@@ -228,11 +231,11 @@ flex布局是最简单也是代码量最少的，兼容性也还不错。唯一�
 
 ```html
 <div class="wrap eg7">
-    <div class="middle">
-        <div class="content">例七： 双飞翼布局</div>
-    </div>
-    <div class="left"></div>
-    <div class="right"></div>
+  <div class="middle">
+    <div class="content">例七： 双飞翼布局</div>
+  </div>
+  <div class="left"></div>
+  <div class="right"></div>
 </div>
 ```
 
@@ -241,25 +244,25 @@ flex布局是最简单也是代码量最少的，兼容性也还不错。唯一�
 ```css
 /* eg7 */
 .eg7 > div {
-    float: left;
+  float: left;
 }
 .eg7 .middle {
-    width: 100%;
-    padding: 0;
-    background-color: transparent;
+  width: 100%;
+  padding: 0;
+  background-color: transparent;
 }
 .eg7 .middle .content {
-    margin: 0 210px;
-    background-color: lightgreen;
-    height: 100%;
-    padding: 10px;
-    box-sizing: border-box;
+  margin: 0 210px;
+  background-color: lightgreen;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
 }
 .eg7 .left {
-    margin-left: -100%;
+  margin-left: -100%;
 }
 .eg7 .right {
-    margin-left: -200px;
+  margin-left: -200px;
 }
 ```
 

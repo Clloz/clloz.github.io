@@ -6,10 +6,8 @@ tags:
   - css
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './css.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 块元素居中的方法
 
@@ -44,24 +42,26 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 ## 表格单元格
 
 ```html
- <div class="Center-Container is-Table">
-        <div class="Table-Cell">
-            <div class="Center-Block">
-                <!-- CONTENT -->
-            </div>
-        </div>
+<div class="Center-Container is-Table">
+  <div class="Table-Cell">
+    <div class="Center-Block">
+      <!-- CONTENT -->
     </div>
-    <style>
-        .Center-Container.is-Table { display: table; }
-        .is-Table .Table-Cell {
-            display: table-cell;
-            vertical-align: middle;
-        }
-        .is-Table .Center-Block {
-            width: 50%;
-            margin: 0 auto;
-        }
-    </style>
+  </div>
+</div>
+<style>
+  .Center-Container.is-Table {
+    display: table;
+  }
+  .is-Table .Table-Cell {
+    display: table-cell;
+    vertical-align: middle;
+  }
+  .is-Table .Center-Block {
+    width: 50%;
+    margin: 0 auto;
+  }
+</style>
 ```
 
 总的说来这可能是最好的居中实现方法，因为内容块高度会随着实际内容的高度变化，浏览器对此的兼容性也好。最大的缺点是需要大量额外的标记，需要三层元素让最内层的元素居中。
@@ -74,14 +74,13 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 
 对于 `inline-block` 的居中定位方法着实花了一点时间,现在总结一下。 对于我们所看到的 `html` 的文档流，除开独占一行的块级元素，任何行内元素构成的行，都有一个 `line box`，`line box` 由内部的一个或者多个 `inline box` 组成，他的高度可以直接由 `line-height` 限定，如果不限定 `line-height` 那么就由内部最高的 `inline box` 决定。`inline box` 的高度由 `line-height` 决定。
 
-##### inline box、line box、line-height、vertical-align 的关联
+### inline box、line box、line-height、vertical-align 的关联
 
 1. 对于纯文字的 `inline box` 来说，外面会包裹一层 `content area`，他的高度和 `font-size` 以及 `font-family` 有关，与 `line-height` 无关，比如一个 `span` 标签，设置他的 `fonts-size 14px` 那么他的 `content area` 高度是 `19px` (不同的浏览器可能不同，`chrome` 中是 `19px` )，`css2.1` 规范中只说明了跟字体有关，但是没有说是怎么计算的。
-    
-    > The 'height' property does not apply. The height of the content area should be based on the font, but this specification does not specify how.A UA may, e.g., use the em-box or the maximum ascender and descender of the font.
-    
+
+   > The 'height' property does not apply. The height of the content area should be based on the font, but this specification does not specify how.A UA may, e.g., use the em-box or the maximum ascender and descender of the font.
+
 2. 看下面的图 ![行高细节](./images/inlinebox.png)
-    
 
 `line box` 的高度由 `line-height` 决定，`line-height` 的定义时从第一行基线到下一行基线的距离，一半的 `line-height` 在 `content area` 的上面，另一半在下面。`line-height` 从 `content area` 的水平中垂线开始计算。想得到 `inline` 元素的 `inline box` 高度，把 `inline` 元素改变成 `inline-block` (不手动设置高度)元素看看。`content area` 中垂线和 `middle line` 是有误差的，这也是导致有时候 `vertical-align` 有误差的原因。
 
@@ -91,9 +90,9 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 
 ```html
 <div style="background: lavender;font-size: 0;">
-    <span style="line-height: 300px; font-size: 15px;word-break: break-all; line-height: 19px;">
-        test
-    </span>
+  <span style="line-height: 300px; font-size: 15px;word-break: break-all; line-height: 19px;">
+    test
+  </span>
 </div>
 ```
 
@@ -105,7 +104,7 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 
 flexible box弹性布局，css3新特性，具体参考阮一峰的博文[Flex 布局教程：语法篇](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
 
-## 参考文章：
+## 参考文章
 
 1. [我对CSS vertical-align的一些理解与认识（一）](http://www.zhangxinxu.com/wordpress/2010/05/%E6%88%91%E5%AF%B9css-vertical-align%E7%9A%84%E4%B8%80%E4%BA%9B%E7%90%86%E8%A7%A3%E4%B8%8E%E8%AE%A4%E8%AF%86%EF%BC%88%E4%B8%80%EF%BC%89/)
 2. [CSS深入理解vertical-align和line-height的基友关系](http://www.zhangxinxu.com/wordpress/2015/08/css-deep-understand-vertical-align-and-line-height/)
@@ -116,8 +115,7 @@ flexible box弹性布局，css3新特性，具体参考阮一峰的博文[Flex �
 ## 扇形
 
 1. 在左上角和右下角绝对定位两个宽高都为50px的元素，然后设置`border-radius`为`0 0 100% 0`和`100% 0 0 0`两种，当`border-radius`超过`50%`的时候，依然可以正常显示，但是如果两个相邻的角的`border-radius`半径和超过两个角所在边的长度的时候，浏览器会重新计算让`border-radius`适应当前的状况。
-    
+
 2. 在左上角和右下角绝对定位两个宽高都为`100px`的元素，`border-radius`都为`50%`，就形成了两个半径为50px的圆，讲圆心分别定位到左上角和右下角，设置居中的父元素的`overflow`为`hidden`就可以将超出的部分隐藏起来，实现需要的效果
-    
 
 应该还有很多其他的方法，目前就想到这两种比较简单的，后面如果学习到新的会来补充。任务四基本完成了。

@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 在使用css的时候单位是我们经常要处理的一个细节，`px，em，percentage，number，rem，vh，vw`等等，不同的单位可能渲染机制不同，如果对于单位的渲染机制理解不到位很可能会让我们在写样式的过程中遇到一些摸不着头脑的问题。
@@ -28,16 +26,14 @@ language: '中文'
 
 ```html
 <div style="font-size: 40px; line-height: 2em;background-color: black; color: white;">
-    这里是div-parent
-    <div style="font-size: 16px; background-color: lightblue;">
-        这里是div-child
-    </div>
+  这里是div-parent
+  <div style="font-size: 16px; background-color: lightblue;">这里是div-child</div>
 </div>
 ```
 
 我们可以看到两个div嵌套，第一个 `div` 的字体大小为`40px`，第二个为`16px`，我们设置了父元素的`line-height：2em`，相当于字体的 `200%`，`line-height` 属性是可以继承的，但是我们发现父元素和子元素的行高是一样的，都是`80px`，这跟我们的预想不一样，我们直觉觉得子元素继承了父元素的`line-height: 2em`，那么他的行高应该是`16*2=32px`，但是并不是这样，这就是上面说的相对长度单位其子元素只会继承出元素的计算值而不会继承相对值，或者你可以理解为子元素确实继承了父元素的`line-height：2em`的属性，但是，这个 `2em` 是根据父元素的字体大小来计算的。
 
-![unit1](./images/unit1.jpg "unit1")
+![unit1](./images/unit1.jpg 'unit1')
 
 ## rem (root em)
 
@@ -51,4 +47,4 @@ language: '中文'
 
 在上面的 `line-height` 问题中我们除了使用绝对长度单位和 `rem` 单位以外，还可以使用无单位数值，比如 `2em` 转化为 `2`，一样可以解决继承问题。无单位数值会被子元素继承，并且计算是根绝当前元素的字体大小来计算的，效果如下。
 
-![unit2](./images/unit2.jpg "unit2")
+![unit2](./images/unit2.jpg 'unit2')

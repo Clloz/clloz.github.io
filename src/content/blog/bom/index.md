@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 `BOM` ( `browser object model` )并没有像 `DOM` 一样有一个现行的标准，应该是为了对应 `DOM` 而产生的一个概念，可以理解为浏览器向 `Javascript` 暴露的控制浏览器行为的 `API`，比如经常使用的 `window对象，location对象`，因为主流浏览器都实现了这些属性和方法，所以被大家称为 `BOM`。
@@ -19,23 +17,23 @@ language: '中文'
 `window` 对象是 `BOM` 中最重要的一个对象，它表示了一个浏览器实例，浏览器的每一个tag都有一个 `window` 对象。 `window` 对象是 `JavaScript` 访问浏览器窗口属性和方法的接口，更重要的一点是它是 `ECMAScript` 中 `Global` 对象在浏览器环境中的实现。所有全局的变量，对象和方法都会自动的成为 `window` 对象的成员，全局变量就是 `window` 对象的属性，全局函数就是 `window` 对象的方法，包括 `document` 对象也是 `window` 对象的一个属性(指向当前窗口对应的 `HTML` 文档的引用），我们可以通过 `window.document` 来访问这个只读属性。包括我们后面说到的 `history，navigator， location， screen` 对象也都是 `window` 对象的属性，这也体现了 `window` 就是 `Global` 对象。
 
 ```javascript
-var age = 24;
+var age = 24
 
-function printName(){
-    console.log(age);
+function printName() {
+  console.log(age)
 }
 
-console.log(window.age); //24
-window.printName(); //24
+console.log(window.age) //24
+window.printName() //24
 ```
 
 BOM和DOM的关系如下图：
 
-![dom-bom](./images/bom-dom.png "dom-bom")
+![dom-bom](./images/bom-dom.png 'dom-bom')
 
 可能有些同学发现我们平时使用 `location` 对象是不加 `window.` 的，在控制台打印它们也没有什么区别，返回的是同一个对象，其实理论上在全局执行环境中，`window` 的属性是可以直接访问的，不加 `window.` 前缀，但是在非全局执行环境中，也就是在函数中这样做就可能出错，因为如果你在函数中定义了一个同名的变量，由于这个变量在作用域链中的位置更靠前，所以输出的将会是你声明的这个变量。比如下图这种情况：
 
-![window-scope](./images/window-scope.png "window-scope")
+![window-scope](./images/window-scope.png 'window-scope')
 
 > 用var声明的全局属性不能被 `delete` 操作符删除，而通过 `window.property` 来声明的属性则可以被删除。`let` 和 `const` 声明的的属性无论是否是全局的都不能被删除。
 
@@ -43,34 +41,34 @@ BOM和DOM的关系如下图：
 
 `window` 对象提供了一套操作窗口的属性和方法,比较常用的有如下几种：
 
-| 名称 | 属性/方法 | 是否只读 | 功能 |
-| --- | --- | --- | --- |
-| window.innerHeight | 属性 | 只读 | 返回浏览器窗口的内容区域的高度,包含水平滚动条(如果有的话) |
-| window.innerWidth | 属性 | 只读 | 浏览器窗口的内容区域的宽度,包含垂直滚动条(如果有的话) |
-| window.outerHeight | 属性 | 只读 | 返回浏览器窗口的外部高度 |
-| window.outerWidth | 属性 | 只读 | 返回浏览器窗口的外部宽度 |
-| window.closed | 属性 | 只读 | 返回窗口是否关闭的布尔值 |
-| window.document | 属性 | 只读 | 返回当前窗口所包含的文档的引用 |
-| window.localStorage | 属性 | 只读 | 返回用来存储只能在创建它的源下访问的数据的本地存储对象的引用 |
-| window.sessionStorage | 属性 | 只读 | 返回用来存储只能在创建它的源下访问的数据的session storage对象的引用 |
-| window.screen | 属性 | 只读 | 返回screen对象的引用 |
-| window.screenX | 属性 | 只读 | 返回浏览器左边框到显示器左边框的距离 |
-| window.screenY | 属性 | 只读 | 返回浏览器上边框到显示器上边框的距离 |
-| window.scrollX | 属性 | 只读 | 返回水平方向上页面滚动的像素数 |
-| window.scrollY | 属性 | 只读 | 返回垂直方向上页面滚动的像素数 |
-| window.btoa() | 方法 |  | 从 String 对象中创建一个 base-64 编码的 ASCII 字符串，其中字符串中的每个字符都被视为一个二进制数据字节 |
-| window.atob() | 方法 |  | 对用base-64编码过的字符串进行解码 |
-| window.close() | 方法 |  | 关闭当前窗口 |
-| window.getComputedStyle() | 方法 |  | 返回目标元素经浏览器计算后的样式对象，支持伪类 |
-| window.getSelection() | 方法 |  | 返回一个 Selection 对象，表示用户选择的文本范围或光标的当前位置。 |
-| window.prompt() | 方法 |  | 显示一个输入框，点击确定返回用户输入字符串，点击取消返回null |
-| window.confirm() | 方法 |  | 显示一个确认框，点击确定返回true，点击取消返回false |
-| window.scroll() | 方法 |  | 滚动窗口到指定的坐标，从初始坐标 `(0, 0)` 开始 |
-| window.scrollBy() | 方法 |  | 从当前位置滚动窗口一定距离 |
-| window.scrollTo() | 方法 |  | 和scroll()方法相同 |
-| window.stop() | 方法 |  | 停止页面的加载 |
+| 名称                      | 属性/方法 | 是否只读 | 功能                                                                                                   |
+| ------------------------- | --------- | -------- | ------------------------------------------------------------------------------------------------------ |
+| window.innerHeight        | 属性      | 只读     | 返回浏览器窗口的内容区域的高度,包含水平滚动条(如果有的话)                                              |
+| window.innerWidth         | 属性      | 只读     | 浏览器窗口的内容区域的宽度,包含垂直滚动条(如果有的话)                                                  |
+| window.outerHeight        | 属性      | 只读     | 返回浏览器窗口的外部高度                                                                               |
+| window.outerWidth         | 属性      | 只读     | 返回浏览器窗口的外部宽度                                                                               |
+| window.closed             | 属性      | 只读     | 返回窗口是否关闭的布尔值                                                                               |
+| window.document           | 属性      | 只读     | 返回当前窗口所包含的文档的引用                                                                         |
+| window.localStorage       | 属性      | 只读     | 返回用来存储只能在创建它的源下访问的数据的本地存储对象的引用                                           |
+| window.sessionStorage     | 属性      | 只读     | 返回用来存储只能在创建它的源下访问的数据的session storage对象的引用                                    |
+| window.screen             | 属性      | 只读     | 返回screen对象的引用                                                                                   |
+| window.screenX            | 属性      | 只读     | 返回浏览器左边框到显示器左边框的距离                                                                   |
+| window.screenY            | 属性      | 只读     | 返回浏览器上边框到显示器上边框的距离                                                                   |
+| window.scrollX            | 属性      | 只读     | 返回水平方向上页面滚动的像素数                                                                         |
+| window.scrollY            | 属性      | 只读     | 返回垂直方向上页面滚动的像素数                                                                         |
+| window.btoa()             | 方法      |          | 从 String 对象中创建一个 base-64 编码的 ASCII 字符串，其中字符串中的每个字符都被视为一个二进制数据字节 |
+| window.atob()             | 方法      |          | 对用base-64编码过的字符串进行解码                                                                      |
+| window.close()            | 方法      |          | 关闭当前窗口                                                                                           |
+| window.getComputedStyle() | 方法      |          | 返回目标元素经浏览器计算后的样式对象，支持伪类                                                         |
+| window.getSelection()     | 方法      |          | 返回一个 Selection 对象，表示用户选择的文本范围或光标的当前位置。                                      |
+| window.prompt()           | 方法      |          | 显示一个输入框，点击确定返回用户输入字符串，点击取消返回null                                           |
+| window.confirm()          | 方法      |          | 显示一个确认框，点击确定返回true，点击取消返回false                                                    |
+| window.scroll()           | 方法      |          | 滚动窗口到指定的坐标，从初始坐标 `(0, 0)` 开始                                                         |
+| window.scrollBy()         | 方法      |          | 从当前位置滚动窗口一定距离                                                                             |
+| window.scrollTo()         | 方法      |          | 和scroll()方法相同                                                                                     |
+| window.stop()             | 方法      |          | 停止页面的加载                                                                                         |
 
-更全的 `Window` 对象属性和方法查看[MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window "MDN")。
+更全的 `Window` 对象属性和方法查看[MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window 'MDN')。
 
 > 从 `Firefox 7`，依据下面的规则，不能再调整浏览器内一个窗口的默认大小了：1. 不能调整非 `window.open` 方法打开的窗口或 `Tab` 的大小。2. 当一个窗口内包含有一个以上的 `Tab` 时，不能调正窗口的大小。所以 `window.resizeBy和window.resizeTo` 都无法使用。
 
@@ -82,19 +80,20 @@ BOM和DOM的关系如下图：
 
 ```javascript
 function sleep(delay) {
-    var start = (new Date()).getTime();
-    while ((new Date()).getTime() - start < delay) {  //死循环，只是在测试中使用
-        continue;
-    }
+  var start = new Date().getTime()
+  while (new Date().getTime() - start < delay) {
+    //死循环，只是在测试中使用
+    continue
+  }
 }
 
 function test() {
-    console.log('111', new Date().getTime());
-    setTimeout(function () {
-        console.log(123, new Date().getTime());
-    }, 3000) //设置超时时间为1000和3000看看有什么区别
-    sleep(2000);
-    console.log(222);
+  console.log('111', new Date().getTime())
+  setTimeout(function () {
+    console.log(123, new Date().getTime())
+  }, 3000) //设置超时时间为1000和3000看看有什么区别
+  sleep(2000)
+  console.log(222)
 }
 
 test()
@@ -112,16 +111,16 @@ test()
 
 `location` 对象也是非常常用的 `BOM` 对象，比如我们常用的 `location.href` ,它提供了与当前窗口中加载的文档有关的信息，还提供了一 些导航功能。`window` 和 `document` 对象都有对 `location` 对象的引用，也就是我们可以用 `window.location` 和 `document.location` 来访问 `location` 对象。`location` 对象的用处不只表现在它保存着当前文档的信息，还表现在它将 `URL` 解析为独立的片段，让开发人员可以通过不同的属性访问这些片段。具体属性见下表：
 
-| 属性名 | 例子 | 说明 |
-| --- | --- | --- |
-| href | `"https://www.clloz.com"` | 返回当前页面的完整URL，`location.toString()` 效果相同 |
-| protocol | `"https:"` | 返回当前页面使用的协议 |
-| host | `"www.clloz.com"` | 返回当前页面域名，如有有端口号会加上`":port"` |
-| hostname | `"www.clloz.com"` | 返回不带端口号的域名 |
-| port | `"8080"` | 返回当前页面的端口号，如果没有则返回空字符串 |
-| pathname | `"/s/programming/"` | 返回URL中的路径部分，开头有一个`/` |
-| search | `"?q=javascript"` | 返回url中的参数部分，开头有`?` |
-| hash | `#content` | 返回URL中的hash(#号后跟零或多个字符)，如果URL 中不包含散列，则返回空字符串 |
+| 属性名   | 例子                      | 说明                                                                       |
+| -------- | ------------------------- | -------------------------------------------------------------------------- |
+| href     | `"https://www.clloz.com"` | 返回当前页面的完整URL，`location.toString()` 效果相同                      |
+| protocol | `"https:"`                | 返回当前页面使用的协议                                                     |
+| host     | `"www.clloz.com"`         | 返回当前页面域名，如有有端口号会加上`":port"`                              |
+| hostname | `"www.clloz.com"`         | 返回不带端口号的域名                                                       |
+| port     | `"8080"`                  | 返回当前页面的端口号，如果没有则返回空字符串                               |
+| pathname | `"/s/programming/"`       | 返回URL中的路径部分，开头有一个`/`                                         |
+| search   | `"?q=javascript"`         | 返回url中的参数部分，开头有`?`                                             |
+| hash     | `#content`                | 返回URL中的hash(#号后跟零或多个字符)，如果URL 中不包含散列，则返回空字符串 |
 
 `location` 的这些属性都不是只读的，通过给这些属性赋值，我们能够改变当前的 `URL` ，每个属性作用不同，我们假设初始 `URL` 为 `https://www.clloz.com/study`： 1. `location.hash = "#section1";`将URL变为`https://www.clloz.com/study/#section1` 2. `location.search = "?q=javascript";`见URL变为`https://www.clloz.com/study/?q=javascript"` 3. `location.hostname = "www.google.com"`将URL变为`https://www.google.com/study/` 4. `location.pathname = "dir"`将URL变为`https://www.clloz.com/dir/` 5. `location.port = 8080`将URL变为`https://www.clloz.com:8080/study/`
 
@@ -131,20 +130,23 @@ test()
 
 ```javascript
 function getQueryStringArgs() {
-    var qs = location.search.length > 0 ? location.search.substring(1) : "";
-    var args = {};
-    var items = qs.length ? qs.split('&') : [];
-    var item = null, name = null, value = null;
-    var i = 0, len = items.length;
-    for (i = 0; i < len; i++) {
-        item = items[i].split("=");
-        name = decodeURIComponent(item[0]);
-        value = decodeURIComponent(item[1]);
-        if (name.length) {
-            args[name] = value;
-        }
+  var qs = location.search.length > 0 ? location.search.substring(1) : ''
+  var args = {}
+  var items = qs.length ? qs.split('&') : []
+  var item = null,
+    name = null,
+    value = null
+  var i = 0,
+    len = items.length
+  for (i = 0; i < len; i++) {
+    item = items[i].split('=')
+    name = decodeURIComponent(item[0])
+    value = decodeURIComponent(item[1])
+    if (name.length) {
+      args[name] = value
     }
-    return args;
+  }
+  return args
 }
 ```
 
@@ -158,7 +160,7 @@ function getQueryStringArgs() {
 
 ## navigator对象
 
-`navigator` 对象表示用户代理的状态和标识。 它允许脚本查询它和注册自己进行一些活动。可以使用只读的 `window.navigator` 属性检索 `navigator` 对象。 具体内容查看[MDN-navigator](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator "MDN-navigator")
+`navigator` 对象表示用户代理的状态和标识。 它允许脚本查询它和注册自己进行一些活动。可以使用只读的 `window.navigator` 属性检索 `navigator` 对象。 具体内容查看[MDN-navigator](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator 'MDN-navigator')
 
 ## 总结
 
@@ -166,4 +168,4 @@ function getQueryStringArgs() {
 
 ## window对象属性方法图
 
-![window-properties](./images/window-properties.png "window-properties")
+![window-properties](./images/window-properties.png 'window-properties')

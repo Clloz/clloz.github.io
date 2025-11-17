@@ -33,20 +33,18 @@ language: '中文'
 还有一种实现方式就是使用 `CSS` 的 `user-select` 属性。
 
 ```css
-*{  
-   -webkit-touch-callout:none;  /*系统默认菜单被禁用*/   
-   -webkit-user-select:none; /*webkit浏览器*/   
-   -khtml-user-select:none; /*早期浏览器*/   
-   -moz-user-select:none;/*火狐*/   
-   -ms-user-select:none; /*IE10*/   
-   user-select:none;
-   -webkit-user-select: none;
-} 
+* {
+  -webkit-touch-callout: none; /*系统默认菜单被禁用*/
+  -webkit-user-select: none; /*webkit浏览器*/
+  -khtml-user-select: none; /*早期浏览器*/
+  -moz-user-select: none; /*火狐*/
+  -ms-user-select: none; /*IE10*/
+  user-select: none;
+  -webkit-user-select: none;
+}
 ```
 
 但是这样会导致文本始终不可选，我们比较想要的效果应该是拖动的时候不会选中，但在其他时候应该是可以选中的。我们可在 `mousedown` 触发的时候给 `body` 加上对应的样式，在 `mouseup` 触发的时候再去掉这个样式。
-
-
 
 还有一个比较麻烦的点在于图片的可拖拽（点击图片并拖动会出现一张透明的图片）。有时我们的拖动会触发到图片的拖拽，会导致我们绑定的 `mouseup` 没有执行，在松开鼠标后拖动的元素还是会跟着我们的鼠标移动。`-webkit-user-select` 这个 `css` 属性可以帮我们禁止图片拖拽，但是这个属性的兼容性很不好，移动端是都不支持的。如果有兼容性要求可以使用 `img` 的 `draggable` 属性。
 
@@ -57,4 +55,4 @@ language: '中文'
 ## 参考文章
 
 1. [H5拖拽禁止选中文字](https://juejin.cn/post/6854573217021952008)
-3. [How can I prevent text/element selection with cursor drag](https://stackoverflow.com/questions/5429827/how-can-i-prevent-text-element-selection-with-cursor-drag)
+2. [How can I prevent text/element selection with cursor drag](https://stackoverflow.com/questions/5429827/how-can-i-prevent-text-element-selection-with-cursor-drag)

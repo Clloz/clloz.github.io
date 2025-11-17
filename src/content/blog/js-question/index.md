@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 在查阅资料的时候，看到一道考差 `JavaScript` 基础知识的题目，其中还是考查到一些自己掌握的不好的知识。
@@ -18,32 +16,31 @@ language: '中文'
 
 ```javascript
 function Foo() {
-    getName = function () {
-        console.log(1);
-    };
-    return this;
-};
+  getName = function () {
+    console.log(1)
+  }
+  return this
+}
 Foo.getName = function () {
-    console.log(2);
-};
+  console.log(2)
+}
 Foo.prototype.getName = function () {
-    console.log(3);
-};
+  console.log(3)
+}
 var getName = function () {
-    console.log(4);
-};
+  console.log(4)
+}
 function getName() {
-    console.log(5);
-};
+  console.log(5)
+}
 
-Foo.getName(); //2
-getName(); //4
-Foo().getName(); //1
-getName(); //1
-new Foo.getName(); //2
-new Foo().getName(); //3
-new new Foo().getName(); //3
-
+Foo.getName() //2
+getName() //4
+Foo().getName() //1
+getName() //1
+new Foo.getName() //2
+new Foo().getName() //3
+new new Foo().getName() //3
 ```
 
 需要注意的一点是这段代码因为牵扯到全局作用于下定义的对象是绑定在全局对象上的属性，所以这段代码使要运行在全局作用域，否则会报错。
@@ -62,12 +59,12 @@ new new Foo().getName(); //3
 
 ```javascript
 function getName() {
-    console.log(5);
+  console.log(5)
 }
-var getName;
+var getName
 
 getName = function () {
-    console.log(4);
+  console.log(4)
 }
 ```
 
@@ -75,7 +72,7 @@ getName = function () {
 
 ## 第三问
 
-这一问主要考察的是对 `this` 的理解，直接调用的函数在非严格模式下，其 `this` 是指向全局对象的（详细的 `this` 指向分析请看[JavaScript中的this指向](https://www.clloz.com/programming/front-end/js/2020/06/30/js-this/ "JavaScript中的this指向")。
+这一问主要考察的是对 `this` 的理解，直接调用的函数在非严格模式下，其 `this` 是指向全局对象的（详细的 `this` 指向分析请看[JavaScript中的this指向](https://www.clloz.com/programming/front-end/js/2020/06/30/js-this/ 'JavaScript中的this指向')。
 
 `Foo` 函数做了两件事，首先将全局作用域下定义的 `getName` 变量重新赋值（一个新的匿名函数引用），然后返回全局对象。所以 `Foo().getName()` 相当于 `window.getName()`，此时的全局对象上的 `getName` 函数已经在 `Foo` 函数中被重写，所以最后的结果是 `1`。
 
@@ -85,7 +82,7 @@ getName = function () {
 
 ## 第五~七问
 
-其实最后三问的核心问题是相同的，就是 `new` 运算符的优先级问题，我在[new操作符的解析和实现](https://www.clloz.com/programming/front-end/js/2020/06/29/new-operator/ "new操作符的解析和实现")中最后也提到了，带参数的 `new` 运算符的优先级是高于不带参数的 `new` 运算符的。比带参数 `new` 优先级高的运算符只有圆括号和成员访问的两种方式 `.` 和 `[]`。在带参数和不带参数 `new` 之间还有一个就是函数调用运算符 `()`。
+其实最后三问的核心问题是相同的，就是 `new` 运算符的优先级问题，我在[new操作符的解析和实现](https://www.clloz.com/programming/front-end/js/2020/06/29/new-operator/ 'new操作符的解析和实现')中最后也提到了，带参数的 `new` 运算符的优先级是高于不带参数的 `new` 运算符的。比带参数 `new` 优先级高的运算符只有圆括号和成员访问的两种方式 `.` 和 `[]`。在带参数和不带参数 `new` 之间还有一个就是函数调用运算符 `()`。
 
 所以第五问的 `new Foo.getName();` 可以理解为 `new (Foo.getName)()` ，把 `Foo.getName` 看做是一个整体，然后执行 `new` 运算符。最后的结果就是以 `Foo.getName` 作为构造函数实例化了一个对象，在实例化过程中会执行构造函数，所以返回 `2`。
 
@@ -95,7 +92,7 @@ getName = function () {
 
 第七问 `new new Foo().getName()` 可以理解为 `new ((new Foo()).getName)()` 就相当于 `new Foo.prototype.getName()`，最终结果也是 `3`，生成一个以 `Foo.prototype.getName` 为构造函数的实例。
 
-> 运算符的优先级可以查看 `mdn` 或者是我的文章[运算符优先级](https://www.clloz.com/programming/front-end/js/2019/04/05/operator-precedence/ "运算符优先级")
+> 运算符的优先级可以查看 `mdn` 或者是我的文章[运算符优先级](https://www.clloz.com/programming/front-end/js/2019/04/05/operator-precedence/ '运算符优先级')
 
 ## 总结
 

@@ -41,26 +41,25 @@ language: '中文'
 
 看到这个题目首先看到链式调用，那么自然想到的是构造函数，原型方法，每个方法调用后再返回调用对象，这样可以实现链式调用，LazyMan 可以直接调用那么我们可以检测一下是否是 new 调用，不是则返回 new 调用。基本结构如下
 
-``````javascript
+```javascript
 function LazyMan(name) {
-    if (!(this instanceof LazyMan)) {
-        return new LazyMan(name);
-    }
+  if (!(this instanceof LazyMan)) {
+    return new LazyMan(name)
+  }
 }
 
 LazyMan.prototype.sleep = function (time) {
   return this
-};
+}
 
 LazyMan.prototype.eat = function (food) {
-  return this;
-};
+  return this
+}
 
 LazyMan.prototype.sleepFirst = function (time) {
-  return this;
-};
-
-``````
+  return this
+}
+```
 
 实现链式调用之后我们继续看题目，可以看到需要有等待，自然想到 setTimeout，但是这里 setTimeout 无法满足我们的要求，因为 setTimeout 本身也是同步执行的，其回调函数是异步，并且 setTimeout 没法返回 this 对象。那么我们自然想到了 Promise，async/await。
 
@@ -74,126 +73,126 @@ LazyMan.prototype.sleepFirst = function (time) {
 
 ```javascript
 function LazyMan(name) {
-    if (!(this instanceof LazyMan)) {
-        return new LazyMan(name);
-    }
-    this.name = name;
-    console.log(`this is ${this.name}`);
-    this.firstSleepTime = 0;
-    this.tasks = [];
-    // this.execute();
+  if (!(this instanceof LazyMan)) {
+    return new LazyMan(name)
+  }
+  this.name = name
+  console.log(`this is ${this.name}`)
+  this.firstSleepTime = 0
+  this.tasks = []
+  // this.execute();
 }
 
 function sleep(time) {
-    return new Promise(resolve => setTimeout(resolve, time));
+  return new Promise((resolve) => setTimeout(resolve, time))
 }
 
 function debounce(fn, interval) {
-    let timeout = null;
-    return function () {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-            fn.apply(this, arguments);
-        }, interval);
-    };
+  let timeout = null
+  return function () {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      fn.apply(this, arguments)
+    }, interval)
+  }
 }
 
 LazyMan.prototype.execute = debounce(function () {
-    sleep(this.firstSleepTime).then(async () => {
-        for (let i = 0; i < this.tasks.length; i++) {
-            if (typeof this.tasks[i] === 'string') {
-                console.log(`Eat ${this.tasks[i]}`);
-            } else {
-                await sleep(this.tasks[i]);
-            }
-        }
-    });
-}, 0);
+  sleep(this.firstSleepTime).then(async () => {
+    for (let i = 0; i < this.tasks.length; i++) {
+      if (typeof this.tasks[i] === 'string') {
+        console.log(`Eat ${this.tasks[i]}`)
+      } else {
+        await sleep(this.tasks[i])
+      }
+    }
+  })
+}, 0)
 
 LazyMan.prototype.sleep = function (time) {
-    this.tasks.push(time);
-    this.execute();
-    return this;
-};
+  this.tasks.push(time)
+  this.execute()
+  return this
+}
 
 LazyMan.prototype.eat = function (food) {
-    this.tasks.push(food);
-    this.execute();
-    return this;
-};
+  this.tasks.push(food)
+  this.execute()
+  return this
+}
 
 LazyMan.prototype.sleepFirst = function (time) {
-    this.firstSleepTime += time;
-    this.execute();
-    return this;
-};
+  this.firstSleepTime += time
+  this.execute()
+  return this
+}
 
-LazyMan('clloz').eat('orange').sleep(5000).eat('apple').sleepFirst(3000);
+LazyMan('clloz').eat('orange').sleep(5000).eat('apple').sleepFirst(3000)
 ```
 
 效果是达到了，不过有点投机取巧，我这里 tasks 存的不是任务，并且 sleepFirst 也是特殊处理。后来我去网上看了看别人的实现，将所有任务逻辑统一。修改后的实现如下
 
 ```javascript
 function LazyMan(name) {
-    if (!(this instanceof LazyMan)) {
-        return new LazyMan(name);
-    }
-    this.name = name;
-    this.sayName();
-    this.tasks = [];
+  if (!(this instanceof LazyMan)) {
+    return new LazyMan(name)
+  }
+  this.name = name
+  this.sayName()
+  this.tasks = []
 }
 
 function sleep(time) {
-    return new Promise(resolve => setTimeout(resolve, time));
+  return new Promise((resolve) => setTimeout(resolve, time))
 }
 
 function debounce(fn, interval = 0) {
-    let timeout = null;
-    return function () {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-            fn.apply(this, arguments);
-        }, interval);
-    };
+  let timeout = null
+  return function () {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      fn.apply(this, arguments)
+    }, interval)
+  }
 }
 
 LazyMan.prototype.sayName = function () {
-    console.log(`this is ${this.name}`);
-};
+  console.log(`this is ${this.name}`)
+}
 
 LazyMan.prototype.execute = debounce(async function () {
-    for (const task of this.tasks) {
-        await task();
-    }
-});
+  for (const task of this.tasks) {
+    await task()
+  }
+})
 
 LazyMan.prototype.sleep = function (time) {
-    this.tasks.push(async () => {
-        console.log(`sleep ${time}ms`);
-        await sleep(time);
-    });
-    this.execute();
-    return this;
-};
+  this.tasks.push(async () => {
+    console.log(`sleep ${time}ms`)
+    await sleep(time)
+  })
+  this.execute()
+  return this
+}
 
 LazyMan.prototype.eat = function (food) {
-    this.tasks.push(async () => {
-        console.log(`Eat ${food}`);
-    });
-    this.execute();
-    return this;
-};
+  this.tasks.push(async () => {
+    console.log(`Eat ${food}`)
+  })
+  this.execute()
+  return this
+}
 
 LazyMan.prototype.sleepFirst = function (time) {
-    this.tasks.unshift(async () => {
-        console.log(`first sleep ${time}ms`);
-        await sleep(time);
-    });
-    this.execute();
-    return this;
-};
+  this.tasks.unshift(async () => {
+    console.log(`first sleep ${time}ms`)
+    await sleep(time)
+  })
+  this.execute()
+  return this
+}
 
-LazyMan('clloz').eat('orange').sleep(5000).eat('apple').sleepFirst(3000);
+LazyMan('clloz').eat('orange').sleep(5000).eat('apple').sleepFirst(3000)
 ```
 
 ## 总结

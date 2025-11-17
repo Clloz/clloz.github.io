@@ -6,18 +6,16 @@ tags:
   - assorted
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./homebrew.png","color":"#B4C6DA"}
+heroImage: { 'src': './homebrew.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 命令和快捷键系列
 
-1. [终端和chorme常用快捷键以及快捷键工具keycue](https://www.clloz.com/programming/assorted/2019/09/18/terminal-chrome-shortcurs/ "终端和chorme常用快捷键以及快捷键工具keycue")()
-2. [emacs常用快捷键](https://www.clloz.com/programming/assorted/emacs/2019/04/14/emacs-keybinding/ "emacs常用快捷键")
-3. [常用Git命令](https://www.clloz.com/programming/assorted/2019/05/15/git-command/ "常用Git命令")
-4. [Mac的环境变量和nvm的使用](https://www.clloz.com/programming/assorted/2019/04/07/mac-pathnvm/ "Mac的环境变量和nvm的使用")
-5. [Homebrew更换清华镜像以及常用命令](https://www.clloz.com/programming/assorted/2019/09/08/homebrew-tsinghua-mirror/ "Homebrew更换清华镜像以及常用命令")
+1. [终端和chorme常用快捷键以及快捷键工具keycue](https://www.clloz.com/programming/assorted/2019/09/18/terminal-chrome-shortcurs/ '终端和chorme常用快捷键以及快捷键工具keycue')()
+2. [emacs常用快捷键](https://www.clloz.com/programming/assorted/emacs/2019/04/14/emacs-keybinding/ 'emacs常用快捷键')
+3. [常用Git命令](https://www.clloz.com/programming/assorted/2019/05/15/git-command/ '常用Git命令')
+4. [Mac的环境变量和nvm的使用](https://www.clloz.com/programming/assorted/2019/04/07/mac-pathnvm/ 'Mac的环境变量和nvm的使用')
+5. [Homebrew更换清华镜像以及常用命令](https://www.clloz.com/programming/assorted/2019/09/08/homebrew-tsinghua-mirror/ 'Homebrew更换清华镜像以及常用命令')
 
 ## 前言
 
@@ -25,7 +23,7 @@ heroImage: {"src":"./homebrew.png","color":"#B4C6DA"}
 
 ## 中科大源
 
-官方文档：[Homebrew 源使用帮助](https://mirrors.ustc.edu.cn/help/brew.git.html "Homebrew 源使用帮助")
+官方文档：[Homebrew 源使用帮助](https://mirrors.ustc.edu.cn/help/brew.git.html 'Homebrew 源使用帮助')
 
 ```bash
 # 替换 Homebrew

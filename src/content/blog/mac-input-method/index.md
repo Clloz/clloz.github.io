@@ -6,10 +6,8 @@ tags:
   - assorted
   - 奇技淫巧
 language: '中文'
-heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './macos.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -25,7 +23,7 @@ heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
 
 在 `System Preferences -> Keyboard -> Input Sources` 中 勾选下面的第二项，如下图。现在在拼音输入状态下，长按 `CapsLock` 键就是切换到大写英文，短按就是切换到小写英文。在这里另外给大家推荐一个软件 `CapsLocker`，这个软件在大写锁定切换的时候会发出声音，对我这种使用蓝牙键盘且看不到大写锁定状态的还是很有用的。
 
-![capslock-pinyin](./images/capslock-pinyin.png "capslock-pinyin")
+![capslock-pinyin](./images/capslock-pinyin.png 'capslock-pinyin')
 
 ## 不同应用不同输入法
 
@@ -39,7 +37,7 @@ heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
 
 在使用 `Mac` 默认的拼音输入法的时候，有时候会发现有些字找不到，或者发现一个读音的字非常少，可能是你没有钩上下图中的 `show traditional and rare characters`。
 
-![show-rare-character](./images/show-rare-character.png "show-rare-character")
+![show-rare-character](./images/show-rare-character.png 'show-rare-character')
 
 ## 中英文数字混输
 
@@ -53,7 +51,7 @@ heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
 
 通过快捷键 `Option+Shift+L` 可以打开查找输入码的界面，然后复制字到里面就可以查看各种输入法中的输入码，在遇到不认识的字，或者想要查看五笔的输入码的时候都可以使用。
 
-![input-code](./images/input-code.png "input-code")
+![input-code](./images/input-code.png 'input-code')
 
 ## 使用手写和虚拟键盘
 
@@ -73,4 +71,4 @@ heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
 
 ## 参考文章
 
-1. [Mac 自带输入法这么好用，不看不知道](https://www.ifanr.com/app/800591 "Mac 自带输入法这么好用，不看不知道")
+1. [Mac 自带输入法这么好用，不看不知道](https://www.ifanr.com/app/800591 'Mac 自带输入法这么好用，不看不知道')

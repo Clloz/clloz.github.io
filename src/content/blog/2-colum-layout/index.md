@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 两栏布局是我们经常遇到的一种布局方式，实现两栏布局一般的需求是左侧固定宽度，右侧自适应，解决方法也多种多样，可以用 `float`，`inline-block`，配合 `calc` 来设置宽度，也可以用 `CSS3` 的新布局方法 `flex grid`，其实核心问题就是如何让两个元素在同一行并且合理分配他们的宽度。下面来总结一下不同的方法以及其中的细节和注意点。
@@ -22,8 +20,8 @@ language: '中文'
 
 ```html
 <div class="wrap">
-    <div class="left"></div>
-    <div class="right"></div>
+  <div class="left"></div>
+  <div class="right"></div>
 </div>
 ```
 
@@ -31,28 +29,28 @@ language: '中文'
 
 ```css
 .wrap {
-    height: 200px;
-    margin-top: 30px;
-    position: relative;
+  height: 200px;
+  margin-top: 30px;
+  position: relative;
 }
 
 .wrap .left,
 .wrap .right {
-    height: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    color: white;
-    font-size: 30px;
-    line-height: 1.5;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  color: white;
+  font-size: 30px;
+  line-height: 1.5;
 }
 
 .wrap .left {
-    background-color: pink;
-    width: 200px;
+  background-color: pink;
+  width: 200px;
 }
 
 .wrap .right {
-    background-color: #32afd8;
+  background-color: #32afd8;
 }
 ```
 
@@ -64,11 +62,11 @@ language: '中文'
 
 ```css
 .eg1 .left {
-    float: left;
+  float: left;
 }
 
 .eg1 .right {
-    margin-left: 210px;
+  margin-left: 210px;
 }
 ```
 
@@ -81,18 +79,18 @@ language: '中文'
 ```css
 .eg3 .left,
 .eg3 .right {
-    float: left;
+  float: left;
 }
 
 .eg3 .right {
-    width: calc(100% - 210px);
-    margin-left: 10px;
+  width: calc(100% - 210px);
+  margin-left: 10px;
 }
 
 .clearfix::after {
-    content: '';
-    display: block;
-    clear: both;
+  content: '';
+  display: block;
+  clear: both;
 }
 ```
 
@@ -110,21 +108,21 @@ language: '中文'
 ```css
 .eg2 .left,
 .eg2 .right {
-    display: inline-block;
-    vertical-align: top;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .eg2 .left {
-    width: 200px;
+  width: 200px;
 }
 
 .eg2 .right {
-    width: calc(100% - 210px);
-    margin-left: 10px;
+  width: calc(100% - 210px);
+  margin-left: 10px;
 }
 ```
 
-> 对于vertical-align的细节不理解的可以看这篇[文章](https://www.clloz.com/programming/front-end/css/2018/08/29/line-heightvertical-align/ "vertical-align")。
+> 对于vertical-align的细节不理解的可以看这篇[文章](https://www.clloz.com/programming/front-end/css/2018/08/29/line-heightvertical-align/ 'vertical-align')。
 
 方案缺点：
 
@@ -138,11 +136,11 @@ language: '中文'
 
 ```css
 .eg4 .left {
-    position: absolute;
+  position: absolute;
 }
 
 .eg4 .right {
-    margin-left: 210px;
+  margin-left: 210px;
 }
 ```
 
@@ -157,12 +155,12 @@ language: '中文'
 
 ```css
 .eg5 .left {
-    float: left;
-    margin-right: 10px;
+  float: left;
+  margin-right: 10px;
 }
 
 .eg5 .right {
-    overflow: hidden;
+  overflow: hidden;
 }
 ```
 
@@ -174,17 +172,17 @@ language: '中文'
 
 ```css
 .wrap.wrap-flex {
-    display: flex;
-    align-items: flex-start;
+  display: flex;
+  align-items: flex-start;
 }
 
 .wrap.wrap-flex .left {
-    flex: 0 0 auto;
+  flex: 0 0 auto;
 }
 
 .wrap.wrap-flex .right {
-    flex: 1 1 auto;
-    margin-left: 10px;
+  flex: 1 1 auto;
+  margin-left: 10px;
 }
 ```
 
@@ -199,4 +197,4 @@ language: '中文'
 
 ## 参考文章
 
-[七种实现左侧固定，右侧自适应两栏布局的方法](https://segmentfault.com/a/1190000010698609 "七种实现左侧固定，右侧自适应两栏布局的方法")
+[七种实现左侧固定，右侧自适应两栏布局的方法](https://segmentfault.com/a/1190000010698609 '七种实现左侧固定，右侧自适应两栏布局的方法')

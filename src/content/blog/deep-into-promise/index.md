@@ -6,183 +6,181 @@ tags:
   - js
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
-本文主要根据源码讲一讲 `Promise` 原理和用法。主要参考 [ES6 Promise](https://github.com/stefanpenner/es6-promise "ES6 Promise") 和 [Promise/A+](https://promisesaplus.com "Promise/A+")。
+本文主要根据源码讲一讲 `Promise` 原理和用法。主要参考 [ES6 Promise](https://github.com/stefanpenner/es6-promise 'ES6 Promise') 和 [Promise/A+](https://promisesaplus.com 'Promise/A+')。
 
 > 本文目前还在修改中，肯能有错漏和不完善之处，欢迎指正。
 
 ## `Promise` 源码实现
 
-这个 `Promise` 源码实现是结合 [面试官：“你能手写一个 Promise 吗”](https://juejin.im/post/6850037281206566919) 和 [ES6-Promise](https://github.com/stefanpenner/es6-promise "ES6-Promise")来的。前者没有考虑 `new Promise` 中的 `resolve` 参数为 `Promise` 的情况，后者没有考虑微任务处理逻辑。由于 `JS` 的 `API` 没有提供微任务处理逻辑，只能用宏任务 `setTimeout` 模拟。
+这个 `Promise` 源码实现是结合 [面试官：“你能手写一个 Promise 吗”](https://juejin.im/post/6850037281206566919) 和 [ES6-Promise](https://github.com/stefanpenner/es6-promise 'ES6-Promise')来的。前者没有考虑 `new Promise` 中的 `resolve` 参数为 `Promise` 的情况，后者没有考虑微任务处理逻辑。由于 `JS` 的 `API` 没有提供微任务处理逻辑，只能用宏任务 `setTimeout` 模拟。
 
 ```javascript
-const PENDING = 'PENDING';
-const FULFILLED = 'FULFILLED';
-const REJECTED = 'REJECTED';
+const PENDING = 'PENDING'
+const FULFILLED = 'FULFILLED'
+const REJECTED = 'REJECTED'
 
 const resolvePromise = (promise2, x, resolve, reject) => {
-    // 自己等待自己完成是错误的实现，用一个类型错误，结束掉 promise  Promise/A+ 2.3.1
-    if (promise2 === x) {
-        return reject(new TypeError('Chaining cycle detected for promise #<Promise>'));
+  // 自己等待自己完成是错误的实现，用一个类型错误，结束掉 promise  Promise/A+ 2.3.1
+  if (promise2 === x) {
+    return reject(new TypeError('Chaining cycle detected for promise #<Promise>'))
+  }
+  // Promise/A+ 2.3.3.3.3 只能调用一次
+  let called
+  // 后续的条件要严格判断 保证代码能和别的库一起使用
+  if ((typeof x === 'object' && x != null) || typeof x === 'function') {
+    try {
+      // 为了判断 resolve 过的就不用再 reject 了（比如 reject 和 resolve 同时调用的时候）  Promise/A+ 2.3.3.1
+      let then = x.then
+      if (typeof then === 'function') {
+        // 不要写成 x.then，直接 then.call 就可以了 因为 x.then 会再次取值，Object.defineProperty  Promise/A+ 2.3.3.3
+        then.call(
+          x,
+          (y) => {
+            // 根据 promise 的状态决定是成功还是失败
+            if (called) return
+            called = true
+            // 递归解析的过程（因为可能 promise 中还有 promise） Promise/A+ 2.3.3.3.1
+            resolvePromise(promise2, y, resolve, reject)
+          },
+          (r) => {
+            // 只要失败就失败 Promise/A+ 2.3.3.3.2
+            if (called) return
+            called = true
+            reject(r)
+          }
+        )
+      } else {
+        // 如果 x.then 是个普通值就直接返回 resolve 作为结果  Promise/A+ 2.3.3.4
+        resolve(x)
+      }
+    } catch (e) {
+      // Promise/A+ 2.3.3.2
+      if (called) return
+      called = true
+      reject(e)
     }
-    // Promise/A+ 2.3.3.3.3 只能调用一次
-    let called;
-    // 后续的条件要严格判断 保证代码能和别的库一起使用
-    if ((typeof x === 'object' && x != null) || typeof x === 'function') {
-        try {
-            // 为了判断 resolve 过的就不用再 reject 了（比如 reject 和 resolve 同时调用的时候）  Promise/A+ 2.3.3.1
-            let then = x.then;
-            if (typeof then === 'function') {
-                // 不要写成 x.then，直接 then.call 就可以了 因为 x.then 会再次取值，Object.defineProperty  Promise/A+ 2.3.3.3
-                then.call(
-                    x,
-                    y => {
-                        // 根据 promise 的状态决定是成功还是失败
-                        if (called) return;
-                        called = true;
-                        // 递归解析的过程（因为可能 promise 中还有 promise） Promise/A+ 2.3.3.3.1
-                        resolvePromise(promise2, y, resolve, reject);
-                    },
-                    r => {
-                        // 只要失败就失败 Promise/A+ 2.3.3.3.2
-                        if (called) return;
-                        called = true;
-                        reject(r);
-                    },
-                );
-            } else {
-                // 如果 x.then 是个普通值就直接返回 resolve 作为结果  Promise/A+ 2.3.3.4
-                resolve(x);
-            }
-        } catch (e) {
-            // Promise/A+ 2.3.3.2
-            if (called) return;
-            called = true;
-            reject(e);
-        }
-    } else {
-        // 如果 x 是个普通值就直接返回 resolve 作为结果  Promise/A+ 2.3.4
-        resolve(x);
-    }
-};
+  } else {
+    // 如果 x 是个普通值就直接返回 resolve 作为结果  Promise/A+ 2.3.4
+    resolve(x)
+  }
+}
 
 class Promise {
-    constructor(executor) {
-        this._this = this;
-        this._this.status = PENDING;
-        this._this.value = undefined;
-        this._this.reason = undefined;
-        this._this.onResolvedCallbacks = [];
-        this._this.onRejectedCallbacks = [];
+  constructor(executor) {
+    this._this = this
+    this._this.status = PENDING
+    this._this.value = undefined
+    this._this.reason = undefined
+    this._this.onResolvedCallbacks = []
+    this._this.onRejectedCallbacks = []
 
-        let resolve = value => {
-            //判断一下是否是 promise，是的话更换 this._this 到 value
-            if (value instanceof Promise) {
-                console.log(1);
-                this._this = value.then(
-                    value => value,
-                    reason => reason,
-                );
-            } else {
-                if (this._this.status === PENDING) {
-                    this._this.status = FULFILLED;
-                    this._this.value = value;
-                    this._this.onResolvedCallbacks.forEach(fn => fn());
-                }
-            }
-        };
-
-        let reject = reason => {
-            if (this._this.status === PENDING) {
-                this._this.status = REJECTED;
-                this._this.reason = reason;
-                this._this.onRejectedCallbacks.forEach(fn => fn());
-            }
-        };
-
-        try {
-            executor(resolve, reject);
-        } catch (error) {
-            reject(error);
+    let resolve = (value) => {
+      //判断一下是否是 promise，是的话更换 this._this 到 value
+      if (value instanceof Promise) {
+        console.log(1)
+        this._this = value.then(
+          (value) => value,
+          (reason) => reason
+        )
+      } else {
+        if (this._this.status === PENDING) {
+          this._this.status = FULFILLED
+          this._this.value = value
+          this._this.onResolvedCallbacks.forEach((fn) => fn())
         }
-        // if (this._this.isValuePromise) {
-        // }
+      }
     }
 
-    then(onFulfilled, onRejected) {
-        //解决 onFufilled，onRejected 没有传值的问题
-        //Promise/A+ 2.2.1 / Promise/A+ 2.2.5 / Promise/A+ 2.2.7.3 / Promise/A+ 2.2.7.4
-        onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : v => v;
-        //因为错误的值要让后面访问到，所以这里也要抛出个错误，不然会在之后 then 的 resolve 中捕获
-        onRejected =
-            typeof onRejected === 'function'
-                ? onRejected
-                : err => {
-                      throw err;
-                  };
-        // 每次调用 then 都返回一个新的 promise  Promise/A+ 2.2.7
-        let promise2 = new Promise((resolve, reject) => {
-            if (this._this.status === FULFILLED) {
-                //Promise/A+ 2.2.2
-                //Promise/A+ 2.2.4 --- setTimeout
-                setTimeout(() => {
-                    try {
-                        //Promise/A+ 2.2.7.1
-                        let x = onFulfilled(this._this.value);
-                        // x可能是一个proimise
-                        resolvePromise(promise2, x, resolve, reject);
-                    } catch (e) {
-                        //Promise/A+ 2.2.7.2
-                        reject(e);
-                    }
-                }, 0);
-            }
-
-            if (this._this.status === REJECTED) {
-                //Promise/A+ 2.2.3
-                setTimeout(() => {
-                    try {
-                        let x = onRejected(this._this.reason);
-                        resolvePromise(promise2, x, resolve, reject);
-                    } catch (e) {
-                        reject(e);
-                    }
-                }, 0);
-            }
-
-            if (this._this.status === PENDING) {
-                this._this.onResolvedCallbacks.push(() => {
-                    setTimeout(() => {
-                        try {
-                            let x = onFulfilled(this._this.value);
-                            resolvePromise(promise2, x, resolve, reject);
-                        } catch (e) {
-                            reject(e);
-                        }
-                    }, 0);
-                });
-
-                this._this.onRejectedCallbacks.push(() => {
-                    setTimeout(() => {
-                        try {
-                            let x = onRejected(this._this.reason);
-                            resolvePromise(promise2, x, resolve, reject);
-                        } catch (e) {
-                            reject(e);
-                        }
-                    }, 0);
-                });
-            }
-        });
-
-        return promise2;
+    let reject = (reason) => {
+      if (this._this.status === PENDING) {
+        this._this.status = REJECTED
+        this._this.reason = reason
+        this._this.onRejectedCallbacks.forEach((fn) => fn())
+      }
     }
+
+    try {
+      executor(resolve, reject)
+    } catch (error) {
+      reject(error)
+    }
+    // if (this._this.isValuePromise) {
+    // }
+  }
+
+  then(onFulfilled, onRejected) {
+    //解决 onFufilled，onRejected 没有传值的问题
+    //Promise/A+ 2.2.1 / Promise/A+ 2.2.5 / Promise/A+ 2.2.7.3 / Promise/A+ 2.2.7.4
+    onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (v) => v
+    //因为错误的值要让后面访问到，所以这里也要抛出个错误，不然会在之后 then 的 resolve 中捕获
+    onRejected =
+      typeof onRejected === 'function'
+        ? onRejected
+        : (err) => {
+            throw err
+          }
+    // 每次调用 then 都返回一个新的 promise  Promise/A+ 2.2.7
+    let promise2 = new Promise((resolve, reject) => {
+      if (this._this.status === FULFILLED) {
+        //Promise/A+ 2.2.2
+        //Promise/A+ 2.2.4 --- setTimeout
+        setTimeout(() => {
+          try {
+            //Promise/A+ 2.2.7.1
+            let x = onFulfilled(this._this.value)
+            // x可能是一个proimise
+            resolvePromise(promise2, x, resolve, reject)
+          } catch (e) {
+            //Promise/A+ 2.2.7.2
+            reject(e)
+          }
+        }, 0)
+      }
+
+      if (this._this.status === REJECTED) {
+        //Promise/A+ 2.2.3
+        setTimeout(() => {
+          try {
+            let x = onRejected(this._this.reason)
+            resolvePromise(promise2, x, resolve, reject)
+          } catch (e) {
+            reject(e)
+          }
+        }, 0)
+      }
+
+      if (this._this.status === PENDING) {
+        this._this.onResolvedCallbacks.push(() => {
+          setTimeout(() => {
+            try {
+              let x = onFulfilled(this._this.value)
+              resolvePromise(promise2, x, resolve, reject)
+            } catch (e) {
+              reject(e)
+            }
+          }, 0)
+        })
+
+        this._this.onRejectedCallbacks.push(() => {
+          setTimeout(() => {
+            try {
+              let x = onRejected(this._this.reason)
+              resolvePromise(promise2, x, resolve, reject)
+            } catch (e) {
+              reject(e)
+            }
+          }, 0)
+        })
+      }
+    })
+
+    return promise2
+  }
 }
 ```
 
@@ -200,12 +198,12 @@ class Promise {
 
 ```javascript
 let p1 = new Promise((resolve, reject) => {
-    resolve('p1');
-});
+  resolve('p1')
+})
 
 let p2 = new Promise((resolve, reject) => {
-    resolve(p1);
-});
+  resolve(p1)
+})
 
 // p2.then(value => {
 //     return p1;
@@ -213,14 +211,14 @@ let p2 = new Promise((resolve, reject) => {
 //     console.log(value);
 // });
 
-p2.then(value => {
-    console.log(value);
-});
+p2.then((value) => {
+  console.log(value)
+})
 ```
 
 从 `resolve` 的逻辑我们可以看出。对于一个 `Promise` 我们只关心它的状态 `state` 和它的结果 `result`，无论里面怎么绕我们最后就是确定这个 `Promise` 的 `state` 和 `result`。`state` 确定我们下一个任务的回调函数，而 `result` 是我们要传递给下一个任务的数据。所以当出现 `resolve` 嵌套 `Promise` 情况，假设是 `PromiseA` 中的 `resolve` 参数是 `PromiseB`，我们现在想知道 `PromiseA` 的状态和 `result` 就必须要等到 `PromiseB` 的状态和 `result` 确定才能知道，而最后的状态和 `result` 也是由 `PromiseB` 确定的。
 
-* * *
+---
 
 下面分析 `Promise.prototype.then()`。我们已经理清了 `Promise` 实例化的过程，而 `then` 的作用就是添加下一个任务，添加任务的形式就是给 `then` 传递两个参数，第一个参数是 `fnResolve(data)`，也就是 `Promise` 的状态变为 `fulfilled` 的时候，将执行`fnResolve(data)`，你可能会感觉这个 `data` 是上面 `resolve` 的参数，其实他是调用 `then` 的 `Promise` 对象的 `value` 或 `reason`。
 
@@ -237,28 +235,28 @@ p2.then(value => {
 `Promise.prototype.catch` 方法是 `.then(null, rejection)` 的别名，用于指定发生错误时的回调函数。
 
 ```javascript
-p.then(val => console.log('fulfilled:', val)).catch(err => console.log('rejected', err));
+p.then((val) => console.log('fulfilled:', val)).catch((err) => console.log('rejected', err))
 // 等同于
-p.then(val => console.log('fulfilled:', val)).then(null, err => console.log('rejected:', err));
+p.then((val) => console.log('fulfilled:', val)).then(null, (err) => console.log('rejected:', err))
 
 // 写法一
 var promise = new Promise(function (resolve, reject) {
-    try {
-        throw new Error('test');
-    } catch (e) {
-        reject(e);
-    }
-});
+  try {
+    throw new Error('test')
+  } catch (e) {
+    reject(e)
+  }
+})
 promise.catch(function (error) {
-    console.log(error);
-});
+  console.log(error)
+})
 // 写法二
 var promise = new Promise(function (resolve, reject) {
-    reject(new Error('test'));
-});
+  reject(new Error('test'))
+})
 promise.catch(function (error) {
-    console.log(error);
-});
+  console.log(error)
+})
 ```
 
 链式调用的 `then` 中任何一个抛错都会被 `.catch` 捕捉到。跟传统的 `try/catch` 代码块不同的是，如果没有使用 `catch` 方法指定错误处理的回调函数，`Promise` 对象抛出的错误不会传递到外层代码，即不会有任何反应，代码执行也不会中断。
@@ -269,16 +267,16 @@ promise.catch(function (error) {
 
 ```javascript
 var someAsyncThing = function () {
-    return new Promise(function (resolve, reject) {
-        // 下面一行会报错，因为x没有声明
-        resolve(x + 2);
-    });
-};
+  return new Promise(function (resolve, reject) {
+    // 下面一行会报错，因为x没有声明
+    resolve(x + 2)
+  })
+}
 someAsyncThing().then(function () {
-    console.log('everything is great');
-});
+  console.log('everything is great')
+})
 
-console.log(123123); //123123
+console.log(123123) //123123
 ```
 
 上面代码中， `someAsyncThing` 函数产生的 `Promise` 对象会报错，但是由于没有指定 `catch` 方法，这个错误不会被捕获，也不会传递到外层代码。在浏览器环境会抛错 `Uncaught (in promise) ReferenceError: x is not defined`，但是代码的执行不会中断，在 `node` 中会抛错 `UnhandledPromiseRejectionWarning: ReferenceError: x is not defined`，当然也不会中断代码执行，最后的 `123123` 都能成功打印。
@@ -288,8 +286,8 @@ console.log(123123); //123123
 ## 模拟实现 Promise.prototype.catch()
 
 ```javascript
-Promise.prototype.catch = function(errCallback){
-  return this.then(null,errCallback)
+Promise.prototype.catch = function (errCallback) {
+  return this.then(null, errCallback)
 }
 ```
 
@@ -299,24 +297,24 @@ Promise.prototype.catch = function(errCallback){
 
 ```javascript
 let p1 = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve('ok1');
-    }, 1000);
-});
+  setTimeout(() => {
+    resolve('ok1')
+  }, 1000)
+})
 
 let p2 = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve('ok2');
-    }, 1000);
-});
+  setTimeout(() => {
+    resolve('ok2')
+  }, 1000)
+})
 Promise.all([1, 2, 3, p1, p2]).then(
-    data => {
-        console.log('resolve', data);
-    },
-    err => {
-        console.log('reject', err);
-    },
-);
+  (data) => {
+    console.log('resolve', data)
+  },
+  (err) => {
+    console.log('reject', err)
+  }
+)
 //resolve [ 1, 2, 3, 'ok1', 'ok2' ]
 ```
 
@@ -324,18 +322,18 @@ Promise.all([1, 2, 3, p1, p2]).then(
 
 ```javascript
 const p1 = new Promise((resolve, reject) => {
-    resolve('hello');
+  resolve('hello')
 })
-    .then(result => result)
-    .catch(e => e);
+  .then((result) => result)
+  .catch((e) => e)
 const p2 = new Promise((resolve, reject) => {
-    throw new Error('报错了');
+  throw new Error('报错了')
 })
-    .then(result => result)
-    .catch(e => e);
+  .then((result) => result)
+  .catch((e) => e)
 Promise.all([p1, p2])
-    .then(result => console.log(result))
-    .catch(e => console.log(e));
+  .then((result) => console.log(result))
+  .catch((e) => console.log(e))
 // ["hello", Error: 报错了]
 ```
 
@@ -343,33 +341,33 @@ Promise.all([p1, p2])
 
 ```javascript
 Promise.all1 = function (values) {
-    if (!Array.isArray(values)) {
-        const type = typeof values;
-        return new TypeError(`TypeError: ${type} ${values} is not iterable`);
-    }
+  if (!Array.isArray(values)) {
+    const type = typeof values
+    return new TypeError(`TypeError: ${type} ${values} is not iterable`)
+  }
 
-    return new Promise((resolve, reject) => {
-        let resultArr = [];
-        let orderIndex = 0;
-        const processResultByKey = (value, index) => {
-            resultArr[index] = value;
-            if (++orderIndex === values.length) {
-                // console.log(resultArr);
-                resolve(resultArr);
-            }
-        };
-        for (let i = 0; i < values.length; i++) {
-            let value = values[i];
-            if (value && typeof value.then === 'function') {
-                value.then(value => {
-                    processResultByKey(value, i);
-                }, reject);
-            } else {
-                processResultByKey(value, i);
-            }
-        }
-    });
-};
+  return new Promise((resolve, reject) => {
+    let resultArr = []
+    let orderIndex = 0
+    const processResultByKey = (value, index) => {
+      resultArr[index] = value
+      if (++orderIndex === values.length) {
+        // console.log(resultArr);
+        resolve(resultArr)
+      }
+    }
+    for (let i = 0; i < values.length; i++) {
+      let value = values[i]
+      if (value && typeof value.then === 'function') {
+        value.then((value) => {
+          processResultByKey(value, i)
+        }, reject)
+      } else {
+        processResultByKey(value, i)
+      }
+    }
+  })
+}
 ```
 
 ## Promise.race()
@@ -378,13 +376,13 @@ Promise.all1 = function (values) {
 
 ```javascript
 const p = Promise.race([
-    fetch('/resource-that-may-take-a-while'),
-    new Promise(function (resolve, reject) {
-        setTimeout(() => reject(new Error('request timeout')), 5000);
-    }),
-]);
-p.then(response => console.log(response));
-p.catch(error => console.log(error));
+  fetch('/resource-that-may-take-a-while'),
+  new Promise(function (resolve, reject) {
+    setTimeout(() => reject(new Error('request timeout')), 5000)
+  })
+])
+p.then((response) => console.log(response))
+p.catch((error) => console.log(error))
 ```
 
 这个例子请求指定资源，如果 `5` 秒内没有请求到，那么 `p` 的状态就会变为 `rejected`，从而触发 `catch` 方法指定的回调函数。
@@ -394,21 +392,20 @@ p.catch(error => console.log(error));
 ## 模拟实现 Promise.race()
 
 ```javascript
-Promise.race = function(promises) {
+Promise.race = function (promises) {
   return new Promise((resolve, reject) => {
     // 一起执行就是for循环
     for (let i = 0; i < promises.length; i++) {
-      let val = promises[i];
+      let val = promises[i]
       if (val && typeof val.then === 'function') {
-        val.then(resolve, reject);
-      } else { // 普通值
+        val.then(resolve, reject)
+      } else {
+        // 普通值
         resolve(val)
       }
     }
-  });
+  })
 }
-
-
 ```
 
 ## Promise.resolve()
@@ -420,35 +417,35 @@ Promise.race = function(promises) {
 
 ```javascript
 let thenable = {
-    then: function (resolve, reject) {
-        resolve(42);
-    },
-};
-let p1 = Promise.resolve(thenable);
+  then: function (resolve, reject) {
+    resolve(42)
+  }
+}
+let p1 = Promise.resolve(thenable)
 p1.then(function (value) {
-    console.log(value); // 42
-});
+  console.log(value) // 42
+})
 ```
 
 3. 参数不具备 `then` 方法，或根本不是一个对象：如果参数是一个原始值，或者是一个不具有 `then` 方法的对象，则 `Promise.resolve` 方法返回一个新的 `Promise` 对象，状态为 `resolved` 。而我们传入 `Promise.resolve()` 的参数也会传给 `then` 的回调函数。
 
 ```javascript
-var p = Promise.resolve({ name: 'clloz' });
+var p = Promise.resolve({ name: 'clloz' })
 p.then(function (s) {
-    console.log(s); //{ name: 'clloz' }
-});
+  console.log(s) //{ name: 'clloz' }
+})
 ```
 
 4. 不带有任何参数：该方法允许调用时不带参数，直接返回一个 `resolved` 状态的 `Promise` 对象。 所以，如果希望得到一个 `Promise` 对象，比较方便的方法就是直接调用 `Promise.resolve` 方法。需要注意的是，立即 `resolve` 的 `Promise` 对象，是在本轮“事件循环”(`event loop`)的结束时，而不是在下一轮“事件循环”的开始时，其实所有的异步 `Promise`，包括 `then`，`catch` 和 `finally` 包括 `node` 的 `process.nextTick` 都会在本轮事件循环的宏任务结束后执行，其中 `nextTick` 是微任务中最先执行的。
 
 ```javascript
 setTimeout(function () {
-    console.log('three');
-}, 0);
+  console.log('three')
+}, 0)
 Promise.resolve().then(function () {
-    console.log('two');
-});
-console.log('one');
+  console.log('two')
+})
+console.log('one')
 // one
 // two
 // three
@@ -460,17 +457,17 @@ console.log('one');
 
 ```javascript
 Promise.resolve = function (val) {
-    if (val instanceof Promise) {
-        return val;
-    }
-    if (val.then && typeof val.then === 'function') {
-        console.log(val);
-        return new Promise(val.then);
-    }
-    return new Promise(resolve => {
-        resolve(val);
-    });
-};
+  if (val instanceof Promise) {
+    return val
+  }
+  if (val.then && typeof val.then === 'function') {
+    console.log(val)
+    return new Promise(val.then)
+  }
+  return new Promise((resolve) => {
+    resolve(val)
+  })
+}
 ```
 
 ## Promise.reject()
@@ -478,14 +475,13 @@ Promise.resolve = function (val) {
 该方法也会返回一个新的 `Promise` 实例，该实例的状态为 `rejected`。
 
 ```javascript
-var p = Promise.reject('出错了');
+var p = Promise.reject('出错了')
 // 等同于
-var p = new Promise((resolve, reject) => reject('出错了'));
-
+var p = new Promise((resolve, reject) => reject('出错了'))
 
 p.then(null, function (s) {
-    console.log(s);
-});
+  console.log(s)
+})
 // 出错了
 ```
 
@@ -493,13 +489,13 @@ p.then(null, function (s) {
 
 ```javascript
 const thenable = {
-    then(resolve, reject) {
-        reject('出错了');
-    },
-};
-Promise.reject(thenable).catch(e => {
-    console.log(e === thenable);
-});
+  then(resolve, reject) {
+    reject('出错了')
+  }
+}
+Promise.reject(thenable).catch((e) => {
+  console.log(e === thenable)
+})
 // true
 ```
 
@@ -520,16 +516,16 @@ Promise.reject(reason){
 需要注意的是，`finally` 表示的是一定会执行，而不是说最后执行，即使 `finally` 后面仍然有 `then` 或者 `catch`，也是能工作的。`finally` 的实现如下：
 
 ```javascript
-Promise.prototype.finally = function (callback='') {
-    let P = this.constructor;
-    return this.then(
-        value => P.resolve(callback()).then(() => value),
-        reason =>
-            P.resolve(callback()).then(() => {
-                throw reason;
-            }),
-    );
-};
+Promise.prototype.finally = function (callback = '') {
+  let P = this.constructor
+  return this.then(
+    (value) => P.resolve(callback()).then(() => value),
+    (reason) =>
+      P.resolve(callback()).then(() => {
+        throw reason
+      })
+  )
+}
 ```
 
 从代码总我们可以看到 `finally` 方法执行后返回的是 `this.then`，说明它只是 `then` 链式调用中比较特殊的一环。我们可以看到它内部有两个函数参数，跟普通的 `then` 一样，分别用来处理两个 `resolved` 和 `rejected` 两种情况。其实 `then` 我们可以理解为接受上一个 `Promise` 传递的参数，以及向下一个 `Promise` 传递参数。
@@ -540,17 +536,17 @@ Promise.prototype.finally = function (callback='') {
 
 ```javascript
 Promise.prototype.finally1 = function (callback = '') {
-    return this.then(
-        value => {
-            callback();
-            return value;
-        },
-        reason => {
-            callback();
-            throw reason;
-        }
-    );
-};
+  return this.then(
+    (value) => {
+      callback()
+      return value
+    },
+    (reason) => {
+      callback()
+      throw reason
+    }
+  )
+}
 ```
 
 之所以要将 `callback` 的结果进行包装就是为了处理 `callback` 中可能是异步操作，返回一个 `Promise`，我们需要等到异步操作完成。所以在 `Promise` 的步骤中处处皆可异步，需要注意它的思想以及实现原理。
@@ -562,11 +558,13 @@ Promise.prototype.finally1 = function (callback = '') {
 `Promise.allSettled()` 方法返回一个在所有给定的 `promise` 都已经 `fulfilled` 或 `rejected` 后的 `promise`，并带有一个对象数组，每个对象表示对应的 `promise` 结果。跟 `Promise.all()` 相比，它更适合一些互相不依赖的异步任务，你想在它们都完成的时候执行某个操作。而 `Promise.all()` 则比较适合相互之间有依赖关系的异步任务。
 
 ```javascript
-const promise1 = Promise.resolve(3);
-const promise2 = new Promise((resolve, reject) => setTimeout(reject, 100, 'foo'));
-const promises = [promise1, promise2];
+const promise1 = Promise.resolve(3)
+const promise2 = new Promise((resolve, reject) => setTimeout(reject, 100, 'foo'))
+const promises = [promise1, promise2]
 
-Promise.allSettled(promises).then(results => results.forEach(result => console.log(result.status)));
+Promise.allSettled(promises).then((results) =>
+  results.forEach((result) => console.log(result.status))
+)
 
 // expected output:
 // "fulfilled"
@@ -579,24 +577,24 @@ Promise.allSettled(promises).then(results => results.forEach(result => console.l
 
 ```javascript
 Promise.prototype.done = function (onResolved, onRejected) {
-    this.then(onResolved, onRejected).catch(function (err) {
-        setTimeout(() => {
-            throw err;
-        }, 0); //抛出一个全局错误
-    });
-};
-var p = () => new Promise((resolve, reject) => resolve('success'));
+  this.then(onResolved, onRejected).catch(function (err) {
+    setTimeout(() => {
+      throw err
+    }, 0) //抛出一个全局错误
+  })
+}
+var p = () => new Promise((resolve, reject) => resolve('success'))
 p()
-    .then(data => {
-        console.log(data);
-        x + 1;
-    })
-    .catch(err => {
-        console.log(err.message);
-        throw 'cllzo';
-    })
-    .then(data => console.log(data))
-    .done();
+  .then((data) => {
+    console.log(data)
+    x + 1
+  })
+  .catch((err) => {
+    console.log(err.message)
+    throw 'cllzo'
+  })
+  .then((data) => console.log(data))
+  .done()
 
 //success
 //x is not defined
@@ -617,13 +615,13 @@ p()
 
 ```javascript
 const preloadImage = function (path) {
-    return new Promise(function (resolve, reject) {
-        var image = new Image();
-        image.onload = resolve;
-        image.onerror = reject;
-        image.src = path;
-    });
-};
+  return new Promise(function (resolve, reject) {
+    var image = new Image()
+    image.onload = resolve
+    image.onerror = reject
+    image.src = path
+  })
+}
 ```
 
 ## 合并多个请求
@@ -633,45 +631,45 @@ const preloadImage = function (path) {
 ```javascript
 //1.获取轮播数据列表
 function getBannerList() {
-    return new Promise((resolve, reject) => {
-        setTimeout(function () {
-            resolve('轮播数据');
-        }, 300);
-    });
+  return new Promise((resolve, reject) => {
+    setTimeout(function () {
+      resolve('轮播数据')
+    }, 300)
+  })
 }
 
 //2.获取店铺列表
 function getStoreList() {
-    return new Promise((resolve, reject) => {
-        setTimeout(function () {
-            resolve('店铺数据');
-        }, 500);
-    });
+  return new Promise((resolve, reject) => {
+    setTimeout(function () {
+      resolve('店铺数据')
+    }, 500)
+  })
 }
 
 //3.获取分类列表
 function getCategoryList() {
-    return new Promise((resolve, reject) => {
-        setTimeout(function () {
-            resolve('分类数据');
-        }, 700);
-    });
+  return new Promise((resolve, reject) => {
+    setTimeout(function () {
+      resolve('分类数据')
+    }, 700)
+  })
 }
 
 function initLoad() {
-    // loading.show() //加载loading
-    Promise.all([getBannerList(), getStoreList(), getCategoryList()])
-        .then(res => {
-            console.log(res);
-            // loading.hide() //关闭loading
-        })
-        .catch(err => {
-            console.log(err);
-            // loading.hide()//关闭loading
-        });
+  // loading.show() //加载loading
+  Promise.all([getBannerList(), getStoreList(), getCategoryList()])
+    .then((res) => {
+      console.log(res)
+      // loading.hide() //关闭loading
+    })
+    .catch((err) => {
+      console.log(err)
+      // loading.hide()//关闭loading
+    })
 }
 //数据初始化
-initLoad();
+initLoad()
 ```
 
 如果每个请求的结果不确定，那么我们可以使用 `Promise.allSettled()`:
@@ -679,38 +677,38 @@ initLoad();
 ```javascript
 //1.获取轮播图数据列表
 function getBannerList() {
-    return new Promise((resolve, reject) => {
-        setTimeout(function () {
-            // resolve('轮播图数据')
-            reject('获取轮播图数据失败啦');
-        }, 300);
-    });
+  return new Promise((resolve, reject) => {
+    setTimeout(function () {
+      // resolve('轮播图数据')
+      reject('获取轮播图数据失败啦')
+    }, 300)
+  })
 }
 
 //2.获取店铺列表
 function getStoreList() {
-    return new Promise((resolve, reject) => {
-        setTimeout(function () {
-            resolve('店铺数据');
-        }, 500);
-    });
+  return new Promise((resolve, reject) => {
+    setTimeout(function () {
+      resolve('店铺数据')
+    }, 500)
+  })
 }
 
 //3.获取分类列表
 function getCategoryList() {
-    return new Promise((resolve, reject) => {
-        setTimeout(function () {
-            resolve('分类数据');
-        }, 700);
-    });
+  return new Promise((resolve, reject) => {
+    setTimeout(function () {
+      resolve('分类数据')
+    }, 700)
+  })
 }
 
 function initLoaded() {
-    Promise.allSettled([getBannerList(), getStoreList(), getCategoryList()]).then(val => {
-        console.log(val);
-    });
+  Promise.allSettled([getBannerList(), getStoreList(), getCategoryList()]).then((val) => {
+    console.log(val)
+  })
 }
-initLoaded();
+initLoaded()
 // [
 //     { status: 'rejected', reason: '获取轮播图数据失败啦' },
 //     { status: 'fulfilled', value: '店铺数据' },
@@ -734,25 +732,25 @@ initLoaded();
 
 ```javascript
 var p2 = new Promise((resolve, reject) => {
-    resolve('p2 resolve');
-});
+  resolve('p2 resolve')
+})
 var p3 = new Promise((resolve, reject) => {
-    resolve('p3 resolve');
-});
+  resolve('p3 resolve')
+})
 var p1 = new Promise((resolve, reject) => {
-    resolve(p3);
-});
+  resolve(p3)
+})
 
-p2.then(v => console.log(v))
-    .then(() => console.log(1))
-    .then(() => console.log(2))
-    .then(() => console.log(3))
-    .then(() => console.log(4));
-p1.then(v => console.log('new' + v))
-    .then(() => console.log('new' + 1))
-    .then(() => console.log('new' + 2))
-    .then(() => console.log('new' + 3))
-    .then(() => console.log('new' + 4));
+p2.then((v) => console.log(v))
+  .then(() => console.log(1))
+  .then(() => console.log(2))
+  .then(() => console.log(3))
+  .then(() => console.log(4))
+p1.then((v) => console.log('new' + v))
+  .then(() => console.log('new' + 1))
+  .then(() => console.log('new' + 2))
+  .then(() => console.log('new' + 3))
+  .then(() => console.log('new' + 4))
 
 // p2 resolve
 // 1
@@ -780,28 +778,28 @@ p1.then(v => console.log('new' + v))
 
 ```javascript
 let p1 = new Promise((resolve, reject) => {
-    resolve('p1');
-});
+  resolve('p1')
+})
 
 let p2 = new Promise((resolve, reject) => {
-    resolve(p1);
-});
+  resolve(p1)
+})
 
 //执行 then
-p2.then(value => {
-    console.log(value); //
-});
+p2.then((value) => {
+  console.log(value) //
+})
 ```
 
 我们可以像如下这样理解：
 
 ```javascript
-p2.then(value => {
-    //这个 then 返回的状态是 p1 的状态，返回的结果是 p1 的结果，当然需要等待p1状态改变才能输出这些内容。
-    return p1.result;
-}).then(value => {
-    console.log(value);
-});
+p2.then((value) => {
+  //这个 then 返回的状态是 p1 的状态，返回的结果是 p1 的结果，当然需要等待p1状态改变才能输出这些内容。
+  return p1.result
+}).then((value) => {
+  console.log(value)
+})
 ```
 
 就是说在如果有一个 `then` 的回调函数中出现 `Promise` 你可以把这个 `Promise` 想象成一个 `then` 插入到原来的 `Promise` 和 `then` 中间。下一个 `then` 接受的就是这个插入的 `then` 的状态和结果。
@@ -810,37 +808,37 @@ p2.then(value => {
 
 所以当我们执行完所有的同步代码之后，微任务队列中有 `[p2.then, p3]`，执行他们之后，输出 `p2 resolve`，`p3` 是一个隐藏的过程，没有输出。当 `p2.then` 执行完成之后，对应的 `Promise` 的 `resolve` 就执行成功了，会通知发布订阅中心，执行 将 `p2.then.then` 放入微任务队列。同理 `p3` 对应的 `then` 执行完成之后，也会将 `p1.then` 放入微任务队列。所以微任务队列会依次插入 `p2` 和 `p1` 之后的 `then`，我们就得到最后的输出。
 
-* * *
+---
 
 再来看一个网络上常出现的例子：
 
 ```javascript
 new Promise((resolve, reject) => {
-    console.log('外部promise');
-    resolve();
+  console.log('外部promise')
+  resolve()
 })
-    .then(() => {
-        console.log('外部第一个then');
-        new Promise((resolve, reject) => {
-            console.log('内部promise');
-            resolve();
-        })
-            .then(() => {
-                console.log('内部第一个then');
-            })
-            .then(() => {
-                console.log('内部第二个then');
-            })
-            .then(() => {
-                console.log('内部第3个then');
-            });
+  .then(() => {
+    console.log('外部第一个then')
+    new Promise((resolve, reject) => {
+      console.log('内部promise')
+      resolve()
     })
-    .then(() => {
-        console.log('外部第二个then');
-    })
-    .then(() => {
-        console.log('外部第3个then');
-    });
+      .then(() => {
+        console.log('内部第一个then')
+      })
+      .then(() => {
+        console.log('内部第二个then')
+      })
+      .then(() => {
+        console.log('内部第3个then')
+      })
+  })
+  .then(() => {
+    console.log('外部第二个then')
+  })
+  .then(() => {
+    console.log('外部第3个then')
+  })
 
 // 外部promise
 // 外部第一个then
@@ -881,59 +879,59 @@ new Promise((resolve, reject) => {
 
 ```javascript
 function lightloop() {
+  setTimeout(() => {
+    console.log('red')
     setTimeout(() => {
-        console.log('red');
-        setTimeout(() => {
-            console.log('green');
-            setTimeout(() => {
-                console.log('yellow');
-                lightloop();
-            }, 1000);
-        }, 2000);
-    }, 3000);
+      console.log('green')
+      setTimeout(() => {
+        console.log('yellow')
+        lightloop()
+      }, 1000)
+    }, 2000)
+  }, 3000)
 }
-lightloop();
+lightloop()
 ```
 
 如果嵌套层数多了就会出现回调地狱，有了 `Promise` 之后我们可以利用 `Promise` 实现。
 
 ```javascript
 function red() {
-    console.log('red');
+  console.log('red')
 }
 function green() {
-    console.log('green');
+  console.log('green')
 }
 function yellow() {
-    console.log('yellow');
+  console.log('yellow')
 }
 
 var light = function (timmer, cb) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-            cb();
-            resolve();
-        }, timmer);
-    });
-};
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      cb()
+      resolve()
+    }, timmer)
+  })
+}
 
 var step = function () {
-    Promise.resolve()
-        .then(function () {
-            return light(3000, red);
-        })
-        .then(function () {
-            return light(2000, green);
-        })
-        .then(function () {
-            return light(1000, yellow);
-        })
-        .then(function () {
-            step();
-        });
-};
+  Promise.resolve()
+    .then(function () {
+      return light(3000, red)
+    })
+    .then(function () {
+      return light(2000, green)
+    })
+    .then(function () {
+      return light(1000, yellow)
+    })
+    .then(function () {
+      step()
+    })
+}
 
-step();
+step()
 ```
 
 ## 内存泄漏
@@ -941,40 +939,40 @@ step();
 使用 `Promise` 要注意内存泄漏 `memory leak` 问题。在 `Promise` 中我们传给 `resolve` 的参数可以是一个 `Promise`，如果我们传的是自身这个 `Promise`，那么就递归调用自身，`Promise` 会无限嵌套下去，会造成内存泄漏。
 
 ```javascript
-(function () {
-    function printMemory(i) {
-        console.log(i);
-        console.log(process.memoryUsage());
-    }
+;(function () {
+  function printMemory(i) {
+    console.log(i)
+    console.log(process.memoryUsage())
+  }
 
-    // 记录 Promise 链的长度
-    var i = 0;
-    function run() {
-        return new Promise(function (resolve) {
-            // 每增加 10000 个 Promise 打印一次内存使用情况
-            if (i % 1000 === 0) {
-                global.gc();
-                printMemory(i);
-            }
-            i++;
-            // 模拟一个异步操作
-            setTimeout(function () {
-                // 1000 个 Promise 之后退出
-                if (i === 10000 * 10) return resolve();
-                // 如果 resolve 的参数是一个 Promise ，外层 Promise 将接管这个 Promise 的状态，构成嵌套 Promise
-                resolve(run());
-            }, 0);
-        }).then(function () {
-            // console.log(j);
-            return true;
-        });
-    }
-    run().then(function (r) {
-        global.gc();
-        console.log(111);
-        printMemory();
-    });
-})();
+  // 记录 Promise 链的长度
+  var i = 0
+  function run() {
+    return new Promise(function (resolve) {
+      // 每增加 10000 个 Promise 打印一次内存使用情况
+      if (i % 1000 === 0) {
+        global.gc()
+        printMemory(i)
+      }
+      i++
+      // 模拟一个异步操作
+      setTimeout(function () {
+        // 1000 个 Promise 之后退出
+        if (i === 10000 * 10) return resolve()
+        // 如果 resolve 的参数是一个 Promise ，外层 Promise 将接管这个 Promise 的状态，构成嵌套 Promise
+        resolve(run())
+      }, 0)
+    }).then(function () {
+      // console.log(j);
+      return true
+    })
+  }
+  run().then(function (r) {
+    global.gc()
+    console.log(111)
+    printMemory()
+  })
+})()
 ```
 
 上面这段代码就是一个例子，由于用到了 `global.gc()` 方法所以我们的 `node` 要带上参数 `node --expose-gc` 来执行。在打印的 `memoryUsage` 信息中我们可以看到 `heapUsed` 会不断攀高，说明内存泄漏了。
@@ -988,6 +986,6 @@ step();
 5. [JS异步之Promise,Generator,Async](https://segmentfault.com/a/1190000010914001)
 6. [ES6-Promise 源码阅读](https://juejin.im/post/6844903684904583181)
 7. [30分钟，让你彻底明白Promise原理](https://mengera88.github.io/2017/05/18/Promise%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/)
-8. [前端 Promise 常见的应用场景](https://juejin.im/post/6844904131702833159#heading-1 "前端 Promise 常见的应用场景")
-9. [Promise 链式调用引发的思考](https://juejin.im/post/6844903972008886279 "Promise 链式调用引发的思考")
-10. [Promise 内存泄漏问题](https://github.com/wangning0/Autumn_Ning_Blog/issues/44 "Promise 内存泄漏问题")
+8. [前端 Promise 常见的应用场景](https://juejin.im/post/6844904131702833159#heading-1 '前端 Promise 常见的应用场景')
+9. [Promise 链式调用引发的思考](https://juejin.im/post/6844903972008886279 'Promise 链式调用引发的思考')
+10. [Promise 内存泄漏问题](https://github.com/wangning0/Autumn_Ning_Blog/issues/44 'Promise 内存泄漏问题')

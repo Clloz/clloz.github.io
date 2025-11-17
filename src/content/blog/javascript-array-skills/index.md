@@ -7,14 +7,12 @@ tags:
   - 奇技淫巧
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
-本文整理一些我觉得有用或者没用的（说不定哪天就有用了 :stuck\_out\_tongue: ） `JavaScript` 数组技巧。本文前半部分是对 `Array` 的 `API` 进行比较深入的解读，后半部分是对一些具体场景的解决方案。本文较长，请耐心阅读。
+本文整理一些我觉得有用或者没用的（说不定哪天就有用了 :stuck_out_tongue: ） `JavaScript` 数组技巧。本文前半部分是对 `Array` 的 `API` 进行比较深入的解读，后半部分是对一些具体场景的解决方案。本文较长，请耐心阅读。
 
 ## 创建数组
 
@@ -52,7 +50,7 @@ console.log(0 in a) //false
 console.log(1 in a) //true
 ```
 
-* * *
+---
 
 创建密集数组的方法：
 
@@ -61,13 +59,13 @@ console.log(1 in a) //true
 Array.apply(null, Array(3)) //[undefined, undefined, undefined]
 
 //生成一个元素值等于下标的数组
-Array.apply(null, Array(3)).map(Function.prototype.call.bind(Number)); // [0, 1, 2]
+Array.apply(null, Array(3)).map(Function.prototype.call.bind(Number)) // [0, 1, 2]
 //上面这行代码等同于下面的代码
-[undefined,undefined,undefined].map((value, index) => Number.call(value, index)) //index
+;[undefined, undefined, undefined].map((value, index) => Number.call(value, index)) //index
 
-Array.from({length:3}); //Array.from() 可以作用于拥有一个 length 属性和若干索引属性的任意对象
+Array.from({ length: 3 }) //Array.from() 可以作用于拥有一个 length 属性和若干索引属性的任意对象
 
-Array.apply(null,{length:3}) //这种用法突出了JavaScript中的数组其实就是个对象，只要有 `length` 属性，并且都是数字索引属性即使数组
+Array.apply(null, { length: 3 }) //这种用法突出了JavaScript中的数组其实就是个对象，只要有 `length` 属性，并且都是数字索引属性即使数组
 
 new Array(...Array(3)) //扩展运算符和 apply 类似的效果
 ```
@@ -78,11 +76,11 @@ new Array(...Array(3)) //扩展运算符和 apply 类似的效果
 
 ## Array API 深入
 
-我在 [JavaScript常用内置对象API](https://www.clloz.com/programming/front-end/js/2020/07/10/built-in-objects-api/ "JavaScript常用内置对象API") 一文整理了一些 `JavaScript` 内置对象的 `API`，主要是当做工具表，在使用一些不熟悉的 `API` 的时候有快速查询的地方（不常使用的知识很快就忘了 :sleeping: ，不过学习也就是不断遗忘和重复的过程）。本文主要是说 `Array` 的技巧，必然要对 `API` 深入一些，这一小节我们就对 `Array` 相关的内容进行梳理。
+我在 [JavaScript常用内置对象API](https://www.clloz.com/programming/front-end/js/2020/07/10/built-in-objects-api/ 'JavaScript常用内置对象API') 一文整理了一些 `JavaScript` 内置对象的 `API`，主要是当做工具表，在使用一些不熟悉的 `API` 的时候有快速查询的地方（不常使用的知识很快就忘了 :sleeping: ，不过学习也就是不断遗忘和重复的过程）。本文主要是说 `Array` 的技巧，必然要对 `API` 深入一些，这一小节我们就对 `Array` 相关的内容进行梳理。
 
 因为数组的 `API` 很多，有些很类似，特别是有没有返回值，以及是否会改变原数组，很容易混淆，在这一小节的最前面进行一个整理。
 
-**不改变原数组**
+### 不改变原数组
 
 - `Array.from()`
 - `Array.isArray()`
@@ -100,7 +98,7 @@ new Array(...Array(3)) //扩展运算符和 apply 类似的效果
 - `Array.prototype.reduceRight()`
 - `Array.prototype.slice()`
 
-**改变原数组**
+### 改变原数组
 
 - `Array.prototype.copyWithin()`
 - `Array.prototype.fill()`
@@ -111,7 +109,7 @@ new Array(...Array(3)) //扩展运算符和 apply 类似的效果
 - `Array.prototype.splice()`
 - `Array.prototype.unshift()`
 
-**返回数组**
+### 返回数组
 
 - `Array.from()`
 - `Array.prototype.concat()`
@@ -125,7 +123,7 @@ new Array(...Array(3)) //扩展运算符和 apply 类似的效果
 - `Array.prototype.sort()`
 - `Array.prototype.splice()`
 
-**不返回数组**
+### 不返回数组
 
 - `Array.isArray()` 返回 `Boolean`
 - `Array.prototype.every()` 返回 `Boolean`
@@ -145,15 +143,15 @@ new Array(...Array(3)) //扩展运算符和 apply 类似的效果
 `JavaScript` 规定了数组的 `length` 是一个 `32bits` 无符号整数，所以数组的最大长度是是 $2^{32} - 1$，所以 `Array.length` 的范围应该是在 `0 - 4294967295` 之间。
 
 ```javascript
-var namelistA = new Array(4294967296); // 2的32次方 = 4294967296
+var namelistA = new Array(4294967296) // 2的32次方 = 4294967296
 var namelistC = new Array(-100) // 负号
 
-console.log(namelistA.length); // RangeError: 无效数组长度
-console.log(namelistC.length); // RangeError: 无效数组长度
+console.log(namelistA.length) // RangeError: 无效数组长度
+console.log(namelistC.length) // RangeError: 无效数组长度
 
-var namelistB = [];
-namelistB.length = Math.pow(2,32)-1; //set array length less than 2 to the 32nd power
-console.log(namelistB.length);  // 4294967295
+var namelistB = []
+namelistB.length = Math.pow(2, 32) - 1 //set array length less than 2 to the 32nd power
+console.log(namelistB.length) // 4294967295
 ```
 
 改变 `length` 的大小会改变数组。当我们设置 `length` 小于数组长度的时候。超过的部分会被截断。当我们设置 `length` 大于数组长度的时候，实际的元素数目会增加，新增的元素的值为 `undefined`（实际上和 `Array(length)` 一样，新增的位置此时并没有包含任何实际的元素，不能理所当然地认为它包含 `arrayLength` 个值为 `undefined` 的元素，但是如果输出）。
@@ -161,14 +159,14 @@ console.log(namelistB.length);  // 4294967295
 ```javascript
 let arr = [1, 2, 3]
 
-arr.length = 5;
+arr.length = 5
 
 console.log(arr, arr[3], arr[4]) //[ 1, 2, 3, <2 empty items> ] undefined undefined
 
-let b = arr.map(e => e)
+let b = arr.map((e) => e)
 console.log(b) //[ 1, 2, 3, <2 empty items> ]
 
-arr.forEach(e => console.log(e)) //forEach 会跳过空位
+arr.forEach((e) => console.log(e)) //forEach 会跳过空位
 //1
 //2
 //3
@@ -192,44 +190,48 @@ arr.forEach(e => console.log(e)) //forEach 会跳过空位
 Array.from('clloz') //["c", "l", "l", "o", "z"]
 
 //从Set生成数组
-const set = new Set(['foo', 'bar', 'baz', 'foo']);
-Array.from(set); // [ "foo", "bar", "baz" ]
+const set = new Set(['foo', 'bar', 'baz', 'foo'])
+Array.from(set) // [ "foo", "bar", "baz" ]
 
 //从Map生成数组
-const map = new Map([[1, 2], [2, 4], [4, 8]]);
-Array.from(map); // [[1, 2], [2, 4], [4, 8]]
+const map = new Map([
+  [1, 2],
+  [2, 4],
+  [4, 8]
+])
+Array.from(map) // [[1, 2], [2, 4], [4, 8]]
 
-Array.from(map.keys()); //[1, 2, 4]
-Array.from(map.values()); //[2, 4, 8]
+Array.from(map.keys()) //[1, 2, 4]
+Array.from(map.values()) //[2, 4, 8]
 
 //从类数组对象生成数组
 function f() {
-  return Array.from(arguments);
+  return Array.from(arguments)
 }
-f(1, 2, 3); //[ 1, 2, 3 ]
+f(1, 2, 3) //[ 1, 2, 3 ]
 
 //使用map生成元素值为下标的数组
-Array.from({length: 5}, (v, i) => i); // [0, 1, 2, 3, 4]
+Array.from({ length: 5 }, (v, i) => i) // [0, 1, 2, 3, 4]
 ```
 
 如果不考虑 `Array.from` 的 `map`，`Array.from` 做的事情类似如下函数
 
 ```javascript
 Array.from = function (arrayLike) {
-    let k = 0;
-        len = arrayLike.length;
-    let result = new Array(len);
-    while (k < len) {
-        result[k] = arrayLike[k];
-        k++
-    }
-    return result
+  let k = 0
+  len = arrayLike.length
+  let result = new Array(len)
+  while (k < len) {
+    result[k] = arrayLike[k]
+    k++
+  }
+  return result
 }
 let c = Array.from('clloz')
 console.log(c) // [ 'c', 'l', 'l', 'o', 'z' ]
 ```
 
-我这个只是大致演示一下 `Array.from` 做的事情，完整的 `polyfill` 参考 [Array.from - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/from "Array.from - MDN")
+我这个只是大致演示一下 `Array.from` 做的事情，完整的 `polyfill` 参考 [Array.from - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/from 'Array.from - MDN')
 
 ## Array.isArray()
 
@@ -237,9 +239,9 @@ console.log(c) // [ 'c', 'l', 'l', 'o', 'z' ]
 
 ```javascript
 if (!Array.isArray) {
-    Array.isArray = function(arg) {
-        return Object.prototype.toString.call(arg) === '[object Array]';
-    };
+  Array.isArray = function (arg) {
+    return Object.prototype.toString.call(arg) === '[object Array]'
+  }
 }
 ```
 
@@ -250,9 +252,9 @@ if (!Array.isArray) {
 ```javascript
 //polyfill
 if (!Array.of) {
-  Array.of = function() {
-    return Array.prototype.slice.call(arguments);
-  };
+  Array.of = function () {
+    return Array.prototype.slice.call(arguments)
+  }
 }
 ```
 
@@ -262,7 +264,7 @@ if (!Array.of) {
 
 ```javascript
 let a = [[1], 2]
-let b = [[3], 4, {name: 'clloz'}]
+let b = [[3], 4, { name: 'clloz' }]
 
 let c = a.concat(b)
 console.log(c) //[ [ 1 ], 2, [ 3 ], 4, { name: 'clloz' } ]
@@ -278,22 +280,22 @@ console.log(c) //[ [ 1, 100 ], 2, [ 3 ], 4, { name: 'clloz1992' } ]
 
 ```javascript
 Array.prototype._concat = function () {
-    if (Object.prototype.toString.call(this) !== '[object Array]') throw Error('this is not a Array!')
-    let result = Array.prototype.slice.call(this);
-    let args = Array.prototype.slice.call(arguments);
+  if (Object.prototype.toString.call(this) !== '[object Array]') throw Error('this is not a Array!')
+  let result = Array.prototype.slice.call(this)
+  let args = Array.prototype.slice.call(arguments)
 
-    for(let i = 0; i < args.length; i++) {
-        if (Array.isArray(args[i])) {
-            for (let j = 0; j < args[i].length; j++) {
-                result.push(args[i][j])
-            }
-        }
+  for (let i = 0; i < args.length; i++) {
+    if (Array.isArray(args[i])) {
+      for (let j = 0; j < args[i].length; j++) {
+        result.push(args[i][j])
+      }
     }
-    return result;
+  }
+  return result
 }
-let a = [1,2,3,4]
-let b = [5,6,7]
-let c = [8,9,10]
+let a = [1, 2, 3, 4]
+let b = [5, 6, 7]
+let c = [8, 9, 10]
 let d = a._concat(b, c)
 console.log(d) //[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 ```
@@ -308,7 +310,7 @@ console.log(d) //[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 - 不改变原数组。
 - `every` 遍历的元素范围在第一次调用 `callback` 之前就已确定了。在调用 `every` 之后添加到数组中的元素不会被 `callback` 访问到。如果数组中存在的元素被更改，则他们传入 `callback` 的值是 `every` 访问到他们那一刻的值。那些被删除的元素或从来未被赋值的元素将不会被访问到（所以对于稀疏数组中的空位 `every` 是不会处理的）。
 
-`polyfill` 实现参考 [Array.prototype.every() - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/every "Array.prototype.every() - MDN")
+`polyfill` 实现参考 [Array.prototype.every() - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/every 'Array.prototype.every() - MDN')
 
 ## Array.prototype.fill()
 
@@ -343,10 +345,11 @@ console.log(d) //[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 这个方法相当于先对数组执行 `map`，然后对 `map` 之后返回的数组执行 `flat(1)`。
 
 ```javascript
-var arr1 = [1, 2, 3, 4];
-JSON.stringify(arr1.map(x => [[x*2]])); // "[[[2]],[[4]],[[6]],[[8]]]"
-JSON.stringify(arr1.map(x => [[x*2]]).flat(1)) //"[[2],[4],[6],[8]]"
-JSON.stringify(arr1.map(x => [[x*2]]).flat(1)) === JSON.stringify(arr1.flatMap(x => [[x*2]])) //true
+var arr1 = [1, 2, 3, 4]
+JSON.stringify(arr1.map((x) => [[x * 2]])) // "[[[2]],[[4]],[[6]],[[8]]]"
+JSON.stringify(arr1.map((x) => [[x * 2]]).flat(1)) //"[[2],[4],[6],[8]]"
+JSON.stringify(arr1.map((x) => [[x * 2]]).flat(1)) ===
+  JSON.stringify(arr1.flatMap((x) => [[x * 2]])) //true
 ```
 
 ## Array.prototype.forEach()
@@ -362,20 +365,20 @@ JSON.stringify(arr1.map(x => [[x*2]]).flat(1)) === JSON.stringify(arr1.flatMap(x
 
 ```javascript
 //回调函数改变原数组
-let arr = [1,2,3]
+let arr = [1, 2, 3]
 arr.forEach((v, i, thisArr) => {
-    thisArr[i] *= 2;
+  thisArr[i] *= 2
 })
 console.log(arr) //[ 2, 4, 6 ]
 
 //迭代过程中修改数组，有元素会被跳过，其他遍历方法类似
-var words = ['one', 'two', 'three', 'four'];
-words.forEach(function(word) {
-  console.log(word);
+var words = ['one', 'two', 'three', 'four']
+words.forEach(function (word) {
+  console.log(word)
   if (word === 'two') {
-    words.shift();
+    words.shift()
   }
-});
+})
 // one
 // two
 // four
@@ -407,17 +410,28 @@ words.forEach(function(word) {
 - 利用 `call` 和 `apply` 可以用在其他可迭代对象上，比如 `arguments`，字符串。
 
 ```javascript
-let a = {length: 10, name: 'clloz'}
+let a = { length: 10, name: 'clloz' }
 let str = Array.prototype.join.call(a, ',')
 console.log(str) //,,,,,,,,,
 ```
 
 ```javascript
 function m() {}
-let arr = [1,2,3,4, {name: 'clloz'}, [2,[3,4,5]], m , Number(10), true, String('clloz'), Boolean(1)]
+let arr = [
+  1,
+  2,
+  3,
+  4,
+  { name: 'clloz' },
+  [2, [3, 4, 5]],
+  m,
+  Number(10),
+  true,
+  String('clloz'),
+  Boolean(1)
+]
 console.log(arr.join(','))
 //1,2,3,4,[object Object],2,3,4,5,function m() {},10,true,clloz,true
-
 ```
 
 ## Array.prototype.keys()
@@ -425,11 +439,11 @@ console.log(arr.join(','))
 `ES6` 添加的数组方法.`keys()` 方法返回一个包含数组中每个索引键的 `Array Iterator` 对象。一个新的 `Array` 迭代器对象。
 
 ```javascript
-var arr = ["a", , "c"];
-var sparseKeys = Object.keys(arr);
-var denseKeys = [...arr.keys()];
-console.log(sparseKeys); // ['0', '2']
-console.log(denseKeys);  // [0, 1, 2]
+var arr = ['a', , 'c']
+var sparseKeys = Object.keys(arr)
+var denseKeys = [...arr.keys()]
+console.log(sparseKeys) // ['0', '2']
+console.log(denseKeys) // [0, 1, 2]
 ```
 
 ## Array.prototype.lastIndexOf()
@@ -455,37 +469,37 @@ console.log(denseKeys);  // [0, 1, 2]
 
 ```javascript
 //数组即对象
-let a = {length: 10, name: 'clloz'}
+let a = { length: 10, name: 'clloz' }
 Array.prototype.pop.call(a)
 console.log(a) //{ length: 9 }
 
 //length 为 0，下标 0 处本来就没有元素，不会有任何变化
-var obj ={
-    '2': 3,
-    '3': 4,
-    'length': 0,
-    'pop': Array.prototype.pop,
+var obj = {
+  2: 3,
+  3: 4,
+  length: 0,
+  pop: Array.prototype.pop
 }
 
 obj.pop()
 console.log(obj) //{ '2': 3, '3': 4, length: 0, pop: [Function: pop] }
 
 //length 为 3，下标为 2 的元素是 `3`，该元素奖杯删除，`length` 减一
-var obj ={
-    '2': 3,
-    '3': 4,
-    'length': 0,
-    'pop': Array.prototype.pop,
+var obj = {
+  2: 3,
+  3: 4,
+  length: 0,
+  pop: Array.prototype.pop
 }
 
 obj.pop()
 console.log(obj) //{ '2': 3, '3': 4, length: 0, pop: [Function: pop] }
 
 //没有 length 或 length不能转为数字，会添加 length属性，属性值为 0
-var obj ={
-    '2': 3,
-    '3': 4,
-    'pop': Array.prototype.pop,
+var obj = {
+  2: 3,
+  3: 4,
+  pop: Array.prototype.pop
 }
 
 obj.pop()
@@ -501,12 +515,12 @@ console.log(obj) //{ '2': 3, '3': 4, pop: [Function: pop], length: 0 }
 push 方法根据 `length` 属性来决定从哪里开始插入给定的值。如果 `length` 不能被转成一个数值，则插入的元素索引为 `0`，包括 length 不存在时。当 `length` 不存在时，将会创建它。这一点非常重要，看下面的代码：
 
 ```javascript
-var obj ={
-    '2': 3,
-    '3': 4,
-    'length': 2,
-    'splice': Array.prototype.splice,
-    'push': Array.prototype.push
+var obj = {
+  2: 3,
+  3: 4,
+  length: 2,
+  splice: Array.prototype.splice,
+  push: Array.prototype.push
 }
 
 obj.push(1)
@@ -525,11 +539,11 @@ console.log(obj)
 因为对象中的 `length` 为 `2`，所以从下标 `2` 开始插入，并改变 `length` 的值，所以最后 `1` `2` 分别插入了下标 `2` 和 `3` 的报位置，取代了原来的值 `3` 和 `4`。而如果没有 `length` 则会创建 `length`，初始值为 `0`，并从 `0` 开始插入，最后结果如下：
 
 ```javascript
-var obj ={
-    '2': 3,
-    '3': 4,
-    'splice': Array.prototype.splice,
-    'push': Array.prototype.push
+var obj = {
+  2: 3,
+  3: 4,
+  splice: Array.prototype.splice,
+  push: Array.prototype.push
 }
 
 obj.push(1)
@@ -545,13 +559,12 @@ console.log(obj)
 //  push: [Function: push],
 //  length: 2
 //}
-
 ```
 
 唯一的原生类数组（`array-like`）对象是 `String`，它们并不适用该方法，因为字符串是不可改变的。
 
 ```javascript
-let a = {length: 10, name: 'clloz'}
+let a = { length: 10, name: 'clloz' }
 Array.prototype.push.call(a, 1, 2, 3, 4)
 console.log(a)
 console.log(a[0])
@@ -570,41 +583,39 @@ console.log(a[0])
 ```javascript
 //reduce 实现 map
 if (!Array.prototype.mapUsingReduce) {
-  Array.prototype.mapUsingReduce = function(callback, thisArg) {
-    return this.reduce(function(mappedArray, currentValue, index, array) {
+  Array.prototype.mapUsingReduce = function (callback, thisArg) {
+    return this.reduce(function (mappedArray, currentValue, index, array) {
       mappedArray[index] = callback.call(thisArg, currentValue, index, array)
       return mappedArray
     }, [])
   }
 }
 
-[1, 2, , 3].mapUsingReduce(
-  (currentValue, index, array) => currentValue + index + array.length
-) // [5, 7, , 10]
+;[1, 2, , 3].mapUsingReduce((currentValue, index, array) => currentValue + index + array.length) // [5, 7, , 10]
 
 //多函数管道 将多个函数当做数组进行 reduce实现特定功能
 // Building-blocks to use for composition
-const double = x => x + x;
-const triple = x => 3 * x;
-const quadruple = x => 4 * x;
+const double = (x) => x + x
+const triple = (x) => 3 * x
+const quadruple = (x) => 4 * x
 
 // Function composition enabling pipe functionality
-const pipe = (...functions) => input => functions.reduce(
-    (acc, fn) => fn(acc),
-    input
-);
+const pipe =
+  (...functions) =>
+  (input) =>
+    functions.reduce((acc, fn) => fn(acc), input)
 
 // Composed functions for multiplication of specific values
-const multiply6 = pipe(double, triple);
-const multiply9 = pipe(triple, triple);
-const multiply16 = pipe(quadruple, quadruple);
-const multiply24 = pipe(double, triple, quadruple);
+const multiply6 = pipe(double, triple)
+const multiply9 = pipe(triple, triple)
+const multiply16 = pipe(quadruple, quadruple)
+const multiply24 = pipe(double, triple, quadruple)
 
 // Usage
-multiply6(6); // 36
-multiply9(9); // 81
-multiply16(16); // 256
-multiply24(10); // 240
+multiply6(6) // 36
+multiply9(9) // 81
+multiply16(16) // 256
+multiply24(10) // 240
 ```
 
 ## Array.prototype.reduceRight()
@@ -621,21 +632,21 @@ multiply24(10); // 240
 
 ```javascript
 //没有length会给对象添加值为 0 的 length 属性，不执行其他操作
-var obj ={
-    '2': 3,
-    '3': 4,
-    'shift': Array.prototype.pop,
+var obj = {
+  2: 3,
+  3: 4,
+  shift: Array.prototype.pop
 }
 
 obj.shift()
 console.log(obj) //{ '2': 3, '3': 4, shift: [Function: pop], length: 0 }
 
 //length 为 0 不进行任何操作，返回undefined
-var obj ={
-    '2': 3,
-    '3': 4,
-    length: 0,
-    'shift': Array.prototype.pop,
+var obj = {
+  2: 3,
+  3: 4,
+  length: 0,
+  shift: Array.prototype.pop
 }
 
 obj.shift()
@@ -698,24 +709,24 @@ console.log(arr.sort())
 
 ```javascript
 //没有length属性的对象调用会添加值为 0 的length属性
-var obj ={
-    '0': 3,
-    '1': 4,
-    'unshift': Array.prototype.unshift,
+var obj = {
+  0: 3,
+  1: 4,
+  unshift: Array.prototype.unshift
 }
 
 obj.unshift()
 console.log(obj) //{ '0': 3, '1': 4, unshift: [Function: unshift], length: 0 }
 
 //从 length 处插入
-var obj ={
-    '0': 3,
-    '1': 4,
-    length: 0,
-    'unshift': Array.prototype.unshift,
+var obj = {
+  0: 3,
+  1: 4,
+  length: 0,
+  unshift: Array.prototype.unshift
 }
 
-obj.unshift(1,2)
+obj.unshift(1, 2)
 console.log(obj) //{ '0': 1, '1': 2, length: 2, unshift: [Function: unshift] }
 ```
 
@@ -762,20 +773,19 @@ console.log(obj) //{ '0': 1, '1': 2, length: 2, unshift: [Function: unshift] }
 ## 复制数组
 
 1. `Array.prototype.slice.call()`
-    
+
 2. `Array.from()`，和 `Array.prototype.slice.call()` 的区别就是 `Array.from()` 是 `ES6` 才有的方法。他们的性能存在差异，我只用了一个简单的数组进行了测试：结果就是当数组长度比较小的时候，`Array.from()` 速度更快一点，当数组长度越长，`Array.prototype.slice.call()` 速度更快，我只是用的一个 `flat` 的数组，没有测试嵌套数组和对象， `Set` `Map` 等情况。
-    
 
 ```javascript
-let a = Array.from({length: 1000000}, (v, i) => i);
+let a = Array.from({ length: 1000000 }, (v, i) => i)
 console.time('slice')
 for (let i = 0; i < 1000; i++) {
-    Array.prototype.slice.call(a)
+  Array.prototype.slice.call(a)
 }
 console.timeEnd('slice') //slice: 5995.096ms
 console.time('from')
 for (let i = 0; i < 1000; i++) {
-    Array.from(a)
+  Array.from(a)
 }
 console.timeEnd('from') //from: 6668.785ms
 ```
@@ -818,74 +828,76 @@ Number.prototype[Symbol.iterator] = function() {
 
 1. 利用 `Array.from` 和 `Set`。
 
-```javascript
-function combine(){
-    let arr = [].concat.apply([], arguments);  //没有去重复的新数组
-    return Array.from(new Set(arr));
-}
+   ```javascript
+   function combine() {
+     let arr = [].concat.apply([], arguments) //没有去重复的新数组
+     return Array.from(new Set(arr))
+   }
 
-var m = [1, 2, 2], n = [2,3,3];
-console.log(combine(m,n)); // [1, 2, 3]
-```
+   var m = [1, 2, 2],
+     n = [2, 3, 3]
+   console.log(combine(m, n)) // [1, 2, 3]
+   ```
 
 2. `reduce`
 
-```javascript
-let myArray = ['a', 'b', 'a', 'b', 'c', 'e', 'e', 'c', 'd', 'd', 'd', 'd']
-let myOrderedArray = myArray.reduce(function (accumulator, currentValue) {
-    if (accumulator.indexOf(currentValue) === -1) {
-        accumulator.push(currentValue)
-    }
-    return accumulator
-}, [])
-console.log(myOrderedArray)
+   ```javascript
+   let myArray = ['a', 'b', 'a', 'b', 'c', 'e', 'e', 'c', 'd', 'd', 'd', 'd']
+   let myOrderedArray = myArray.reduce(function (accumulator, currentValue) {
+     if (accumulator.indexOf(currentValue) === -1) {
+       accumulator.push(currentValue)
+     }
+     return accumulator
+   }, [])
+   console.log(myOrderedArray)
 
-let arr = [1,2,1,2,3,5,4,5,3,4,4,4,4];
-let result = arr.sort().reduce((init, current) => {
-    if(init.length === 0 || init[init.length-1] !== current) {
-        init.push(current);
-    }
-    return init;
-}, []);
-console.log(result); //[1,2,3,4,5]
-```
+   let arr = [1, 2, 1, 2, 3, 5, 4, 5, 3, 4, 4, 4, 4]
+   let result = arr.sort().reduce((init, current) => {
+     if (init.length === 0 || init[init.length - 1] !== current) {
+       init.push(current)
+     }
+     return init
+   }, [])
+   console.log(result) //[1,2,3,4,5]
+   ```
 
 3. 两层循环比较
 
-```javascript
-function unique(arr){
-    for(var i=0; i<arr.length; i++){
-        for(var j=i+1; j<arr.length; j++){
-            if(arr[i]==arr[j]){         //第一个等同于第二个，splice方法删除第二个
-                arr.splice(j,1);
-                j--;
-            }
-        }
-    }
-    return arr;
-}
-```
+   ```javascript
+   function unique(arr) {
+     for (var i = 0; i < arr.length; i++) {
+       for (var j = i + 1; j < arr.length; j++) {
+         if (arr[i] == arr[j]) {
+           //第一个等同于第二个，splice方法删除第二个
+           arr.splice(j, 1)
+           j--
+         }
+       }
+     }
+     return arr
+   }
+   ```
 
 4. `filter + indexOf`
 
-```javascript
-function unique(arr) {
-  return arr.filter(function(item, index, arr) {
-    //当前元素，在原始数组中的第一个索引==当前索引值，否则返回当前元素
-    return arr.indexOf(item, 0) === index;
-  });
-}
-```
+   ```javascript
+   function unique(arr) {
+     return arr.filter(function (item, index, arr) {
+       //当前元素，在原始数组中的第一个索引==当前索引值，否则返回当前元素
+       return arr.indexOf(item, 0) === index
+     })
+   }
+   ```
 
 5. `forEach + includes`
 
 ```javascript
 function unique(arr) {
-    let result = []
-    arr.forEach((v) => {
-        if(!result.includes(v)) result.push(v)
-    })      
-    return result
+  let result = []
+  arr.forEach((v) => {
+    if (!result.includes(v)) result.push(v)
+  })
+  return result
 }
 ```
 
@@ -894,133 +906,135 @@ function unique(arr) {
 ## 扁平化
 
 1. `Array.prototype.flat()`
-    
+
 2. reduce 与 concat
-    
 
-```javascript
-var flattened = [[0, 1], [2, 3], [4, 5]].reduce(
-    function(a, b) {
-        return a.concat(b);
-    },
-    []
-);
-// flattened is [0, 1, 2, 3, 4, 5]
+   ```javascript
+   var flattened = [
+     [0, 1],
+     [2, 3],
+     [4, 5]
+   ].reduce(function (a, b) {
+     return a.concat(b)
+   }, [])
+   // flattened is [0, 1, 2, 3, 4, 5]
 
-var flattened = [[0, 1], [2, 3], [4, 5]].reduce(
-    ( acc, cur ) => acc.concat(cur),
-    []
-);
-```
+   var flattened = [
+     [0, 1],
+     [2, 3],
+     [4, 5]
+   ].reduce((acc, cur) => acc.concat(cur), [])
+   ```
 
 3. `reduce + concat + isArray + recursivity`
 
-```javascript
-// 使用 reduce、concat 和递归展开无限多层嵌套的数组
-var arr1 = [1,2,3,[1,2,3,4, [2,3,4]]];
+   ```javascript
+   // 使用 reduce、concat 和递归展开无限多层嵌套的数组
+   var arr1 = [1, 2, 3, [1, 2, 3, 4, [2, 3, 4]]]
 
-function flatDeep(arr, d = 1) {
-   return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
-                : arr.slice();
-};
+   function flatDeep(arr, d = 1) {
+     return d > 0
+       ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
+       : arr.slice()
+   }
 
-flatDeep(arr1, Infinity);
-// [1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
-```
+   flatDeep(arr1, Infinity)
+   // [1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
+   ```
 
 4. `forEach+isArray+push+recursivity`
 
-```javascript
-// forEach 遍历数组会自动跳过空元素
-const eachFlat = (arr = [], depth = 1) => {
-  const result = []; // 缓存递归结果
-  // 开始递归
-  (function flat(arr, depth) {
-    // forEach 会自动去除数组空位
-    arr.forEach((item) => {
-      // 控制递归深度
-      if (Array.isArray(item) && depth > 0) {
-        // 递归数组
-        flat(item, depth - 1)
-      } else {
-        // 缓存元素
-        result.push(item)
-      }
-    })
-  })(arr, depth)
-  // 返回递归结果
-  return result;
-} 
+   ```javascript
+   // forEach 遍历数组会自动跳过空元素
+   const eachFlat = (arr = [], depth = 1) => {
+     const result = [] // 缓存递归结果
+     // 开始递归
+     ;(function flat(arr, depth) {
+       // forEach 会自动去除数组空位
+       arr.forEach((item) => {
+         // 控制递归深度
+         if (Array.isArray(item) && depth > 0) {
+           // 递归数组
+           flat(item, depth - 1)
+         } else {
+           // 缓存元素
+           result.push(item)
+         }
+       })
+     })(arr, depth)
+     // 返回递归结果
+     return result
+   }
 
-// for of 循环不能去除数组空位，需要手动去除
-const forFlat = (arr = [], depth = 1) => {
-  const result = [];
-  (function flat(arr, depth) {
-    for (let item of arr) {
-      if (Array.isArray(item) && depth > 0) {
-        flat(item, depth - 1)
-      } else {
-        // 去除空元素，添加非undefined元素
-        item !== void 0 && result.push(item);
-      }
-    }
-  })(arr, depth)
-  return result;
-}
-```
+   // for of 循环不能去除数组空位，需要手动去除
+   const forFlat = (arr = [], depth = 1) => {
+     const result = []
+     ;(function flat(arr, depth) {
+       for (let item of arr) {
+         if (Array.isArray(item) && depth > 0) {
+           flat(item, depth - 1)
+         } else {
+           // 去除空元素，添加非undefined元素
+           item !== void 0 && result.push(item)
+         }
+       }
+     })(arr, depth)
+     return result
+   }
+   ```
 
 5. 使用堆栈stack
 
-```javascript
-// 无递归数组扁平化，使用堆栈
-// 注意：深度的控制比较低效，因为需要检查每一个值的深度
-// 也可能在 shift / unshift 上进行 w/o 反转，但是末端的数组 OPs 更快
-var arr1 = [1,2,3,[1,2,3,4, [2,3,4]]];
-function flatten(input) {
-  const stack = [...input];
-  const res = [];
-  while (stack.length) {
-    // 使用 pop 从 stack 中取出并移除值
-    const next = stack.pop();
-    if (Array.isArray(next)) {
-      // 使用 push 送回内层数组中的元素，不会改动原始输入
-      stack.push(...next);
-    } else {
-      res.push(next);
-    }
-  }
-  // 反转恢复原数组的顺序
-  return res.reverse();
-}
-flatten(arr1);// [1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
-// 递归版本的反嵌套
-function flatten(array) {
-  var flattend = [];
-  (function flat(array) {
-    array.forEach(function(el) {
-      if (Array.isArray(el)) flat(el);
-      else flattend.push(el);
-    });
-  })(array);
-  return flattend;
-}
-```
+   ```javascript
+   // 无递归数组扁平化，使用堆栈
+   // 注意：深度的控制比较低效，因为需要检查每一个值的深度
+   // 也可能在 shift / unshift 上进行 w/o 反转，但是末端的数组 OPs 更快
+   var arr1 = [1, 2, 3, [1, 2, 3, 4, [2, 3, 4]]]
+   function flatten(input) {
+     const stack = [...input]
+     const res = []
+     while (stack.length) {
+       // 使用 pop 从 stack 中取出并移除值
+       const next = stack.pop()
+       if (Array.isArray(next)) {
+         // 使用 push 送回内层数组中的元素，不会改动原始输入
+         stack.push(...next)
+       } else {
+         res.push(next)
+       }
+     }
+     // 反转恢复原数组的顺序
+     return res.reverse()
+   }
+   flatten(arr1) // [1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
+   // 递归版本的反嵌套
+   function flatten(array) {
+     var flattend = []
+     ;(function flat(array) {
+       array.forEach(function (el) {
+         if (Array.isArray(el)) flat(el)
+         else flattend.push(el)
+       })
+     })(array)
+     return flattend
+   }
+   ```
 
 6. Generator
 
 ```javascript
 function* flatten(array) {
-    for (const item of array) {
-        if (Array.isArray(item)) {
-            yield* flatten(item);
-        } else {
-            yield item;
-        }
+  for (const item of array) {
+    if (Array.isArray(item)) {
+      yield* flatten(item)
+    } else {
+      yield item
     }
+  }
 }
 
-var arr = [1, 2, [3, 4, [5, 6]]];
-const flattened = [...flatten(arr)];
+var arr = [1, 2, [3, 4, [5, 6]]]
+const flattened = [...flatten(arr)]
 // [1, 2, 3, 4, 5, 6]
 ```
 
@@ -1029,17 +1043,16 @@ const flattened = [...flatten(arr)];
 1. `reduce`
 
 ```javascript
-var names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice'];
+var names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice']
 
-var countedNames = names.reduce(function (allNames, name) { 
-    if (name in allNames) {
-        allNames[name]++;
-    }
-    else {
-        allNames[name] = 1;
-    }
-    return allNames;
-}, {});
+var countedNames = names.reduce(function (allNames, name) {
+  if (name in allNames) {
+    allNames[name]++
+  } else {
+    allNames[name] = 1
+  }
+  return allNames
+}, {})
 // countedNames is:
 // { 'Alice': 2, 'Bob': 1, 'Tiff': 1, 'Bruce': 1 }
 ```
@@ -1055,40 +1068,40 @@ var people = [
   { name: 'Alice', age: 21 },
   { name: 'Max', age: 20 },
   { name: 'Jane', age: 20 }
-];
+]
 
 function groupBy(objectArray, property) {
   return objectArray.reduce(function (acc, obj) {
-    var key = obj[property];
+    var key = obj[property]
     if (!acc[key]) {
-      acc[key] = [];
+      acc[key] = []
     }
-    acc[key].push(obj);
-    return acc;
-  }, {});
+    acc[key].push(obj)
+    return acc
+  }, {})
 }
 
-var groupedPeople = groupBy(people, 'age');
+var groupedPeople = groupBy(people, 'age')
 // groupedPeople is:
-// { 
+// {
 //   20: [
-//     { name: 'Max', age: 20 }, 
+//     { name: 'Max', age: 20 },
 //     { name: 'Jane', age: 20 }
-//   ], 
-//   21: [{ name: 'Alice', age: 21 }] 
+//   ],
+//   21: [{ name: 'Alice', age: 21 }]
 // }
 ```
 
 ## 求两数组交集
 
 ```javascript
-let arr1 = [0,1,2,3,4,5,4,5]
-let arr2 = [4,5,6,7,8,9,0]
-let result = Array.from(new Set(arr1.filter(v => arr2.includes(v))))
+let arr1 = [0, 1, 2, 3, 4, 5, 4, 5]
+let arr2 = [4, 5, 6, 7, 8, 9, 0]
+let result = Array.from(new Set(arr1.filter((v) => arr2.includes(v))))
 console.log(result) //[ 0, 4, 5 ]
 ```
 
 ## 参考文章
 
-1. [JS 中的稀疏数组和密集数组](https://juejin.im/post/6844904050152964109 "JS 中的稀疏数组和密集数组")
-2. [如何不使用loop循环，创建一个长度为100的数组，并且每个元素的值等于它的下标？ - Gaubee的回答 - 知乎](https://www.zhihu.com/question/41493194/answer/91224565 "如何不使用loop循环，创建一个长度为100的数组，并且每个元素的值等于它的下标？ - Gaubee的回答 - 知乎 ")
+1. [JS 中的稀疏数组和密集数组](https://juejin.im/post/6844904050152964109 'JS 中的稀疏数组和密集数组')
+2. [如何不使用loop循环，创建一个长度为100的数组，并且每个元素的值等于它的下标？ - Gaubee的回答 - 知乎](https://www.zhihu.com/question/41493194/answer/91224565 '如何不使用loop循环，创建一个长度为100的数组，并且每个元素的值等于它的下标？ - Gaubee的回答 - 知乎 ')

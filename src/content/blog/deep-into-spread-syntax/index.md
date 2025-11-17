@@ -6,10 +6,8 @@ tags:
   - js
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -21,93 +19,93 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ```javascript
 //函数调用：
-myFunction(...iterableObj);
+myFunction(...iterableObj)
 
 //字面量数组构造或字符串：
-[...iterableObj, '4', ...'hello', 6];
+;[...iterableObj, '4', ...'hello', 6]
 
 // 构造字面量对象时,进行克隆或者属性拷贝（ECMAScript 2018规范新增特性）：
-let objClone = { ...obj };
+let objClone = { ...obj }
 ```
 
 在函数调用时使用扩展运算符相当于使用 `Function.prototype.apply`：
 
 ```javascript
-function myFunction(x, y, z) { }
-var args = [0, 1, 2];
-myFunction(...args);
+function myFunction(x, y, z) {}
+var args = [0, 1, 2]
+myFunction(...args)
 
 //相当于
 function myFunction(x, y, z) {}
-var args = [0, 1, 2];
-myFunction.apply(null, args);
+var args = [0, 1, 2]
+myFunction.apply(null, args)
 ```
 
 和 `apply` 不同的是，我们不仅可以将全部参数放到一个数组中，还可以只将其中几个参数用扩展运算符展开，并且可以再一次调用中多次使用扩展运算符。
 
 ```javascript
 function myFunction(a, b, c, d, e) {
-    console.log(a, b, c, d, e); //-1 0 1 2 3
-    console.log(arguments); //[Arguments] { '0': -1, '1': 0, '2': 1, '3': 2, '4': 3 }
+  console.log(a, b, c, d, e) //-1 0 1 2 3
+  console.log(arguments) //[Arguments] { '0': -1, '1': 0, '2': 1, '3': 2, '4': 3 }
 }
-var args = [0, 1];
-myFunction(-1, ...args, 2, ...[3]);
+var args = [0, 1]
+myFunction(-1, ...args, 2, ...[3])
 ```
 
-* * *
+---
 
 使用 `new` 关键字来调用构造函数时，不能直接使用数组加上 `apply` 的方式（`apply` 执行的是调用 `[[Call]]` , 而不是构造 `[[Construct]]`）。有了展开语法, 将数组展开为构造函数的参数就很简单了：
 
 ```javascript
-var dateFields = [1970, 0, 1]; // 1970年1月1日
-var d = new Date(...dateFields);
+var dateFields = [1970, 0, 1] // 1970年1月1日
+var d = new Date(...dateFields)
 ```
 
 如果想要不使用扩展运算符实现同样的效果，我们必须用一个函数包装构造函数，将这个新的构造函数的 `prototype` 设为原构造函数的实例，用 `Object.create(constructor.prototype)`（这里主要是为了新构造函数原型的修改不影响原构造函数的原型，直接用 `constructor.prototype` 作为新构造函数的原型也可以实现）。
 
 ```javascript
 function applyAndNew(constructor, args) {
-    function partial() {
-        return constructor.apply(this, args);
-    }
-    if (typeof constructor.prototype === 'object') {
-        partial.prototype = Object.create(constructor.prototype);
-    }
-    return partial;
+  function partial() {
+    return constructor.apply(this, args)
+  }
+  if (typeof constructor.prototype === 'object') {
+    partial.prototype = Object.create(constructor.prototype)
+  }
+  return partial
 }
 
 function myConstructor() {
-    console.log('arguments.length: ' + arguments.length);
-    console.log(arguments);
-    this.prop1 = 'val1';
-    this.prop2 = 'val2';
+  console.log('arguments.length: ' + arguments.length)
+  console.log(arguments)
+  this.prop1 = 'val1'
+  this.prop2 = 'val2'
 }
 
-var myArguments = ['hi', 'how', 'are', 'you', 'mr', null];
-var myConstructorWithArguments = applyAndNew(myConstructor, myArguments);
+var myArguments = ['hi', 'how', 'are', 'you', 'mr', null]
+var myConstructorWithArguments = applyAndNew(myConstructor, myArguments)
 
-console.log(new myConstructorWithArguments());
+console.log(new myConstructorWithArguments())
 // (myConstructor构造函数中):           arguments.length: 6
 // (myConstructor构造函数中):           ["hi", "how", "are", "you", "mr", null]
 // ("new myConstructorWithArguments"中): {prop1: "val1", prop2: "val2"}
 ```
 
-* * *
+---
 
 当然用的最多的还是在字面量数组上，没有展开语法的时候，只能组合使用 `push, splice, concat` 等方法，来将已有数组元素变成新数组的一部分。有了展开语法, 通过字面量方式, 构造新数组会变得更简单、更优雅：
 
 ```javascript
-var parts = ['shoulders', 'knees'];
-var lyrics = ['head', ...parts, 'and', 'toes'];
+var parts = ['shoulders', 'knees']
+var lyrics = ['head', ...parts, 'and', 'toes']
 // ["head", "shoulders", "knees", "and", "toes"]
 ```
 
 可以用来实现数组浅拷贝：
 
 ```javascript
-var arr = [1, 2, 3];
-var arr2 = [...arr]; // like arr.slice()
-arr2.push(4);
+var arr = [1, 2, 3]
+var arr2 = [...arr] // like arr.slice()
+arr2.push(4)
 
 // arr2 此时变成 [1, 2, 3, 4]
 // arr 不受影响
@@ -116,24 +114,24 @@ arr2.push(4);
 连接多个数组：
 
 ```javascript
-var arr1 = [0, 1, 2];
-var arr2 = [3, 4, 5];
-var arr3 = [...arr1, ...arr2];
+var arr1 = [0, 1, 2]
+var arr2 = [3, 4, 5]
+var arr3 = [...arr1, ...arr2]
 ```
 
-* * *
+---
 
 扩展运算符还可以将已有对象的所有可枚举(`enumerable`)属性拷贝到新构造的对象中。该方法为浅拷贝，可以拷贝 `Symbol` 属性，但不包含原型上的属性和方法。如果同时拷贝多个对象，后面的对象会覆盖前面对象的同名属性。
 
 ```javascript
-var obj1 = { foo: 'bar', x: 42, [Symbol('a')]: 123 };
-var obj2 = { foo: 'baz', x: 100, y: 13 };
+var obj1 = { foo: 'bar', x: 42, [Symbol('a')]: 123 }
+var obj2 = { foo: 'baz', x: 100, y: 13 }
 
-var clonedObj = { ...obj1 };
-console.log(clonedObj); //{ foo: 'bar', x: 42, [Symbol(a)]: 123 }
+var clonedObj = { ...obj1 }
+console.log(clonedObj) //{ foo: 'bar', x: 42, [Symbol(a)]: 123 }
 
-var mergedObj = { ...obj1, ...obj2 };
-console.log(mergedObj); //{ foo: 'baz', x: 100, y: 13, [Symbol(a)]: 123 }
+var mergedObj = { ...obj1, ...obj2 }
+console.log(mergedObj) //{ foo: 'baz', x: 100, y: 13, [Symbol(a)]: 123 }
 ```
 
 该方法的性质和 `Object.assign` 类似，但是 `Object.assign()` 函数会触发 `setters`，而展开语法则不会。

@@ -6,10 +6,8 @@ tags:
   - css
   - 奇技淫巧
 language: '中文'
-heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './css.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -24,32 +22,30 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 ```html
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>text-color-gradient</title>
-        <style>
-            .text-color-gradient {
-                display: inline-block;
-                font-size: 10em;
-                font-weight: 700;
-                background: linear-gradient(0.25turn, #c21500, #ffc500);
-                background-clip: text;
-                -webkit-background-clip: text;
-                color: transparent;
-            }
-        </style>
-    </head>
-    <body>
-        <div style="text-align: center;">
-            <div class="text-color-gradient">
-                Clloz
-            </div>
-        </div>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>text-color-gradient</title>
+    <style>
+      .text-color-gradient {
+        display: inline-block;
+        font-size: 10em;
+        font-weight: 700;
+        background: linear-gradient(0.25turn, #c21500, #ffc500);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="text-align: center;">
+      <div class="text-color-gradient">Clloz</div>
+    </div>
+  </body>
 </html>
 ```
 
-<iframe width="100%" height="200" src="https://www.clloz.com/study/text-color-gradient/background-clip.html" style="border: none;"></iframe>
+<!-- <iframe width="100%" height="200" src="https://www.clloz.com/study/text-color-gradient/background-clip.html" style="border: none;"></iframe> -->
 
 ## mask-image
 
@@ -58,42 +54,40 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 ```html
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>text-color-gradient</title>
-        <style>
-            .text-color-gradient {
-                display: inline-block;
-                font-size: 10em;
-                position: relative;
-                color: #ffc500;
-            }
+  <head>
+    <meta charset="UTF-8" />
+    <title>text-color-gradient</title>
+    <style>
+      .text-color-gradient {
+        display: inline-block;
+        font-size: 10em;
+        position: relative;
+        color: #ffc500;
+      }
 
-            .text-color-gradient[data-text]::after {
-                content: attr(data-text);
-                color: #c21500;
-                position: absolute;
-                left: 0;
-                z-index: 2;
-                -webkit-mask-image: linear-gradient(0.25turn, #c21500, transparent);
-            }
-        </style>
-    </head>
-    <body>
-        <div style="text-align: center;">
-            <div class="text-color-gradient" data-text="Clloz">
-                Clloz
-            </div>
-        </div>
-    </body>
+      .text-color-gradient[data-text]::after {
+        content: attr(data-text);
+        color: #c21500;
+        position: absolute;
+        left: 0;
+        z-index: 2;
+        -webkit-mask-image: linear-gradient(0.25turn, #c21500, transparent);
+      }
+    </style>
+  </head>
+  <body>
+    <div style="text-align: center;">
+      <div class="text-color-gradient" data-text="Clloz">Clloz</div>
+    </div>
+  </body>
 </html>
 ```
 
-<iframe width="100%" height="200" src="https://cdn.clloz.com/study/text-color-gradient/mask-image.html" style="border: none;"></iframe>
+<!-- <iframe width="100%" height="200" src="https://cdn.clloz.com/study/text-color-gradient/mask-image.html" style="border: none;"></iframe> -->
 
 ## 关于渐变色
 
-关于渐变色推荐一个网站：[uigradients](https://uigradients.com/ "uigradients")，该网站有很多不错的渐变色搭配。另外还有一个软件[aquarelo](https://www.macstories.net/reviews/aquarelo-a-beautifully-designed-mac-color-utility/ "aquarelo")，可以查看渐变色，也支持导出。
+关于渐变色推荐一个网站：[uigradients](https://uigradients.com/ 'uigradients')，该网站有很多不错的渐变色搭配。另外还有一个软件[aquarelo](https://www.macstories.net/reviews/aquarelo-a-beautifully-designed-mac-color-utility/ 'aquarelo')，可以查看渐变色，也支持导出。
 
 ## 总结
 
@@ -101,4 +95,4 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 
 ## 参考文章
 
-1. [CSS3下的渐变文字效果实现](https://www.zhangxinxu.com/wordpress/2011/04/%E5%B0%8Ftipcss3%E4%B8%8B%E7%9A%84%E6%B8%90%E5%8F%98%E6%96%87%E5%AD%97%E6%95%88%E6%9E%9C%E5%AE%9E%E7%8E%B0/http:// "CSS3下的渐变文字效果实现")
+1. [CSS3下的渐变文字效果实现](https://www.zhangxinxu.com/wordpress/2011/04/%E5%B0%8Ftipcss3%E4%B8%8B%E7%9A%84%E6%B8%90%E5%8F%98%E6%96%87%E5%AD%97%E6%95%88%E6%9E%9C%E5%AE%9E%E7%8E%B0/http:// 'CSS3下的渐变文字效果实现')

@@ -6,10 +6,8 @@ tags:
   - assorted
   - 奇技淫巧
 language: '中文'
-heroImage: {"src":"./terminal.png","color":"#B4C6DA"}
+heroImage: { 'src': './terminal.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 

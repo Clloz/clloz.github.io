@@ -6,10 +6,8 @@ tags:
   - js
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -21,15 +19,15 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ```javascript
 let Obj = {
-    a: 1,
-    b: 2
+  a: 1,
+  b: 2
 }
 
-let obj = Object.create(Obj);
+let obj = Object.create(Obj)
 
-obj.a = 10;
+obj.a = 10
 
-console.log(obj, Obj); //{ a: 10 } { a: 1, b: 2 }
+console.log(obj, Obj) //{ a: 10 } { a: 1, b: 2 }
 ```
 
 我也曾使用这个方法来复制对象的属性。但是今天仔细看里面的细节，发现这是违反我直觉的。我自己的思路是，`obj` 对象没有 `a` 属性，所以访问到的是原型 `Obj` 上的 `a` 属性，那么我修改属性的时候应该修改的也是原型上的属性。但是实际情况是一个 `a` 属性在 `obj` 对象上创建，原型上的 `a` 属性还保持原来的状态。
@@ -66,30 +64,29 @@ console.log(obj, Obj); //{ a: 10 } { a: 1, b: 2 }
 
 ```javascript
 // this 指向
-function myclass() {
-}
+function myclass() {}
 
-Object.defineProperty(myclass.prototype, "x", {
+Object.defineProperty(myclass.prototype, 'x', {
   get() {
-    return this.stored_x;
+    return this.stored_x
   },
   set(x) {
-    this.stored_x = x;
+    this.stored_x = x
   }
-});
+})
 
-var a = new myclass();
-var b = new myclass();
-a.x = 1; //this 是 a
-console.log(b.x); // undefined //this 是 b
+var a = new myclass()
+var b = new myclass()
+a.x = 1 //this 是 a
+console.log(b.x) // undefined //this 是 b
 ```
 
 拥有布尔值的特性 `configurable`、`enumerable` 和 `writable` 的默认值都是 `false`。属性值和函数的键 `value`、`get` 和 `set` 字段的默认值为 `undefined`。默认值在描述符省略某些字段时启用。对于直接用对象字面量或属性访问器（点运算符或者方括号运算符）赋值的方式（比如 `obj.a = 10` ）创建的属性其数据描述符中的属性的默认值和 `Object.defineProperty()` 方法是不同的，参考如下代码：
 
 ```javascript
 let a = {
-    m: 1,
-    set t(arg) {}
+  m: 1,
+  set t(arg) {}
 }
 console.log(Object.getOwnPropertyDescriptors(a))
 
@@ -108,18 +105,18 @@ console.log(Object.getOwnPropertyDescriptors(a))
 
 ```javascript
 let a = {}
-a.m = 10; //字面量定义，所有的布尔型 attribute 都为 true
+a.m = 10 //字面量定义，所有的布尔型 attribute 都为 true
 
 Object.defineProperty(a, 'm', {
-    get () {
-        return 100;
-    }
+  get() {
+    return 100
+  }
 })
 
 console.log(a.m) //100
 
 Object.defineProperty(a, 'm', {
-    value: 20
+  value: 20
 })
 
 console.log(a.m) //20
@@ -133,44 +130,44 @@ console.log(a.m) //20
 
 ```javascript
 //只设置set
-let value = 10;
+let value = 10
 let a = {
-    set m (m) {
-        value = m; 
-    },
+  set m(m) {
+    value = m
+  }
 }
 let b = Object.create(a)
 console.log(a.m) //没有设置get 返回undefined 严格模式下报错
 console.log(b.m) //b对象没有m属性，调用a的get方法。返回undefined，同上
 Object.defineProperty(b, 'm', {
-    value: 100,
-    writable: true,
-    configurable: true,
-    enmerable: true
+  value: 100,
+  writable: true,
+  configurable: true,
+  enmerable: true
 })
 console.log(b) //{m: 100}
 console.log(b.m, a.m) //100 undefined
 
 //只设置get
-let value = 10;
+let value = 10
 let a = {
-    get m () {
-        return value;
-    },
+  get m() {
+    return value
+  }
 }
 let b = Object.create(a)
-console.log(a.m)//10
-a.m = 100; //没有设置set，赋值会被忽略，严格模式下报错
+console.log(a.m) //10
+a.m = 100 //没有设置set，赋值会被忽略，严格模式下报错
 console.log(a.m) //10
 
 console.log(b.m) //10, b上面没有m属性，返回a.m
 b.m = 100 //属性访问器（点运算符或方括号运算符）无法创建同名属性
 console.log(b.m) //10, 依然返回a.m
 Object.defineProperty(b, 'm', {
-    value: 100,
-    writable: true,
-    configurable: true,
-    enmerable: true
+  value: 100,
+  writable: true,
+  configurable: true,
+  enmerable: true
 })
 console.log(b, b.m) //{m:100} 100
 console.log(a.m) //10 a对象不受影响
@@ -180,14 +177,14 @@ console.log(a.m) //10 a对象不受影响
 
 ## 赋值行为
 
-##### 原型链上没有同名属性
+### 原型链上没有同名属性
 
 这是最简单的情况，会直接在子对象上创建一个新的属性。`JavaScript` 会现在子对象中检索该属性，如果没有找到则会沿着原型链寻找到原型链的终点 `null`，在原型链的任何位置找到会立即返回找到的值。
 
 ```javascript
 let a = {}
-let b = Object.create(a);
-b.m = 10;
+let b = Object.create(a)
+b.m = 10
 console.log(b) //{m: 10}
 ```
 
@@ -197,32 +194,32 @@ console.log(b) //{m: 10}
 
 ```javascript
 let a = {
-    m: 2
+  m: 2
 }
-let b = Object.create(a);
-b.m = 10;
+let b = Object.create(a)
+b.m = 10
 console.log(a) //{m: 2} a对象不变
 console.log(b) //{m: 10}
 ```
 
 ##### 原型链上有同名不可写属性
 
-这种情况下不会在子对象上创建新的属性，赋值也不会执行，在严格模式下会报错。至于为什么这样设计，[贺师俊](https://www.zhihu.com/question/31934148/answer/53949560 "贺师俊") 认为是保持 `getter-only property`（只定义了`get` 方法的访问器属性，上面详细介绍了） 和 `non-writable property` 行为的一致。`You Dont Know Js` 则认为是为了保持和传统语言继承表现的一致。
+这种情况下不会在子对象上创建新的属性，赋值也不会执行，在严格模式下会报错。至于为什么这样设计，[贺师俊](https://www.zhihu.com/question/31934148/answer/53949560 '贺师俊') 认为是保持 `getter-only property`（只定义了`get` 方法的访问器属性，上面详细介绍了） 和 `non-writable property` 行为的一致。`You Dont Know Js` 则认为是为了保持和传统语言继承表现的一致。
 
 ```javascript
 //'use strict'
 let a = {}
 Object.defineProperty(a, 'm', {
-    value: 10,
-    configurable: true,
-    enumerable: true,
-    writable: false
+  value: 10,
+  configurable: true,
+  enumerable: true,
+  writable: false
 })
 
 console.log(a.m)
 a.m = 100 //无效，严格模式下会报错 TypeError: Cannot assign to read only property 'm' of object
 
-let b = Object.create(a);
+let b = Object.create(a)
 console.log(b.m)
 b.m = 200 //无效，严格模式下报错
 console.log(b) //{} 不会创建新的属性
@@ -238,5 +235,5 @@ console.log(b) //{} 不会创建新的属性
 
 ## 参考文章
 
-1. [Object.defineProperty() - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty "Object.defineProperty() - MDN")
-2. [js细节剖析](https://segmentfault.com/a/1190000016865771 "js细节剖析")
+1. [Object.defineProperty() - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty 'Object.defineProperty() - MDN')
+2. [js细节剖析](https://segmentfault.com/a/1190000016865771 'js细节剖析')

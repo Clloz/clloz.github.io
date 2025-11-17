@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 我们经常听到 `ASCII`，`UTF-8`，`UTF-16`，这些都是字符的编码格式，它们之间有什么区别，为什么要搞这么多字符的编码格式，在写代码的过程中我们会遇到各种编码格式的字符，所以经常需要 `encode`，`decode`，如果不搞清楚字符编码到底是什么，每次遇到编码问题都会很头疼，搜索引擎都很难帮助你解决问题，久而久之对字符编码产生厌恶。所以还是一次性把这个问题搞清楚最好，免除后顾之忧。
@@ -20,7 +18,7 @@ language: '中文'
 
 现在还有一个问题是，我们要显示多少种字符，每一个字符对应一个状态，有多少字符我们就有多少种状态，从而知道我们要用多少位二进制数来显示全部字符。由于计算机最早是在美国发明的，上世纪60年代的时候，计算机科学家就根据当时的需求制定了一套字符编码，就是我们现在说的 `ASCII` 码，这套编码一直到今天还在使用。`ASCII` 码一共规定了 `128` 个字符的编码，包含常见的英语字符和一些控制符号，比如空格 `SPACE` 是 `32`（二进制 `00100000` ），大写的字母 `A` 是 `65`（二进制 `01000001` ）。这 `128` 个符号（包括 `32` 个不能打印出来的控制符号），只占用了一个字节的后面 `7` 位，最前面的一位统一规定为 `0` 。
 
-![ascii](./images/ascii.png "ascii")
+![ascii](./images/ascii.png 'ascii')
 
 ## 编码扩展
 
@@ -40,7 +38,7 @@ language: '中文'
 
 我认为可以这么理解， 字符集就是我们所有要用的字符的集合，集合的三大特性相信大家都学过 `确定性，无序性，互异性` （实际操作不会是无序的，会有一个最简单的映射，比如自然数排列），而字符编码用二进制数对集合中的字符进行一一映射，这种一一映射可以有无数种，比如我有 `100` 个字符，我可以是从 `0～99` 的自然数，我也可以是从 `0～198` 的偶数，甚至如果我高兴，我可以是从 `1000～901` 的倒序数，对于集合中的元素也是，比如 `啊` 这个字，我可以把它放在映射的第一个，也可以把它放在最后一个，最重要的是，我们选择的这种映射能够最有效率地利用字节空间同时让计算机能够轻松地识别每一组映射，这因为这个需求我们的 `GB2312` 字符编码才选择了上述的映射方式，因为这是比较有效率，计算机也能轻松识别的。而 `ASCII` 选择的映射就是最简单的从 `0` 开始按自然数排列，因为它的字符少也不需要考虑兼容，这中方式就是最有效率最合适的，但是对于一些字符数量非常多还要考虑兼容其他字符的字符集来说，就需要考虑更好的实现方案。理解这两者的却别对于后面的 `Unicode` 字符集和它的多种编码方式有帮助。
 
-> 维基百科上有[现代编码模型](https://zh.wikipedia.org/wiki/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81#%E7%8E%B0%E4%BB%A3%E7%BC%96%E7%A0%81%E6%A8%A1%E5%9E%8B "现代编码模型")，整体我的理解还是没问题的。
+> 维基百科上有[现代编码模型](https://zh.wikipedia.org/wiki/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81#%E7%8E%B0%E4%BB%A3%E7%BC%96%E7%A0%81%E6%A8%A1%E5%9E%8B '现代编码模型')，整体我的理解还是没问题的。
 
 ## Unicode
 
@@ -67,11 +65,11 @@ language: '中文'
 
 我们来看看 `Unicode` 的码点范围，现在 `Unicode` 标准的表示范围为 `U+0000~U+10FFFF`，共有 `110000` 个状态，十进制为 `1114112` 个码点。其中我们最常用的字符都集中在 `U+0000 - U+FFFF` 共 $2^{16}$ `65536` 个码点，我们称之为基础平面。基础平面的分布看下图。每一个方块中都是 `256` 个码点，葛优 `FF(256)` 个方格，不同颜色的方格用来表示不同的类型的字符，比如图中间一大块粉色的区域 `CJK characters` 就是我们比较熟悉的 `Chinese, Japanese, and Korean` 中日韩文字的 `Unicode` 码点区。
 
-![零号平面](https://img.clloz.com/blog/writing/Roadmap_to_Unicode_BMP.svg "零号平面")
+![零号平面](https://img.clloz.com/blog/writing/Roadmap_to_Unicode_BMP.svg '零号平面')
 
 以`U+0000 - U+FFFF` 为一个平面，`U+0000~U+10FFFF` 的全部码点就可以分为 `17` 个平面，由于基本平面已经能满足我们的使用的，所以后面的平面成为 `辅助平面`。基础平面的码点范围在 `0 ~ 65535`，在计算机中可以用 `16` 个二进制位表示，也就是两个字节，而所有辅助平面都已经不能只用两个字节来表示了。需要注意的是，`Unicode` 目前虽然定义了 `1114112` 个码点，但其实很多是空的，还未填充，目前大概只定义了十多万。这么多的码点只是预先规划的，因为我们生活的世界字符是在不断增加的，目前的看来一百多万是完全够用了。`Unicode` 自版本 `2.0`开始保持了向后兼容，即新的版本仅仅增加字符，原有字符不会被删除或更名。从下面的平面分布图可以看出 `unicode` 还预留了两个私有平面，是用来自定义字符的。
 
-![平面分布图](./images/unicode-supp-chars.png "平面分布图")
+![平面分布图](./images/unicode-supp-chars.png '平面分布图')
 
 `GNU Unifont` 制作了一张基本平面的全部字符的图，全图大小 `4000 x 4000`，点击[基本平面字符图](https://www.clloz.com/study/unifont/unifont.html)查看（由于图片比较大，打开可能有点慢）。
 
@@ -79,12 +77,12 @@ language: '中文'
 
 `UTF-8` （ `Unicode Transformation Format` ）作为 `Unicode` 的一种实现方式，广泛应用于互联网，它是一种变长的字符编码，可以根据具体情况用 `1-4`个字节来表示一个字符。比如英文字符这些原本就可以用 `ASCII` 码表示的字符用`UTF-8`表示时就只需要一个字节的空间，和 `ASCII` 是一样的。对于多字节（ `n` 个字节）的字符，第一个字节的前 `n` 为都设为 `1` ，第 `n+1`位设为 `0`，后面字节的前两位都设为10。剩下的二进制位全部用该字符的 `unicode`码填充。
 
-| Unicode符号范围 (十六进制) | UTF-8编码方式（二进制） | 十进制表示 |
-| --- | --- | --- |
-| U+0000 0000 - U+0000 007F | 0xxxxxxx | 0 - 127 |
-| U+0000 0080 - U+0000 07FF | 110xxxxx 10xxxxxx | 128 - 2047 |
-| U+0000 0800 - U+0000 FFFF | 1110xxxx 10xxxxxx 10xxxxxx | 2048 - 65535 |
-| U+0001 0000 - U+0010 FFFF | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx | 65536 - 1114111（2097152） |
+| Unicode符号范围 (十六进制) | UTF-8编码方式（二进制）             | 十进制表示                 |
+| -------------------------- | ----------------------------------- | -------------------------- |
+| U+0000 0000 - U+0000 007F  | 0xxxxxxx                            | 0 - 127                    |
+| U+0000 0080 - U+0000 07FF  | 110xxxxx 10xxxxxx                   | 128 - 2047                 |
+| U+0000 0800 - U+0000 FFFF  | 1110xxxx 10xxxxxx 10xxxxxx          | 2048 - 65535               |
+| U+0001 0000 - U+0010 FFFF  | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx | 65536 - 1114111（2097152） |
 
 比如 `严` 的 Unicode 是 `4E25(100111000100101`，根据上表，可以发现 `4E25` 处在第三行的范围内 `(0000 0800 - 0000 FFFF)`，因此严的 `UTF-8` 编码需要三个字节，即格式是 `1110xxxx 10xxxxxx 10xxxxxx`。然后，从严的最后一个二进制位开始，依次从后向前填入格式中的 `x`，多出的位补 `0`。这样就得到了，严的 `UTF-8` 编码是 `11100100 10111000 10100101`，转换成十六进制就是 `E4B8A5`。
 
@@ -92,17 +90,17 @@ language: '中文'
 
 由于字符编码多种多样，不同的字符编码之间互相不能兼容就会造成乱码现象。首先要明确的一点是，我们在显示器上看到的字符都是经过计算机用对应的字符编码解码以后渲染给我们的，在计算机存储设备上保存的，以及在网络上传输的，都是字符经过编码后的二进制字节流。打个简单的比方，你在一个网页复制了一段文本到你的 `word` 或者 `txt` 里面去，在计算机内部，你也不过是复制了这个字符对应的编码值过去，比如我在 `vscode` 里面创建了一个 `GBK` 格式的文本，然后在用 `UTF-8` 的格式打开，那么就会出现乱码。但是如果我们直接复制文本到其他 `utf-8` 的文本中去，不会乱码，这应该是软件自动帮你转码过了。
 
-![encode-gkb](./images/encode-gbk.png "encode-gkb")
+![encode-gkb](./images/encode-gbk.png 'encode-gkb')
 
-![encode-utf-8](./images/encode-utf-8.png "encode-utf-8")
+![encode-utf-8](./images/encode-utf-8.png 'encode-utf-8')
 
-不同的系统，不同的编辑器，不同的程序编译器解释器，默认支持的编码可能都是不同的，我们复制或者从浏览器获取的字符，都只是一段二进制字符编码，如果我们所在的环境的字符编码中没有我们所要显示的这段字符的映射，自然就会出现乱码。比如 `windows` 的中文系统默认编码是 `GBK`，那么在 `windows` 的命令行运行的程序如果输出的是 `utf-8` 的字符，将会出现乱码。不过现在大部分系统和环境都是支持`Unicode`的，比如windows系统就能够把Unicode映射到 `GBK`，映射表见[Unicode 12.0 Character Code Charts](https://www.unicode.org/charts/ "Unicode 12.0 Character Code Charts")，那么如果你的环境能够帮你把你的字符编码转换成 `Unicode` 编码，那么大部分的程序和系统都能够识别了。所以在写代码的过程中如果遇到乱码，检查我们的字符的编码格式和环境的编码格式是否一直，如果不一致可以利用语言提供的转码工具转成 `Unicode` 来解决乱码问题。比如 `python` 中的 `encode` 和 `decode`。
+不同的系统，不同的编辑器，不同的程序编译器解释器，默认支持的编码可能都是不同的，我们复制或者从浏览器获取的字符，都只是一段二进制字符编码，如果我们所在的环境的字符编码中没有我们所要显示的这段字符的映射，自然就会出现乱码。比如 `windows` 的中文系统默认编码是 `GBK`，那么在 `windows` 的命令行运行的程序如果输出的是 `utf-8` 的字符，将会出现乱码。不过现在大部分系统和环境都是支持`Unicode`的，比如windows系统就能够把Unicode映射到 `GBK`，映射表见[Unicode 12.0 Character Code Charts](https://www.unicode.org/charts/ 'Unicode 12.0 Character Code Charts')，那么如果你的环境能够帮你把你的字符编码转换成 `Unicode` 编码，那么大部分的程序和系统都能够识别了。所以在写代码的过程中如果遇到乱码，检查我们的字符的编码格式和环境的编码格式是否一直，如果不一致可以利用语言提供的转码工具转成 `Unicode` 来解决乱码问题。比如 `python` 中的 `encode` 和 `decode`。
 
 > `UTF-8` --> `decode` 解码 --> `Unicode`，`Unicode` --> `encode` 编码 --> `GBK` / `UTF-8`
 
 ## 编程语言中的字符编码
 
-我们经常会看到某某语言默认用的什么编码，这种说法让人很疑惑，因为我们把编程语言的默认编码和我们使用的编辑器支持的编码当成了同一个东西，我们的编辑器可以支持各种编码，但当我们写好程序，要用进行程序的编译或者解释运行的时候，编译器或解释器对变量在内存中的处理使用的字符编码就是程序的默认编码。比如 `python2` 默认编码就是 `ascii`，也就是说当我们的程序被 `python` 解释器装载到内存运行的时候，解释器会把编辑器中保存的编码识别成 `ascii`，比如我们在编辑器中用了 `utf-8`，而我们保存了一个字符 `严`，它的 `utf-8` 编码是 `11100100 10111000 10100101` 三个字节，可是 `python2` 的解释器会把它当作三个 `ascii` 来处理，这必然会出错，所以要在程序文件的开头声明文档的编码格式，这样解释器才知道怎么转码。不过 `python3` 已经会自动把我们的编码转成 `unicode`，`Unicode` 是能够被各种环境识别的。如果你还想更多地了解，可以看这篇文章：[Unicode之痛](https://pycoders-weekly-chinese.readthedocs.io/en/latest/issue5/unipain.html "Unicode之痛")
+我们经常会看到某某语言默认用的什么编码，这种说法让人很疑惑，因为我们把编程语言的默认编码和我们使用的编辑器支持的编码当成了同一个东西，我们的编辑器可以支持各种编码，但当我们写好程序，要用进行程序的编译或者解释运行的时候，编译器或解释器对变量在内存中的处理使用的字符编码就是程序的默认编码。比如 `python2` 默认编码就是 `ascii`，也就是说当我们的程序被 `python` 解释器装载到内存运行的时候，解释器会把编辑器中保存的编码识别成 `ascii`，比如我们在编辑器中用了 `utf-8`，而我们保存了一个字符 `严`，它的 `utf-8` 编码是 `11100100 10111000 10100101` 三个字节，可是 `python2` 的解释器会把它当作三个 `ascii` 来处理，这必然会出错，所以要在程序文件的开头声明文档的编码格式，这样解释器才知道怎么转码。不过 `python3` 已经会自动把我们的编码转成 `unicode`，`Unicode` 是能够被各种环境识别的。如果你还想更多地了解，可以看这篇文章：[Unicode之痛](https://pycoders-weekly-chinese.readthedocs.io/en/latest/issue5/unipain.html 'Unicode之痛')
 
 ## UTF-16
 
@@ -119,11 +117,11 @@ language: '中文'
 - 高代理区：`(码点值 - 10000) / 400 + D800`
 - 低代理区：`(码点值 - 10000) % 400 + DC00`
 
-以 `Unicode Character “𝌆” (U+1D306)` 来计算，高代理区为 `(1D306 - 10000) / 400 + D800 = D834`，低代理区为 `(1D306 - 10000) % 400 + DC00 = DF06`，关于不同编码模式的值得查询可以参考[Unicode编码查询](https://www.compart.com/en/unicode/ "Unicode编码查询")
+以 `Unicode Character “𝌆” (U+1D306)` 来计算，高代理区为 `(1D306 - 10000) / 400 + D800 = D834`，低代理区为 `(1D306 - 10000) % 400 + DC00 = DF06`，关于不同编码模式的值得查询可以参考[Unicode编码查询](https://www.compart.com/en/unicode/ 'Unicode编码查询')
 
 ## 前端使用 Unicode
 
-字符 `unicode` 编码查询点击[查询链接](http://www.mytju.com/classcode/tools/encode_utf8.asp "查询链接")
+字符 `unicode` 编码查询点击[查询链接](http://www.mytju.com/classcode/tools/encode_utf8.asp '查询链接')
 
 ## CSS 中的使用
 
@@ -131,9 +129,9 @@ language: '中文'
 
 ```css
 h4::after {
-    content: '\4F60';
-    font-size: 20px;
-    color: red;
+  content: '\4F60';
+  font-size: 20px;
+  color: red;
 }
 ```
 
@@ -153,29 +151,29 @@ h4::after {
 
 ```javascript
 // 使用 2 位的十六进制
-console.log('\u{41}\u{42}\u{43}');      // 'ABC'
+console.log('\u{41}\u{42}\u{43}') // 'ABC'
 
 // 使用 4 位的十六进制
-console.log('\u{0041}\u{0042}\u{0043}')    // ABC
+console.log('\u{0041}\u{0042}\u{0043}') // ABC
 
 // 使用超过 4 位以上的十六进制
-console.log('\u{1F4A9}');         // '💩' U+1F4A9
-console.log('\u{1F923}');         // '🤣' U+1F923
-console.log('\u{1F436}')         // '🐶' U+1F436
+console.log('\u{1F4A9}') // '💩' U+1F4A9
+console.log('\u{1F923}') // '🤣' U+1F923
+console.log('\u{1F436}') // '🐶' U+1F436
 ```
 
 关于 `JavaScript` 中使用哪种编码有几个不同的方面。
 
-##### 对 JS 文件解码
+### 对 JS 文件解码
 
 这个其实跟 `“JavaScript”` 没什么关系，只是文件传输过来用什么编码来解码文件，类似于上面的乱码章节，编码和解码必须要统一，所以必须要有标记告诉解码方，我是用的哪种模式编码的。大致的优先级规则如下：
 
-1. 如果文件有 `BOM` 标记，则会使用对应的 `Unicode` 编码，比如`FFFE`、`FEFF` 就会使用 `UTF-16`，详见[字节顺序标记](https://zh.wikipedia.org/wiki/%E4%BD%8D%E5%85%83%E7%B5%84%E9%A0%86%E5%BA%8F%E8%A8%98%E8%99%9F "字节顺序标记")；
+1. 如果文件有 `BOM` 标记，则会使用对应的 `Unicode` 编码，比如`FFFE`、`FEFF` 就会使用 `UTF-16`，详见[字节顺序标记](https://zh.wikipedia.org/wiki/%E4%BD%8D%E5%85%83%E7%B5%84%E9%A0%86%E5%BA%8F%E8%A8%98%E8%99%9F '字节顺序标记')；
 2. 由 `HTTP(S)` 请求的相应头来决定，比如：`Content-Type: application/javascript; charset=utf-8`；
 3. 由 `<script>` 标签的 `charset` 属性决定，比如：`<script charset="utf-8" src="./main.js"></script>`；
 4. 由 `html` 本身的 `charset` 决定，比如：；
 
-##### 引擎解析执行源码时
+### 引擎解析执行源码时
 
 > ECMAScript source text is represented as a sequence of characters in the Unicode character encoding, version 3.0 or later. ……ECMAScript source text is assumed to be a sequence of 16-bit code units for the purposes of this specification. Such a source text may include sequences of 16-bit code units that are not valid UTF-16 character encodings. If an actual source text is encoded in a form other than 16-bit code units it must be processed as if it was first converted to UTF-16. 上面是 `ECMAScript` 标准对编码的一些说明，可以看到 `Javascipt` 源码支持 `UTF-16` 编码。更实用点的理解是：`Javascript` 引擎总会尝试把源码转成 `UTF-16` 编码的文本。
 
@@ -213,12 +211,12 @@ console.log('\u{1F436}')         // '🐶' U+1F436
 4. `String.fromCharCode()` 方法返回由指定的UTF-16代码单元序列创建的字符串，参数范围介于 `0` 到 `65535`（`0xFFFF`）之间。 大于 `0xFFFF` 的数字将被截断。 不进行有效性检查。
 5. `String.prototype.charAt()` 方法根据索引从一个字符串中返回指定的字符。参数为一个介于 `0` 和字符串长度减 `1`之间的整数。如果没有提供索引，参数默认为 `0`。
 
-##### ECMAScript 6
+### ECMAScript 6
 
 `ES6` 基本解决了代理码无法识别的问题。 `ES6` 可以自动识别4字节的码点。因此，遍历字符串就简单多了。也有方法可以正确返回代理码表示的字符的长度。上面的 `JS` 码点表示法用大括号表示辅助平面也是 `ES6` 的新特性。`String.prototype.codePointAt()` 和 `String.fromCodePoint()` 也都是 `ES6` 中新的方法。也对正则表达式添加了四字节码点的支持。
 
 ```javascript
-for (let s of string ) {
+for (let s of string) {
   // ...
 }
 
@@ -258,7 +256,7 @@ console.log("The character at index 999 is '" + anyString.charAt(999) + "'");
 //false
 ```
 
-另外一个特别的地方就是有些字符除了字母以外，还有附加符号。比如，汉语拼音的 `Ǒ`，字母上面的声调就是附加符号。对于许多欧洲语言来说，声调符号是非常重要的。`Unicode` 提供了两种表示方法。一种是带附加符号的单个字符，即一个码点表示一个字符，比如 `Ǒ` 的码点是 `U+01D1`；另一种是将附加符号单独作为一个码点，与主体字符复合显示，即两个码点表示一个字符，比如 `Ǒ` 可以写成 `O（U+004F） + ˇ（U+030C）`。这两种表示方法是等价的，但是在 `JS` 中他们严格相等判断返回的是 `false`。在 `ES6` 中提供了一个 `normalize` 方法对那些等价的 `Unicode` 序列进行判断。关于 `Unicode` 的等价性可以参考[Unicode等价性](https://zh.wikipedia.org/wiki/Unicode%E7%AD%89%E5%83%B9%E6%80%A7 "Unicode等价性")
+另外一个特别的地方就是有些字符除了字母以外，还有附加符号。比如，汉语拼音的 `Ǒ`，字母上面的声调就是附加符号。对于许多欧洲语言来说，声调符号是非常重要的。`Unicode` 提供了两种表示方法。一种是带附加符号的单个字符，即一个码点表示一个字符，比如 `Ǒ` 的码点是 `U+01D1`；另一种是将附加符号单独作为一个码点，与主体字符复合显示，即两个码点表示一个字符，比如 `Ǒ` 可以写成 `O（U+004F） + ˇ（U+030C）`。这两种表示方法是等价的，但是在 `JS` 中他们严格相等判断返回的是 `false`。在 `ES6` 中提供了一个 `normalize` 方法对那些等价的 `Unicode` 序列进行判断。关于 `Unicode` 的等价性可以参考[Unicode等价性](https://zh.wikipedia.org/wiki/Unicode%E7%AD%89%E5%83%B9%E6%80%A7 'Unicode等价性')
 
 ```javascript
 // 方法一
@@ -269,73 +267,71 @@ console.log("The character at index 999 is '" + anyString.charAt(999) + "'");
 '\u004F\u030C'
 // 'Ǒ'
 
- '\u01D1'==='\u004F\u030C'
- //false
+'\u01D1' === '\u004F\u030C'
+//false
 
- '\u01D1'.normalize() === '\u004F\u030C'.normalize() 
- // true
+'\u01D1'.normalize() === '\u004F\u030C'.normalize()
+// true
 ```
 
 综合上面的内容，现在的 `ES6` 标准下公有 `6` 种用字符串字面量表示同一个字符的方法：
 
 ```javascript
-'\z' === 'z'  // true //一些特殊意义的字符不能这么表示，见下方正则表达式部分
+'\z' === 'z' // true //一些特殊意义的字符不能这么表示，见下方正则表达式部分
 '\172' === 'z' // true //8进制
 '\x7A' === 'z' // true //16进制，代理码需要高低代理码合并解析
 '\u007A' === 'z' // true //码点
 '\u{7A}' === 'z' // true //码点
 ```
 
-##### 将 String 转换为 UTF-8 编码
+### 将 String 转换为 UTF-8 编码
 
 这里写了一个小函数，实现将 `String` 转换为其对应的 `UTF-8` 编码，加深自己的理解。
 
 ```javascript
-function utf8_encoding1 (str) {
-    const code = encodeURIComponent(str);
-    const byte = [];
-    for (let i = 0; i < code.length; i++) {
-        const c = code.charAt(i);
-        if (c === '%') {
-            const hex = code.charAt(i + 1) + code.charAt(i + 2);
-            const hexVal = parseInt(hex, 16);
-            byte.push(hexVal);
-            i += 2;
-        } else byte.push(c.charCodeAt(0))
-    }
-    return '0x' + byte.map(c => c.toString(16)).join('');
+function utf8_encoding1(str) {
+  const code = encodeURIComponent(str)
+  const byte = []
+  for (let i = 0; i < code.length; i++) {
+    const c = code.charAt(i)
+    if (c === '%') {
+      const hex = code.charAt(i + 1) + code.charAt(i + 2)
+      const hexVal = parseInt(hex, 16)
+      byte.push(hexVal)
+      i += 2
+    } else byte.push(c.charCodeAt(0))
+  }
+  return '0x' + byte.map((c) => c.toString(16)).join('')
 }
 console.log(utf8_encoding1('𝌆')) //0xf09d8c86
 
-
-function utf8_encoding2 (str) {
-    const length = str.length;
-    let arr = [];
-    for (let i = 0; i < length; i++) {
-        let cp = str.codePointAt(i);
-        let result = '0x';
-        if (cp <= 0x7F) {
-            result += cp & 0x7F
-        } else if (cp >= 0x80 && cp <= 0x7FF) {
-            result += (cp >> 6 & 0x1F | 0xC0).toString(16)
-            result += (cp & 0x3F | 0x80).toString(16)
-        } else if (cp >= 0x800 && cp <= 0xFFFF) {
-            result += (cp >> 12 & 0xF | 0xE0).toString(16)
-            result += (cp >> 6 & 0x3F | 0x80).toString(16)
-            result += (cp & 0x3F | 0x80).toString(16)
-        } else if (cp >= 0x10000 && cp <= 0x10FFFF) {
-            result += (cp >> 18 & 0x7 | 0xF0).toString(16)
-            result += (cp >> 12 & 0x3F | 0x80).toString(16)
-            result += (cp >> 6 & 0x3F | 0x80).toString(16)
-            result += (cp & 0x3F | 0x80).toString(16)
-        }
-        arr.push(result)
+function utf8_encoding2(str) {
+  const length = str.length
+  let arr = []
+  for (let i = 0; i < length; i++) {
+    let cp = str.codePointAt(i)
+    let result = '0x'
+    if (cp <= 0x7f) {
+      result += cp & 0x7f
+    } else if (cp >= 0x80 && cp <= 0x7ff) {
+      result += (((cp >> 6) & 0x1f) | 0xc0).toString(16)
+      result += ((cp & 0x3f) | 0x80).toString(16)
+    } else if (cp >= 0x800 && cp <= 0xffff) {
+      result += (((cp >> 12) & 0xf) | 0xe0).toString(16)
+      result += (((cp >> 6) & 0x3f) | 0x80).toString(16)
+      result += ((cp & 0x3f) | 0x80).toString(16)
+    } else if (cp >= 0x10000 && cp <= 0x10ffff) {
+      result += (((cp >> 18) & 0x7) | 0xf0).toString(16)
+      result += (((cp >> 12) & 0x3f) | 0x80).toString(16)
+      result += (((cp >> 6) & 0x3f) | 0x80).toString(16)
+      result += ((cp & 0x3f) | 0x80).toString(16)
     }
-    return arr
+    arr.push(result)
+  }
+  return arr
 }
 
 console.log(utf8_encoding2('𝌆')) //[ '0xf09d8c86', '0xedbc86' ]
-
 ```
 
 第一个方法是用 `encodeURIComponent`，最开始我还觉得这个方法行不通，因为 `encodeURIComponent` 有些字符是不转义的，但后来发现不转义的都是 `ASCII` 码范围内的字符，也非常好处理。第二个方法则是比较容易理解的用 `codePointAt()` 方法获取码点然后用位运算转码，需要注意的就是码点超过 `0xFFFF` 的字符可能长度是 `2`， 返回两个码点。
@@ -345,9 +341,11 @@ console.log(utf8_encoding2('𝌆')) //[ '0xf09d8c86', '0xedbc86' ]
 `winter` 给出的 `ES5` 中的字符串的正则表达式。
 
 ```javascript
-const str_reg_sq = /"(?:[^"\n\\\r\u2028\u2029]|\\(?:['"\\bfnrtv\n\r\u2028\u2029]|\r\n)|\\x[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4}\\[^0-9ux'"\\bfnrtv\n\\\r\u2028\u2029])*"/
+const str_reg_sq =
+  /"(?:[^"\n\\\r\u2028\u2029]|\\(?:['"\\bfnrtv\n\r\u2028\u2029]|\r\n)|\\x[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4}\\[^0-9ux'"\\bfnrtv\n\\\r\u2028\u2029])*"/
 
-const str_reg_dq = /'(?:[^'\n\\\r\u2028\u2029]|\\(?:['"\\bfnrtv\n\r\u2028\u2029]|\r\n)|\\x[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4}\\[^0-9ux'"\\bfnrtv\n\\\r\u2028\u2029])*'/
+const str_reg_dq =
+  /'(?:[^'\n\\\r\u2028\u2029]|\\(?:['"\\bfnrtv\n\r\u2028\u2029]|\r\n)|\\x[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4}\\[^0-9ux'"\\bfnrtv\n\\\r\u2028\u2029])*'/
 ```
 
 几个特殊的字符都是 `ASCII` 中的早期计算机中就有存在的，正则表达式中也有对应的元字符。
@@ -375,7 +373,7 @@ const str_reg_dq = /'(?:[^'\n\\\r\u2028\u2029]|\\(?:['"\\bfnrtv\n\r\u2028\u2029]
 
 ## USVString
 
-`USVString` 指的是 [Unicode Scalar Value](https://www.unicode.org/glossary/#unicode_scalar_value "Unicode Scalar Value")，`Unicode` 标量值序列，即除了 `high-surrogate` 和 `low-surrogate` 的 `code points`。即从 `U+0000 - U+D7FF` 和 `U+E000 - U+10FFFF` 的 `Unicode` 码点。**这里的一个理解关键就是不要理解为 `UTF-16`，这里指的是 `Unicode` 码点。**
+`USVString` 指的是 [Unicode Scalar Value](https://www.unicode.org/glossary/#unicode_scalar_value 'Unicode Scalar Value')，`Unicode` 标量值序列，即除了 `high-surrogate` 和 `low-surrogate` 的 `code points`。即从 `U+0000 - U+D7FF` 和 `U+E000 - U+10FFFF` 的 `Unicode` 码点。**这里的一个理解关键就是不要理解为 `UTF-16`，这里指的是 `Unicode` 码点。**
 
 所以一个 `USVString` 中全是原始 `Unicode` 码点，不包括给 `UTF-16` 用的代理区。一般 `USVString` 一般用在执行文本处理的 `API` 中。因为 `Unicode` 是统一的，在任何平台都能识别，所以使用文本处理的 `API` 使用 `Unicode` 可以确保兼容性。
 
@@ -401,14 +399,14 @@ const str_reg_dq = /'(?:[^'\n\\\r\u2028\u2029]|\\(?:['"\\bfnrtv\n\r\u2028\u2029]
 
 任何技术的产生都是有历史原因的，也都是为了解决问题的。所以我们学习知识要带着问题去学，知道这个技术是为了解决什么问题而产生的，自然能把知识形成体系，而不容易遗忘，并且运用到合适的地方。如果不知道问题只是背了个答案，那么可能你并没有真的“学会”这个知识。
 
-如果你也和我一样对字符是如何从键盘敲击到渲染到屏幕上的过程很感兴趣，你可以看看知乎答主乌鸦给出的答案：[计算机系统是如何显示一个字符的？](https://www.zhihu.com/question/24340504/answer/28902204 "计算机系统是如何显示一个字符的？")。
+如果你也和我一样对字符是如何从键盘敲击到渲染到屏幕上的过程很感兴趣，你可以看看知乎答主乌鸦给出的答案：[计算机系统是如何显示一个字符的？](https://www.zhihu.com/question/24340504/answer/28902204 '计算机系统是如何显示一个字符的？')。
 
 ## 参考文章
 
-1. [The Unicode Consortium](https://unicode.org/ "Unicode Consortium")
-2. [Unicode in JavaScript](https://flaviocopes.com/javascript-unicode/ "Unicode in JavaScript")
-3. [Python 编码为什么那么蛋疼？](https://www.zhihu.com/question/31833164/answer/381137073 "Python 编码为什么那么蛋疼？")
-4. [Javascript 与字符编码](https://github.com/SamHwang1990/blog/issues/2 "Javascript 与字符编码")
-5. [Unicode与javascript详解](https://www.ruanyifeng.com/blog/2014/12/unicode.html "Unicode与javascript详解")
-6. [Unicode在javascript中的使用](https://pjchender.blogspot.com/2018/06/guide-unicode-javascript.html "Unicode在javascript中的使用")
-7. [字符集与编码](https://my.oschina.net/goldenshaw/blog/310331 "字符集与编码")
+1. [The Unicode Consortium](https://unicode.org/ 'Unicode Consortium')
+2. [Unicode in JavaScript](https://flaviocopes.com/javascript-unicode/ 'Unicode in JavaScript')
+3. [Python 编码为什么那么蛋疼？](https://www.zhihu.com/question/31833164/answer/381137073 'Python 编码为什么那么蛋疼？')
+4. [Javascript 与字符编码](https://github.com/SamHwang1990/blog/issues/2 'Javascript 与字符编码')
+5. [Unicode与javascript详解](https://www.ruanyifeng.com/blog/2014/12/unicode.html 'Unicode与javascript详解')
+6. [Unicode在javascript中的使用](https://pjchender.blogspot.com/2018/06/guide-unicode-javascript.html 'Unicode在javascript中的使用')
+7. [字符集与编码](https://my.oschina.net/goldenshaw/blog/310331 '字符集与编码')

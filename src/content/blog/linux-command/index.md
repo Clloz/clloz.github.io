@@ -7,16 +7,14 @@ tags:
   - 实用技巧
   - 计算机系统
 language: '中文'
-heroImage: {"src":"./linux-logo.png","color":"#B4C6DA"}
+heroImage: { 'src': './linux-logo.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
-整理 `Linux` 中的常用命令，方便查看使用。提供一个查询命令的网站[linux-command](https://wangchujiang.com/linux-command/ "linux-command")。也可以用 `man` 命令查看对应命令的说明。
+整理 `Linux` 中的常用命令，方便查看使用。提供一个查询命令的网站[linux-command](https://wangchujiang.com/linux-command/ 'linux-command')。也可以用 `man` 命令查看对应命令的说明。
 
-> 本文主要介绍 `Linux` 的常用命令，对 `shell` 的介绍和特殊符号的含义请查看另一篇文章[Shell脚本语法和常用命令](https://www.clloz.com/programming/backend/server/2019/11/01/shell-script-syntax/ "Shell脚本语法和常用命令")
+> 本文主要介绍 `Linux` 的常用命令，对 `shell` 的介绍和特殊符号的含义请查看另一篇文章[Shell脚本语法和常用命令](https://www.clloz.com/programming/backend/server/2019/11/01/shell-script-syntax/ 'Shell脚本语法和常用命令')
 
 ## 命令
 
@@ -328,7 +326,7 @@ echo -e：激活转义字符。
 
 注意：字背景颜色和文字颜色之间是英文的分号 `;`，并且文字颜色后面有个 `m` ，字符串前后可以没有空格，如果有的话，输出也是同样有空格。在 `Bash` 中，`Esc` 字符可以用以下的语法来表示：`\e`，`\033`，`\x1B`。
 
-* * *
+---
 
 字体颜色范围是 `30 - 37`, `0` 表示重置。
 
@@ -346,44 +344,44 @@ echo -e "\033[37m 白色字 \033[0m"
 背景颜色范围是 `40 - 47`
 
 ```bash
-echo -e "\033[40;37m 黑底白字 \033[0m" 
-echo -e "\033[41;37m 红底白字 \033[0m" 
-echo -e "\033[42;37m 绿底白字 \033[0m" 
-echo -e "\033[43;37m 黄底白字 \033[0m" 
-echo -e "\033[44;37m 蓝底白字 \033[0m" 
-echo -e "\033[45;37m 紫底白字 \033[0m" 
-echo -e "\033[46;37m 天蓝底白字 \033[0m" 
+echo -e "\033[40;37m 黑底白字 \033[0m"
+echo -e "\033[41;37m 红底白字 \033[0m"
+echo -e "\033[42;37m 绿底白字 \033[0m"
+echo -e "\033[43;37m 黄底白字 \033[0m"
+echo -e "\033[44;37m 蓝底白字 \033[0m"
+echo -e "\033[45;37m 紫底白字 \033[0m"
+echo -e "\033[46;37m 天蓝底白字 \033[0m"
 echo -e "\033[47;30m 白底黑字 \033[0m"
 ```
 
 控制选项
 
 ```bash
-033[0m # 关闭所有属性 
-\033[1m # 设置高亮度 
-\033[4m # 下划线 
-\033[5m # 闪烁 
-\033[7m # 反显 
-\033[8m # 消隐 
-\033[30m — \33[37m # 设置前景色 
-\033[40m — \33[47m # 设置背景色 
-\033[60A  # 光标上移60行 
-\033[60B  # 光标下移60行 
-\033[60C  # 光标右移60行 
+033[0m # 关闭所有属性
+\033[1m # 设置高亮度
+\033[4m # 下划线
+\033[5m # 闪烁
+\033[7m # 反显
+\033[8m # 消隐
+\033[30m — \33[37m # 设置前景色
+\033[40m — \33[47m # 设置背景色
+\033[60A  # 光标上移60行
+\033[60B  # 光标下移60行
+\033[60C  # 光标右移60行
 \033[60G  # 光标右移60行
-\033[60D  # 光标左移60行 
-\033[y;xH # 设置光标位置 
-\033[2J   # 清屏 
-\033[K    # 清除从光标到行尾的内容 
-\033[s    # 保存光标位置 
-\033[u    # 恢复光标位置 
-\033[?25l # 隐藏光标 
+\033[60D  # 光标左移60行
+\033[y;xH # 设置光标位置
+\033[2J   # 清屏
+\033[K    # 清除从光标到行尾的内容
+\033[s    # 保存光标位置
+\033[u    # 恢复光标位置
+\033[?25l # 隐藏光标
 \033[?25h # 显示光标
 ```
 
 结束非常规字符序列的 `m` 要紧跟前面的数字，不能有空格命令也可以写成`echo -e "^[[44;37;5m ME \033[0m COOL"`，其中的 `^[` 需要先按 `⌃ + V` 键 ,然后再按 `ESC` 键生成。
 
-* * *
+---
 
 在 `RedHat` 系统的 `/etc/sysconfig/init` 文件中有事先设置好的输出方式。
 
@@ -409,14 +407,14 @@ SETCOLOR_NORMAL="echo -en \\033[0;39m"
 
 ```bash
 # 实例
-echo -e "\e[1;31mThis is red text\e[0m" #红色字体 
+echo -e "\e[1;31mThis is red text\e[0m" #红色字体
 
 echo -e "\e[1;42mGreed Background\e[0m" # 绿色背景
 
 echo -e "\033[37;31;5mMySQL Server Stop...\033[39;49;0m" #文字闪烁
 ```
 
-> 文字和背景也可以设置更多颜色，参考网站[Bash tips: Colors and formatting (ANSI/VT100 Control sequences)](https://misc.flogisoft.com/bash/tip_colors_and_formatting "Bash tips: Colors and formatting (ANSI/VT100 Control sequences)")
+> 文字和背景也可以设置更多颜色，参考网站[Bash tips: Colors and formatting (ANSI/VT100 Control sequences)](https://misc.flogisoft.com/bash/tip_colors_and_formatting 'Bash tips: Colors and formatting (ANSI/VT100 Control sequences)')
 
 ## which 命令
 
@@ -538,7 +536,7 @@ find -type f -name '*.js' | xargs grep -lF 'editor' # 查找当前目录下所�
 find . -name "*.log" | xargs -i mv {} test4 # 利用 xargs 执行 mv 命令
 find . -name \*(转义） -type f -print | xargs grep -n 'hostnames' # 用 grep 命令在当前目录下的所有普通文件中搜索 hostnames 这个词，并标出所在行
 find . -name '[a-z]*[4-9].log' -print # 查找当前目录中以一个小写字母开头，最后是 4 到 9 加上 .log 结束的文件
-find test -path 'test/test4' -prune -o -print # 
+find test -path 'test/test4' -prune -o -print #
 ```
 
 > `find` 命令的参数非常多， 用法爷非常多，这里只是列出了很小一部分，如果想详细了解可以用 `man` 命令查看。
@@ -547,7 +545,7 @@ find test -path 'test/test4' -prune -o -print #
 
 用于改变 `linux` 系统文件或目录的访问权限。用它控制文件或目录的访问权限。该命令有两种用法。一种是包含字母和操作符表达式的文字设定法；另一种是包含数字的数字设定法。
 
-每一文件或目录的访问权限都有三组，每组用三位表示，分别为文件属主的读、写和执行权限；与属主同组的用户的读、写和执行权限；系统中其他用户的读、写和执行权限。可使用 `ls -l` 查找。关于 `ls -l` 的各个字段表示什么意思可以看我的另一篇文章[WordPress文件权限问题](https://www.clloz.com/programming/assorted/wordpress/2020/07/28/wordpress-permissions/ "WordPress文件权限问题")
+每一文件或目录的访问权限都有三组，每组用三位表示，分别为文件属主的读、写和执行权限；与属主同组的用户的读、写和执行权限；系统中其他用户的读、写和执行权限。可使用 `ls -l` 查找。关于 `ls -l` 的各个字段表示什么意思可以看我的另一篇文章[WordPress文件权限问题](https://www.clloz.com/programming/assorted/wordpress/2020/07/28/wordpress-permissions/ 'WordPress文件权限问题')
 
 ```bash
 # 选项
@@ -555,7 +553,7 @@ find test -path 'test/test4' -prune -o -print #
 -R 处理指定目录以及其子目录下所有文件
 ```
 
-* * *
+---
 
 权限范围
 
@@ -662,7 +660,7 @@ du -hc --max-depth=1 scf/ # 输出当前目录下各个子目录所使用的空�
 
 ## ln 命令
 
-`ln` 命令的功能是为文件在另外一个位置建立一个同步的链接，当在不同目录需要该问题时，就不需要为每一个目录创建同样的文件，通过 `ln` 创建的链接（`link`）减少磁盘占用量。链接分为硬链接和软链接，关于两者的区别请看我的另一篇文章[WordPress文件权限问题](https://www.clloz.com/programming/assorted/wordpress/2020/07/28/wordpress-permissions/ "WordPress文件权限问题")
+`ln` 命令的功能是为文件在另外一个位置建立一个同步的链接，当在不同目录需要该问题时，就不需要为每一个目录创建同样的文件，通过 `ln` 创建的链接（`link`）减少磁盘占用量。链接分为硬链接和软链接，关于两者的区别请看我的另一篇文章[WordPress文件权限问题](https://www.clloz.com/programming/assorted/wordpress/2020/07/28/wordpress-permissions/ 'WordPress文件权限问题')
 
 ```bash
 # 选项
@@ -732,7 +730,7 @@ cal -3m #将星期一做为第一列,显示前中后三月
 
 `grep` 的工作方式是这样的，它在一个或多个文件中搜索字符串模板。如果模板包括空格，则必须被引用，模板后的所有字符串被看作文件名。搜索的结果被送到标准输出，不影响原文件内容。
 
-关于正则表达式的应用参考我的另一篇文章[正则表达式入门以及JavaScript中的应用](https://www.clloz.com/programming/front-end/js/2020/08/05/regex-javascript-apply/ "正则表达式入门以及JavaScript中的应用")，需要注意一点的是在 `grep` 中分组 `()` 圆括号需要转义。
+关于正则表达式的应用参考我的另一篇文章[正则表达式入门以及JavaScript中的应用](https://www.clloz.com/programming/front-end/js/2020/08/05/regex-javascript-apply/ '正则表达式入门以及JavaScript中的应用')，需要注意一点的是在 `grep` 中分组 `()` 圆括号需要转义。
 
 ```bash
 #选项
@@ -856,50 +854,49 @@ PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
 ```
 
 1. 第一行，任务队列信息，同 uptime 命令的执行结果，具体参数说明情况如下：
-    
-    - `14:06:23` — 当前系统时间
-    - `up 70 days, 16:44` — 系统已经运行了 `70` 天 `16` 小时 `44` 分钟
-    - `2 users` — 当前有 `2` 个用户登录系统
-    - `load average: 1.15, 1.42, 1.44` — `load average` 后面的三个数分别是 `1` 分钟、`5` 分钟、`15` 分钟的负载情况。load average数据是每隔5秒钟检查一次活跃的进程数，然后按特定算法计算出的数值。如果这个数除以逻辑CPU的数量，结果高于5的时候就表明系统在超负荷运转了。
+   - `14:06:23` — 当前系统时间
+   - `up 70 days, 16:44` — 系统已经运行了 `70` 天 `16` 小时 `44` 分钟
+   - `2 users` — 当前有 `2` 个用户登录系统
+   - `load average: 1.15, 1.42, 1.44` — `load average` 后面的三个数分别是 `1` 分钟、`5` 分钟、`15` 分钟的负载情况。load average数据是每隔5秒钟检查一次活跃的进程数，然后按特定算法计算出的数值。如果这个数除以逻辑CPU的数量，结果高于5的时候就表明系统在超负荷运转了。
+
 2. 第二行，`Tasks` — 任务（进程），具体信息说明举例：系统现在共有 `206` 个进程，其中处于运行中的有`1`个，`205`个在休眠（`sleep`），`stoped` 状态的有 `0` 个，`zombie` 状态（僵尸）的有 `0` 个。
 3. 第三行，cpu状态信息，具体属性说明如下：
-    
-    - `5.9%us` — 用户空间占用 `CPU` 的百分比。
-    - `3.4% sy` — 内核空间占用 `CPU` 的百分比。
-    - `0.0% ni` — 改变过优先级的进程占用 `CPU` 的百分比
-    - `90.4% id`— 空闲 `CPU` 百分比
-    - `0.0% wa` — `IO` 等待占用 `CPU` 的百分比
-    - `0.0% hi` — 硬中断（`Hardware IRQ`）占用 `CPU` 的百分比
-    - `0.2% si` — 软中断（`Software Interrupts`）占用 `CPU` 的百分比
+   - `5.9%us` — 用户空间占用 `CPU` 的百分比。
+   - `3.4% sy` — 内核空间占用 `CPU` 的百分比。
+   - `0.0% ni` — 改变过优先级的进程占用 `CPU` 的百分比
+   - `90.4% id`— 空闲 `CPU` 百分比
+   - `0.0% wa` — `IO` 等待占用 `CPU` 的百分比
+   - `0.0% hi` — 硬中断（`Hardware IRQ`）占用 `CPU` 的百分比
+   - `0.2% si` — 软中断（`Software Interrupts`）占用 `CPU` 的百分比
+
 4. 第四行，内存状态，具体信息如下：
-    
-    - `32949016k total` — 物理内存总量（`32GB`）
-    - `14411180k used` — 使用中的内存总量（`14GB`）
-    - `18537836k free` — 空闲内存总量（`18GB`）
-    - `169884k buffers` — 缓存的内存量 （`169M`）
+   - `32949016k total` — 物理内存总量（`32GB`）
+   - `14411180k used` — 使用中的内存总量（`14GB`）
+   - `18537836k free` — 空闲内存总量（`18GB`）
+   - `169884k buffers` — 缓存的内存量 （`169M`）
+
 5. 第五行，`swap`交换分区信息，具体信息说明如下：
-    
-    - `32764556k total` — 交换区总量（`32GB`）
-    - `0k used` — 使用的交换区总量（`0K`）
-    - `32764556k free` — 空闲交换区总量（`32GB`）
-    - `3612636k cached` — 缓冲的交换区总量（`3.6GB`）
+   - `32764556k total` — 交换区总量（`32GB`）
+   - `0k used` — 使用的交换区总量（`0K`）
+   - `32764556k free` — 空闲交换区总量（`32GB`）
+   - `3612636k cached` — 缓冲的交换区总量（`3.6GB`）
+
 6. 第六行空行。
 7. 第七行以下：各进程（任务）的状态监控，项目列信息说明如下：
-    
-    - `PID` — 进程 `id`
-    - `USER` — 进程所有者
-    - `PR` — 进程优先级
-    - `NI` — `nice` 值。负值表示高优先级，正值表示低优先级
-    - `VIRT` — 进程使用的虚拟内存总量，单位 `kb`。`VIRT=SWAP+RES`
-    - `RES` — 进程使用的、未被换出的物理内存大小，单位 `kb`。`RES=CODE+DATA`
-    - `SHR` — 共享内存大小，单位 `kb`
-    - `S` — 进程状态。
-    - `%CPU` — 上次更新到现在的CPU时间占用百分比
-    - `%MEM` — 进程使用的物理内存百分比
-    - `TIME+` — 进程使用的 `CPU` 时间总计，单位 `1/100` 秒
-    - `COMMAND` — 进程名称（命令名/命令行）
+   - `PID` — 进程 `id`
+   - `USER` — 进程所有者
+   - `PR` — 进程优先级
+   - `NI` — `nice` 值。负值表示高优先级，正值表示低优先级
+   - `VIRT` — 进程使用的虚拟内存总量，单位 `kb`。`VIRT=SWAP+RES`
+   - `RES` — 进程使用的、未被换出的物理内存大小，单位 `kb`。`RES=CODE+DATA`
+   - `SHR` — 共享内存大小，单位 `kb`
+   - `S` — 进程状态。
+   - `%CPU` — 上次更新到现在的CPU时间占用百分比
+   - `%MEM` — 进程使用的物理内存百分比
+   - `TIME+` — 进程使用的 `CPU` 时间总计，单位 `1/100` 秒
+   - `COMMAND` — 进程名称（命令名/命令行）
 
-* * *
+---
 
 `top` 命令的交互指令
 
@@ -953,6 +950,6 @@ free -s 10 #周期性查询内存使用情况
 
 ## 参考文章
 
-1. [shell中使用echo命令输出信息及带颜色的文本](https://linuxgeeks.github.io/2015/06/28/154139-shell%E4%B8%AD%E4%BD%BF%E7%94%A8echo%E5%91%BD%E4%BB%A4%E8%BE%93%E5%87%BA%E4%BF%A1%E6%81%AF%E5%8F%8A%E5%B8%A6%E9%A2%9C%E8%89%B2%E7%9A%84%E6%96%87%E6%9C%AC/ "shell中使用echo命令输出信息及带颜色的文本")
-2. [Linux 常用命令学习](https://www.runoob.com/w3cnote/linux-common-command-2.html "Linux 常用命令学习")
-3. [Linux命令搜索](https://wangchujiang.com/linux-command/ "Linux命令搜索")
+1. [shell中使用echo命令输出信息及带颜色的文本](https://linuxgeeks.github.io/2015/06/28/154139-shell%E4%B8%AD%E4%BD%BF%E7%94%A8echo%E5%91%BD%E4%BB%A4%E8%BE%93%E5%87%BA%E4%BF%A1%E6%81%AF%E5%8F%8A%E5%B8%A6%E9%A2%9C%E8%89%B2%E7%9A%84%E6%96%87%E6%9C%AC/ 'shell中使用echo命令输出信息及带颜色的文本')
+2. [Linux 常用命令学习](https://www.runoob.com/w3cnote/linux-common-command-2.html 'Linux 常用命令学习')
+3. [Linux命令搜索](https://wangchujiang.com/linux-command/ 'Linux命令搜索')

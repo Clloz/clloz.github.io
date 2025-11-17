@@ -7,18 +7,16 @@ tags:
   - 计算机系统
   - 计算机网络
 language: '中文'
-heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './network.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
-在[浏览器渲染过程及JS引擎浅析](https://www.clloz.com/programming/front-end/js/2019/04/25/how-browser-work/ "浏览器渲染过程及JS引擎浅析")这篇文章里，解答了 `在浏览器输入url回车后发生了什么` 问题中的一部分，也就是浏览器获得了服务器返回的 `html` 文档(实际可能是其他类型的资源）后的一系列行为。但是还有一部分行为并没有涉及，就是浏览器是如何和服务器通信的，以及数据是怎么传输的。在 `图解HTTP` 这本书里面很好地解答了这部分问题。
+在[浏览器渲染过程及JS引擎浅析](https://www.clloz.com/programming/front-end/js/2019/04/25/how-browser-work/ '浏览器渲染过程及JS引擎浅析')这篇文章里，解答了 `在浏览器输入url回车后发生了什么` 问题中的一部分，也就是浏览器获得了服务器返回的 `html` 文档(实际可能是其他类型的资源）后的一系列行为。但是还有一部分行为并没有涉及，就是浏览器是如何和服务器通信的，以及数据是怎么传输的。在 `图解HTTP` 这本书里面很好地解答了这部分问题。
 
-本文主要是讲网络知识，关于 `在浏览器输入url回车后发生了什么` 可以参考另一篇文章 [从URL输入到页面展现](https://www.clloz.com/programming/front-end/2018/12/05/url/ "从URL输入到页面展现")
+本文主要是讲网络知识，关于 `在浏览器输入url回车后发生了什么` 可以参考另一篇文章 [从URL输入到页面展现](https://www.clloz.com/programming/front-end/2018/12/05/url/ '从URL输入到页面展现')
 
-**文章较长，主要内容是计算机网络的基础和HTTP协议**
+> 文章较长，主要内容是计算机网络的基础和HTTP协议
 
 ## web 和 http 产生的背景
 
@@ -56,15 +54,15 @@ heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
 
 全世界有几十亿的电脑，加上网络设备还会多出更多，它们都在同一个互联网上，也就意味着在这个网络上的任意两个设备之间都是可以通信的。比如我在上海，我的电脑的网卡发出一个信号，而你在北京的电脑就能马上收到，甚至你在太平洋彼岸的美国也可以收到，要做到这些，就必须以来上面说的各种网络协议。互联网的核心是一系列协议，总称为"互联网协议" `Internet Protocol Suite`，通常也被我们称为 `TCP/IP` 协议族。它们对电脑如何连接和组网，做出了详尽的规定。理解了这些协议，就理解了互联网是如何设计的了。
 
-上面的背景介绍中说明了计算机和网络设备要互相通信必须要制定详细的标准，于是产生了各种各样的网络协议，`http` 只是其中的一种，不同的协议都是因为不同的需求和使用场景而定制的，从电缆的规格到 `IP` 地址的选定方法、 寻找异地用户的方法、双方建立通信的顺序，以及 `Web` 页面显示需要 处理的步骤等等，比如 `FTP` 在计算机网络上在客户端和服务器之间进行文件传输的协议，而 `SMTP` 是互联网上传输电子邮件的协议，而我们常说的 `DNS` 域名系统也是应用层的一个协议，作用是将域名和IP地址相互映射的一个分布式数据库。而之所以这些协议的集合被称为 `TCP/IP` 协议族是因为该协议家族的两个核心协议：`TCP`（传输控制协议）和 `IP`（网际协议），为该家族中最早通过的标准。整个 `TCP/IP` 协议族非常庞大和复杂，在这里我们只讨论学习 `HTTP` 需要用到的网络基础。如果你想深入学习计算机网络的知识有这三本书推荐： 1. [计算机网络-自顶向下方法](https://www.amazon.cn/dp/B07F3QKG13/ref=sr_1_2?__mk_zh_CN=%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99&keywords=%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C&qid=1556717384&s=gateway&sr=8-2 "计算机网络-自顶向下方法") 2. [计算机网络](https://www.amazon.cn/dp/B007JFRQ0G/ref=sr_1_1?__mk_zh_CN=%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99&keywords=%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C&qid=1556717384&s=gateway&sr=8-1 "计算机网络") 3. [TCP/IP详解](http://https://www.amazon.cn/dp/B078JFNPTM/ref=sr_1_1?__mk_zh_CN=%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99&keywords=tcp%2Fip%E8%AF%A6%E8%A7%A3&qid=1556717553&s=gateway&sr=8-1 "TCP/IP详解")
+上面的背景介绍中说明了计算机和网络设备要互相通信必须要制定详细的标准，于是产生了各种各样的网络协议，`http` 只是其中的一种，不同的协议都是因为不同的需求和使用场景而定制的，从电缆的规格到 `IP` 地址的选定方法、 寻找异地用户的方法、双方建立通信的顺序，以及 `Web` 页面显示需要 处理的步骤等等，比如 `FTP` 在计算机网络上在客户端和服务器之间进行文件传输的协议，而 `SMTP` 是互联网上传输电子邮件的协议，而我们常说的 `DNS` 域名系统也是应用层的一个协议，作用是将域名和IP地址相互映射的一个分布式数据库。而之所以这些协议的集合被称为 `TCP/IP` 协议族是因为该协议家族的两个核心协议：`TCP`（传输控制协议）和 `IP`（网际协议），为该家族中最早通过的标准。整个 `TCP/IP` 协议族非常庞大和复杂，在这里我们只讨论学习 `HTTP` 需要用到的网络基础。如果你想深入学习计算机网络的知识有这三本书推荐： 1. [计算机网络-自顶向下方法](https://www.amazon.cn/dp/B07F3QKG13/ref=sr_1_2?__mk_zh_CN=%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99&keywords=%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C&qid=1556717384&s=gateway&sr=8-2 '计算机网络-自顶向下方法') 2. [计算机网络](https://www.amazon.cn/dp/B007JFRQ0G/ref=sr_1_1?__mk_zh_CN=%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99&keywords=%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C&qid=1556717384&s=gateway&sr=8-1 '计算机网络') 3. [TCP/IP详解](http://https://www.amazon.cn/dp/B078JFNPTM/ref=sr_1_1?__mk_zh_CN=%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99&keywords=tcp%2Fip%E8%AF%A6%E8%A7%A3&qid=1556717553&s=gateway&sr=8-1 'TCP/IP详解')
 
 ## 网络分层管理
 
-##### 为什么网络设计要分层
+### 为什么网络设计要分层
 
 网络的分层大家都知道，`OSI` 七层网络模型大家都听说过，要说为什么网络设计要分层，归根结底就是为了解耦，特别是在底层涉及到很多硬件的情况下，工作在高层的技术人员不需要了解底层的硬件的工作细节。如果互联网只由一个协议统 筹，某个地方需要改变设计时，就必须把所有部分整体替换掉。而分层 之后只需把变动的层替换掉即可。把各层之间的接口部分规划好之后，每个层次内部的设计就能够自由改动了。 并且层次化之后，设计也变得相对简单了。处于应用层上的应用可以只考虑分派给自己的任务，而不需要弄清对方在地球上哪 个地方、对方的传输路线是怎样的、是否能确保传输送达等问题。分层设计的有点可以归纳为三点： 1. 各层之间相互独立：高层是不需要知道底层的功能是采取硬件技术来实现的，它只需要知道通过与底层的接口就可以获得所需要的服务； 2. 灵活性好：各层都可以采用最适当的技术来实现，例如某一层的实现技术发生了变化，用硬件代替了软件，只要这一层的功能与接口保持不变，实现技术的变化都并不会对其他各层以及整个系统的工作产生影响； 3. 易于实现和标准化：由于采取了规范的层次结构去组织网络功能与协议，因此可以将计算机网络复杂的通信过程，划分为有序的连续动作与有序的交互过程，有利于将网络复杂的通信工作过程化解为一系列可以控制和实现的功能模块，使得复杂的计算机网络系统变得易于设计，实现和标准化。
 
-##### OSI 七层模型和 TCP/IP 四层模型
+### OSI 七层模型和 TCP/IP 四层模型
 
 网络模型不是一开始就有的，在网络刚发展时，网络协议是由各互联网公司自己定义的，比如那时的巨头网络公司 `IBM`、微软、苹果、思科等等，他们每家公司都有自己的网络协议，各家的协议也是不能互通的，那时候大家觉得这是可以的，但对消费者来说这实际上是技术垄断，因为你买了苹果的设备就不能用微软的设备，因为他们的协议不是一样的，没有统一的标准来规范网络协议，都是这些公司的私有协议。这样大大的阻碍了互联网的发展，为了解决这个问题，国际标准化组织 1984 提出的概念模型，简称 `OSI`（`Open Systems Interconnection Model`），这是一个概念，并非实现。`TCP/IP` 协议就是基于此模型设计实现的。
 
@@ -74,13 +72,13 @@ heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
 
 `TCP/IP` 四层模型 1. 应用层：网络应用程序使用的层，提供网络应用程序需要的接口，将程序中的数据包装成协议的标准格式。，对应 `OSI` 七层模型的最上面三层（会话层，表达层和应用层），如 `HTTP`，`SSH`，`FTP`，`SMTP`，`TELENT`，`POP3` 2. 传输层：提供计算机和网络设备之间的设备传输，确保数据传输的可靠和顺序。包括 `TCP` 和 `UDP`，对应 `OSI` 模型中的传输层 3. 网络层（网络互联层）：处理数据包，通过 `IP` 地址规定数据包的传输路径，并将数据从源发送到目的地。对应 `OSI` 模型中的网络层。主要协议是 `IP` 协议 4. 链路层：网络连接的硬件部分，将数据包从一个设备的网络层传输到另一个设备的网络层。包括控制操作系统、硬件设备的驱动、`NIC` 网卡，光纤，双绞线等物理可见部分。包括以太网，`wifi` 等。
 
-> 更多模型细节可以看阮一峰的[互联网协议入门](https://www.ruanyifeng.com/blog/2012/05/internet_protocol_suite_part_i.html "互联网协议入门")
+> 更多模型细节可以看阮一峰的[互联网协议入门](https://www.ruanyifeng.com/blog/2012/05/internet_protocol_suite_part_i.html '互联网协议入门')
 
 ## TCP/IP 网络通信流程
 
 当我们在浏览器中输入 `url` 请求 `web` 服务器上的 `HTML` 文档的时候，通信的过程是什么样的呢？见下图
 
-![tcp-ip-stream](./images/tcp-ipstream.png "tcp-ip-stream")
+![tcp-ip-stream](./images/tcp-ipstream.png 'tcp-ip-stream')
 
 1. 应用层浏览器将请求封装成符合 `HTTP` 协议的数据报文，将这个报文交给传输层。
 2. 传输层的 `TCP` 协议将从应用层收到的 `HTTP` 报文分割成数据包的形式，并在每个数据包上打上标记和序号，然后交给网络层。
@@ -91,15 +89,15 @@ heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
 
 在上面的`http` 请求的通信流程中，不同的层级涉及到了几个不同协议，它们都是 `HTTP` 请求中的
 
-##### IP 协议（网际协议）
+### IP 协议（网际协议）
 
 `IP` 协议 `internet protocol` 工作在网络层，它的作用是根据 `IP` 地址和 `mac` 地址规定数据包的传输路径，我们的网络上有无数台电脑，怎么选择一个合适的路线才能准确高效地进行数据包的传输是IP协议的主要目标。`IP` 地址指向一个网络，而 `mac` 地址指向一个具体的设备，一个网络中可以有很多台设备。虽然用 `mac` 地址就可以实现数据的传输，但是由于网络十分巨大，用 `mac` 地址进行广播的效率非常低下，并且会消耗网络设备上的很大的存储空间，而用 `ip` 地址进行广播不断缩小目标的范围，最后再利用 `mac` 地址定位到具体的设备是比较高效的。就像寄快递，我们从上海寄快递到北京的某个小区，在运输的过程中会有非常多的集散中心，每个集散中心的送货员不会关心最终的目的地，而是下一个集散中心选择哪个是最有效率的（比如有两个距离相同的集散中心，我们可以先打电话过去问问哪个比较不忙），随着这个过程的不断推进，我们会越来越接近我们的目的地，当快递寄到我们所属街区的集散中心以后，快递员就可以根据我们的真实地址来送货了，这当中的集散中心就像 `IP` 地址，而我们的真实住址就像 `mac` 地址一样，而且网络中的中间设备比我们想象的要多得多，没有任何一台设备能保存整个网络中所有的设备的 `mac` 地址以及线路细节，这就更需要我们利用 `ip` 缩小范围，它们工作的层级也不一样，`IP` 地址工作在网络层，`mac` 地址工作在链路层
 
-![ip-broadcast](./images/ip-broadcast.png "ip-broadcast")
+![ip-broadcast](./images/ip-broadcast.png 'ip-broadcast')
 
 > 每块网卡出厂的时候，都有一个全世界独一无二的 `MAC` 地址，长度是 `48` 个二进制位，通常用 `12` 个十六进制数表示，前`6` 个十六进制数是厂商编号，后 `6` 个是该厂商的网卡流水号。有了 `MAC` 地址，就可以定位网卡和数据包的路径了。
 
-##### TCP 协议
+### TCP 协议
 
 `TCP` 协议位于传输层，提供可靠的字节流服务，`TCP` 协议会把应用层传来的 `HTTP` 报文分割成方便传输的报文段数据包，而 `TCP` 协议的关键之处在于要把分割后的数据包一个不差的准确地传输到目的地。
 
@@ -107,21 +105,21 @@ heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
 
 发送端首先发送一个带 `SYN` 标志的数据包给对方。接收端收到后， 回传一个带有 `SYN/ACK` 标志的数据包以示传达确认信息。最后，发送 端再回传一个带 `ACK` 标志的数据包，代表“握手”结束。若在握手过程中某个阶段莫名中断，`TCP` 协议会再次以相同的顺序 发送相同的数据包。
 
-![tcp-shake](./images/tcp-shake.png "tcp-shake")
+![tcp-shake](./images/tcp-shake.png 'tcp-shake')
 
-##### DNS 服务
+### DNS 服务
 
 `DNS` ( `Domain Name System` )服务是和 `HTTP` 协议一样位于应用层 的协议。它提供域名到 `IP` 地址之间的解析服务。计算机既可以被赋予 `IP` 地址，也可以被赋予主机名和域名。比如 `www.clloz.com`。用户通常使用主机名或域名来访问对方的计算机，而不是直接通过 `IP` 地址访问。因为与 `IP` 地址的一组纯数字相比，用字母配合数字的表 示形式来指定计算机名更符合人类的记忆习惯。但要让计算机去理解名称，相对而言就变得困难了。因为计算机更 擅长处理一长串数字。为了解决上述的问题，`DNS` 服务应运而生。`DNS` 协议提供通过域 名查找 `IP` 地址，或逆向从 `IP` 地址反查域名的服务。
 
-![dns](./images/dns.png "dns")
+![dns](./images/dns.png 'dns')
 
-##### 多协议在http请求中的工作流程
+### 多协议在http请求中的工作流程
 
 在 `http` 请求的过程中，上述协议的完整工作流程如下：
 
-![http-request](./images/http-request.png "http-request")
+![http-request](./images/http-request.png 'http-request')
 
-> 关于 `URI` 和 `URL` 的区别，看我的这篇文章[从url输入到页面展现](https://www.clloz.com/programming/front-end/2018/12/05/url/ "从url输入到页面展现")。`RFC` 文件为互联网规范、协议、过程等的标准文件，由互联网工程任务组（ `IETF` ）维护。
+> 关于 `URI` 和 `URL` 的区别，看我的这篇文章[从url输入到页面展现](https://www.clloz.com/programming/front-end/2018/12/05/url/ '从url输入到页面展现')。`RFC` 文件为互联网规范、协议、过程等的标准文件，由互联网工程任务组（ `IETF` ）维护。
 
 ## HTTP协议
 
@@ -137,16 +135,16 @@ heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
 
 ## HTTP协议中的请求方法
 
-| 方法 | 说明 | 支持的 HTTP 协议版本 |
-| --- | --- | --- |
-| GET | GET请求会显示请求指定的资源。一般来说GET方法应该只用于数据的读取，而不应当用于会产生副作用的非幂等的操作中。它期望的应该是而且应该是安全的和幂等的。这里的安全指的是，请求不会影响到资源的状态。 | 1.0、1.1 |
-| POST | POST请求会 向指定资源提交数据，请求服务器进行处理，如：表单数据提交、文件上传等，请求数据会被包含在请求体中。POST方法是非幂等的方法，因为这个请求可能会创建新的资源或/和修改现有资源。 | 1.0、1.1 |
-| PUT | PUT请求会身向指定资源位置上传其最新内容，PUT方法是幂等的方法。通过该方法客户端可以将指定资源的最新数据传送给服务器取代指定的资源的内容。 | 1.0、1.1 |
-| HEAD | HEAD方法与GET方法一样，都是向服务器发出指定资源的请求。但是，服务器在响应HEAD请求时不会回传资源的内容部分，即：响应主体。这样，我们可以不传输全部内容的情况下，就可以获取服务器的响应头信息。HEAD方法常被用于客户端查看服务器的性能。 | 1.0、1.1 |
-| DELETE | DELETE请求用于请求服务器删除所请求URI（统一资源标识符，Uniform Resource Identifier）所标识的资源。DELETE请求后指定资源会被删除，DELETE方法也是幂等的。 | 1.0、1.1 |
-| OPTIONS | OPTIONS请求与HEAD类似，一般也是用于客户端查看服务器的性能。 这个方法会请求服务器返回该资源所支持的所有HTTP请求方法，该方法会用'\*'来代替资源名称，向服务器发送OPTIONS请求，可以测试服务器功能是否正常。JavaScript的XMLHttpRequest对象进行CORS跨域资源共享时，就是使用OPTIONS方法发送嗅探请求，以判断是否有对指定资源的访问权限。 | 1.1 |
-| TRACE | TRACE请求服务器回显其收到的请求信息，该方法主要用于HTTP请求的测试或诊断。 | 1.1 |
-| CONNECT | CONNECT方法是HTTP/1.1协议预留的，能够将连接改为管道方式的代理服务器。通常用于SSL加密服务器的链接与非加密的HTTP代理服务器的通信。 | 1.1 |
+| 方法    | 说明                                                                                                                                                                                                                                                                                                                             | 支持的 HTTP 协议版本 |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| GET     | GET请求会显示请求指定的资源。一般来说GET方法应该只用于数据的读取，而不应当用于会产生副作用的非幂等的操作中。它期望的应该是而且应该是安全的和幂等的。这里的安全指的是，请求不会影响到资源的状态。                                                                                                                                 | 1.0、1.1             |
+| POST    | POST请求会 向指定资源提交数据，请求服务器进行处理，如：表单数据提交、文件上传等，请求数据会被包含在请求体中。POST方法是非幂等的方法，因为这个请求可能会创建新的资源或/和修改现有资源。                                                                                                                                           | 1.0、1.1             |
+| PUT     | PUT请求会身向指定资源位置上传其最新内容，PUT方法是幂等的方法。通过该方法客户端可以将指定资源的最新数据传送给服务器取代指定的资源的内容。                                                                                                                                                                                         | 1.0、1.1             |
+| HEAD    | HEAD方法与GET方法一样，都是向服务器发出指定资源的请求。但是，服务器在响应HEAD请求时不会回传资源的内容部分，即：响应主体。这样，我们可以不传输全部内容的情况下，就可以获取服务器的响应头信息。HEAD方法常被用于客户端查看服务器的性能。                                                                                            | 1.0、1.1             |
+| DELETE  | DELETE请求用于请求服务器删除所请求URI（统一资源标识符，Uniform Resource Identifier）所标识的资源。DELETE请求后指定资源会被删除，DELETE方法也是幂等的。                                                                                                                                                                           | 1.0、1.1             |
+| OPTIONS | OPTIONS请求与HEAD类似，一般也是用于客户端查看服务器的性能。 这个方法会请求服务器返回该资源所支持的所有HTTP请求方法，该方法会用'\*'来代替资源名称，向服务器发送OPTIONS请求，可以测试服务器功能是否正常。JavaScript的XMLHttpRequest对象进行CORS跨域资源共享时，就是使用OPTIONS方法发送嗅探请求，以判断是否有对指定资源的访问权限。 | 1.1                  |
+| TRACE   | TRACE请求服务器回显其收到的请求信息，该方法主要用于HTTP请求的测试或诊断。                                                                                                                                                                                                                                                        | 1.1                  |
+| CONNECT | CONNECT方法是HTTP/1.1协议预留的，能够将连接改为管道方式的代理服务器。通常用于SSL加密服务器的链接与非加密的HTTP代理服务器的通信。                                                                                                                                                                                                 | 1.1                  |
 
 > 1. 幂等：对同一个系统，使用同样的条件，一次请求和重复的多次请求对系统资源的影响是一致的。
 > 2. `PUT` 和 `DELETE` 方法在 `HTTP/1.1` 中不带验证机制，任何人都可以上传或删除文件 , 存在安全性问题，因此一般的 `Web` 网站不使用该方法。
@@ -156,10 +154,9 @@ heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
 
 1. 在 `HTTP` 协议标准中，`GET` 的语义是请求获取指定的资源，`GET` 方法是安全、幂等、可缓存的（除非有 `Cache-ControlHeader`的约束）,`GET` 方法的报文主体没有任何语义。`POST` 的语义是根据请求负荷（报文主体）对指定的资源做出处理，具体的处理方式视资源类型而不同。`POST` 不安全，不幂等，（大部分实现）不可缓存。对于 `GET` 请求，在参数相同的情况下，多次请求和一次请求获取的都是相同的资源，并且不会对服务器上的资源产生影响。而 `POST` 请求传输实体，会对服务器上的资源产生副作用。比如微博的获取最新的十篇微博就适用于 `GET` 方法，而发微博，评论则适用于 `POST` 方法。
 2. 在实际的浏览器环境中，`GET` 和 `POST` 有如下几点区别：
-    
-    - 浏览器对 `URL` 的长度有限制（ `URL` 的最大长度是 `2048` 个字符），所以 `GET` 请求不能代替 `POST` 请求发送大量数据；
-    - `HTML` 标准规定 `GET` 使用 `URL` 或 `Cookie` 传参，而 `POST` 将数据放在 `BODY` 中；
-    - `POST` 比 `GET` 安全，因为数据在地址栏上不可见
+   - 浏览器对 `URL` 的长度有限制（ `URL` 的最大长度是 `2048` 个字符），所以 `GET` 请求不能代替 `POST` 请求发送大量数据；
+   - `HTML` 标准规定 `GET` 使用 `URL` 或 `Cookie` 传参，而 `POST` 将数据放在 `BODY` 中；
+   - `POST` 比 `GET` 安全，因为数据在地址栏上不可见
 
 ## 持久连接
 
@@ -171,7 +168,7 @@ heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
 
 持久连接使得多数请求以管线化( `pipelining` )方式发送成为可能。 从前发送请求后需等待并收到响应，才能发送下一个请求。管线化技术 出现后，不用等待响应亦可直接发送下一个请求。这样就能够做到同时并行发送多个请求，而不需要一个接一个地等 待响应了。比如，当请求一个包含 10 张图片的 `HTML Web` 页面，与挨个连接 相比，用持久连接可以让请求更快结束。而管线化技术则比持久连接还 要快。请求数越多，时间差就越明显。
 
-![keep-alive](./images/http-keep-alive%20.png "keep-alive")
+![keep-alive](./images/http-keep-alive%20.png 'keep-alive')
 
 ## Cookie 管理状态
 
@@ -179,7 +176,7 @@ heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
 
 `Cookie` 会根据从服务器端发送的响应报文内的一个叫做 `Set-Cookie` 的首部字段信息，通知客户端保存 `Cookie`。当下次客户端再往该服务器发送请求时，客户端会自动在请求报文中加入 `Cookie` 值后发送出去。服务器端发现客户端发送过来的 `Cookie` 后，会去检查究竟是从哪一个客户端发来的连接请求，然后对比服务器上的记录，最后得到之前的状态信息。
 
-![set-cookie](./images/set-cookie.png "set-cookie")
+![set-cookie](./images/set-cookie.png 'set-cookie')
 
 ## HTTP 报文
 
@@ -189,9 +186,9 @@ heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
 
 > `CR` 对应 `ASCII` 码中的 `13`，表示 `Carriage Return` 回车符，`LF` 对应 `ASCII` 码中的 `10`，对应 `Line Feed` 空格符。
 
-![http-message](./images/http-message.png "http-message")
+![http-message](./images/http-message.png 'http-message')
 
-![http-message-eg](./images/http-message-eg.png "http-message-eg")
+![http-message-eg](./images/http-message-eg.png 'http-message-eg')
 
 请求报文和响应报文的首部内容由以下数据组成: 1. 请求行:包含用于请求的方法，请求 `URI` 和 `HTTP` 版本。 2. 状态行:包含表明响应结果的状态码，原因短语和 `HTTP` 版本。 3. 首部字段:包含表示请求和响应的各种条件和属性的各类首部。一般有 4 种首部，分别是:通用首部、请求首部、响应首部和实体 首部。 4. 其他:可能包含 `HTTP` 的 `RFC` 里未定义的首部(`Cookie` 等)。
 
@@ -202,26 +199,26 @@ heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
 状态码是 `web` 开发中经常需要面对的，比如 `JS` 原生 `ajax` 请求的回调函数就需要用到状态码：
 
 ```javascript
-var xhr = new XMLHttpRequest();
-xhr.open(type, url, true);
-xhr.onload = function() {
-   if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
-     onsuccess(xhr.responseText);
-   } else {
-     onerror();
-   }
-};
+var xhr = new XMLHttpRequest()
+xhr.open(type, url, true)
+xhr.onload = function () {
+  if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+    onsuccess(xhr.responseText)
+  } else {
+    onerror()
+  }
+}
 ```
 
 其中的 `xhr.status` 就是返回的状态码。`HTTP` 协议中，`HTTP` 状态码负责表示客户端 `HTTP` 请求的返回结果、标记服务器 端的处理是否正常、通知出现的错误等工作。状态码分类如下：
 
-| 状态码 | 类别 | 原因短语 |
-| --- | --- | --- |
-| 1XX | Informational(信息性状态码) | 接收的请求正在处理 |
-| 2XX | Success(成功状态码) | 请求正常处理完毕 |
-| 3XX | Redirection(重定向状态码) | 需要进行附加操作以完成请求 |
-| 4XX | Client Error(客户端错误状态码) | 服务器无法处理请求 |
-| 5XX | Server Error(服务器错误状态码) | 服务器处理请求出错 |
+| 状态码 | 类别                           | 原因短语                   |
+| ------ | ------------------------------ | -------------------------- |
+| 1XX    | Informational(信息性状态码)    | 接收的请求正在处理         |
+| 2XX    | Success(成功状态码)            | 请求正常处理完毕           |
+| 3XX    | Redirection(重定向状态码)      | 需要进行附加操作以完成请求 |
+| 4XX    | Client Error(客户端错误状态码) | 服务器无法处理请求         |
+| 5XX    | Server Error(服务器错误状态码) | 服务器处理请求出错         |
 
 ## 200 OK
 
@@ -301,70 +298,70 @@ xhr.onload = function() {
 
 ## 通用首部字段
 
-| 首部字段名 | 说明 |
-| --- | --- |
-| Cache-Control | 控制缓存的行为 |
-| Connection | 逐跳首部、连接的管理 |
-| Date | 创建报文的日期时间 |
-| Pragma | 报文指令 |
-| Trailer | 报文末端的首部一览 |
+| 首部字段名        | 说明                       |
+| ----------------- | -------------------------- |
+| Cache-Control     | 控制缓存的行为             |
+| Connection        | 逐跳首部、连接的管理       |
+| Date              | 创建报文的日期时间         |
+| Pragma            | 报文指令                   |
+| Trailer           | 报文末端的首部一览         |
 | Transfer-Encoding | 指定报文主体的传输编码方式 |
-| Upgrade | 升级为其他协议 |
-| Via | 代理服务器的相关信息 |
-| Warning | 错误通知 |
+| Upgrade           | 升级为其他协议             |
+| Via               | 代理服务器的相关信息       |
+| Warning           | 错误通知                   |
 
 ## 请求首部字段
 
-| 首部字段名 | 说明 |
-| --- | --- |
-| Accept | 用户代理可处理的媒体类型 |
-| Accept-Charset | 优先的字符集 |
-| Accept-Encoding | 优先的内容编码 |
-| Accept-Language | 优先的语言(自然语言) |
-| Authorization | Web 认证信息 |
-| Expect | 期待服务器的特定行为 |
-| From | 用户的电子邮箱地址 |
-| Host | 请求资源所在服务器 |
-| If-Match | 比较实体标记(ETag) |
-| If-Modified-Since | 比较资源的更新时间 |
-| If-None-Match | 比较实体标记(与 If-Match 相反) |
-| If-Range | 资源未更新时发送实体 Byte 的范围请求 |
+| 首部字段名          | 说明                                          |
+| ------------------- | --------------------------------------------- |
+| Accept              | 用户代理可处理的媒体类型                      |
+| Accept-Charset      | 优先的字符集                                  |
+| Accept-Encoding     | 优先的内容编码                                |
+| Accept-Language     | 优先的语言(自然语言)                          |
+| Authorization       | Web 认证信息                                  |
+| Expect              | 期待服务器的特定行为                          |
+| From                | 用户的电子邮箱地址                            |
+| Host                | 请求资源所在服务器                            |
+| If-Match            | 比较实体标记(ETag)                            |
+| If-Modified-Since   | 比较资源的更新时间                            |
+| If-None-Match       | 比较实体标记(与 If-Match 相反)                |
+| If-Range            | 资源未更新时发送实体 Byte 的范围请求          |
 | If-Unmodified-Since | 比较资源的更新时间(与 If-Modified-Since 相反) |
-| Max-Forwards | 最大传输逐跳数 |
-| Proxy-Authorization | 代理服务器要求客户端的认证信息 |
-| Range | 实体的字节范围请求 |
-| Referer | 对请求中 URI 的原始获取方 |
-| TE | 传输编码的优先级 |
-| User-Agent | HTTP 客户端程序的信息 |
+| Max-Forwards        | 最大传输逐跳数                                |
+| Proxy-Authorization | 代理服务器要求客户端的认证信息                |
+| Range               | 实体的字节范围请求                            |
+| Referer             | 对请求中 URI 的原始获取方                     |
+| TE                  | 传输编码的优先级                              |
+| User-Agent          | HTTP 客户端程序的信息                         |
 
 ## 响应首部字段
 
-| 首部字段名 | 说明 |
-| --- | --- |
-| Accept-Ranges | 是否接受字节范围请求 |
-| Age | 推算资源创建经过时间 |
-| ETag | 资源的匹配信息 |
-| Location | 令客户端重定向至指定 URI |
+| 首部字段名         | 说明                         |
+| ------------------ | ---------------------------- |
+| Accept-Ranges      | 是否接受字节范围请求         |
+| Age                | 推算资源创建经过时间         |
+| ETag               | 资源的匹配信息               |
+| Location           | 令客户端重定向至指定 URI     |
 | Proxy-Authenticate | 代理服务器对客户端的认证信息 |
-| Retry-After | 对再次发起请求的时机要求 |
-| Server | HTTP 服务器的安装信息 |
-| Vary | 代理服务器缓存的管理信息 |
-| WWW-Authenticate | 服务器对客户端的认证信息 |
+| Retry-After        | 对再次发起请求的时机要求     |
+| Server             | HTTP 服务器的安装信息        |
+| Vary               | 代理服务器缓存的管理信息     |
+| WWW-Authenticate   | 服务器对客户端的认证信息     |
 
 ## 实体首部字段
 
-| 首部字段名 | 说明 |
-| --- | --- |
-| Allow | 资源可支持的 HTTP 方法 |
-| Content-Encoding | 实体主体适用的编码方式 |
-| Content-Language | 实体主体的自然语言 |
-| Content-Length | 实体主体的大小(单位 :字节) |
-| Content-Location | 替代对应资源的 URI |
-| Content-MD5 | 实体主体的报文摘要 |
-| Content-Range | 实体主体的位置范围 |
-| Content-Type | 实体主体的媒体类型 |
-| Expires | 实体主体过期的日期时间 |
-| Last-Modified | 资源的最后修改日期时间 |
+| 首部字段名       | 说明                       |
+| ---------------- | -------------------------- |
+| Allow            | 资源可支持的 HTTP 方法     |
+| Content-Encoding | 实体主体适用的编码方式     |
+| Content-Language | 实体主体的自然语言         |
+| Content-Length   | 实体主体的大小(单位 :字节) |
+| Content-Location | 替代对应资源的 URI         |
+| Content-MD5      | 实体主体的报文摘要         |
+| Content-Range    | 实体主体的位置范围         |
+| Content-Type     | 实体主体的媒体类型         |
+| Expires          | 实体主体过期的日期时间     |
+| Last-Modified    | 资源的最后修改日期时间     |
 
 ## Cookie 服务的首部字段
 
@@ -374,25 +371,25 @@ xhr.onload = function() {
 
 不仅服务器可以设置 `cookie` 传给客户端，客户端也可以设置 `cookie` 在 `HTTP` 报文中传递给服务器。
 
-| 首部字段名 | 说明 | 首部类型 |
-| --- | --- | --- |
+| 首部字段名 | 说明                             | 首部类型     |
+| ---------- | -------------------------------- | ------------ |
 | Set-Cookie | 开始状态管理所使用的 Cookie 信息 | 响应首部字段 |
-| Cookie | 服务器接收到的 Cookie 信息 | 请求首部字段 |
+| Cookie     | 服务器接收到的 Cookie 信息       | 请求首部字段 |
 
 `Set-Cookie` 字段：`Set-Cookie: status=enable; expires=Tue, 05 Jul 2011 07:26:31 GMT; path=/; domain=clloz.com;`
 
-| 属性 | 说明 |
-| --- | --- |
-| NAME=VALUE | 赋予 Cookie 的名称和其值(必需项) |
-| expires=DATE | Cookie 的有效期(若不明确指定则默认为浏览器关闭前为止) |
-| path=PATH | 将服务器上的文件目录作为 Cookie 的适用对象(若不指定则 默认为文档所在的文件目录) |
-| domain= 域名 | 作为 Cookie 适用对象的域名(若不指定则默认为创建 Cookie 的服务器的域名) |
-| Secure | 仅在 HTTPS 安全通信时才会发送 Cookie |
-| HttpOnly | 加以限制，使 Cookie 不能被 JavaScript 脚本访问 |
+| 属性         | 说明                                                                            |
+| ------------ | ------------------------------------------------------------------------------- |
+| NAME=VALUE   | 赋予 Cookie 的名称和其值(必需项)                                                |
+| expires=DATE | Cookie 的有效期(若不明确指定则默认为浏览器关闭前为止)                           |
+| path=PATH    | 将服务器上的文件目录作为 Cookie 的适用对象(若不指定则 默认为文档所在的文件目录) |
+| domain= 域名 | 作为 Cookie 适用对象的域名(若不指定则默认为创建 Cookie 的服务器的域名)          |
+| Secure       | 仅在 HTTPS 安全通信时才会发送 Cookie                                            |
+| HttpOnly     | 加以限制，使 Cookie 不能被 JavaScript 脚本访问                                  |
 
 ## 其他首部字段
 
-##### X-Frame-Options
+### X-Frame-Options
 
 `HTTP` 响应首部，用于控制网站内容在其他 `Web` 网站的 `Frame` 标签内的显示问题。其主要目的是为了防止点击劫持( `clickjacking` )攻击。`DENY` :拒绝；`SAMEORIGIN` :仅同源域名下的页面( `Top-level-browsing-context` )匹配时许可。( 比如，当指定 `http://clloz.com/index.html` 页面为 `SAMEORIGIN` 时，那么 `clloz.com` 上所有页面的 `frame` 都被允许可加载该页面，而 `example.com` 等其他域名的页面就不行了)。
 
@@ -404,7 +401,7 @@ xhr.onload = function() {
 </IfModule>
 ```
 
-##### X-XSS-Protection
+### X-XSS-Protection
 
 首部字段 `X-XSS-Protection` 属于 `HTTP` 响应首部，它是针对跨站脚本攻击( `XSS` )的一种对策，用于控制浏览器 `XSS` 防护机制的开关。首部字段 `X-XSS-Protection` 可指定的字段值如下。 1. 0 :将 XSS 过滤设置成无效状态 2. 1 :将 XSS 过滤设置成有效状态
 
@@ -420,21 +417,21 @@ HTTP的瓶颈可以总结为以下几点： 1. 一条连接上只可发送一个
 
 为了消除`HTTP`瓶颈，`Google`在2010年首次作出了尝试，在 `HTTP` 和 `SSL` 之间加入了一个会话层，实现了一个 `TCP` 连接可以无限制地处理多个 `HTTP` 请求，所有的请求都在一次 `TCP` 连接上完成，并且支持给这些请求设置优先级。`SPDY` 压缩了 `HTTP` 首部，这样 `HTTP` 通信产生的数据包能够变得更小更少。`SPDY` 同时也支持服务器主动推送消息给客户端，不必等待客户端的请求。
 
-于1999年制定的 `HTTP/1.1` 显然已经无法适应今天的 `Web`，下一代 `HTTP` 协议的标准呼之欲出。在SPDY和 `WebScoket` 等技术的基础上，`HTTP/2` 的首个草稿在2012年完成，内容基本和 `SPDY` 相同。`HTTP/2` 标准于2015年5月以 `RFC 7540` 正式发表。如今大多数浏览器和 `web` 服务器都支持 `HTTP/2`，同样标准也在一直向前推进，大部分网站以及启用 `HTTP/2` 标准。`HTTP/2` 带来的提升可以看[http2.akamai.com/demo](http2.akamai.com/demo "http2.akamai.com/demo")，这里的地球图片是用361块小图片拼接而成，两边分别是用 `HTTP/1.1` 和 `HTTP/2` 进行请求，可以看出速度差距很大。
+于1999年制定的 `HTTP/1.1` 显然已经无法适应今天的 `Web`，下一代 `HTTP` 协议的标准呼之欲出。在SPDY和 `WebScoket` 等技术的基础上，`HTTP/2` 的首个草稿在2012年完成，内容基本和 `SPDY` 相同。`HTTP/2` 标准于2015年5月以 `RFC 7540` 正式发表。如今大多数浏览器和 `web` 服务器都支持 `HTTP/2`，同样标准也在一直向前推进，大部分网站以及启用 `HTTP/2` 标准。`HTTP/2` 带来的提升可以看[http2.akamai.com/demo](http2.akamai.com/demo 'http2.akamai.com/demo')，这里的地球图片是用361块小图片拼接而成，两边分别是用 `HTTP/1.1` 和 `HTTP/2` 进行请求，可以看出速度差距很大。
 
-![http2](./images/http2.gif "http2")
+![http2](./images/http2.gif 'http2')
 
 ## 总结
 
-由于网络的内容太多，文章已经太长了，本来想加在本文中的 `HTTPS` 和 `Web` 安全的内容只能写到另一篇文章中了。这篇文章结合[浏览器渲染过程及JS引擎浅析](https://www.clloz.com/programming/front-end/js/2019/04/25/how-browser-work/ "浏览器渲染过程及JS引擎浅析")，我们已经能够清晰地了解从浏览器发送HTTP请求给服务器到服务器返回文档，再到浏览器接收到文档进行渲染，最后我们能够看到渲染好的画面的过程，也就可以回答从输入 `URL` 到页面展示中间发生了什么，两篇文章都非常长，因为内容真的很多，可能也有一些不正确和表述的不好的地方，欢迎指出问题，或者有遗漏的细节也欢迎讨论。
+由于网络的内容太多，文章已经太长了，本来想加在本文中的 `HTTPS` 和 `Web` 安全的内容只能写到另一篇文章中了。这篇文章结合[浏览器渲染过程及JS引擎浅析](https://www.clloz.com/programming/front-end/js/2019/04/25/how-browser-work/ '浏览器渲染过程及JS引擎浅析')，我们已经能够清晰地了解从浏览器发送HTTP请求给服务器到服务器返回文档，再到浏览器接收到文档进行渲染，最后我们能够看到渲染好的画面的过程，也就可以回答从输入 `URL` 到页面展示中间发生了什么，两篇文章都非常长，因为内容真的很多，可能也有一些不正确和表述的不好的地方，欢迎指出问题，或者有遗漏的细节也欢迎讨论。
 
 ## 参考文章
 
-1. [网络七层模型与四层模型区别](https://juejin.im/post/59a0472f5188251240632f92 "网络七层模型与四层模型区别")
-2. [互联网协议套件](https://zh.wikipedia.org/wiki/TCP/IP%E5%8D%8F%E8%AE%AE%E6%97%8F "互联网协议套件")
-3. [万维网](https://zh.wikipedia.org/zh-hans/%E4%B8%87%E7%BB%B4%E7%BD%91 "万维网")
-4. [互联网协议入门](https://www.ruanyifeng.com/blog/2012/05/internet_protocol_suite_part_i.html "互联网协议入门")
-5. [HTTP请求方法详解](https://juejin.im/entry/5b004085f265da0b886daf7c "HTTP请求方法详解")
-6. [GET和POST的区别](https://segmentfault.com/a/1190000004014583 "GET和POST的区别")
-7. [完整一次HTTP请求响应过程](https://juejin.im/post/5b10be81518825139e0d8160 "完整一次HTTP请求响应过程")
-8. [HTTP状态码302，303和307](https://www.cnblogs.com/cswuyg/p/3871976.html "HTTP状态码302，303和307")
+1. [网络七层模型与四层模型区别](https://juejin.im/post/59a0472f5188251240632f92 '网络七层模型与四层模型区别')
+2. [互联网协议套件](https://zh.wikipedia.org/wiki/TCP/IP%E5%8D%8F%E8%AE%AE%E6%97%8F '互联网协议套件')
+3. [万维网](https://zh.wikipedia.org/zh-hans/%E4%B8%87%E7%BB%B4%E7%BD%91 '万维网')
+4. [互联网协议入门](https://www.ruanyifeng.com/blog/2012/05/internet_protocol_suite_part_i.html '互联网协议入门')
+5. [HTTP请求方法详解](https://juejin.im/entry/5b004085f265da0b886daf7c 'HTTP请求方法详解')
+6. [GET和POST的区别](https://segmentfault.com/a/1190000004014583 'GET和POST的区别')
+7. [完整一次HTTP请求响应过程](https://juejin.im/post/5b10be81518825139e0d8160 '完整一次HTTP请求响应过程')
+8. [HTTP状态码302，303和307](https://www.cnblogs.com/cswuyg/p/3871976.html 'HTTP状态码302，303和307')

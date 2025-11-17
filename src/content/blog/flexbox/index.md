@@ -6,18 +6,16 @@ tags:
   - css
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
+heroImage: { 'src': './flexbox.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
-`flexbox`（[CSS Flexible Box Layout Module](https://www.w3.org/TR/css-flexbox-1/ "CSS Flexible Box Layout Module")）是 `CSS3` 新增的特性，是一种新的弹性盒模型布局，这是一种在二维层面上的布局模型，它不仅可以让我们方便的分配空间给盒子中的元素，甚至是分配给元素的周围，同时也提供了在二维方向上对齐元素的功能，弹性盒模型布局让我们在实现响应式的页面的时候能够更方便更自如的实现功能。
+`flexbox`（[CSS Flexible Box Layout Module](https://www.w3.org/TR/css-flexbox-1/ 'CSS Flexible Box Layout Module')）是 `CSS3` 新增的特性，是一种新的弹性盒模型布局，这是一种在二维层面上的布局模型，它不仅可以让我们方便的分配空间给盒子中的元素，甚至是分配给元素的周围，同时也提供了在二维方向上对齐元素的功能，弹性盒模型布局让我们在实现响应式的页面的时候能够更方便更自如的实现功能。
 
 ## CSS 中的布局模式
 
-在[CSS2.2规范](https://www.w3.org/TR/2016/WD-CSS22-20160412/Overview.html#minitoc "CSS2.2规范")里出现了四种布局模式（`layout mode`）：
+在[CSS2.2规范](https://www.w3.org/TR/2016/WD-CSS22-20160412/Overview.html#minitoc 'CSS2.2规范')里出现了四种布局模式（`layout mode`）：
 
 - 块布局：用来布置文件。块布局包含以文档为中心的功能，例如 浮动元素或将其放置在多列上的功能。
 - 行内布局：用来布置文本。
@@ -49,7 +47,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 
 > 主轴和交叉轴不是绝对的，并不是水平的轴就是主轴，这取决于你的 `flex-direction` 属性。 当时设置 `flex` 布局之后，子元素的 `float`、`clear`、`vertical-align` 的属性将会失效。
 
-![flex](https://img.clloz.com/blog/writing/flex-direction-terms.svg "flex")
+![flex](https://img.clloz.com/blog/writing/flex-direction-terms.svg 'flex')
 
 ## 容器（flex container）
 
@@ -72,42 +70,42 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 }
 ```
 
-![flex-direction](./images/flex2.png "flex-direction")
+![flex-direction](./images/flex2.png 'flex-direction')
 
 - row（默认值）：主轴为水平方向，起点在左端。
 - row-reverse：主轴为水平方向，起点在右端。
 - column：主轴为垂直方向，起点在上沿。
 - column-reverse：主轴为垂直方向，起点在下沿。
 
-<iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/flex-direction.html"></iframe>
+<!-- <iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/flex-direction.html"></iframe> -->
 
 > `container` 的 `direction` 属性会影响 `row` 和 `row-reverse` 的表现，当 `direction` 为 `ltr` 的时候表现为上述，当为 `rtl` 的时候则相反。
 
 ## flex-wrap
 
-![flex-wrap](./images/flex3.png "flex-wrap")
+![flex-wrap](./images/flex3.png 'flex-wrap')
 
 默认情况下 `flex items` 排在一条直线上，你可以通过 `flex-wrap` 属性来设置项目的换行方式。
 
 ```css
-.container{
+.container {
   flex-wrap: nowrap | wrap | wrap-reverse;
 }
 ```
 
 `flex-wrap` 有三个值： （1） `nowrap`（默认）：不换行。
 
-![flex-wrap1](./images/flex4.png "flex-wrap1")
+![flex-wrap1](./images/flex4.png 'flex-wrap1')
 
 （2） `wrap`：项目换行，按顺序从上到下排列。
 
-![flex-wrap2](./images/flex5.jpg "flex-wrap2")
+![flex-wrap2](./images/flex5.jpg 'flex-wrap2')
 
 （3） `wrap-reverse`：项目换行，按顺序从下到上排列。
 
-![flex-wrap3](./images/flex6.jpg "flex-wrap3")
+![flex-wrap3](./images/flex6.jpg 'flex-wrap3')
 
-<iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/flex-wrap.html"></iframe>
+<!-- <iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/flex-wrap.html"></iframe> -->
 
 ## flex-flow
 
@@ -115,7 +113,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 
 ```css
 .container {
-    flex-flow: <‘flex-direction’> || <‘flex-wrap’>
+  flex-flow: <‘flex-direction’> || <‘flex-wrap’>;
 }
 ```
 
@@ -129,7 +127,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 }
 ```
 
-![justify-content](https://img.clloz.com/blog/writing/justify-content-2.svg "justify-content")
+![justify-content](https://img.clloz.com/blog/writing/justify-content-2.svg 'justify-content')
 
 该属性一共可以取6个值：
 
@@ -140,7 +138,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 - `space-around` : 项目均匀地分布在主轴上，每个项目的环绕空间相等。注意不是绝对的“平均”，由于每个项目两侧的空间相等，所以第一个项目的左边和最后一个项目右边的空间只有其他间隔的一半。
 - `space-evenly` : 所有空白空间均匀地分布在项目之间，任意两个项目之间的间隔都相等（包括首尾与边缘的间隔）
 
-<iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/justify-content.html"></iframe>
+<!-- <iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/justify-content.html"></iframe> -->
 
 > `start line` 和 `end line` 不是固定的，这取决于你的 `container` 的 `flex-direction` 和 `direction` 两个属性。
 
@@ -148,7 +146,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 
 这个属性定义了项目沿交叉轴布局的默认行为，类似于交叉轴上的 `justify-content` 属性。
 
-![align-items](./images/flex8.png "align-items")
+![align-items](./images/flex8.png 'align-items')
 
 ```css
 .container {
@@ -164,7 +162,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 - `baseline` : 项目的 `content` 里的第一行文字的基线对齐
 - `stretch` ( `default` ): 项目未设置高度或者高度为 `auto` 则 `items` 会占满整个容器的高度
 
-<iframe width="100%" height="650px" style="border: none" src="https://cdn.clloz.com/study/flexbox/align-items.html"></iframe>
+<!-- <iframe width="100%" height="650px" style="border: none" src="https://cdn.clloz.com/study/flexbox/align-items.html"></iframe> -->
 
 > `flex-start` 和 `flex-end` 依然不是绝对的，当我们的主轴为 `column` 的时候，`direction` 和 `flex-direction` 依然会影响 `align-items` 的表现。
 
@@ -172,7 +170,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 
 `align-items` 适用于当我们只有一行或者一列 `items` 的情况，当我们拥有多行或者多列 `items` 的时候就需要 `align-content` 属性，它相当于 `justify-content` 在交叉轴上的扩展，我们可以把每一行（每一列）想象成一个 `item`，他们在交叉轴上的排列就可以类比 `justify-content` 在主轴上的效果。
 
-![align-content](./images/flex9.png "align-content")
+![align-content](./images/flex9.png 'align-content')
 
 ```css
 .container {
@@ -189,7 +187,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 - `space-around` : 空白空间均匀分布在行之间，首行和末行与边沿之间的空白是行与行之间空白的一半
 - `stretch` ( `default` ): 所有的行占满全部交叉轴，第一行位于交叉轴起点，占满的方式是增加每一行与下一行或者边沿的空白空间，首行与边沿除外。
 
-<iframe width="100%" height="650px" style="border: none" src="https://cdn.clloz.com/study/flexbox/align-content.html"></iframe>
+<!-- <iframe width="100%" height="650px" style="border: none" src="https://cdn.clloz.com/study/flexbox/align-content.html"></iframe> -->
 
 > 依然要注意 `flex-start` 和 `flex-end` 不是绝对的。当 `flex items` 只有一行的时候，该属性无效。
 
@@ -208,7 +206,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 
 `order` 属性定义项目的排列顺序。数值越小，排列越靠前，默认为0。
 
-![order](./images/flex10.png "order")
+![order](./images/flex10.png 'order')
 
 ```css
 .item {
@@ -220,7 +218,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 
 该属性定义了 `flex item` 放大的能力，它接受一个无比的值作为一个比例。它规定了项目应占用的 `Flex` 容器内可用空间量。 如果所有项目都 `flex-grow` 设置为 `1`，则容器中的剩余空间将平均分配给所有子项。如果其中一个孩子的值为 `2` ，则剩余空间将占用其他空间的两倍（或者至少会尝试）。
 
-![flex-grow](./images/flex11.png "flex-grow")
+![flex-grow](./images/flex11.png 'flex-grow')
 
 ```css
 .item {
@@ -234,7 +232,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 
 该属性定义了 `flex item` 的缩小能力,默认为 `1` ，即如果空间不足，该项目将缩小。
 
-![shrink](./images/flex12.jpg "shrink")
+![shrink](./images/flex12.jpg 'shrink')
 
 ```css
 .item {
@@ -256,7 +254,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 
 需要注意的是，当 `flex-grow` 不为 `0`，设置 `flex-basis` 为 `0` 和 `auto` 会产生不同的效果（当 `item` 中有 `content` 的时候），当 `flex-basis` 为 `0` 的时候，不会考虑环绕元素的空白，而是元素根据 `flex-grow` 全部分完所有空间。而 `flex-basis` 为 `auto` 的时候，会把空白的空间按照 `flex-grow` 的值分配给每个 `item`，此时 `item` 的实际宽度（或者高度）就是 `content` 的宽度 + 分配的空间。效果 `W3C` 文档给出如下图：
 
-![flex-basis](https://img.clloz.com/blog/writing/rel-vs-abs-flex.svg "flex-basis")
+![flex-basis](https://img.clloz.com/blog/writing/rel-vs-abs-flex.svg 'flex-basis')
 
 ```css
 .item {
@@ -272,7 +270,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 
 ```css
 .item {
-  flex: none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]
+  flex: none | [ < 'flex-grow' > < 'flex-shrink' >? || < 'flex-basis' >];
 }
 ```
 
@@ -292,7 +290,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 - 当 `flex-wrap` 为 `nowrap`，且子项宽度和超过父容器宽度时，`flex-shrink` 会起作用，子项会根据 `flex-shrink` 设定的值进行缩小（为`0`的项不缩小）。但这里有一个较为特殊情况，就是当这一行所有子项 `flex-shrink` 都为0时，也就是说所有的子项都不能缩小，就会出现讨厌的横向滚动条
 - 总结上面四点，可以看出不管在什么情况下，在同一时间，`flex-shrink` 和 `flex-grow` 只有一个能起作用，这其中的道理细想起来也很浅显：空间足够时，`flex-grow` 就有发挥的余地，而空间不足时，`flex-shrink` 就能起作用。当然，`flex-wrap` 的值为 `wrap | wrap-reverse` 时，表明可以换行，既然可以换行，一般情况下空间就总是足够的，`flex-shrink` 当然就不会起作用
 
-<iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/item-flex.html"></iframe>
+<!-- <iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/item-flex.html"></iframe> -->
 
 打开开发者工具可以查看简写属性对应的完整属性。
 
@@ -300,7 +298,7 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 
 `align-self` 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖 `align-items` 属性。默认值为 `auto`，表示继承父元素的 `align-items` 属性，如果没有父元素，则等同于 `stretch`。
 
-![align-self](./images/flex13.png "align-self")
+![align-self](./images/flex13.png 'align-self')
 
 ```css
 .item {
@@ -312,29 +310,29 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 
 ## flex 骰子
 
-<iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/flex-dice.html"></iframe>
+<!-- <iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/flex-dice.html"></iframe> -->
 
 ## 基本网格布局
 
 用 `flex: auto` 我们可以轻松实现基本网格布局。
 
-<iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/auto-grid.html"></iframe>
+<!-- <iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/auto-grid.html"></iframe> -->
 
 ## 自定义宽度布局
 
-<iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/custom-grid.html"></iframe>
+<!-- <iframe width="100%" height="250px" style="border: none" src="https://cdn.clloz.com/study/flexbox/custom-grid.html"></iframe> -->
 
 ## 圣杯布局
 
-<iframe width="100%" height="800px" style="border: none" src="https://cdn.clloz.com/study/flexbox/holy-grail.html"></iframe>
+<!-- <iframe width="100%" height="800px" style="border: none" src="https://cdn.clloz.com/study/flexbox/holy-grail.html"></iframe> -->
 
 ## input 样式
 
-<iframe width="100%" height="150px" style="border: none" src="https://cdn.clloz.com/study/flexbox/input.html"></iframe>
+<!-- <iframe width="100%" height="150px" style="border: none" src="https://cdn.clloz.com/study/flexbox/input.html"></iframe> -->
 
 ## 聊天室布局
 
-<iframe width="100%" height="300px" style="border: none" src="https://cdn.clloz.com/study/flexbox/chat.html"></iframe>
+<!-- <iframe width="100%" height="300px" style="border: none" src="https://cdn.clloz.com/study/flexbox/chat.html"></iframe> -->
 
 ## 一些问题
 
@@ -352,6 +350,6 @@ heroImage: {"src":"./flexbox.png","color":"#B4C6DA"}
 
 ## 总结
 
-`flex` 布局其实在我看来主要解决了我们原来的四种布局方式不灵活的地方，有时我们需要一些固定宽度的元素，但想保持元素间的间隔是自适应的，实现器来可能就比较麻烦，有了flex布局我们能够更灵活的安排空白空间，不仅能控制我们的元素，同时能控制包裹在元素周围的空白空间，flex布局的文档目前已经处在 `Candidate Recommendation` 候选建议书阶段了，应该说大部分功能都已经确定了，想要更好的掌握这种布局还有许多细节需要把握，想看文档的点击[这里](https://www.w3.org/TR/2017/CR-css-flexbox-1-20171019/ "这里")，有一个学习flex布局的游戏[FLEXBOX FROGGY](http://flexboxfroggy.com/#zh-cn "FLEXBOX FROGGY")可以尝试一下。
+`flex` 布局其实在我看来主要解决了我们原来的四种布局方式不灵活的地方，有时我们需要一些固定宽度的元素，但想保持元素间的间隔是自适应的，实现器来可能就比较麻烦，有了flex布局我们能够更灵活的安排空白空间，不仅能控制我们的元素，同时能控制包裹在元素周围的空白空间，flex布局的文档目前已经处在 `Candidate Recommendation` 候选建议书阶段了，应该说大部分功能都已经确定了，想要更好的掌握这种布局还有许多细节需要把握，想看文档的点击[这里](https://www.w3.org/TR/2017/CR-css-flexbox-1-20171019/ '这里')，有一个学习flex布局的游戏[FLEXBOX FROGGY](http://flexboxfroggy.com/#zh-cn 'FLEXBOX FROGGY')可以尝试一下。
 
-参考文章： - [A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/ "A Complete Guide to Flexbox") - [\[翻译\]Flex Basis与Width的区别](https://www.jianshu.com/p/17b1b445ecd4 "[翻译]Flex Basis与Width的区别") - [flex设置成1和auto有什么区别](https://segmentfault.com/q/1010000004080910 "flex设置成1和auto有什么区别") - [30 分钟学会 flex 布局](https://zhuanlan.zhihu.com/p/25303493 "30 分钟学会 flex 布局")
+参考文章： - [A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/ 'A Complete Guide to Flexbox') - [\[翻译\]Flex Basis与Width的区别](https://www.jianshu.com/p/17b1b445ecd4 '[翻译]Flex Basis与Width的区别') - [flex设置成1和auto有什么区别](https://segmentfault.com/q/1010000004080910 'flex设置成1和auto有什么区别') - [30 分钟学会 flex 布局](https://zhuanlan.zhihu.com/p/25303493 '30 分钟学会 flex 布局')

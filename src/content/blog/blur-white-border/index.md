@@ -6,16 +6,14 @@ tags:
   - css
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./blur2.png","color":"#B4C6DA"}
+heroImage: { 'src': './blur2.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
 有时候我们会对页面的背景或者某个图片使用 `blur` 属性来达到模糊的毛玻璃效果，这样会让我们的内容更突出，不会被背景图片而干扰。但是使用模糊背景的一个问题是，在模糊的图片边缘，由于模糊效果会让底层的颜色露出来，比如我们对我们页面的背景进行模糊的时候会把 `body` 的背景色透出来，一般我们的 `body` 是白色的，所以会有一圈模糊的白边，下面来分享几种解决问题的方法。
 
-![blur1](./images/blur1.png "blur1")
+![blur1](./images/blur1.png 'blur1')
 
 查看代码点击[页面](https://www.clloz.com/study/blur/blur1.html)
 
@@ -25,34 +23,35 @@ heroImage: {"src":"./blur2.png","color":"#B4C6DA"}
 
 ```html
 <style>
-    html, body {
-        height: 100%;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-    }
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
 
-    .wrap {
-        height: 300px;
-        width: 450px;
-        margin: 20px auto;
-    }
-    .wrap.s2 {
-        overflow: hidden;
-    }
-    .wrap img {
-        height: 300px;
-        width: 450px;
-        filter: blur(5px);
-    }
+  .wrap {
+    height: 300px;
+    width: 450px;
+    margin: 20px auto;
+  }
+  .wrap.s2 {
+    overflow: hidden;
+  }
+  .wrap img {
+    height: 300px;
+    width: 450px;
+    filter: blur(5px);
+  }
 </style>
-<div class="wrap s1"><img src="https://img.clloz.com/blog/writing/totoro.jpg" alt=""></div>
-<div class="wrap s2"><img src="https://img.clloz.com/blog/writing/totoro.jpg" alt=""></div>
+<div class="wrap s1"><img src="https://img.clloz.com/blog/writing/totoro.jpg" alt="" /></div>
+<div class="wrap s2"><img src="https://img.clloz.com/blog/writing/totoro.jpg" alt="" /></div>
 ```
 
 我们可以明显的看出第一个图片的边缘也是模糊效果，`body` 的白色透出，而第二张图片虽然也是模糊的，但是边缘却很清晰。
 
-![blur2](./images/blur2.png "blur2")
+![blur2](./images/blur2.png 'blur2')
 
 查看代码点击[页面](https://www.clloz.com/study/blur/blur2.html)
 
@@ -68,28 +67,29 @@ heroImage: {"src":"./blur2.png","color":"#B4C6DA"}
 
 ```html
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    html, body {
-        height: 100%;
-        width: 100%;
-    }
-    .cover {
-        height: 100%;
-        width: 100%;
-        background: url("https://img.clloz.com/blog/writing/totoro.jpg");
-        background-size: cover;
-        filter: blur(5px) brightness(0.5);
-        transform: scale(1.02)
-    }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+  }
+  .cover {
+    height: 100%;
+    width: 100%;
+    background: url('https://img.clloz.com/blog/writing/totoro.jpg');
+    background-size: cover;
+    filter: blur(5px) brightness(0.5);
+    transform: scale(1.02);
+  }
 </style>
 <div class="cover"></div>
 ```
 
-![blur3](./images/blur3.png "blur3")
+![blur3](./images/blur3.png 'blur3')
 
 查看代码点击[页面](https://www.clloz.com/study/blur/blur3.html)
 
@@ -99,25 +99,26 @@ heroImage: {"src":"./blur2.png","color":"#B4C6DA"}
 
 ```html
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    html, body {
-        height: 100%;
-        width: 100%;
-    }
-    .cover {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        bottom: -8px;
-        left: -8px;
-        background: url("https://img.clloz.com/blog/writing/totoro.jpg");
-        background-size: cover;
-        filter: blur(5px) brightness(0.5);
-    }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+  }
+  .cover {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    bottom: -8px;
+    left: -8px;
+    background: url('https://img.clloz.com/blog/writing/totoro.jpg');
+    background-size: cover;
+    filter: blur(5px) brightness(0.5);
+  }
 </style>
 <div class="cover"></div>
 ```
@@ -130,6 +131,6 @@ heroImage: {"src":"./blur2.png","color":"#B4C6DA"}
 
 ## 参考文章
 
-1. [知乎回答：大漠](https://www.zhihu.com/question/43602522/answer/113510488 "知乎回答：大漠")
-    
-2. [CSS Background Image Blur without blurry edges](http://volkerotto.net/2014/07/03/css-background-image-blur-without-blury-edges/ "CSS Background Image Blur without blurry edges")
+1. [知乎回答：大漠](https://www.zhihu.com/question/43602522/answer/113510488 '知乎回答：大漠')
+
+2. [CSS Background Image Blur without blurry edges](http://volkerotto.net/2014/07/03/css-background-image-blur-without-blury-edges/ 'CSS Background Image Blur without blurry edges')

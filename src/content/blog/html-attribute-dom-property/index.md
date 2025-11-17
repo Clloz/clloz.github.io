@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 `jQuery` 对象有两个方法 `$(selector).prop()` 和 `$(selector).attr()`，这两个方法分别对应 `DOM` 对象的 `property` 属性和 `HTML` 标签的 `attribute`。那么 `property` 和 `attribute` 之间有什么区别呢，一般为了区分我们把 `property` 翻译为属性，而把 `attribute` 翻译为特性。在 `JS` 中这两者还是存在一定的差异的。
@@ -31,9 +29,9 @@ language: '中文'
 ```html
 <div id="test" class="button" foo="1"></div>
 <script>
-    document.getElementById('test').id; // return string: "test"
-    document.getElementById('test').className; // return string: "button"
-    document.getElementById('test').foo; // return undefined 因为foo是一个自定义的attr特性
+  document.getElementById('test').id // return string: "test"
+  document.getElementById('test').className // return string: "button"
+  document.getElementById('test').foo // return undefined 因为foo是一个自定义的attr特性
 </script>
 ```
 
@@ -44,11 +42,11 @@ language: '中文'
 ```html
 <div id="test" class="button"></div>
 <script>
-    var div = document.getElementById('test');
-    div.className = 'red-input';
-    div.getAttribute('class'); // return string: "red-input"
-    div.setAttribute('class','green-input');
-    div.className; // return string: "green-input"
+  var div = document.getElementById('test')
+  div.className = 'red-input'
+  div.getAttribute('class') // return string: "red-input"
+  div.setAttribute('class', 'green-input')
+  div.className // return string: "green-input"
 </script>
 ```
 
@@ -72,5 +70,5 @@ language: '中文'
 
 ## 参考文章
 
-1. [\[译\]HTML attribute与DOM property之间的区别？](https://segmentfault.com/a/1190000008781121 "[译]HTML attribute与DOM property之间的区别？")
-2. [DOM 中 Property 和 Attribute 的区别](https://www.cnblogs.com/elcarim5efil/p/4698980.html "DOM 中 Property 和 Attribute 的区别")
+1. [\[译\]HTML attribute与DOM property之间的区别？](https://segmentfault.com/a/1190000008781121 '[译]HTML attribute与DOM property之间的区别？')
+2. [DOM 中 Property 和 Attribute 的区别](https://www.cnblogs.com/elcarim5efil/p/4698980.html 'DOM 中 Property 和 Attribute 的区别')

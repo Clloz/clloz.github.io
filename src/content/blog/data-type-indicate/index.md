@@ -6,10 +6,8 @@ tags:
   - js
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -21,7 +19,7 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 对于数据了类型我们可以通过 `typeof` 运算符来判断，具体结果看下图。
 
-![typeof](./images/typeof.png "typeof")
+![typeof](./images/typeof.png 'typeof')
 
 ## 基本数据类型
 
@@ -51,15 +49,15 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 根据 `ECMAScript` 标准，`JavaScript` 中只有一种数字类型：`基于 IEEE 754` 标准的双精度 `64` 位二进制格式的值。关于 `Number` 我已经在其他的文章中进行了深入的研究，你可以参考另外的文章：
 
-1. [JavaScript 常用内置对象API - Number](https://www.clloz.com/programming/front-end/js/2020/07/10/built-in-objects-api/#Number "JavaScript 常用内置对象API")
-2. [JavaScript 中的 Number](https://www.clloz.com/programming/front-end/js/2019/06/11/javascript-number/ "JavaScript 中的 Number")
-3. [JavaScript 中的按位操作符](https://www.clloz.com/programming/front-end/js/2020/10/04/bitwise-operator/ "JavaScript 中的按位操作符")
+1. [JavaScript 常用内置对象API - Number](https://www.clloz.com/programming/front-end/js/2020/07/10/built-in-objects-api/#Number 'JavaScript 常用内置对象API')
+2. [JavaScript 中的 Number](https://www.clloz.com/programming/front-end/js/2019/06/11/javascript-number/ 'JavaScript 中的 Number')
+3. [JavaScript 中的按位操作符](https://www.clloz.com/programming/front-end/js/2020/10/04/bitwise-operator/ 'JavaScript 中的按位操作符')
 
 这里特别提一点上面几篇文章没有说的小细节，数字类型中只有一个整数有两种表示方法（正负）： `0` 可表示为 `-0` 和 `+0`（`0` 是 `+0` 的简写）。 在实践中，这也几乎没有影响。 例如 `+0 === -0` 为真。 但是，你可能要注意除以 `0` 的时候：
 
 ```javascript
-42 / +0; // Infinity
-42 / -0; // -Infinity
+42 / +0 // Infinity
+42 / -0 // -Infinity
 ```
 
 ## String
@@ -68,10 +66,10 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 如果你想对字符串有更多的了解可以参考我的另外几篇文章：
 
-1. [搞懂字符编码](https://www.clloz.com/programming/assorted/2019/04/26/character-encoding/ "搞懂字符编码")
-2. [JavaScript 常用内置对象 API - String](https://www.clloz.com/programming/front-end/js/2020/07/10/built-in-objects-api/#String "JavaScript 常用内置对象 API - String")
-3. [正则表达式入门以及JavaScript中的应用](https://www.clloz.com/programming/front-end/js/2020/08/05/regex-javascript-apply/ "正则表达式入门以及JavaScript中的应用")
-4. [状态机和KMP算法](https://www.clloz.com/programming/front-end/js/2020/07/24/fsm-kmp/ "状态机和KMP算法")
+1. [搞懂字符编码](https://www.clloz.com/programming/assorted/2019/04/26/character-encoding/ '搞懂字符编码')
+2. [JavaScript 常用内置对象 API - String](https://www.clloz.com/programming/front-end/js/2020/07/10/built-in-objects-api/#String 'JavaScript 常用内置对象 API - String')
+3. [正则表达式入门以及JavaScript中的应用](https://www.clloz.com/programming/front-end/js/2020/08/05/regex-javascript-apply/ '正则表达式入门以及JavaScript中的应用')
+4. [状态机和KMP算法](https://www.clloz.com/programming/front-end/js/2020/07/24/fsm-kmp/ '状态机和KMP算法')
 
 ## Symbol 和 BigInt
 
@@ -115,23 +113,23 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 ```javascript
 let toString = Object.prototype.toString //=>Object.prototype.toString
 
-console.log(toString.call(10)); //=>"[object Number]"
-console.log(toString.call(NaN)); //=>"[object Number]"
-console.log(toString.call("xxx")); //=>"[object String]"
-console.log(toString.call(true)); //=>"[object Boolean]"
-console.log(toString.call(null)); //=>"[object Null]"
-console.log(toString.call(undefined)); //=>"[object Undefined]"
-console.log(toString.call(Symbol())); //=>"[object Symbol]"
-console.log(toString.call(BigInt(10))); //=>"[object BigInt]"
-console.log(toString.call({xxx:'xxx'})); //=>"[object Object]"
-console.log(toString.call([10,20])); //=>"[object Array]"
-console.log(toString.call(/^\d+$/)); //=>"[object RegExp]"
-console.log(toString.call(function(){})); //=>"[object Function]"
+console.log(toString.call(10)) //=>"[object Number]"
+console.log(toString.call(NaN)) //=>"[object Number]"
+console.log(toString.call('xxx')) //=>"[object String]"
+console.log(toString.call(true)) //=>"[object Boolean]"
+console.log(toString.call(null)) //=>"[object Null]"
+console.log(toString.call(undefined)) //=>"[object Undefined]"
+console.log(toString.call(Symbol())) //=>"[object Symbol]"
+console.log(toString.call(BigInt(10))) //=>"[object BigInt]"
+console.log(toString.call({ xxx: 'xxx' })) //=>"[object Object]"
+console.log(toString.call([10, 20])) //=>"[object Array]"
+console.log(toString.call(/^\d+$/)) //=>"[object RegExp]"
+console.log(toString.call(function () {})) //=>"[object Function]"
 ```
 
 ## 参考文章
 
-1. [JavaScript深入理解之undefined与null](https://juejin.im/post/5aa4f7cc518825557e780256 "JavaScript深入理解之undefined与null")
-2. [简单了解ES6/ES2015 Symbol() 方法](https://www.zhangxinxu.com/wordpress/2018/04/known-es6-symbol-function/ "简单了解ES6/ES2015 Symbol() 方法")
-3. [JS中数据类型检测四种方式的优缺点](https://juejin.im/post/5e88a683f265da47db2e38b8 "JS中数据类型检测四种方式的优缺点")
-4. [JavaScript 数据类型和数据结构 - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures "JavaScript 数据类型和数据结构 - MDN")
+1. [JavaScript深入理解之undefined与null](https://juejin.im/post/5aa4f7cc518825557e780256 'JavaScript深入理解之undefined与null')
+2. [简单了解ES6/ES2015 Symbol() 方法](https://www.zhangxinxu.com/wordpress/2018/04/known-es6-symbol-function/ '简单了解ES6/ES2015 Symbol() 方法')
+3. [JS中数据类型检测四种方式的优缺点](https://juejin.im/post/5e88a683f265da47db2e38b8 'JS中数据类型检测四种方式的优缺点')
+4. [JavaScript 数据类型和数据结构 - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures 'JavaScript 数据类型和数据结构 - MDN')

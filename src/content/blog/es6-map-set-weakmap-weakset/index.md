@@ -6,10 +6,8 @@ tags:
   - js
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -52,8 +50,8 @@ Set 结构的实例有以下属性。
 `Set` 结构的实例的 `forEach` 方法，用于对每个成员执行某种操作，没有返回值。 `forEach` 方法的参数就是一个处理函数。该函数的参数依次为键 值、键名、集合本身。另外， `forEach` 方法还可以有第二个参数，表示绑定的 `this` 对象。
 
 ```javascript
-let set = new Set([1, 2, 3]);
-set.forEach((value, key) => console.log(value * 2) ) // 2
+let set = new Set([1, 2, 3])
+set.forEach((value, key) => console.log(value * 2)) // 2
 // 4
 // 6
 ```
@@ -86,14 +84,14 @@ WeakSet 结构有以下三个方法。
 ```javascript
 const foos = new WeakSet()
 class Foo {
-    constructor() { 
-        foos.add(this)
+  constructor() {
+    foos.add(this)
+  }
+  method() {
+    if (!foos.has(this)) {
+      throw new TypeError('Foo.prototype.method 只能在Foo的实例上调用!')
     }
-    method () {
-        if (!foos.has(this)) {
-            throw new TypeError('Foo.prototype.method 只能在Foo的实例上调用!');
-        }
-    }
+  }
 }
 ```
 
@@ -102,27 +100,27 @@ class Foo {
 ```javascript
 // 对 传入的subject对象 内部存储的所有内容执行回调
 function execRecursively(fn, subject, _refs = null) {
-    if (!_refs) _refs = new WeakSet();
+  if (!_refs) _refs = new WeakSet()
 
-    // 避免无限递归
-    if (_refs.has(subject)) return;
+  // 避免无限递归
+  if (_refs.has(subject)) return
 
-    fn(subject);
-    if ('object' === typeof subject) {
-        _refs.add(subject);
-        for (let key in subject) execRecursively(fn, subject[key], _refs);
-    }
+  fn(subject)
+  if ('object' === typeof subject) {
+    _refs.add(subject)
+    for (let key in subject) execRecursively(fn, subject[key], _refs)
+  }
 }
 
 const foo = {
-    foo: 'Foo',
-    bar: {
-        bar: 'Bar',
-    },
-};
+  foo: 'Foo',
+  bar: {
+    bar: 'Bar'
+  }
+}
 
-foo.bar.baz = foo; // 循环引用!
-execRecursively(obj => console.log(obj), foo);
+foo.bar.baz = foo // 循环引用!
+execRecursively((obj) => console.log(obj), foo)
 // { foo: 'Foo', bar: { bar: 'Bar', baz: [Circular] } }
 // Foo
 // { bar: 'Bar', baz: { foo: 'Foo', bar: [Circular] } }
@@ -135,14 +133,14 @@ execRecursively(obj => console.log(obj), foo);
 
 `Map` 和 `Object` 的区别如下：
 
-|  | `Map` | `Object` |
-| --- | --- | --- |
-| 意外的键 | `Map 默认情况不包含任何键。只包含显式插入的键。` | 一个 `Object` 有一个原型, 原型链上的键名有可能和你自己在对象上的设置的键名产生冲突。（也可以使用 `Object.create(null)` 创建一个没有原型的对象 |
-| 键的类型 | 一个 `Map` 的键可以是任意值，包括函数、对象或任意基本类型。 | 一个 `Object` 的键必须是一个 `String` `或是Symbol`。 |
-| 键的顺序 | `Map` 中的 `key` 是有序的。因此，当迭代的时候，一个 `Map` 对象以插入的顺序返回键值。 | 自 `ECMAScript 2015` 规范以来，对象保留了字符串和 `Symbol` 键的创建顺序； 因此，在只有字符串键的对象上进行迭代将按插入顺序产生键。 |
-| `Size` | `Map` 的键值对个数可以轻易地通过 `size` 属性获取 | `Object` 的键值对个数只能手动计算 |
-| 迭代 | `Map` 是 `iterable` 的，所以可以直接被迭代。 | 迭代一个 `Object` 需要以某种方式获取它的键然后才能迭代。 |
-| 性能 | 在频繁增删键值对的场景下表现更好。 | 在频繁添加和删除键值对的场景下未作出优化。 |
+|          | `Map`                                                                                | `Object`                                                                                                                                      |
+| -------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| 意外的键 | `Map 默认情况不包含任何键。只包含显式插入的键。`                                     | 一个 `Object` 有一个原型, 原型链上的键名有可能和你自己在对象上的设置的键名产生冲突。（也可以使用 `Object.create(null)` 创建一个没有原型的对象 |
+| 键的类型 | 一个 `Map` 的键可以是任意值，包括函数、对象或任意基本类型。                          | 一个 `Object` 的键必须是一个 `String` `或是Symbol`。                                                                                          |
+| 键的顺序 | `Map` 中的 `key` 是有序的。因此，当迭代的时候，一个 `Map` 对象以插入的顺序返回键值。 | 自 `ECMAScript 2015` 规范以来，对象保留了字符串和 `Symbol` 键的创建顺序； 因此，在只有字符串键的对象上进行迭代将按插入顺序产生键。            |
+| `Size`   | `Map` 的键值对个数可以轻易地通过 `size` 属性获取                                     | `Object` 的键值对个数只能手动计算                                                                                                             |
+| 迭代     | `Map` 是 `iterable` 的，所以可以直接被迭代。                                         | 迭代一个 `Object` 需要以某种方式获取它的键然后才能迭代。                                                                                      |
+| 性能     | 在频繁增删键值对的场景下表现更好。                                                   | 在频繁添加和删除键值对的场景下未作出优化。                                                                                                    |
 
 Map 的键实际上是跟内存地址绑定的，只要内存地址不一样，就视为两个键。这就解决了同名属性碰撞(`clash`)的问题，我们扩展别人的库的时候，如果使用对象作为键名，就不用担心自己的属性与原作者的属性同名。
 
@@ -166,15 +164,15 @@ Map 的属性和方法：
 `Map` 结构转为数组结构，比较快速的方法是使用扩展运算符。结合数组的 `map` 方法、`filter` 方法，可以实现 `Map` 的遍历和过滤(`Map` 本身没有 `map` 和 `filter` 方法)。
 
 ```javascript
-const myMap = new Map().set(true, 7).set({ foo: 3 }, ['abc']);
-[...myMap];
+const myMap = new Map().set(true, 7).set({ foo: 3 }, ['abc'])
+;[...myMap]
 // [ [ true, 7 ], [ { foo: 3 }, [ 'abc' ] ] ]
 
 //数组转为Map
 new Map([
-    [true, 7],
-    [{ foo: 3 }, ['abc']],
-]);
+  [true, 7],
+  [{ foo: 3 }, ['abc']]
+])
 // Map {
 // true => 7,
 //   Object {foo: 3} => ['abc']
@@ -185,25 +183,24 @@ new Map([
 
 ```javascript
 function strMapToObj(strMap) {
-    let obj = Object.create(null);
-    for (let [k, v] of strMap) {
-        obj[k] = v;
-    }
-    return obj;
+  let obj = Object.create(null)
+  for (let [k, v] of strMap) {
+    obj[k] = v
+  }
+  return obj
 }
-const myMap = new Map().set('yes', true).set('no', false);
-strMapToObj(myMap);
+const myMap = new Map().set('yes', true).set('no', false)
+strMapToObj(myMap)
 // { yes: true, no: false }
-
 ```
 
 `Map` 转为 `JSON` 要区分两种情况。一种情况是，`Map` 的键名都是字符串，这时可以选择转为对象 `JSON`。
 
 ```javascript
 function strMapToJson(strMap) {
-    return JSON.stringify(strMapToObj(strMap));
+  return JSON.stringify(strMapToObj(strMap))
 }
-let myMap = new Map().set('yes', true).set('no', false); 
+let myMap = new Map().set('yes', true).set('no', false)
 strMapToJson(myMap)
 // '{"yes":true,"no":false}'
 ```
@@ -211,10 +208,10 @@ strMapToJson(myMap)
 另一种情况是，`Map` 的键名有非字符串，这时可以选择转为数组 `JSON`。
 
 ```javascript
-function mapToArrayJson(map) { 
-    return JSON.stringify([...map]);
+function mapToArrayJson(map) {
+  return JSON.stringify([...map])
 }
-let myMap = new Map().set(true, 7).set({foo: 3}, ['abc']); 
+let myMap = new Map().set(true, 7).set({ foo: 3 }, ['abc'])
 mapToArrayJson(myMap)
 // '[[true,7],[{"foo":3},["abc"]]]'
 ```
@@ -222,31 +219,32 @@ mapToArrayJson(myMap)
 `Map` 的迭代：
 
 ```javascript
-let myMap = new Map();
-myMap.set(0, "zero");
-myMap.set(1, "one");
-for (let [key, value] of myMap) { //解构
-  console.log(key + " = " + value);
+let myMap = new Map()
+myMap.set(0, 'zero')
+myMap.set(1, 'one')
+for (let [key, value] of myMap) {
+  //解构
+  console.log(key + ' = ' + value)
 }
 // 将会显示两个log。一个是"0 = zero"另一个是"1 = one"
 
 for (let key of myMap.keys()) {
-  console.log(key);
+  console.log(key)
 }
 // 将会显示两个log。 一个是 "0" 另一个是 "1"
 
 for (let value of myMap.values()) {
-  console.log(value);
+  console.log(value)
 }
 // 将会显示两个log。 一个是 "zero" 另一个是 "one"
 
 for (let [key, value] of myMap.entries()) {
-  console.log(key + " = " + value);
+  console.log(key + ' = ' + value)
 }
 // 将会显示两个log。 一个是 "0 = zero" 另一个是 "1 = one"
 
-myMap.forEach(function(value, key) {
-  console.log(key + " = " + value);
+myMap.forEach(function (value, key) {
+  console.log(key + ' = ' + value)
 })
 // 将会显示两个logs。 一个是 "0 = zero" 另一个是 "1 = one"
 ```
@@ -254,53 +252,51 @@ myMap.forEach(function(value, key) {
 合并 `Map`:
 
 ```javascript
-let original = new Map([
-  [1, 'one']
-]);
+let original = new Map([[1, 'one']])
 
-let clone = new Map(original);
+let clone = new Map(original)
 
-console.log(clone.get(1)); // one
-console.log(original === clone); // false. 浅比较 不为同一个对象的引用
+console.log(clone.get(1)) // one
+console.log(original === clone) // false. 浅比较 不为同一个对象的引用
 
 //合并的 Map 中存在重复的键名，后面的会覆盖前者
 let first = new Map([
   [1, 'one'],
   [2, 'two'],
-  [3, 'three'],
-]);
+  [3, 'three']
+])
 
 let second = new Map([
   [1, 'uno'],
   [2, 'dos']
-]);
+])
 
 // 合并两个Map对象时，如果有重复的键值，则后面的会覆盖前面的。
 // 展开运算符本质上是将Map对象转换成数组。
-let merged = new Map([...first, ...second]);
+let merged = new Map([...first, ...second])
 
-console.log(merged.get(1)); // uno
-console.log(merged.get(2)); // dos
-console.log(merged.get(3)); // three
+console.log(merged.get(1)) // uno
+console.log(merged.get(2)) // dos
+console.log(merged.get(3)) // three
 
 //也可以与数组合并
 let first = new Map([
   [1, 'one'],
   [2, 'two'],
-  [3, 'three'],
-]);
+  [3, 'three']
+])
 
 let second = new Map([
   [1, 'uno'],
   [2, 'dos']
-]);
+])
 
 // Map对象同数组进行合并时，如果有重复的键值，则后面的会覆盖前面的。
-let merged = new Map([...first, ...second, [1, 'eins']]);
+let merged = new Map([...first, ...second, [1, 'eins']])
 
-console.log(merged.get(1)); // eins
-console.log(merged.get(2)); // dos
-console.log(merged.get(3)); // three
+console.log(merged.get(1)) // eins
+console.log(merged.get(2)) // dos
+console.log(merged.get(3)) // three
 ```
 
 ## WeakMap
@@ -312,17 +308,20 @@ console.log(merged.get(3)); // three
 `WeakMap` 的设计目的在于，有时我们想在某个对象上面存放一些数据，但是这会形成对于这个对象的引用。请看下面的例子。
 
 ```javascript
-const e1 = document.getElementById('foo');
-const e2 = document.getElementById('bar');
-const arr = [[e1, 'foo 元素'],[e2, 'bar 元素'], ];
+const e1 = document.getElementById('foo')
+const e2 = document.getElementById('bar')
+const arr = [
+  [e1, 'foo 元素'],
+  [e2, 'bar 元素']
+]
 ```
 
 上面代码中， `e1` 和 `e2` 是两个对象，我们通过 `arr` 数组对这两个对象添加一些 文字说明。这就形成了 `arr` 对 `e1` 和 `e2` 的引用。一旦不再需要这两个对象，我们就必须手动删除这个引用，否则垃圾回收机制就不会释放 `e1` 和 `e2` 占用的内存。
 
 ```javascript
 // 不需要 e1 和 e2 的时候 // 必须手动删除引用
-arr [0] = null;
-arr [1] = null;
+arr[0] = null
+arr[1] = null
 ```
 
 上面这样的写法显然很不方便。一旦忘了写，就会造成内存泄露。`WeakMap` 就是为了解决这个问题而诞生的，它的键名所引用的对象都是弱引用， 即垃圾回收机制不将该引用考虑在内。因此，只要所引用的对象的其他引用都被清 除，垃圾回收机制就会释放该对象所占用的内存。也就是说，一旦不再需要，`WeakMap` 里面的键名对象和所对应的键值对会自动消失，不用手动删除引用。基本上，如果你要往对象上添加数据，又不想干扰垃圾回收机制，就可以使用 `WeakMap`。
@@ -330,9 +329,9 @@ arr [1] = null;
 一个典型应用场景是，在网页的 `DOM` 元素上添加数据，就可以使 用 `WeakMap` 结构。当该 `DOM` 元素被清除，其所对应的 `WeakMap` 记录就会自动移除。
 
 ```javascript
-const wm = new WeakMap();
-const element = document.getElementById('example');
-wm.set(element, 'some information'); 
+const wm = new WeakMap()
+const element = document.getElementById('example')
+wm.set(element, 'some information')
 wm.get(element) // "some information"
 ```
 
@@ -343,40 +342,44 @@ wm.get(element) // "some information"
 `WeakMap` 的一个例子： `myElement` 是一个 `DOM` 节点，每当发生 `click` 事件，就更新一 下状态。我们将这个状态作为键值放在 `WeakMap` 里，对应的键名就是 `myElement` 。一旦这个 `DOM` 节点删除，该状态就会自动消失，不存在内存泄漏风险。
 
 ```javascript
-let myElement = document.getElementById('logo'); 
-let myWeakmap = new WeakMap();
+let myElement = document.getElementById('logo')
+let myWeakmap = new WeakMap()
 
-myWeakmap.set(myElement, {timesClicked: 0});
+myWeakmap.set(myElement, { timesClicked: 0 })
 
-myElement.addEventListener('click', function() { 
-    let logoData = myWeakmap.get(myElement); 
-    logoData.timesClicked++;
-}, false);
+myElement.addEventListener(
+  'click',
+  function () {
+    let logoData = myWeakmap.get(myElement)
+    logoData.timesClicked++
+  },
+  false
+)
 ```
 
 实现一个带有 `clear()` 方法的 `WeakMap` 类：
 
 ```javascript
 class ClearableWeakMap {
-    constructor(init) {
-        this._wm = new WeakMap(init);
-    }
-    clear() {
-        this._wm = new WeakMap();
-    }
-    delete(k) {
-        return this._wm.delete(k);
-    }
-    get(k) {
-        return this._wm.get(k);
-    }
-    has(k) {
-        return this._wm.has(k);
-    }
-    set(k, v) {
-        this._wm.set(k, v);
-        return this;
-    }
+  constructor(init) {
+    this._wm = new WeakMap(init)
+  }
+  clear() {
+    this._wm = new WeakMap()
+  }
+  delete(k) {
+    return this._wm.delete(k)
+  }
+  get(k) {
+    return this._wm.get(k)
+  }
+  has(k) {
+    return this._wm.has(k)
+  }
+  set(k, v) {
+    this._wm.set(k, v)
+    return this
+  }
 }
 ```
 
@@ -384,4 +387,4 @@ class ClearableWeakMap {
 
 1. 《ES6 标准入门》 —— 阮一峰
 2. MDN
-3. [深入理解 Set Map WeakSet WeakMap](https://github.com/frontend9/fe9-library/issues/275 "深入理解 Set")
+3. [深入理解 Set Map WeakSet WeakMap](https://github.com/frontend9/fe9-library/issues/275 '深入理解 Set')

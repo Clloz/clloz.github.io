@@ -7,10 +7,8 @@ tags:
   - 学习资源
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./ffmpeg.png","color":"#B4C6DA"}
+heroImage: { 'src': './ffmpeg.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -18,7 +16,7 @@ heroImage: {"src":"./ffmpeg.png","color":"#B4C6DA"}
 
 ## 安装
 
-`Mac` 上的安装十分简单，直接用 `homebrew` 就可以了，其他平台的自己 `google` 一下，应该也很容易。[这里](https://github.com/FFmpeg/FFmpeg "这里")是 `ffmpeg` 的 `GitHub` 地址。
+`Mac` 上的安装十分简单，直接用 `homebrew` 就可以了，其他平台的自己 `google` 一下，应该也很容易。[这里](https://github.com/FFmpeg/FFmpeg '这里')是 `ffmpeg` 的 `GitHub` 地址。
 
 ```bash
 brew install ffmpeg
@@ -26,7 +24,7 @@ brew install ffmpeg
 
 ## 常用命令
 
-`ffmpeg Document` 链接：[https://ffmpeg.org/ffmpeg.html](https://ffmpeg.org/ffmpeg.html "https://ffmpeg.org/ffmpeg.html")
+`ffmpeg Document` 链接：[https://ffmpeg.org/ffmpeg.html](https://ffmpeg.org/ffmpeg.html 'https://ffmpeg.org/ffmpeg.html')
 
 ## 常用命令参数
 
@@ -127,16 +125,16 @@ ffmpeg -i input.mp4 -ss 00:00:20 -t 10 -r 1 -q:v 2 -f image2 pic-%03d.jpeg
 
 ## 提取 gyao 的视频
 
-有了上面的内容，提取 `gyao` 上的视频就很简单了，只要找到文件的请求路径就可以了，我们可以到这个网站[Gyao MMS URL](http://kmake.net/gyaommsurl/?url= "Gyao MMS URL")来提取，进入网站直接输入就能得到不同分辨率的文件地址，得到地址后我们直接用 `ffmpeg` 下载到本地即可。不过下载的时候最好还是挂着梯子，文件很大的时候由于网络问题很难下载成功，我下 `720p` 的时候就失败了，最后只能下载低清晰度的。
+有了上面的内容，提取 `gyao` 上的视频就很简单了，只要找到文件的请求路径就可以了，我们可以到这个网站[Gyao MMS URL](http://kmake.net/gyaommsurl/?url= 'Gyao MMS URL')来提取，进入网站直接输入就能得到不同分辨率的文件地址，得到地址后我们直接用 `ffmpeg` 下载到本地即可。不过下载的时候最好还是挂着梯子，文件很大的时候由于网络问题很难下载成功，我下 `720p` 的时候就失败了，最后只能下载低清晰度的。
 
 趁着日本节点的网络环境比较好，顺利把 `720p` 的下载下来了，已经上传到百度云了，下载地址和提取码`https://pan.baidu.com/s/1MlC7kHXHJXGyqH50e3SBgg jzaq`
 
 ## 关于视音频技术
 
-学习就像不断的画圆，自己掌握的知识越多，自己的半径就越大，面积也越大，不过同时增长的是自己未知的东西，并且增长更快，也就是所谓的知道的越多，不知道的就越多。`ffmpeg` 是视音频技术的基础和入门，如果想学习这方面技术的可以看： 1. [雷霄骅的专栏](https://blog.csdn.net/leixiaohua1020 "雷霄骅的专栏") 2. [FFMPEG视音频编解码零基础学习方法](https://blog.csdn.net/leixiaohua1020/article/details/15811977 "FFMPEG视音频编解码零基础学习方法") 人的一生太短暂了，知识的汪洋能取一勺就不简单了，只能抓紧有限的时间尽量多的学习。
+学习就像不断的画圆，自己掌握的知识越多，自己的半径就越大，面积也越大，不过同时增长的是自己未知的东西，并且增长更快，也就是所谓的知道的越多，不知道的就越多。`ffmpeg` 是视音频技术的基础和入门，如果想学习这方面技术的可以看： 1. [雷霄骅的专栏](https://blog.csdn.net/leixiaohua1020 '雷霄骅的专栏') 2. [FFMPEG视音频编解码零基础学习方法](https://blog.csdn.net/leixiaohua1020/article/details/15811977 'FFMPEG视音频编解码零基础学习方法') 人的一生太短暂了，知识的汪洋能取一勺就不简单了，只能抓紧有限的时间尽量多的学习。
 
 ## 参考文章
 
-1. [ffmpeg基础使用 合肥懒皮](https://www.jianshu.com/p/ddafe46827b7 "ffmpeg基础使用  合肥懒皮")
-2. [GyaO（ギャオ）をFFmpegで完全攻略](https://koukokutou-club.com/gyao/ffmpeg.html "GyaO（ギャオ）をFFmpegで完全攻略")
-3. [FFMPEG常用命令-慕课网知乎](https://zhuanlan.zhihu.com/p/46903150 "FFMPEG常用命令-慕课网知乎")
+1. [ffmpeg基础使用 合肥懒皮](https://www.jianshu.com/p/ddafe46827b7 'ffmpeg基础使用  合肥懒皮')
+2. [GyaO（ギャオ）をFFmpegで完全攻略](https://koukokutou-club.com/gyao/ffmpeg.html 'GyaO（ギャオ）をFFmpegで完全攻略')
+3. [FFMPEG常用命令-慕课网知乎](https://zhuanlan.zhihu.com/p/46903150 'FFMPEG常用命令-慕课网知乎')

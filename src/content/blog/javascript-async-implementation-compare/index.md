@@ -6,10 +6,8 @@ tags:
   - js
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -17,11 +15,11 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 如果你对 `ES6` 的异步解决方案还不熟悉，请看之前的几篇文章：
 
-- [深入 Promise](https://www.clloz.com/programming/front-end/js/2020/10/28/deep-into-promise/ "深入 Promise")
-- [ES6 迭代器 Iterator](https://www.clloz.com/programming/front-end/js/2020/10/31/es6-iterator/ "ES6 迭代器 Iterator")
-- [ES6 生成器 Generator](https://www.clloz.com/programming/front-end/js/2020/10/31/es6-generator/ "ES6 生成器 Generator")
-- [生成器 Generator 的异步应用](https://www.clloz.com/programming/front-end/js/2020/11/01/generator-async/ "生成器 Generator 的异步应用")
-- [深入 aync/await](https://www.clloz.com/programming/front-end/js/2020/11/02/deep-into-aync-await/ "深入 aync/await")
+- [深入 Promise](https://www.clloz.com/programming/front-end/js/2020/10/28/deep-into-promise/ '深入 Promise')
+- [ES6 迭代器 Iterator](https://www.clloz.com/programming/front-end/js/2020/10/31/es6-iterator/ 'ES6 迭代器 Iterator')
+- [ES6 生成器 Generator](https://www.clloz.com/programming/front-end/js/2020/10/31/es6-generator/ 'ES6 生成器 Generator')
+- [生成器 Generator 的异步应用](https://www.clloz.com/programming/front-end/js/2020/11/01/generator-async/ '生成器 Generator 的异步应用')
+- [深入 aync/await](https://www.clloz.com/programming/front-end/js/2020/11/02/deep-into-aync-await/ '深入 aync/await')
 
 ## 异步处理的方式
 
@@ -35,13 +33,13 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ```javascript
 ajax('XXX1', () => {
+  // callback 函数体
+  ajax('XXX2', () => {
     // callback 函数体
-    ajax('XXX2', () => {
-        // callback 函数体
-        ajax('XXX3', () => {
-            // callback 函数体
-        })
+    ajax('XXX3', () => {
+      // callback 函数体
     })
+  })
 })
 ```
 
@@ -54,11 +52,11 @@ ajax('XXX1', () => {
 ```javascript
 // try catch 无法捕获到内部的错误
 try {
-    setTimeout(() => {
-        console.log(aa);
-    }, 1000);
+  setTimeout(() => {
+    console.log(aa)
+  }, 1000)
 } catch (error) {
-    console.log(error);
+  console.log(error)
 }
 ```
 
@@ -111,24 +109,24 @@ try {
 
 ```javascript
 var someAsyncThing = function () {
-    return new Promise(function (resolve, reject) {
-        // 下面一行会报错，因为x没有声明
-        console.log('throw error');
-        resolve(x + 2);
-    });
-};
+  return new Promise(function (resolve, reject) {
+    // 下面一行会报错，因为x没有声明
+    console.log('throw error')
+    resolve(x + 2)
+  })
+}
 try {
-    someAsyncThing()
-        .then(function () {
-            console.log('everything is great');
-        })
-        .catch(e => {
-            console.log('promise catch: ' + e); //promise catch: ReferenceError: x is not defined
-        });
+  someAsyncThing()
+    .then(function () {
+      console.log('everything is great')
+    })
+    .catch((e) => {
+      console.log('promise catch: ' + e) //promise catch: ReferenceError: x is not defined
+    })
 
-    console.log(123123); //123123
+  console.log(123123) //123123
 } catch (e) {
-    console.log('outer: ' + e);
+  console.log('outer: ' + e)
 }
 ```
 
@@ -136,22 +134,22 @@ try {
 
 ```javascript
 function* gen() {
-    yield 1;
-    try {
-        throw new Error('error1');
-    } catch (e) {
-        console.log('inner: ' + e);
-    }
-    yield 2;
-    throw new Error('error2');
+  yield 1
+  try {
+    throw new Error('error1')
+  } catch (e) {
+    console.log('inner: ' + e)
+  }
+  yield 2
+  throw new Error('error2')
 }
-let g = gen();
+let g = gen()
 try {
-    console.log(g.next());
-    console.log(g.next());
-    console.log(g.next());
+  console.log(g.next())
+  console.log(g.next())
+  console.log(g.next())
 } catch (e) {
-    console.log('outer: ' + e);
+  console.log('outer: ' + e)
 }
 // { value: 1, done: false }
 // inner: Error: error1
@@ -163,26 +161,25 @@ try {
 
 ```javascript
 async function test() {
-    console.log(x);
+  console.log(x)
 }
 test()
-    .then(val => console.log(val))
-    .catch(reason => {
-        console.log('reason: ' + reason); //reason: ReferenceError: x is not defined
-    });
-
+  .then((val) => console.log(val))
+  .catch((reason) => {
+    console.log('reason: ' + reason) //reason: ReferenceError: x is not defined
+  })
 
 async function test() {
-    console.log(1);
-    await new Promise(resolve => {
-        throw new Error('promise error');
-    });
+  console.log(1)
+  await new Promise((resolve) => {
+    throw new Error('promise error')
+  })
 }
 test()
-    .then(val => console.log(val))
-    .catch(reason => {
-        console.log('reason: ' + reason); //reason: Error: promise error
-    });
+  .then((val) => console.log(val))
+  .catch((reason) => {
+    console.log('reason: ' + reason) //reason: Error: promise error
+  })
 ```
 
 ## 读取最大文件实现
@@ -192,208 +189,207 @@ test()
 ## 回调函数实现
 
 ```javascript
-var fs = require('fs');
-var path = require('path');
+var fs = require('fs')
+var path = require('path')
 
 function findLargest(dir, cb) {
-    // 读取目录下的所有文件
-    fs.readdir(dir, function (er, files) {
-        if (er) return cb(er);
+  // 读取目录下的所有文件
+  fs.readdir(dir, function (er, files) {
+    if (er) return cb(er)
 
-        var counter = files.length;
-        var errored = false;
-        var stats = [];
+    var counter = files.length
+    var errored = false
+    var stats = []
 
-        files.forEach(function (file, index) {
-            // 读取文件信息
-            fs.stat(path.join(dir, file), function (er, stat) {
-                if (errored) return;
+    files.forEach(function (file, index) {
+      // 读取文件信息
+      fs.stat(path.join(dir, file), function (er, stat) {
+        if (errored) return
 
-                if (er) {
-                    errored = true;
-                    return cb(er);
-                }
+        if (er) {
+          errored = true
+          return cb(er)
+        }
 
-                stats[index] = stat;
+        stats[index] = stat
 
-                // 事先算好有多少个文件，读完 1 个文件信息，计数减 1，当为 0 时，说明读取完毕，此时执行最终的比较操作
-                if (--counter == 0) {
-                    var largest = stats
-                        .filter(function (stat) {
-                            return stat.isFile();
-                        })
-                        .reduce(function (prev, next) {
-                            if (prev.size > next.size) return prev;
-                            return next;
-                        });
+        // 事先算好有多少个文件，读完 1 个文件信息，计数减 1，当为 0 时，说明读取完毕，此时执行最终的比较操作
+        if (--counter == 0) {
+          var largest = stats
+            .filter(function (stat) {
+              return stat.isFile()
+            })
+            .reduce(function (prev, next) {
+              if (prev.size > next.size) return prev
+              return next
+            })
 
-                    cb(null, files[stats.indexOf(largest)]);
-                }
-            });
-        });
-    });
+          cb(null, files[stats.indexOf(largest)])
+        }
+      })
+    })
+  })
 }
 // 查找当前目录最大的文件
 findLargest('./', function (er, filename) {
-    if (er) return console.error(er);
-    console.log('largest file was:', filename);
-});
+  if (er) return console.error(er)
+  console.log('largest file was:', filename)
+})
 ```
 
 ## Promise 实现
 
 ```javascript
-var fs = require('fs');
-var path = require('path');
+var fs = require('fs')
+var path = require('path')
 
 var readDir = function (dir) {
-    return new Promise(function (resolve, reject) {
-        fs.readdir(dir, function (err, files) {
-            if (err) reject(err);
-            resolve(files);
-        });
-    });
-};
+  return new Promise(function (resolve, reject) {
+    fs.readdir(dir, function (err, files) {
+      if (err) reject(err)
+      resolve(files)
+    })
+  })
+}
 
 var stat = function (path) {
-    return new Promise(function (resolve, reject) {
-        fs.stat(path, function (err, stat) {
-            if (err) reject(err);
-            resolve(stat);
-        });
-    });
-};
+  return new Promise(function (resolve, reject) {
+    fs.stat(path, function (err, stat) {
+      if (err) reject(err)
+      resolve(stat)
+    })
+  })
+}
 
 function findLargest(dir) {
-    return readDir(dir)
-        .then(function (files) {
-            let promises = files.map(file => stat(path.join(dir, file)));
-            return Promise.all(promises).then(function (stats) {
-                return { stats, files };
-            });
+  return readDir(dir)
+    .then(function (files) {
+      let promises = files.map((file) => stat(path.join(dir, file)))
+      return Promise.all(promises).then(function (stats) {
+        return { stats, files }
+      })
+    })
+    .then((data) => {
+      let largest = data.stats
+        .filter(function (stat) {
+          return stat.isFile()
         })
-        .then(data => {
-            let largest = data.stats
-                .filter(function (stat) {
-                    return stat.isFile();
-                })
-                .reduce((prev, next) => {
-                    if (prev.size > next.size) return prev;
-                    return next;
-                });
+        .reduce((prev, next) => {
+          if (prev.size > next.size) return prev
+          return next
+        })
 
-            return data.files[data.stats.indexOf(largest)];
-        });
+      return data.files[data.stats.indexOf(largest)]
+    })
 }
 
 findLargest('./')
-    .then(function (filename) {
-        console.log('largest file was:', filename);
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+  .then(function (filename) {
+    console.log('largest file was:', filename)
+  })
+  .catch(function (error) {
+    console.log(error)
+  })
 ```
 
 ## Generator 实现
 
 ```javascript
-var fs = require('fs');
-var path = require('path');
+var fs = require('fs')
+var path = require('path')
 
-var co = require('./co');
+var co = require('./co')
 
 var readDir = function (dir) {
-    return new Promise(function (resolve, reject) {
-        fs.readdir(dir, function (err, files) {
-            if (err) reject(err);
-            resolve(files);
-        });
-    });
-};
+  return new Promise(function (resolve, reject) {
+    fs.readdir(dir, function (err, files) {
+      if (err) reject(err)
+      resolve(files)
+    })
+  })
+}
 
 var stat = function (path) {
-    return new Promise(function (resolve, reject) {
-        fs.stat(path, function (err, stat) {
-            if (err) reject(err);
-            resolve(stat);
-        });
-    });
-};
+  return new Promise(function (resolve, reject) {
+    fs.stat(path, function (err, stat) {
+      if (err) reject(err)
+      resolve(stat)
+    })
+  })
+}
 
 function* findLargest(dir) {
-    var files = yield readDir(dir);
-    var stats = yield files.map(function (file) {
-        return stat(path.join(dir, file));
-    });
+  var files = yield readDir(dir)
+  var stats = yield files.map(function (file) {
+    return stat(path.join(dir, file))
+  })
 
-    let largest = stats
-        .filter(function (stat) {
-            return stat.isFile();
-        })
-        .reduce((prev, next) => {
-            if (prev.size > next.size) return prev;
-            return next;
-        });
+  let largest = stats
+    .filter(function (stat) {
+      return stat.isFile()
+    })
+    .reduce((prev, next) => {
+      if (prev.size > next.size) return prev
+      return next
+    })
 
-    return files[stats.indexOf(largest)];
+  return files[stats.indexOf(largest)]
 }
 
 co(findLargest, './')
-    .then(function (filename) {
-        console.log('largest file was:', filename);
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+  .then(function (filename) {
+    console.log('largest file was:', filename)
+  })
+  .catch(function (error) {
+    console.log(error)
+  })
 ```
 
 ```javascript
-var fs = require('fs');
-var path = require('path');
+var fs = require('fs')
+var path = require('path')
 
 var readDir = function (dir) {
-    return new Promise(function (resolve, reject) {
-        fs.readdir(dir, function (err, files) {
-            if (err) reject(err);
-            resolve(files);
-        });
-    });
-};
+  return new Promise(function (resolve, reject) {
+    fs.readdir(dir, function (err, files) {
+      if (err) reject(err)
+      resolve(files)
+    })
+  })
+}
 
 var stat = function (path) {
-    return new Promise(function (resolve, reject) {
-        fs.stat(path, function (err, stat) {
-            if (err) reject(err);
-            resolve(stat);
-        });
-    });
-};
+  return new Promise(function (resolve, reject) {
+    fs.stat(path, function (err, stat) {
+      if (err) reject(err)
+      resolve(stat)
+    })
+  })
+}
 
 async function findLargest(dir) {
-    var files = await readDir(dir);
+  var files = await readDir(dir)
 
-    let promises = files.map(file => stat(path.join(dir, file)));
-    var stats = await Promise.all(promises);
+  let promises = files.map((file) => stat(path.join(dir, file)))
+  var stats = await Promise.all(promises)
 
-    let largest = stats
-        .filter(function (stat) {
-            return stat.isFile();
-        })
-        .reduce((prev, next) => {
-            if (prev.size > next.size) return prev;
-            return next;
-        });
+  let largest = stats
+    .filter(function (stat) {
+      return stat.isFile()
+    })
+    .reduce((prev, next) => {
+      if (prev.size > next.size) return prev
+      return next
+    })
 
-    return files[stats.indexOf(largest)];
+  return files[stats.indexOf(largest)]
 }
 
 findLargest('./')
-    .then(function (filename) {
-        console.log('largest file was:', filename);
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
-
+  .then(function (filename) {
+    console.log('largest file was:', filename)
+  })
+  .catch(function (error) {
+    console.log(error)
+  })
 ```

@@ -6,24 +6,22 @@ tags:
   - assorted
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./git-logo.png","color":"#B4C6DA"}
+heroImage: { 'src': './git-logo.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 命令和快捷键系列
 
-1. [终端和chorme常用快捷键以及快捷键工具keycue](https://www.clloz.com/programming/assorted/2019/09/18/terminal-chrome-shortcurs/ "终端和chorme常用快捷键以及快捷键工具keycue")()
-2. [emacs常用快捷键](https://www.clloz.com/programming/assorted/emacs/2019/04/14/emacs-keybinding/ "emacs常用快捷键")
-3. [常用Git命令](https://www.clloz.com/programming/assorted/2019/05/15/git-command/ "常用Git命令")
-4. [Mac的环境变量和nvm的使用](https://www.clloz.com/programming/assorted/2019/04/07/mac-pathnvm/ "Mac的环境变量和nvm的使用")
-5. [Homebrew更换清华镜像以及常用命令](https://www.clloz.com/programming/assorted/2019/09/08/homebrew-tsinghua-mirror/ "Homebrew更换清华镜像以及常用命令")
+1. [终端和chorme常用快捷键以及快捷键工具keycue](https://www.clloz.com/programming/assorted/2019/09/18/terminal-chrome-shortcurs/ '终端和chorme常用快捷键以及快捷键工具keycue')()
+2. [emacs常用快捷键](https://www.clloz.com/programming/assorted/emacs/2019/04/14/emacs-keybinding/ 'emacs常用快捷键')
+3. [常用Git命令](https://www.clloz.com/programming/assorted/2019/05/15/git-command/ '常用Git命令')
+4. [Mac的环境变量和nvm的使用](https://www.clloz.com/programming/assorted/2019/04/07/mac-pathnvm/ 'Mac的环境变量和nvm的使用')
+5. [Homebrew更换清华镜像以及常用命令](https://www.clloz.com/programming/assorted/2019/09/08/homebrew-tsinghua-mirror/ 'Homebrew更换清华镜像以及常用命令')
 
 ## 前言
 
 不知道是不是年纪大了记忆力衰退，学的知识一段时间不用就忘了。各种各样的命令也是，之前用过不少 `Linux` 的命令，然后一段时间一直在用 `windows`，再回到 `mac` 上的时候，命令忘了大半，又得翻搜索引擎。前端的知识也是，早起我是特别专注于 `CSS` 的学习，翻标准，做测试，感觉 `CSS` 的知识学了个盆满钵满，后来一段时间专注于 `JS`，再回过头好多知识点又不清晰了。这也就是所谓的要 `拳不离手，曲不离口`把，想要达到 `我亦无他，唯手熟尔` 的境界还有好远的路要走。不过把知识形成体系对于记忆是有帮助的，写博客是个不错的方法，有些知识你以为自己学会了，真要下笔写的时候发现不知道从何写起，写博客的过程也是构建知识体系，查漏补缺的过程。`Git` 的命令是我曾经花时间好好学习过，`Pro Git` 都读了不止一遍，不过一段时间不用，有些命令又忘记了，就记得 `add commit pull push` 了。今天把常用的 `Git` 命令整理一下。
 
-![git](./images/git.png "git")
+![git](./images/git.png 'git')
 
 ## 新建代码库
 
@@ -324,4 +322,4 @@ doc/**/*.pdf
 
 ## 参考文章
 
-[常用Git命令清单](https://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html "常用Git命令清单")
+[常用Git命令清单](https://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html '常用Git命令清单')

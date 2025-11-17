@@ -6,10 +6,8 @@ tags:
   - js
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -17,12 +15,12 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ## 机制
 
-首先我们需要知道几种逻辑运算符的优先级是不同的（关于完整的运算符优先级，看[运算符优先级](https://www.clloz.com/programming/front-end/js/2019/04/05/operator-precedence/ "运算符优先级")），**逻辑非>逻辑与>逻辑或>条件运算符（三目运算符）**。运算顺序条件运算符是从右向左，而逻辑与和逻辑或都是从左向右。
+首先我们需要知道几种逻辑运算符的优先级是不同的（关于完整的运算符优先级，看[运算符优先级](https://www.clloz.com/programming/front-end/js/2019/04/05/operator-precedence/ '运算符优先级')），**逻辑非>逻辑与>逻辑或>条件运算符（三目运算符）**。运算顺序条件运算符是从右向左，而逻辑与和逻辑或都是从左向右。
 
 ```javascript
 //表达式的优先级导致结果不同
-false &&  true || true      // 结果为 true
-false && (true || true)     // 结果为 false
+;(false && true) || true // 结果为 true
+false && (true || true) // 结果为 false
 ```
 
 逻辑运算表达式返回的是字表达式的值，而不是一个 `Boolean`，只不过很多时候我们使用逻辑表达式的地方帮我们强制转换了，比如 `if` 语句等。

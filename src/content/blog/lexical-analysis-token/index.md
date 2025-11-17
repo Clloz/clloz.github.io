@@ -6,10 +6,8 @@ tags:
   - compilers
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./lexical-analysis-process.png","color":"#B4C6DA"}
+heroImage: { 'src': './lexical-analysis-process.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -29,37 +27,37 @@ JS的正则表达式有两种声明方法，一种是构造函数 `var reg = new
 
 ## token 类别
 
-| Token Key | Token Value |
-| :-: | :-: |
-| Space | 空格 |
-| Separator | 分隔符( ;，{，}，(，) ) |
-| single-ch operator | 单字符运算符( =，+，-，\*，/，%，;，|， :，!) |
-| two-ch operator | 双字符运算符(:=，!=，) |
-| num | 数字 |
-| less equal | <= |
-| NE | <> |
-| less than | < |
-| greater equal | \>= |
-| greater than | \> |
-| reserved word | 保留字 |
-| identifier | 标识符 |
-| string | 字符串 |
-| comment | 注释（单行、多行） |
-| error | 一些错误情况，例如数字开头的字符串 |
-| other | 其他符号（换行、制表等） |
+|     Token Key      |             Token Value              |
+| :----------------: | :----------------------------------: | -------- |
+|       Space        |                 空格                 |
+|     Separator      |       分隔符( ;，{，}，(，) )        |
+| single-ch operator | 单字符运算符( =，+，-，\*，/，%，;， | ， :，!) |
+|  two-ch operator   |        双字符运算符(:=，!=，)        |
+|        num         |                 数字                 |
+|     less equal     |                  <=                  |
+|         NE         |                  <>                  |
+|     less than      |                  <                   |
+|   greater equal    |                 \>=                  |
+|    greater than    |                  \>                  |
+|   reserved word    |                保留字                |
+|     identifier     |                标识符                |
+|       string       |                字符串                |
+|      comment       |          注释（单行、多行）          |
+|       error        |  一些错误情况，例如数字开头的字符串  |
+|       other        |       其他符号（换行、制表等）       |
 
 ## 标记化
 
 比如 `sum = 3 + 2;` 经过标记化后会得到
 
-| 语素 | 标记类型 |
-| --- | --- |
-| sum | 标志符 |
-| \= | 赋值操作符 |
-| 3 | 数字 |
-| + | 加法操作符 |
-| 2 | 数字 |
-| ; | 语句结束 |
+| 语素 | 标记类型   |
+| ---- | ---------- |
+| sum  | 标志符     |
+| \=   | 赋值操作符 |
+| 3    | 数字       |
+| +    | 加法操作符 |
+| 2    | 数字       |
+| ;    | 语句结束   |
 
 标记经常使用正则表达式进行定义，语法分析器读取输入字符流、从中识别出语素、最后生成不同类型的标记。其间一旦发现无效标记，便会报错。
 

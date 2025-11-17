@@ -7,10 +7,8 @@ tags:
   - 实用技巧
   - 计算机网络
 language: '中文'
-heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './network.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -22,7 +20,7 @@ heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
 
 `Web` 服务器会为所有 `HTTP` 对象数据附加一个 `MIME` 类型(见下图，`Content-Type` 字段在 `HTTP` 报文的实体首部中)。当 `Web` 浏览器从服务器中取回一个对象时，会去查看相关的 `MIME` 类型，看看它是否知道应该如何处理这个对象。大多数浏览器都可以处理数百种常见的对象类型:显示图片文件、解析并格式化 `HTML` 文件、通过计算机声卡播放音频文件，或者运行外部插件软件来处理特殊格式的数据。
 
-![mime1](./images/mime1.png "mime1")
+![mime1](./images/mime1.png 'mime1')
 
 `MIME` 类型是一种文本标记，表示一种主要的对象类型和一个特定的子类型，中间由一条斜杠来分隔。常见的 MIME 类型有数百个，实验性或用途有限的 MIME 类型则更多。
 
@@ -39,7 +37,7 @@ heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
 
 `MIME` 类型(`mime.types`) `Web` 服务器可以用文件的扩展名来说明 `MIME` 类型。`Web` 服务器会为每个资源 扫描一个包含了所有扩展名的 `MIME` 类型的文件，以确定其 `MIME` 类型。这种基于扩展名的类型相关是最常见的，见下图。
 
-![mime2](./images/mime2.png "mime2")
+![mime2](./images/mime2.png 'mime2')
 
 魔法分类(`Magic typing`) `Apache Web` 服务器可以扫描每个资源的内容，并将其与一个已知模式表(被称为魔法文件)进行匹配，以决定每个文件的 `MIME` 类型。这样做可能比较慢， 但很方便，尤其是文件没有标准扩展名的时候。
 
@@ -47,12 +45,12 @@ heroImage: {"src":"./network.jpg","color":"#B4C6DA"}
 
 类型协商 有些 `Web` 服务器经过配置，可以以多种文档格式来存储资源。在这种情况下， 可以配置 `Web` 服务器，使其可以通过与用户的协商来决定使用哪种格式(及相 关的 `MIME` 类型)“最好”。还可以通过配置 `Web` 服务器，将特定的文件与 `MIME` 类型相关联。
 
-* * *
+---
 
 `Apache Web` 服务器 `httpd` 的配置文件 `/etc/httpd/conf/httpd.conf` 中就有两个配置是跟 `MIME type` 相关的：
 
-- [AddType](https://httpd.apache.org/docs/2.2/mod/mod_mime.html#addtype "AddType")：用于返回 `HTTP` 响应给浏览器，将给定的文件扩展名映射到指定的内容类型（设置 `Content-Type`）。`AddType image/gif .gif`
-- [AddHandler](https://httpd.apache.org/docs/2.2/mod/mod_mime.html#addhandler "AddHandler"): 用于处理接收到的浏览器请求，将文件扩展名映射到指定的处理程序（用指定的程序处理某种类型的文件）。`AddHandler cgi-script .cgi`
+- [AddType](https://httpd.apache.org/docs/2.2/mod/mod_mime.html#addtype 'AddType')：用于返回 `HTTP` 响应给浏览器，将给定的文件扩展名映射到指定的内容类型（设置 `Content-Type`）。`AddType image/gif .gif`
+- [AddHandler](https://httpd.apache.org/docs/2.2/mod/mod_mime.html#addhandler 'AddHandler'): 用于处理接收到的浏览器请求，将文件扩展名映射到指定的处理程序（用指定的程序处理某种类型的文件）。`AddHandler cgi-script .cgi`
 
 > 浏览器通常使用 `MIME` 类型（而不是文件扩展名）来确定如何处理 `URL`，因此 `Web` 服务器在响应头中添加正确的 `MIME` 类型非常重要。如果配置不正确，浏览器可能会曲解文件内容，网站将无法正常工作，并且下载的文件也会被错误处理。
 
@@ -66,7 +64,7 @@ MIME 主要由下列 5 份文档定义。
 - `RFC 2048`，`MIME: Registration Procedures` (`MIME`:注册过程)：定义了如何向因特网号码分配机构(`Internet Assigned Numbers Authority`，`IA- NA`)注册 `MIME` 值。
 - `RFC 2049`，`MIME: Conformance Criteria and Examples`(`MIME`:一致性标准及实例)：详细介绍了一致性规则，并提供了一些实例。
 
-> `IANA` 是 `MIME` 媒体类型的官方注册机构，并维护了 [list of all the official MIME types](https://www.iana.org/assignments/media-types/media-types.xhtml "list of all the official MIME types")。
+> `IANA` 是 `MIME` 媒体类型的官方注册机构，并维护了 [list of all the official MIME types](https://www.iana.org/assignments/media-types/media-types.xhtml 'list of all the official MIME types')。
 
 ## MIME 类型结构
 
@@ -75,7 +73,7 @@ MIME 主要由下列 5 份文档定义。
 ```bash
 Content-Type: video/quicktime
 Content-Type: text/html; charset="iso-8859-6"
-Content-Type: multipart/mixed; boundary=gc0p4Jq0M2Yt08j34c0p 
+Content-Type: multipart/mixed; boundary=gc0p4Jq0M2Yt08j34c0p
 Accept: image/gif
 ```
 
@@ -85,27 +83,27 @@ Accept: image/gif
 - 复合类型：如果 `MIME` 类型描述的是其他内容的集合或封装包，这种 `MIME` 类型就被称为复合 类型(`composite type`)。复合类型描述的是封装包的格式。将封装包打开时，其中包含的每个对象都会有其各自的类型。
 - 多部分类型：多部分媒体类型是复合类型。多部分对象包含多个组件类型。
 
-* * *
+---
 
-`MIME` 类型由主类型、子类型和可选参数的列表组成。 主类型可以是预定义类型、[IETF](https://www.ietf.org/ "IETF ")（互联网工程任务组 `Internet Engineering Task Forc`）定义的扩展标记，或者(以`x-`开头的)实验性标记。常见的主类型见下表：
+`MIME` 类型由主类型、子类型和可选参数的列表组成。 主类型可以是预定义类型、[IETF](https://www.ietf.org/ 'IETF ')（互联网工程任务组 `Internet Engineering Task Forc`）定义的扩展标记，或者(以`x-`开头的)实验性标记。常见的主类型见下表：
 
-| 类型 | 描述 | 典型示例 |
-| --- | --- | --- |
-| `application` | 应用程序特有的内容格式(离散类型) | `application/octet-stream, application/pkcs12, application/vnd.mspowerpoint, application/xhtml+xml, application/xml, application/pdf` |
-| `audio` | 音频格式(离散类型) | `audio/midi, audio/mpeg, audio/webm, audio/ogg, audio/wav` |
-| `chemical` | 化学数据集(离散 `IETF` 扩展类型) |  |
-| `image` | 图片格式(离散类型) | `image/gif, image/png, image/jpeg, image/bmp, image/webp, image/x-icon, image/vnd.microsoft.icon` |
-| `message` | 报文格式(复合类型) |  |
-| `model` | 三维模型格式(离散 `IETF` 扩展类型) |  |
-| `multipart` | 多部分对象集合(复合类型) | `multipart/form-data,multipart/byteranges` |
-| `text` | 文本格式(离散类型) | `text/plain, text/html, text/css, text/javascript` |
-| `video` | 视频电影格式(离散类型) | `video/webm, video/ogg` |
+| 类型          | 描述                               | 典型示例                                                                                                                              |
+| ------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `application` | 应用程序特有的内容格式(离散类型)   | `application/octet-stream, application/pkcs12, application/vnd.mspowerpoint, application/xhtml+xml, application/xml, application/pdf` |
+| `audio`       | 音频格式(离散类型)                 | `audio/midi, audio/mpeg, audio/webm, audio/ogg, audio/wav`                                                                            |
+| `chemical`    | 化学数据集(离散 `IETF` 扩展类型)   |                                                                                                                                       |
+| `image`       | 图片格式(离散类型)                 | `image/gif, image/png, image/jpeg, image/bmp, image/webp, image/x-icon, image/vnd.microsoft.icon`                                     |
+| `message`     | 报文格式(复合类型)                 |                                                                                                                                       |
+| `model`       | 三维模型格式(离散 `IETF` 扩展类型) |                                                                                                                                       |
+| `multipart`   | 多部分对象集合(复合类型)           | `multipart/form-data,multipart/byteranges`                                                                                            |
+| `text`        | 文本格式(离散类型)                 | `text/plain, text/html, text/css, text/javascript`                                                                                    |
+| `video`       | 视频电影格式(离散类型)             | `video/webm, video/ogg`                                                                                                               |
 
 子类型可以是主类型(比如，`text/text`)、`IANA` 注册的子类型，或者是(以 `x-` 开头的)实验性扩展标记。类型和子类型都是由 `US-ASCII` 字符的一个子集构成的。空格和某些保留分组以及标点符号称为 `tspecials`，它们是控制字符，不能用于类型和子类型名。
 
 ## 重要的 MIME type
 
-常用 `MIME type` 可以查看`MDN`：[常用MIME类型列表](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types "常用MIME类型列表")，完整的 `MIME type` 列表查看 `IANA` 的[list of all the official MIME types](https://www.iana.org/assignments/media-types/media-types.xhtml "list of all the official MIME types")。
+常用 `MIME type` 可以查看`MDN`：[常用MIME类型列表](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types '常用MIME类型列表')，完整的 `MIME type` 列表查看 `IANA` 的[list of all the official MIME types](https://www.iana.org/assignments/media-types/media-types.xhtml 'list of all the official MIME types')。
 
 ## application/octet-stream
 
@@ -133,12 +131,12 @@ Accept: image/gif
 
 只有一小部分图片类型是被广泛支持的，`Web` 安全的，可随时在 `Web` 页面中使用的：
 
-| `MIME` 类型 | 图片类型 |
-| --- | --- |
-| `image/gif` | `GIF` 图片 (无损耗压缩方面被 `PNG` 所替代) |
-| `image/jpeg` | `JPEG` 图片 |
-| `image/png` | `PNG` 图片 |
-| `image`/`svg+xml` | `SVG` 图片 (矢量图) |
+| `MIME` 类型       | 图片类型                                   |
+| ----------------- | ------------------------------------------ |
+| `image/gif`       | `GIF` 图片 (无损耗压缩方面被 `PNG` 所替代) |
+| `image/jpeg`      | `JPEG` 图片                                |
+| `image/png`       | `PNG` 图片                                 |
+| `image`/`svg+xml` | `SVG` 图片 (矢量图)                        |
 
 另外的一些图片种类可以在 `Web` 文档中找到。比如很多浏览器支持 `icon` 类型的图标作为 `favicons` 或者类似的图标，并且浏览器在 `MIME` 类型中的 `image/x-icon` 支持 `ICO` 图像。尽管 i`mage/vnd.microsoft.icon` 在 `IANA` 注册, 它仍然不被广泛支持，`image/x-icon` 被作为替代品使用。
 
@@ -146,14 +144,14 @@ Accept: image/gif
 
 `HTML` 并没有明确定义被用于 `<audio>` 和 `<video>` 元素所支持的文件类型，所以在 `web` 上使用的只有相对较小的一组类型。`Web` 中最常见的音频视频格式见下表。
 
-| MIME 类型 | 音频或视频类型 |
-| --- | --- |
-| `audio/wave,audio/wav,audio/x-wav,audio/x-pn-wav` | 音频流媒体文件。一般支持 `PCM` 音频编码 (`WAVE codec 1`) ，其他解码器有限支持（如果有的话）。 |
-| `audio/webm` | `WebM` 音频文件格式。`Vorbis` 和 `Opus` 是其最常用的解码器。 |
-| `video/webm` | 采用 `WebM` 视频文件格式的音视频文件。`VP8` 和 `VP9` 是其最常用的视频解码器。`Vorbis` 和 `Opus` 是其最常用的音频解码器。 |
-| `audio/ogg` | 采用 `OGG` 多媒体文件格式的音频文件。 `Vorbis` 是这个多媒体文件格式最常用的音频解码器。 |
-| `video/ogg` | 采用 `OGG` 多媒体文件格式的音视频文件。常用的视频解码器是 `Theora`；音频解码器为 `Vorbis` 。 |
-| `application/ogg` | 采用 `OGG` 多媒体文件格式的音视频文件。常用的视频解码器是 `Theora`；音频解码器为 `Vorbis` 。 |
+| MIME 类型                                         | 音频或视频类型                                                                                                           |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `audio/wave,audio/wav,audio/x-wav,audio/x-pn-wav` | 音频流媒体文件。一般支持 `PCM` 音频编码 (`WAVE codec 1`) ，其他解码器有限支持（如果有的话）。                            |
+| `audio/webm`                                      | `WebM` 音频文件格式。`Vorbis` 和 `Opus` 是其最常用的解码器。                                                             |
+| `video/webm`                                      | 采用 `WebM` 视频文件格式的音视频文件。`VP8` 和 `VP9` 是其最常用的视频解码器。`Vorbis` 和 `Opus` 是其最常用的音频解码器。 |
+| `audio/ogg`                                       | 采用 `OGG` 多媒体文件格式的音频文件。 `Vorbis` 是这个多媒体文件格式最常用的音频解码器。                                  |
+| `video/ogg`                                       | 采用 `OGG` 多媒体文件格式的音视频文件。常用的视频解码器是 `Theora`；音频解码器为 `Vorbis` 。                             |
+| `application/ogg`                                 | 采用 `OGG` 多媒体文件格式的音视频文件。常用的视频解码器是 `Theora`；音频解码器为 `Vorbis` 。                             |
 
 ## multipart/form-data
 
@@ -239,4 +237,4 @@ Content-Range: bytes 300-400/1270
 ## 参考文档
 
 1. `HTTP` 权威指南
-2. [MIME类型 -MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types "MIME类型 -MDN")
+2. [MIME类型 -MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types 'MIME类型 -MDN')

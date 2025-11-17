@@ -6,10 +6,8 @@ tags:
   - server
   - 建站知识
 language: '中文'
-heroImage: {"src":"./apache.png","color":"#B4C6DA"}
+heroImage: { 'src': './apache.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -23,9 +21,9 @@ heroImage: {"src":"./apache.png","color":"#B4C6DA"}
 
 多数主流浏览器已经在 `2015` 年底支持了该协议。此外，根据 `W3Techs` 的数据，截至 `2019年6月`，全球有 `36.5%` 的网站支持了 `HTTP/2`。
 
-关于 `HTTP/2` 这里就不再详细介绍了，想要了解的可以参考 [HTTP/2 - Wikipedia](https://zh.wikipedia.org/wiki/HTTP/2 "HTTP/2 - Wikipedia") 和我的另一篇文章 [前端网络基础和HTTP](https://www.clloz.com/programming/network/2019/05/02/http/#HTTP2 "前端网络基础和HTTP")。
+关于 `HTTP/2` 这里就不再详细介绍了，想要了解的可以参考 [HTTP/2 - Wikipedia](https://zh.wikipedia.org/wiki/HTTP/2 'HTTP/2 - Wikipedia') 和我的另一篇文章 [前端网络基础和HTTP](https://www.clloz.com/programming/network/2019/05/02/http/#HTTP2 '前端网络基础和HTTP')。
 
-`HTTP/2` 的优势可以看这篇知乎上的文章： [怎样把网站升级到http/2](https://zhuanlan.zhihu.com/p/29609078 "怎样把网站升级到http/2")
+`HTTP/2` 的优势可以看这篇知乎上的文章： [怎样把网站升级到http/2](https://zhuanlan.zhihu.com/p/29609078 '怎样把网站升级到http/2')
 
 ## 升级 Apache
 
@@ -51,7 +49,7 @@ yum install openssl nghttp2
 
 ## 配置 httpd.conf
 
-这里参考 `Apache` 的 [官方文档](https://httpd.apache.org/docs/2.4/howto/http2.html "官方文档") 即可，文档也有 [中文版](https://www.docs4dev.com/docs/zh/apache/2.4/reference/howto-http2.html "中文版")。
+这里参考 `Apache` 的 [官方文档](https://httpd.apache.org/docs/2.4/howto/http2.html '官方文档') 即可，文档也有 [中文版](https://www.docs4dev.com/docs/zh/apache/2.4/reference/howto-http2.html '中文版')。
 
 根据文档中的说明，我们需要加载 `mod_http2` 模块，这个模块是依赖于上面安装的 `nghttp2` 的。然后就是添加一行配置即可。
 
@@ -73,15 +71,15 @@ Protocols http/1.1
 </VirtualHost>
 ```
 
-到这里就已经完成全部配置，`systemctl restart httpd` 即可。此时打开浏览器的开发者工具访问自己的网站会发现 `HTTP/2` 已经生效。除了通过开发者工具，这个 [http2-test](https://tools.keycdn.com/http2-test "http2 - test网站") 网站也可以帮助你检测网站是否开启 `HTTP/2` 的支持。$
+到这里就已经完成全部配置，`systemctl restart httpd` 即可。此时打开浏览器的开发者工具访问自己的网站会发现 `HTTP/2` 已经生效。除了通过开发者工具，这个 [http2-test](https://tools.keycdn.com/http2-test 'http2 - test网站') 网站也可以帮助你检测网站是否开启 `HTTP/2` 的支持。$
 
 ## 内存占用
 
-如果 `Apache` 出现内存占用过高，那么修改 `httpd-mpm.conf` 中的 `prefork` 工作模式的参数，将 `MaxConnectionPerChild` 改为 `50`。文件位置用命令 `find / -name httpd-mpm.conf` 查找。更多内容参考文章 [Apache内存溢出的分析与解决](https://abc-ziv.github.io/2018/06/13/2018-06-27-OutOfMemory/ "Apache内存溢出的分析与解决")
+如果 `Apache` 出现内存占用过高，那么修改 `httpd-mpm.conf` 中的 `prefork` 工作模式的参数，将 `MaxConnectionPerChild` 改为 `50`。文件位置用命令 `find / -name httpd-mpm.conf` 查找。更多内容参考文章 [Apache内存溢出的分析与解决](https://abc-ziv.github.io/2018/06/13/2018-06-27-OutOfMemory/ 'Apache内存溢出的分析与解决')
 
 ## 参考文章
 
-1. [如何在Centos7下升级Apache至最新版本](https://www.cnblogs.com/ihuangjianxin/p/9036646.html "如何在Centos7下升级Apache至最新版本")
-2. [Apache Httpd 开启 HTTPS 和 HTTP/2](https://www.mf8.biz/apache-httpd-%E5%BC%80%E5%90%AF-https-%E5%92%8C-http2/ "Apache Httpd 开启 HTTPS 和 HTTP/2")
-3. [详解为新版Apache服务器开启HTTP/2支持的方法](https://www.jb51.net/article/76432.htm "详解为新版Apache服务器开启HTTP/2支持的方法")
-4. [Apache如何启用HTTP/2](https://my.oschina.net/u/3495789/blog/4346276 "Apache如何开启HTTP/2")
+1. [如何在Centos7下升级Apache至最新版本](https://www.cnblogs.com/ihuangjianxin/p/9036646.html '如何在Centos7下升级Apache至最新版本')
+2. [Apache Httpd 开启 HTTPS 和 HTTP/2](https://www.mf8.biz/apache-httpd-%E5%BC%80%E5%90%AF-https-%E5%92%8C-http2/ 'Apache Httpd 开启 HTTPS 和 HTTP/2')
+3. [详解为新版Apache服务器开启HTTP/2支持的方法](https://www.jb51.net/article/76432.htm '详解为新版Apache服务器开启HTTP/2支持的方法')
+4. [Apache如何启用HTTP/2](https://my.oschina.net/u/3495789/blog/4346276 'Apache如何开启HTTP/2')

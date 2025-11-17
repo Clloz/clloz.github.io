@@ -6,7 +6,7 @@ tags:
   - js
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./browser.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './browser.jpg', 'color': '#B4C6DA' }
 ---
 
 ## 前言
@@ -58,9 +58,9 @@ heroImage: {"src":"./browser.jpg","color":"#B4C6DA"}
 `JS` 设置 `cookie`：`document.cookie="age=12; expires=Thu, 26 Feb 2116 11:50:25 GMT; domain=sankuai.com; path=/";` 设置多个 `cookie`：
 
 ```javascript
-document.cookie = "name=Jonh";
-document.cookie = "age=12";
-document.cookie = "class=111";
+document.cookie = 'name=Jonh'
+document.cookie = 'age=12'
+document.cookie = 'class=111'
 ```
 
 要想修改一个 `cookie`，只需要重新赋值就行，旧的值会被新的值覆盖。但要注意一点，在设置新 `cookie` 时，`path/domain` 这几个选项一定要旧 `cookie` 保持一样。否则不会修改旧值，而是添加了一个新的 `cookie`。
@@ -71,9 +71,9 @@ document.cookie = "class=111";
 
 ## Web Storage
 
-`Web Storage` 包含如下两种机制： 
+`Web Storage` 包含如下两种机制：
 
-1. `sessionStorage` ：为每一个给定的源（ `given origin` ）维持一个独立的存储区域，该存储区域在页面会话期间可用（即只要浏览器处于打开状态，包括页面重新加载和恢复）。 
+1. `sessionStorage` ：为每一个给定的源（ `given origin` ）维持一个独立的存储区域，该存储区域在页面会话期间可用（即只要浏览器处于打开状态，包括页面重新加载和恢复）。
 2. `localStorage` ：同样的功能，但是在浏览器关闭，然后重新打开后数据仍然存在。一般我们会在用户登出后清除 `localStorage`。
 
 这两种机制是通过 `Window.sessionStorage` 和 `Window.localStorage` 属性使用（更确切的说，在支持的浏览器中 `Window` 对象实现了 `WindowLocalStorage` 和 `WindowSessionStorage` 对象并挂在其 `localStorage` 和 `sessionStorage` 属性下）—— 调用其中任一对象会创建 `Storage` 对象，通过`Storage`对象，可以设置、获取和移除数据项。对于每个源 `（origin）sessionStorage` 和 `localStorage` 使用不同的 `Storage` 对象——独立运行和控制。
@@ -88,16 +88,16 @@ document.cookie = "class=111";
 
 ```javascript
 // 保存数据到 sessionStorage
-sessionStorage.setItem('key', 'value');
+sessionStorage.setItem('key', 'value')
 
 // 从 sessionStorage 获取数据
-let data = sessionStorage.getItem('key');
+let data = sessionStorage.getItem('key')
 
 // 从 sessionStorage 删除保存的数据
-sessionStorage.removeItem('key');
+sessionStorage.removeItem('key')
 
 // 从 sessionStorage 删除所有保存的数据
-sessionStorage.clear();
+sessionStorage.clear()
 ```
 
 ## localStorage
@@ -112,18 +112,18 @@ sessionStorage.clear();
 
 ```javascript
 //增加了一个数据项目。
-localStorage.setItem('myCat', 'Tom');
+localStorage.setItem('myCat', 'Tom')
 
 //读取 localStorage 项
-let cat = localStorage.getItem('myCat');
+let cat = localStorage.getItem('myCat')
 
 //移除 localStorage 项
-localStorage.removeItem('myCat');
+localStorage.removeItem('myCat')
 
 // 移除所有
-localStorage.clear();
+localStorage.clear()
 ```
 
 ## 参考文章
 
-1. [聊一聊Cookie](https://segmentfault.com/a/1190000004556040 "聊一聊Cookie")
+1. [聊一聊Cookie](https://segmentfault.com/a/1190000004556040 '聊一聊Cookie')

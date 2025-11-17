@@ -9,8 +9,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 对于前后端分离的开发，两边的开发进度不同是常有的事情，对于已经开发的功能，如何快速有效地模拟接口的请求是提高开发效率的关键，下面来讲讲几种数据 `mock` 的方法。
@@ -33,13 +31,13 @@ language: '中文'
   <body>
     this is a test page.
     <script>
-        var xhr = new XMLHttpRequest()
-        xhr.open('GET', './test.json', true);
-        xhr.onload = function () {
-            console.log(xhr.responseText);
-        }
-        xhr.send();
-      </script>
+      var xhr = new XMLHttpRequest()
+      xhr.open('GET', './test.json', true)
+      xhr.onload = function () {
+        console.log(xhr.responseText)
+      }
+      xhr.send()
+    </script>
   </body>
 </html>
 ```
@@ -60,11 +58,13 @@ language: '中文'
 // 使用 Mock
 var Mock = require('mockjs')
 var data = Mock.mock({
-    // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
-    'list|1-10': [{
-        // 属性 id 是一个自增数，起始值为 1，每次增 1
-        'id|+1': 1
-    }]
+  // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
+  'list|1-10': [
+    {
+      // 属性 id 是一个自增数，起始值为 1，每次增 1
+      'id|+1': 1
+    }
+  ]
 })
 // 输出结果
 console.log(JSON.stringify(data, null, 4))
@@ -85,41 +85,44 @@ console.log(JSON.stringify(data, null, 4))
 ```javascript
 var http = require('http')
 var url = require('url')
-var querystring = require('querystring');
-var util = require('util');
+var querystring = require('querystring')
+var util = require('util')
 
 var routes = {
-    '/test': function (req, res) {
-        console.log(req.method)
-        if (req.method === 'GET') {
-            console.log(req.headers.cookie)
-            res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8081')
-            res.setHeader('Access-Control-Allow-Credentials', true)
-            res.writeHead(200, 'Ok')
-            res.write(`success`)
-            res.end()
-        } else {
-            var post = '';
-            req.on('data', function (chunk) {
-                post += chunk;
-            });
-            req.on('end', function () {
-                res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8081')
-                res.setHeader('Access-Control-Allow-Credentials', true)
-                res.setHeader('Access-Control-Request-Method', 'PUT,POST,GET,DELETE,OPTIONS')
-                res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, t')
-                res.end('success');
-            });
-        }
+  '/test': function (req, res) {
+    console.log(req.method)
+    if (req.method === 'GET') {
+      console.log(req.headers.cookie)
+      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8081')
+      res.setHeader('Access-Control-Allow-Credentials', true)
+      res.writeHead(200, 'Ok')
+      res.write(`success`)
+      res.end()
+    } else {
+      var post = ''
+      req.on('data', function (chunk) {
+        post += chunk
+      })
+      req.on('end', function () {
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8081')
+        res.setHeader('Access-Control-Allow-Credentials', true)
+        res.setHeader('Access-Control-Request-Method', 'PUT,POST,GET,DELETE,OPTIONS')
+        res.setHeader(
+          'Access-Control-Allow-Headers',
+          'Origin, X-Requested-With, Content-Type, Accept, t'
+        )
+        res.end('success')
+      })
     }
+  }
 }
 
 var server = http.createServer(function (req, res) {
-    var pathObj = url.parse(req.url, true)
-    var handleFn = routes[pathObj.pathname]
-    if (handleFn) {
-        handleFn(req, res)
-    }
+  var pathObj = url.parse(req.url, true)
+  var handleFn = routes[pathObj.pathname]
+  if (handleFn) {
+    handleFn(req, res)
+  }
 })
 
 server.listen(8080)
@@ -128,4 +131,4 @@ console.log('server on 8080...')
 
 ## 参考文章
 
-1. [mock.js使用](https://segmentfault.com/a/1190000008839142 "mock.js使用")
+1. [mock.js使用](https://segmentfault.com/a/1190000008839142 'mock.js使用')

@@ -6,10 +6,8 @@ tags:
   - server
   - 建站知识
 language: '中文'
-heroImage: {"src":"./nginx.png","color":"#B4C6DA"}
+heroImage: { 'src': './nginx.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -20,12 +18,12 @@ heroImage: {"src":"./nginx.png","color":"#B4C6DA"}
 `Let's Encrypt` 是一家免费，开放，自动化的证书颁发机构，官方文档参考 [Let's Encrypt 快速入门](https://letsencrypt.org/zh-cn/getting-started/ "Let's Encrypt 快速入门")。`Let's Encrypt` 官方建议使用 `certbot` 来进行证书的获取。安装 `certbot` 需要先安装 `epel` 仓库，命令如下：
 
 ```bash
-$ sudo yum install epel-release
+sudo yum install epel-release
 
-$ sudo yum install certbot
+sudo yum install certbot
 ```
 
-安装完成后我们就可以运行 `certbot` 命令来获取证书了，`certbot` 命令的详细参数说明可以参考 [Certbot命令行工具使用说明](https://blog.ibaoger.com/2017/03/07/certbot-command-line-tool-usage-document/ "Certbot命令行工具使用说明")。我们这里为我们的网站进行证书的申请主要是下面的命令：
+安装完成后我们就可以运行 `certbot` 命令来获取证书了，`certbot` 命令的详细参数说明可以参考 [Certbot命令行工具使用说明](https://blog.ibaoger.com/2017/03/07/certbot-command-line-tool-usage-document/ 'Certbot命令行工具使用说明')。我们这里为我们的网站进行证书的申请主要是下面的命令：
 
 ```bash
 certbot certonly --webroot -m youremail@email.com -w your-root-path -d your-domain.com
@@ -61,15 +59,15 @@ yum -y install vixie-cron
 yum -y install crontabs
 ```
 
-安装完成后 `service crond start` 启动 `crond` 服务，然后用 `crontab -e` 来创建自动更新的命令 `30 0 15 * * /usr/bin/certbot renew --post-hook "systemctl restart nginx" >> /var/log/le-renew.log`，该命令表示每个月 `15` 号的 `0:30` 执行 `certbot renew` 进行证书的更新，你也可以根据自己的需求写 `cron` 表达式，`--pre-hook` 和 `--post-hook` 则是证书更新前后的两个命令钩子，这里我们不需要像 [配置 v2ray 证书](https://www.clloz.com/programming/assorted/2019/11/24/v2ray-install-configuration/#_SSL "配置 v2ray 证书") 里面那样先停止自己的 `nginx`，因为那里我们没有一个真的 `web` 服务供 `Let's Encrypt` 进行检测，而是用 `certbot` `--standalone` 启动了一个独立的 `80` 端口服务来进行验证，这里我们有自己的 `nginx` 可以提供验证，所以不需要用 `--pre-hook` 先关闭 `nginx`。最好自己先执行以下 `certbot renew --dry-run` 来测试一下命令是否能正常运行。
+安装完成后 `service crond start` 启动 `crond` 服务，然后用 `crontab -e` 来创建自动更新的命令 `30 0 15 * * /usr/bin/certbot renew --post-hook "systemctl restart nginx" >> /var/log/le-renew.log`，该命令表示每个月 `15` 号的 `0:30` 执行 `certbot renew` 进行证书的更新，你也可以根据自己的需求写 `cron` 表达式，`--pre-hook` 和 `--post-hook` 则是证书更新前后的两个命令钩子，这里我们不需要像 [配置 v2ray 证书](https://www.clloz.com/programming/assorted/2019/11/24/v2ray-install-configuration/#_SSL '配置 v2ray 证书') 里面那样先停止自己的 `nginx`，因为那里我们没有一个真的 `web` 服务供 `Let's Encrypt` 进行检测，而是用 `certbot` `--standalone` 启动了一个独立的 `80` 端口服务来进行验证，这里我们有自己的 `nginx` 可以提供验证，所以不需要用 `--pre-hook` 先关闭 `nginx`。最好自己先执行以下 `certbot renew --dry-run` 来测试一下命令是否能正常运行。
 
 还有一点需要注意的是，证书的默认有效期是 `90` 天，默认情况下只有有效期小于 `30` 天的时候才可以进行证书的更新，否则更新会失败。
 
 ## 遇到的问题
 
-`2021-12-15` 收到 `Let's Encrypt` 的邮件说是证书还有一天就过期了，上服务器上执行 `certbot renew` 发现报错 `Failed to renew certificate with error: __str__ returned non-string`，在 `Let's Encrypt` [社区](https://community.letsencrypt.org/t/connection-error-on-acme-v02-api-letsencrypt-org/162393 "社区") 里找到类似的问题用 `pip` 安装 `urllib3` 和 `requests` 后由报了一个新的错误 `Failed to renew certificate with error: ("bad handshake: Error([('SSL routines', 'ssl3_get_server_certificate', 'certificate verify failed')],)",)`，没找到答案，最后只能按 [社区](https://community.letsencrypt.org/t/sslerror-ssl-certificate-verify-failed-certificate-verify-failed/162777/10 "社区") 里说的加上 `--no-verify-ssl` 参数，更新成功了。看情况应该是 `Let's Encrypt` 的什么证书过期了，暂时就先这么解决了。
+`2021-12-15` 收到 `Let's Encrypt` 的邮件说是证书还有一天就过期了，上服务器上执行 `certbot renew` 发现报错 `Failed to renew certificate with error: __str__ returned non-string`，在 `Let's Encrypt` [社区](https://community.letsencrypt.org/t/connection-error-on-acme-v02-api-letsencrypt-org/162393 '社区') 里找到类似的问题用 `pip` 安装 `urllib3` 和 `requests` 后由报了一个新的错误 `Failed to renew certificate with error: ("bad handshake: Error([('SSL routines', 'ssl3_get_server_certificate', 'certificate verify failed')],)",)`，没找到答案，最后只能按 [社区](https://community.letsencrypt.org/t/sslerror-ssl-certificate-verify-failed-certificate-verify-failed/162777/10 '社区') 里说的加上 `--no-verify-ssl` 参数，更新成功了。看情况应该是 `Let's Encrypt` 的什么证书过期了，暂时就先这么解决了。
 
-尝试了如下这些方法，不过都没有效果： 1. [Old Let’s Encrypt Root Certificate Expiration and OpenSSL 1.0.2](https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/ "Old Let’s Encrypt Root Certificate Expiration and OpenSSL 1.0.2") 2. [Centos7 don't trust certificate issued by lets encrypt](https://serverfault.com/questions/791205/centos7-dont-trust-certificate-issued-by-lets-encrypt "Centos7 don't trust certificate issued by lets encrypt") 3. [Certbot 0.31.0 renew failed, peer’s certificate issuer not recognized](https://community.letsencrypt.org/t/certbot-0-31-0-renew-failed-peers-certificate-issuer-not-recognized/161771 "Certbot 0.31.0 renew failed, peer’s certificate issuer not recognized") 4. [Chain of Trust](https://letsencrypt.org/certificates/ "Chain of Trust")
+尝试了如下这些方法，不过都没有效果： 1. [Old Let’s Encrypt Root Certificate Expiration and OpenSSL 1.0.2](https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/ 'Old Let’s Encrypt Root Certificate Expiration and OpenSSL 1.0.2') 2. [Centos7 don't trust certificate issued by lets encrypt](https://serverfault.com/questions/791205/centos7-dont-trust-certificate-issued-by-lets-encrypt "Centos7 don't trust certificate issued by lets encrypt") 3. [Certbot 0.31.0 renew failed, peer’s certificate issuer not recognized](https://community.letsencrypt.org/t/certbot-0-31-0-renew-failed-peers-certificate-issuer-not-recognized/161771 'Certbot 0.31.0 renew failed, peer’s certificate issuer not recognized') 4. [Chain of Trust](https://letsencrypt.org/certificates/ 'Chain of Trust')
 
 ## 总结
 

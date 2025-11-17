@@ -7,10 +7,8 @@ tags:
   - 实用技巧
   - 建站知识
 language: '中文'
-heroImage: {"src":"./Google-Analytics.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './Google-Analytics.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -18,13 +16,13 @@ heroImage: {"src":"./Google-Analytics.jpg","color":"#B4C6DA"}
 
 ## Google Analytics 的使用
 
-如果你没有谷歌账号的话需要先注册一个账号，如果你没有靠谱的科学上网工具可以看我的这篇文章：[科学上网](https://www.clloz.com/programming/assorted/2018/09/07/shadowsocks/ "科学上网")，然后登录[Google Analytics](https://analytics.google.com/analytics/web/ "Google Analytics")创建账号
+如果你没有谷歌账号的话需要先注册一个账号，如果你没有靠谱的科学上网工具可以看我的这篇文章：[科学上网](https://www.clloz.com/programming/assorted/2018/09/07/shadowsocks/ '科学上网')，然后登录[Google Analytics](https://analytics.google.com/analytics/web/ 'Google Analytics')创建账号
 
-![analytics](./images/google-analytics.png "analytics")
+![analytics](./images/google-analytics.png 'analytics')
 
 创建完成后，在`管理 --> 媒体资源 --> 跟踪信息 --> 跟踪代码`中可以看到全局网站代码
 
-![analytics](./images/google-analytics2.png "analytics")
+![analytics](./images/google-analytics2.png 'analytics')
 
 将页面中对应 `js` 代码复制后放到你 `wordpress` 当前所用主题的文件夹下 `footer.php` 文件中的`</body>`之前，具体路径为`/var/www/html/wp-content/themes/theme-name/footer.php`，完成这些以后你就可以在 `Google Analytics` 的首页看到自己的网站统计信息了，比如当前多少人在访问，访客们来自哪里，用的什么设备，什么语言，访客们是通过 `facebook` 推荐还是搜索引擎来到你的网站的，你最受欢迎的页面是哪个等等。
 
@@ -40,7 +38,7 @@ heroImage: {"src":"./Google-Analytics.jpg","color":"#B4C6DA"}
 
 ## 提交到百度搜索资源平台
 
-在百度`搜索资源平台 --> 链接提交 --> 自动提交`中选择 `sitemap` 然后填写自己的 `sitemap url` 即可。 ![sitemap](./images/baidu.png "sitemap")
+在百度`搜索资源平台 --> 链接提交 --> 自动提交`中选择 `sitemap` 然后填写自己的 `sitemap url` 即可。 ![sitemap](./images/baidu.png 'sitemap')
 
 ## 总结
 

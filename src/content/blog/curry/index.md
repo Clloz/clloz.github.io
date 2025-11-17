@@ -7,10 +7,8 @@ tags:
   - 学习笔记
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -22,7 +20,7 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ```javascript
 function fu(a, b, c) {
-    console.log(a, b, c);
+  console.log(a, b, c)
 }
 ```
 
@@ -30,20 +28,20 @@ function fu(a, b, c) {
 
 ```javascript
 function curry(fn) {
-    //content ....
-    return function () {
-        //content ...
-    }
+  //content ....
+  return function () {
+    //content ...
+  }
 }
 
-let newFn = curry(fn);
+let newFn = curry(fn)
 
-newFn(1)(2)(3);
+newFn(1)(2)(3)
 ```
 
 那么函数柯里化有什么用呢？一个比较明显的作用就是返回一个已经设定好参数的函数，当我们的函数参数有多种可能情况的时候，比如 `ajax` 我们可能需要传入 `type, url, data` 等数据，那我们可以用 `curry` 进行包装，得到预设好 `type` 的 `get` 和 `post` 函数，这样我们使用的时候更加方便。但其实这个功能用 `bing` 也能实现。
 
-所以我觉得 `bind` 和 `curry` 是有一些相同的逻辑的。比如我在 [模拟实现call，apply 和 bind](https://www.clloz.com/programming/front-end/js/2020/10/07/simulation-of-call-apply-bind/ "模拟实现call，apply 和 bind") 一文中写的用 `bind` 可以将 `Array.prototype.slice.apply(arguments)` 简化成 `slice(arguments)` 的调用方式。`curry` 也有相同的作用。以我的理解就是函数柯里化是对函数的一种抽象和包装，让我们能够更好地定制函数，更简洁地调用函数。
+所以我觉得 `bind` 和 `curry` 是有一些相同的逻辑的。比如我在 [模拟实现call，apply 和 bind](https://www.clloz.com/programming/front-end/js/2020/10/07/simulation-of-call-apply-bind/ '模拟实现call，apply 和 bind') 一文中写的用 `bind` 可以将 `Array.prototype.slice.apply(arguments)` 简化成 `slice(arguments)` 的调用方式。`curry` 也有相同的作用。以我的理解就是函数柯里化是对函数的一种抽象和包装，让我们能够更好地定制函数，更简洁地调用函数。
 
 虽然可能在实际编码中我们不太会用到这个，但是之所以经常有面试问到这个问题我觉得是考查你对于函数的理解。函数既可以作为一个参数，也可以作为一个返回值。也可以赋值给变量，所谓的一等公民。只要是函数式编程就可以实现柯里化，他也是函数式编程语言自带的一个特性。
 
@@ -55,30 +53,30 @@ newFn(1)(2)(3);
 
 ```javascript
 function curry(fn) {
-    let length = fn.length;
+  let length = fn.length
 
-    return function judge () {
-        let args = Array.prototype.slice.call(arguments);
+  return function judge() {
+    let args = Array.prototype.slice.call(arguments)
 
-        if (args.length < length) {
-            return function () {
-                args = Array.prototype.concat.apply(args, arguments)
-                return judge.apply(null, args);
-            };
-        } else {
-            return fn.apply(null, args)
-        }
+    if (args.length < length) {
+      return function () {
+        args = Array.prototype.concat.apply(args, arguments)
+        return judge.apply(null, args)
+      }
+    } else {
+      return fn.apply(null, args)
     }
+  }
 }
 
-var fn = curry(function(a, b, c) {
-    console.log([a, b, c]);
-});
+var fn = curry(function (a, b, c) {
+  console.log([a, b, c])
+})
 
-fn("a", "b", "c") // ["a", "b", "c"]
-fn("a", "b")("c") // ["a", "b", "c"]
-fn("a")("b")("c") // ["a", "b", "c"]
-fn("a")("b", "c") // ["a", "b", "c"]
+fn('a', 'b', 'c') // ["a", "b", "c"]
+fn('a', 'b')('c') // ["a", "b", "c"]
+fn('a')('b')('c') // ["a", "b", "c"]
+fn('a')('b', 'c') // ["a", "b", "c"]
 ```
 
 当然如果你有需要可以设置 `judge` 只可以传入一个参数，一般来说不需要。
@@ -87,14 +85,14 @@ fn("a")("b", "c") // ["a", "b", "c"]
 
 ```javascript
 let obj = {
-    id: 'clloz',
-    age: '28',
-    func: function(a, b, c) {
-        console.log(this.id, this.age);
-        console.log([a, b, c]);
-    }
+  id: 'clloz',
+  age: '28',
+  func: function (a, b, c) {
+    console.log(this.id, this.age)
+    console.log([a, b, c])
+  }
 }
-obj.func(1,2,3)
+obj.func(1, 2, 3)
 //clloz 28
 //[1, 2, 3]
 
@@ -108,29 +106,29 @@ fn(1)(2)(3)
 
 ```javascript
 function curry(fn, thisArg) {
-    let length = fn.length;
+  let length = fn.length
 
-    return function judge () {
-        let args = Array.prototype.slice.call(arguments);
+  return function judge() {
+    let args = Array.prototype.slice.call(arguments)
 
-        if (args.length < length) {
-            return function () {
-                args = Array.prototype.concat.apply(args, arguments)
-                return judge.apply(thisArg, args);
-            };
-        } else {
-            return fn.apply(thisArg, args)
-        }
+    if (args.length < length) {
+      return function () {
+        args = Array.prototype.concat.apply(args, arguments)
+        return judge.apply(thisArg, args)
+      }
+    } else {
+      return fn.apply(thisArg, args)
     }
+  }
 }
 
 let obj = {
-    name: 'clloz',
-    age: '28',
-    func: function(a, b, c) {
-        console.log(this.name, this.age);
-        console.log([a, b, c]);
-    }
+  name: 'clloz',
+  age: '28',
+  func: function (a, b, c) {
+    console.log(this.name, this.age)
+    console.log([a, b, c])
+  }
 }
 var fn = curry(obj.func, obj)
 fn(1)(2)(3)
@@ -144,32 +142,31 @@ fn(1)(2)(3)
 
 ## 冴羽的实现
 
-冴羽大神的博客非常建议大家看，很多非常深入的知识，博客地址：[冴羽的博客](https://github.com/mqyqingfeng/Blog "的博客")。他的 [JavaScript专题之函数柯里化](https://github.com/mqyqingfeng/Blog/issues/42 "JavaScript专题之函数柯里化") 这篇博客里也贴出了几种实现。
+冴羽大神的博客非常建议大家看，很多非常深入的知识，博客地址：[冴羽的博客](https://github.com/mqyqingfeng/Blog '的博客')。他的 [JavaScript专题之函数柯里化](https://github.com/mqyqingfeng/Blog/issues/42 'JavaScript专题之函数柯里化') 这篇博客里也贴出了几种实现。
 
 1. 逻辑比较 **复杂** 的实现
 
 ```javascript
 function sub_curry(fn) {
-    var args = [].slice.call(arguments, 1);
-    return function() {
-        return fn.apply(this, args.concat([].slice.call(arguments)));
-    };
+  var args = [].slice.call(arguments, 1)
+  return function () {
+    return fn.apply(this, args.concat([].slice.call(arguments)))
+  }
 }
 
 function curry(fn, length) {
+  length = length || fn.length
 
-    length = length || fn.length;
+  var slice = Array.prototype.slice
 
-    var slice = Array.prototype.slice;
-
-    return function() {
-        if (arguments.length < length) {
-            var combined = [fn].concat(slice.call(arguments));
-            return curry(sub_curry.apply(this, combined), length - arguments.length);
-        } else {
-            return fn.apply(this, arguments);
-        }
-    };
+  return function () {
+    if (arguments.length < length) {
+      var combined = [fn].concat(slice.call(arguments))
+      return curry(sub_curry.apply(this, combined), length - arguments.length)
+    } else {
+      return fn.apply(this, arguments)
+    }
+  }
 }
 ```
 
@@ -177,30 +174,26 @@ function curry(fn, length) {
 
 ```javascript
 function curry(fn, args) {
-    var length = fn.length;
+  var length = fn.length
 
-    args = args || [];
+  args = args || []
 
-    return function() {
+  return function () {
+    var _args = args.slice(0),
+      arg,
+      i
 
-        var _args = args.slice(0),
+    for (i = 0; i < arguments.length; i++) {
+      arg = arguments[i]
 
-            arg, i;
-
-        for (i = 0; i < arguments.length; i++) {
-
-            arg = arguments[i];
-
-            _args.push(arg);
-
-        }
-        if (_args.length < length) {
-            return curry.call(this, fn, _args);
-        }
-        else {
-            return fn.apply(this, _args);
-        }
+      _args.push(arg)
     }
+    if (_args.length < length) {
+      return curry.call(this, fn, _args)
+    } else {
+      return fn.apply(this, _args)
+    }
+  }
 }
 ```
 
@@ -208,59 +201,57 @@ function curry(fn, args) {
 
 ```javascript
 function curry(fn, args, holes) {
-    length = fn.length;
+  length = fn.length
 
-    args = args || [];
+  args = args || []
 
-    holes = holes || [];
+  holes = holes || []
 
-    return function() {
+  return function () {
+    var _args = args.slice(0),
+      _holes = holes.slice(0),
+      argsLen = args.length,
+      holesLen = holes.length,
+      arg,
+      i,
+      index = 0
 
-        var _args = args.slice(0),
-            _holes = holes.slice(0),
-            argsLen = args.length,
-            holesLen = holes.length,
-            arg, i, index = 0;
-
-        for (i = 0; i < arguments.length; i++) {
-            arg = arguments[i];
-            // 处理类似 fn(1, _, _, 4)(_, 3) 这种情况，index 需要指向 holes 正确的下标
-            if (arg === _ && holesLen) {
-                index++
-                if (index > holesLen) {
-                    _args.push(arg);
-                    _holes.push(argsLen - 1 + index - holesLen)
-                }
-            }
-            // 处理类似 fn(1)(_) 这种情况
-            else if (arg === _) {
-                _args.push(arg);
-                _holes.push(argsLen + i);
-            }
-            // 处理类似 fn(_, 2)(1) 这种情况
-            else if (holesLen) {
-                // fn(_, 2)(_, 3)
-                if (index >= holesLen) {
-                    _args.push(arg);
-                }
-                // fn(_, 2)(1) 用参数 1 替换占位符
-                else {
-                    _args.splice(_holes[index], 1, arg);
-                    _holes.splice(index, 1)
-                }
-            }
-            else {
-                _args.push(arg);
-            }
-
+    for (i = 0; i < arguments.length; i++) {
+      arg = arguments[i]
+      // 处理类似 fn(1, _, _, 4)(_, 3) 这种情况，index 需要指向 holes 正确的下标
+      if (arg === _ && holesLen) {
+        index++
+        if (index > holesLen) {
+          _args.push(arg)
+          _holes.push(argsLen - 1 + index - holesLen)
         }
-        if (_holes.length || _args.length < length) {
-            return curry.call(this, fn, _args, _holes);
+      }
+      // 处理类似 fn(1)(_) 这种情况
+      else if (arg === _) {
+        _args.push(arg)
+        _holes.push(argsLen + i)
+      }
+      // 处理类似 fn(_, 2)(1) 这种情况
+      else if (holesLen) {
+        // fn(_, 2)(_, 3)
+        if (index >= holesLen) {
+          _args.push(arg)
         }
+        // fn(_, 2)(1) 用参数 1 替换占位符
         else {
-            return fn.apply(this, _args);
+          _args.splice(_holes[index], 1, arg)
+          _holes.splice(index, 1)
         }
+      } else {
+        _args.push(arg)
+      }
     }
+    if (_holes.length || _args.length < length) {
+      return curry.call(this, fn, _args, _holes)
+    } else {
+      return fn.apply(this, _args)
+    }
+  }
 }
 ```
 
@@ -269,33 +260,31 @@ function curry(fn, args, holes) {
 这个实现来自 `segmentfault` 的大笑平。
 
 ```javascript
-var curry = fn => judge = (...args) => args.length === fn.length ? fn(...args) : (arg) => judge(...args, arg)
+var curry = (fn) =>
+  (judge = (...args) => (args.length === fn.length ? fn(...args) : (arg) => judge(...args, arg)))
 
 //分行
-var curry = fn =>
-    judge = (...args) =>
-        args.length === fn.length
-            ? fn(...args)
-            : (arg) => judge(...args, arg)
+var curry = (fn) =>
+  (judge = (...args) => (args.length === fn.length ? fn(...args) : (arg) => judge(...args, arg)))
 ```
 
 看着很美，但是可读性很差，我把它转化成了比较好理解的方式：
 
 ```javascript
 function curry(fn) {
-    return function judge(...args) {
-        if (args.length === fn.length) {
-            return fn(...args);
-        } else {
-            return function(arg) {
-                return judge(...args, arg)
-            }
-        }
+  return function judge(...args) {
+    if (args.length === fn.length) {
+      return fn(...args)
+    } else {
+      return function (arg) {
+        return judge(...args, arg)
+      }
     }
+  }
 }
 ```
 
 ## 参考文章
 
-1. [JavaScript专题之函数柯里化](https://github.com/mqyqingfeng/Blog/issues/42 "JavaScript专题之函数柯里化")
-2. [【进阶 6-2 期】深入高阶函数应用之柯里化](https://github.com/yygmind/blog/issues/37 "【进阶 6-2 期】深入高阶函数应用之柯里化")
+1. [JavaScript专题之函数柯里化](https://github.com/mqyqingfeng/Blog/issues/42 'JavaScript专题之函数柯里化')
+2. [【进阶 6-2 期】深入高阶函数应用之柯里化](https://github.com/yygmind/blog/issues/37 '【进阶 6-2 期】深入高阶函数应用之柯里化')

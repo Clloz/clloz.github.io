@@ -6,24 +6,22 @@ tags:
   - assorted
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./macos.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './macos.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
-以前写过 [Mac设置terminal快捷键](https://www.clloz.com/programming/assorted/2018/10/23/terminal-shortcut/ "Mac设置terminal快捷键") 讲了一下用 `automator` 来添加 `quick action` 来用快捷键启动终端，今天在讲一下如何设置 `Apple Music` 的全局快捷键来执行上一曲，下一曲和播放暂停。
+以前写过 [Mac设置terminal快捷键](https://www.clloz.com/programming/assorted/2018/10/23/terminal-shortcut/ 'Mac设置terminal快捷键') 讲了一下用 `automator` 来添加 `quick action` 来用快捷键启动终端，今天在讲一下如何设置 `Apple Music` 的全局快捷键来执行上一曲，下一曲和播放暂停。
 
 ## 添加 Quick Action
 
 整个操作过程和添加终端的快捷键差不多，不过现在 `automator` 的界面和原来有些不同，原来齿轮图标是叫 `Service`，现在叫 `Quick Action`。我们打开 `automator`，然后在顶部任务栏中选择 `File -> New` 或者直接点解弹出界面的 `New Docment`，然后选择其中的 `Quick Action`，如下图
 
-![music-shortcut-2](./images/music-shortcut2.png "music-shortcut-2")
+![music-shortcut-2](./images/music-shortcut2.png 'music-shortcut-2')
 
 然后将右侧的 `Workflow Recieve` 选择为 `no input`，在左侧的 `Actions` 中找到 `Run AppleScript`，然后双击，在右侧弹出的脚本输入框中输入脚本即可。
 
-![music-shortcut](./images/music-shortcut.png "music-shortcut")
+![music-shortcut](./images/music-shortcut.png 'music-shortcut')
 
 脚本如下：
 
@@ -63,4 +61,4 @@ end tell
 
 ## 参考文章
 
-1. [不使用第三方程序在 mac 上用快捷键全局控制 Spotify](https://sspai.com/post/58907 "不使用第三方程序在 mac 上用快捷键全局控制 Spotify")
+1. [不使用第三方程序在 mac 上用快捷键全局控制 Spotify](https://sspai.com/post/58907 '不使用第三方程序在 mac 上用快捷键全局控制 Spotify')

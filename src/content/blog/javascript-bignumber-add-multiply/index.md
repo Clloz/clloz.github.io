@@ -6,10 +6,8 @@ tags:
   - js
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -25,30 +23,30 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 所以总结一下就是我们计算 `num1[i] + num2[i]` 得到一个两位数，这个两位数要先和 `num1[i-1] + num2[i-1]` 的结果的进位（即 `result[0]` 相加，然后在分成 `high` 和 `low` 两位，将 `result[0]` 的值用 `low` 位替换，然后将 `high` 位 `unshift` 到 `result` 最前面。可以参考下图理解。
 
-![bignumber1](./images/bignumber1.png "bignumber1")
+![bignumber1](./images/bignumber1.png 'bignumber1')
 
 所以我们每次计算都是确定一位和下一位的进位。最后代码如下：
 
 ```javascript
 let add = function (num1, num2) {
-    if (isNaN(num1) || isNaN(num2)) return '';
-    if (num1 === '0' || num2 === '0') return (num1 === '0' ? num2 : num1);
+  if (isNaN(num1) || isNaN(num2)) return ''
+  if (num1 === '0' || num2 === '0') return num1 === '0' ? num2 : num1
 
-    let len = Math.max(num1.length, num2.length);
-    num1 = num1.padStart(len, '0');
-    num2 = num2.padStart(len, '0');
+  let len = Math.max(num1.length, num2.length)
+  num1 = num1.padStart(len, '0')
+  num2 = num2.padStart(len, '0')
 
-    let result = [];
+  let result = []
 
-    for (let i = len - 1; i >= 0; i--) {
-        let sum = Number(num1[i]) + Number(num2[i]) + (result[0] || 0);
-        let low = sum % 10;
-        let high = Math.floor(sum / 10);
+  for (let i = len - 1; i >= 0; i--) {
+    let sum = Number(num1[i]) + Number(num2[i]) + (result[0] || 0)
+    let low = sum % 10
+    let high = Math.floor(sum / 10)
 
-        result[0] = low;
-        result.unshift(high);
-    }
-    return result.join('');
+    result[0] = low
+    result.unshift(high)
+  }
+  return result.join('')
 }
 
 console.log(add('10', '9007199254740991')) //09007199254741001
@@ -60,7 +58,7 @@ console.log(add('10', '9007199254740991')) //09007199254741001
 
 相乘的逻辑要比相加复杂一点，但是总体思路还是根据竖式来实现算法，我画了一张图，我们借助图来说明。
 
-![bignumber2](./images/bignumber2.png "bignumber2")
+![bignumber2](./images/bignumber2.png 'bignumber2')
 
 相乘是一个两层循环，我们要循环一个数的位，每一位再与另一个数循环的每一位相乘。我们每次相乘的结果最多是一个两位数。但是与相加不同的是，相加的 `high` 每次都是 `unshift` 进去即可，而相乘的高位也要与 `result` 的位进行运算。
 
@@ -74,25 +72,25 @@ console.log(add('10', '9007199254740991')) //09007199254741001
 
 ```javascript
 let multiply = function (num1, num2) {
-    if (isNaN(num1) || isNaN(num2)) return '';
-    if (num1 === '0' || num2 === '0') return '0';
+  if (isNaN(num1) || isNaN(num2)) return ''
+  if (num1 === '0' || num2 === '0') return '0'
 
-    let l1 = num1.length,
-        l2 = num2.length;
+  let l1 = num1.length,
+    l2 = num2.length
 
-    let result = [];
+  let result = []
 
-    for (let i = l1 -1; i >= 0; i--) {
-        for (let j = l2 - 1; j >= 0; j--) {
-            let index1 = i + j;
-            let index2 = i + j + 1;
+  for (let i = l1 - 1; i >= 0; i--) {
+    for (let j = l2 - 1; j >= 0; j--) {
+      let index1 = i + j
+      let index2 = i + j + 1
 
-            let product = num1[i] * num2[j] + (result[index2] || 0);
-            result[index2] = product % 10;
-            result[index1] = Math.floor(product / 10) + (result[index1] || 0);
-        }
+      let product = num1[i] * num2[j] + (result[index2] || 0)
+      result[index2] = product % 10
+      result[index1] = Math.floor(product / 10) + (result[index1] || 0)
     }
-    return result.join('').replace(/^0+/, '');
+  }
+  return result.join('').replace(/^0+/, '')
 }
 
 console.log(multiply('123', '234')) //28782

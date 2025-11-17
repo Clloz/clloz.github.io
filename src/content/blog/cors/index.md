@@ -6,10 +6,8 @@ tags:
   - js
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./browser.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './browser.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -23,7 +21,7 @@ heroImage: {"src":"./browser.jpg","color":"#B4C6DA"}
 
 ## 源 origin
 
-我们使用浏览器浏览网页的时候，大多数情况都是通过 `http` 请求去访问对应主机（ `host` ）上的资源（ `resource` ），一般同一个主机同一个端口同一个协议就会被认为是一个源，一般我们会说同协议同域名同端口的请求浏览器会认为是同源的请求。可能很多人刚看到这个策略的时候跟我有一样的想法，为什么是同一个域名而不是同一个 `IP` 呢？在 `MDN` 的[英文文档](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy "英文文档")里面写的是 `host` 也就是主机，要更好的理解什么是源我们要从服务器的角度来理解。我们的服务器上用来处理 `http` 请求的一般是 `web` 服务器，比如 `apapce` 、 `nginx` 等，在 `web` 服务器的配置中我们会配置我们的网站域名和根目录一般默认绑定到 `80` 端口，比如 `/var/www/html` 当 `web` 服务器接收到 `http` 请求对应目录的资源的时候就会去我们绑定的目录搜索对应的资源。但是一个 `web` 服务器下面可以绑定多个主机，我们可以用虚拟主机来做域名和目录的映射，如下
+我们使用浏览器浏览网页的时候，大多数情况都是通过 `http` 请求去访问对应主机（ `host` ）上的资源（ `resource` ），一般同一个主机同一个端口同一个协议就会被认为是一个源，一般我们会说同协议同域名同端口的请求浏览器会认为是同源的请求。可能很多人刚看到这个策略的时候跟我有一样的想法，为什么是同一个域名而不是同一个 `IP` 呢？在 `MDN` 的[英文文档](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy '英文文档')里面写的是 `host` 也就是主机，要更好的理解什么是源我们要从服务器的角度来理解。我们的服务器上用来处理 `http` 请求的一般是 `web` 服务器，比如 `apapce` 、 `nginx` 等，在 `web` 服务器的配置中我们会配置我们的网站域名和根目录一般默认绑定到 `80` 端口，比如 `/var/www/html` 当 `web` 服务器接收到 `http` 请求对应目录的资源的时候就会去我们绑定的目录搜索对应的资源。但是一个 `web` 服务器下面可以绑定多个主机，我们可以用虚拟主机来做域名和目录的映射，如下
 
 ```bash
 <VirtualHost 127.0.0.1:80>
@@ -48,13 +46,13 @@ heroImage: {"src":"./browser.jpg","color":"#B4C6DA"}
 
 根据上面的规则我们举个是否同源的例子，以我的域名 `https://www.clloz.com` 为例，我这个域名解析到了我阿里云主机的 `ip`，`web`服务器根据配置文件可以知道该 `host` 的请求去对应的文件夹取资源，比如有用户请求 `https://www.clloz.com/index.html`, 那么服务器就会返回这个页面。如果这个 `index.html` 中的脚本发送如下请求，我们可以判断是否同源：
 
-| URL | 结果 | 原因 |
-| --- | --- | --- |
+| URL                                     | 结果 | 原因         |
+| --------------------------------------- | ---- | ------------ |
 | `https://www.clloz.com/study/test.html` | 成功 | 只有路径不同 |
-| `http://www.clloz.com/test.json` | 失败 | 协议不同 |
-| `https://www.clloz.com:8080` | 失败 | 端口不同 |
-| `https://test.clloz.com/test.json` | 失败 | 域名不同 |
-| `https://clloz.com/test.json` | 失败 | 域名不同 |
+| `http://www.clloz.com/test.json`        | 失败 | 协议不同     |
+| `https://www.clloz.com:8080`            | 失败 | 端口不同     |
+| `https://test.clloz.com/test.json`      | 失败 | 域名不同     |
+| `https://clloz.com/test.json`           | 失败 | 域名不同     |
 
 > 主机和域名的区别：一般来说我们申请一个域名是一个二级域名比如 `clloz.com`（也有认为顶级域和二级域之间还有一级域，阿里云就是这样的方式），顶级域名就是就是域名最后的那个部分，比如我们常见的 `.com` `.cn` `.org` `.edu` 等，顶级域名前面一个就是二级域名比如我的域名中的 `clloz`，以此类推。当我们购买了一个域名以后，我们可以为其添加主机记录进行解析，比如我可以添加一个 `www` 的主机记录解析到我的服务器 `ip`，也可以添加一个 `test` 主机记录解析到 `http://www.clloz.com:8080`，这些添加了主机记录的能访问到服务器上具体文件的域名就称为 `host` 主机名，在我们发送请求的时候，二者可以混用。
 
@@ -67,7 +65,7 @@ heroImage: {"src":"./browser.jpg","color":"#B4C6DA"}
 再举个例子比如钓鱼网站，有人给你发邮件引诱你点击支付宝链接 `alipay.com`，但实际你打开的链接是一个 `aliipay.com`，这个页面用 `iframe` 显示支付宝页面。如果没有同源策略，它完全可以获取你输入的用户名和密码。
 
 ```javascript
-<iframe name="alipay" src="www.alipay.com"></iframe>
+;<iframe name='alipay' src='www.alipay.com'></iframe>
 // JS
 // 由于没有同源策略的限制，钓鱼网站可以直接拿到别的网站的Dom
 const iframe = window.frames['alipay']
@@ -106,7 +104,7 @@ console.log(`拿到了这个${node}，我还拿不到你刚刚输入的账号密
 1. 对于嵌入到页面的 `ifram` (如果 `X-Frame-Options` 允许)，无法访问 `iframe` 的文档，也就是不能操作 `DOM` 对象。
 2. `css` 文件可以通过 `link` 标签嵌入或者 `@import` 方式引入，可能需要 `Content-type` 支持。
 3. `form` 表单，`action` 可以使用跨源 `URL`，利用表单的提交可以将表单中的数据写入跨源目标。
-4. 可以用 `img` 标签嵌入图像，但是无法读取图像的数据(例如 `canvas` 使用 `JavaScript` 将跨源图像加载到元素中)，如果需要读取图像，需要为图片所在服务器开启 `cors`，并且为图片加上属性 `crossOrigin=anonymous`，其实是和开启 `cors` 的 `ajax` 请求没有区别。[CORS\_enabled\_image](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image "CORS_enabled_image")
+4. 可以用 `img` 标签嵌入图像，但是无法读取图像的数据(例如 `canvas` 使用 `JavaScript` 将跨源图像加载到元素中)，如果需要读取图像，需要为图片所在服务器开启 `cors`，并且为图片加上属性 `crossOrigin=anonymous`，其实是和开启 `cors` 的 `ajax` 请求没有区别。[CORS_enabled_image](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image 'CORS_enabled_image')
 5. 可以使用 `video` 和 `audio` 元素嵌入跨源视频和音频。
 6. 可以嵌入跨源脚本; 但是，可能会阻止对某些API的访问，例如跨源的 `ajax` 或者 `fetch` 请求。根据我的测试，用 `ajax` 对跨源接口发送文件并不会触发同源策略，能够成功发送。
 7. 存储在浏览器中的数据，如 `localStorage` 和 `IndexedDB`，以源进行分割。每个源都拥有自己单独的存储空间，一个源中的 `Javascript` 脚本不能对属于其它源的数据进行读写操作。
@@ -116,26 +114,30 @@ console.log(`拿到了这个${node}，我还拿不到你刚刚输入的账号密
 
 ```html
 <!-- 嵌入一张跨域的google logo -->
-<img crossorigin="anonymous" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="">
+<img
+  crossorigin="anonymous"
+  src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+  alt=""
+/>
 <script>
-    function main() {
-    var img = document.querySelector('img');
+  function main() {
+    var img = document.querySelector('img')
     img.onload = function () {
-        var canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
+      var canvas = document.createElement('canvas')
+      canvas.width = img.width
+      canvas.height = img.height
 
-        // Copy the image contents to the canvas
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
+      // Copy the image contents to the canvas
+      var ctx = canvas.getContext('2d')
+      ctx.drawImage(img, 0, 0)
 
-        var dataURL = canvas.toDataURL("image/png");
+      var dataURL = canvas.toDataURL('image/png')
 
-        var data = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-        console.log(data);
+      var data = dataURL.replace(/^data:image\/(png|jpg);base64,/, '')
+      console.log(data)
     }
-}
-main()
+  }
+  main()
 </script>
 ```
 
@@ -155,9 +157,9 @@ main()
 
 ```html
 <form action="https://your-bank.com/transfer" method="POST" id="stealMoney">
-    <input type="hidden" name="to" value="attacker_account">
-    <input type="hidden" name="account" value="your_account">
-    <input type="hidden" name="amount" value="$1,000">
+  <input type="hidden" name="to" value="attacker_account" />
+  <input type="hidden" name="account" value="your_account" />
+  <input type="hidden" name="amount" value="$1,000" />
 </form>
 ```
 
@@ -166,7 +168,7 @@ main()
 - 发送带有 `HTML` 内容的未经请求的电子邮件
 - 在受害者也进行在线银行业务时可能会访问的页面上植入漏洞利用 `URL` 或脚本，甚至可能只是一张图片。
 
-关于跨站请求伪造攻击可以参考：[跨站请求伪造（CSRF）](https://owasp.org/www-community/attacks/csrfhttps://owasp.org/www-community/attacks/csrf "跨站请求伪造（CSRF）")
+关于跨站请求伪造攻击可以参考：[跨站请求伪造（CSRF）](https://owasp.org/www-community/attacks/csrfhttps://owasp.org/www-community/attacks/csrf '跨站请求伪造（CSRF）')
 
 要避免跨站请求伪造可以在服务端检查 `origin` 和 `referer`，当然这也不是绝对安全的。
 
@@ -182,13 +184,13 @@ main()
 
 ```html
 <body>
-    <script>
-        function success(data) {
-            console.log(data);
-        }
-    </script>
+  <script>
+    function success(data) {
+      console.log(data)
+    }
+  </script>
 
-    <script src="http://localhost:8080/test?callback=success"></script>
+  <script src="http://localhost:8080/test?callback=success"></script>
 </body>
 ```
 
@@ -199,23 +201,23 @@ var http = require('http')
 var url = require('url')
 
 var routes = {
-    '/test': function (req, res) {
-        var cb_str = url.parse(req.url, true).search
-        res.writeHead(200, 'Ok')
-        var cb = cb_str.split('=')[1]
-        console.log(cb)
-        res.write(cb + `({result: "success"})`)
-        res.end()
-    }
+  '/test': function (req, res) {
+    var cb_str = url.parse(req.url, true).search
+    res.writeHead(200, 'Ok')
+    var cb = cb_str.split('=')[1]
+    console.log(cb)
+    res.write(cb + `({result: "success"})`)
+    res.end()
+  }
 }
 
 var server = http.createServer(function (req, res) {
-    var pathObj = url.parse(req.url, true)
-    var handleFn = routes[pathObj.pathname]
-    if (handleFn) {
-        console.log(pathObj)
-        handleFn(req, res)
-    }
+  var pathObj = url.parse(req.url, true)
+  var handleFn = routes[pathObj.pathname]
+  if (handleFn) {
+    console.log(pathObj)
+    handleFn(req, res)
+  }
 })
 
 server.listen(8080)
@@ -232,7 +234,7 @@ console.log('server on 8080...')
 
 ## CORS
 
-跨域资源共享(`CORS`) 是一种机制，它是 `HTTP` 的一部分，它使用额外的 `HTTP` 头来告诉浏览器 让运行在一个 `origin`(domain) 上的 `Web`应用被准许访问来自不同源服务器上的指定的资源。`cors` 的标准参考 [Fetch - whatwg](https://fetch.spec.whatwg.org/#http-cors-protocol "Fetch - whatwg")
+跨域资源共享(`CORS`) 是一种机制，它是 `HTTP` 的一部分，它使用额外的 `HTTP` 头来告诉浏览器 让运行在一个 `origin`(domain) 上的 `Web`应用被准许访问来自不同源服务器上的指定的资源。`cors` 的标准参考 [Fetch - whatwg](https://fetch.spec.whatwg.org/#http-cors-protocol 'Fetch - whatwg')
 
 `CORS` 需要浏览器和服务器同时支持。目前，所有浏览器都支持该功能，IE浏览器不能低于 `IE10`。
 
@@ -252,29 +254,29 @@ console.log('server on 8080...')
 浏览器将 `CORS` 请求分成两类：简单请求（ `simple request` ）和非简单请求（ `not-so-simple request` ）。只要同时满足以下两大条件，就属于简单请求。
 
 1. 请求方法是以下三种方法之一：
-    
-    - `HEAD`
-    - `GET`
-    - `POST`
+   - `HEAD`
+   - `GET`
+   - `POST`
+
 2. 除了被用户代理自动设置的首部字段（例如 `Connection` ，`User-Agent`）和在 `Fetch` 规范中定义为禁用首部名称的其他首部，允许人为设置的字段为 `Fetch` 规范定义的对 `CORS` 安全的首部字段集合。该集合为：
-    
-    - `Accept`
-    - `Accept-Language`
-    - `Content-Language`
-    - `Last-Event-ID`
-    - `Content-Type`：只限于三个值 `application/x-www-form-urlencoded`、`multipart/form-data`、`text/plain`
-    - `DPR`
-    - `Downlink`
-    - `Save-Data`
-    - `Viewport-Width`
-    - `Width`
+   - `Accept`
+   - `Accept-Language`
+   - `Content-Language`
+   - `Last-Event-ID`
+   - `Content-Type`：只限于三个值 `application/x-www-form-urlencoded`、`multipart/form-data`、`text/plain`
+   - `DPR`
+   - `Downlink`
+   - `Save-Data`
+   - `Viewport-Width`
+   - `Width`
+
 3. 请求中的任意 `XMLHttpRequestUpload` 对象均没有注册任何事件监听器；`XMLHttpRequestUpload` 对象可以使用 `XMLHttpRequest.upload` 属性访问。
-    
+
 4. 请求中没有使用 `ReadableStream` 对象。
 
 > 注意: 这些跨站点请求与浏览器发出的其他跨站点请求并无二致。如果服务器未返回正确的响应首部，则请求方不会收到任何数据。因此，那些不允许跨站点请求的网站无需为这一新的 `HTTP` 访问控制特性担心。
 
-##### 简单请求
+### 简单请求
 
 对于简单请求，前端什么都不需要做，浏览器会自动在我们的请求头中加一个字段 `origin` 向后端说明我们的源，服务器根据这个字段来决定是否同意该请求，如果 `Origin` 指定的源，不在许可范围内，服务器会返回一个正常的 `HTTP` 回应。浏览器发现，这个回应的头信息没有包含 `Access-Control-Allow-Origin` 字段，就知道出错了，从而抛出一个错误，被 `XMLHttpRequest` 的 `onerror` 回调函数捕获。注意，这种错误无法通过状态码识别，因为HTTP回应的状态码有可能是 `200`。
 
@@ -288,67 +290,66 @@ console.log('server on 8080...')
 
 ```javascript
 //前端请求
-document.cookie = 'name=clloz';
+document.cookie = 'name=clloz'
 var xhr = new XMLHttpRequest()
 xhr.open('get', 'http://localhost:8080/test', true)
-xhr.withCredentials = true; //请求想要发送cookie必须设置withCreadentials
+xhr.withCredentials = true //请求想要发送cookie必须设置withCreadentials
 xhr.onload = function () {
-    console.log(xhr.responseText);
+  console.log(xhr.responseText)
 }
-xhr.send();
+xhr.send()
 
 //后端代码
 var http = require('http')
 var url = require('url')
-var querystring = require('querystring');
-var util = require('util');
+var querystring = require('querystring')
+var util = require('util')
 
 var routes = {
-    '/test': function (req, res) {
-        console.log(req.method)
-        if (req.method === 'GET') {
-            console.log(req.headers.cookie)
-            res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8081')
-            res.setHeader('Access-Control-Allow-Credentials', true) //允许前端发送cookie
-            res.writeHead(200, 'Ok')
-            res.write(`success`)
-            res.end()
-        }
+  '/test': function (req, res) {
+    console.log(req.method)
+    if (req.method === 'GET') {
+      console.log(req.headers.cookie)
+      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8081')
+      res.setHeader('Access-Control-Allow-Credentials', true) //允许前端发送cookie
+      res.writeHead(200, 'Ok')
+      res.write(`success`)
+      res.end()
     }
+  }
 }
 
 var server = http.createServer(function (req, res) {
-    var pathObj = url.parse(req.url, true)
-    var handleFn = routes[pathObj.pathname]
-    if (handleFn) {
-        handleFn(req, res)
-    }
+  var pathObj = url.parse(req.url, true)
+  var handleFn = routes[pathObj.pathname]
+  if (handleFn) {
+    handleFn(req, res)
+  }
 })
 
 server.listen(8080)
 console.log('server on 8080...')
 ```
 
-##### 非简单请求
+### 非简单请求
 
 非简单请求是那种对服务器有特殊要求的请求，比如请求方法是 `PUT` 或 `DELETE`，或者 `Content-Type` 字段的类型是 `application/json`。
 
 非简单请求的 `CORS`请求，会在正式通信之前，增加一次 `HTTP` 查询请求，称为"预检"请求（ `preflight request` ）。浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些 `HTTP` 方法和头信息字段。只有得到肯定答复，浏览器才会发出正式的 `XMLHttpRequest` 请求，否则就报错。看一个预检请求报文和响应报文：
 
 ```javascript
-var invocation = new XMLHttpRequest();
-var url = 'http://bar.other/resources/post-here/';
-var body = '<?xml version="1.0"?><person><name>Arun</name></person>';
+var invocation = new XMLHttpRequest()
+var url = 'http://bar.other/resources/post-here/'
+var body = '<?xml version="1.0"?><person><name>Arun</name></person>'
 
-function callOtherDomain(){
-  if(invocation)
-    {
-      invocation.open('POST', url, true);
-      invocation.setRequestHeader('X-PINGOTHER', 'pingpong');
-      invocation.setRequestHeader('Content-Type', 'application/xml');
-      invocation.onreadystatechange = handler;
-      invocation.send(body); 
-    }
+function callOtherDomain() {
+  if (invocation) {
+    invocation.open('POST', url, true)
+    invocation.setRequestHeader('X-PINGOTHER', 'pingpong')
+    invocation.setRequestHeader('Content-Type', 'application/xml')
+    invocation.onreadystatechange = handler
+    invocation.send(body)
+  }
 }
 ```
 
@@ -400,58 +401,61 @@ Content-Type: text/plain
 ```javascript
 //前端代码
 var json = {
-    name: 'clloz',
-    age: '27',
-    sex: 'male'
+  name: 'clloz',
+  age: '27',
+  sex: 'male'
 }
-document.cookie = 'name=clloz';
+document.cookie = 'name=clloz'
 var xhr = new XMLHttpRequest()
 xhr.open('post', 'http://localhost:8080/test', true)
 xhr.setRequestHeader('content-type', 'application/json')
-xhr.withCredentials = true;
+xhr.withCredentials = true
 xhr.onload = function () {
-    console.log(xhr.responseText);
+  console.log(xhr.responseText)
 }
-xhr.send(json);
+xhr.send(json)
 
 //后端代码
 var http = require('http')
 var url = require('url')
-var querystring = require('querystring');
-var util = require('util');
+var querystring = require('querystring')
+var util = require('util')
 
 var routes = {
-    '/test': function (req, res) {
-        console.log(req.method)
-        if (req.method === 'GET') {
-            console.log(req.headers.cookie)
-            res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8081')
-            res.setHeader('Access-Control-Allow-Credentials', true)
-            res.writeHead(200, 'Ok')
-            res.write(`success`)
-            res.end()
-        } else {
-            var post = '';
-            req.on('data', function (chunk) {
-                post += chunk;
-            });
-            req.on('end', function () {
-                res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8081')
-                res.setHeader('Access-Control-Allow-Credentials', true)
-                res.setHeader('Access-Control-Request-Method', 'PUT,POST,GET,DELETE,OPTIONS')
-                res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, t')
-                res.end('success');
-            });
-        }
+  '/test': function (req, res) {
+    console.log(req.method)
+    if (req.method === 'GET') {
+      console.log(req.headers.cookie)
+      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8081')
+      res.setHeader('Access-Control-Allow-Credentials', true)
+      res.writeHead(200, 'Ok')
+      res.write(`success`)
+      res.end()
+    } else {
+      var post = ''
+      req.on('data', function (chunk) {
+        post += chunk
+      })
+      req.on('end', function () {
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8081')
+        res.setHeader('Access-Control-Allow-Credentials', true)
+        res.setHeader('Access-Control-Request-Method', 'PUT,POST,GET,DELETE,OPTIONS')
+        res.setHeader(
+          'Access-Control-Allow-Headers',
+          'Origin, X-Requested-With, Content-Type, Accept, t'
+        )
+        res.end('success')
+      })
     }
+  }
 }
 
 var server = http.createServer(function (req, res) {
-    var pathObj = url.parse(req.url, true)
-    var handleFn = routes[pathObj.pathname]
-    if (handleFn) {
-        handleFn(req, res)
-    }
+  var pathObj = url.parse(req.url, true)
+  var handleFn = routes[pathObj.pathname]
+  if (handleFn) {
+    handleFn(req, res)
+  }
 })
 
 server.listen(8080)
@@ -460,7 +464,7 @@ console.log('server on 8080...')
 
 大多数浏览器不支持针对于预检请求的重定向。如果一个预检请求发生了重定向，浏览器将报告错误。
 
-* * *
+---
 
 `XMLHttpRequest` 或 `Fetch` 与 `CORS` 的一个有趣的特性是，可以基于 `HTTP cookies` 和 `HTTP` 认证信息发送身份凭证。一般而言，对于跨源 `XMLHttpRequest` 或 `Fetch` 请求，浏览器不会发送身份凭证信息。如果要发送凭证信息，需要设置 `XMLHttpRequest` 的某个特殊标志位 `withCredentials` 为 `true`。如果服务器端的响应中未携带 `Access-Control-Allow-Credentials: true` ，浏览器将不会把响应内容返回给请求的发送者。
 
@@ -487,17 +491,15 @@ console.log('server on 8080...')
 以上是发送发的 `API` 使用发放，接收方的使用方法如下：
 
 ```javascript
-window.addEventListener("message", receiveMessage, false);
+window.addEventListener('message', receiveMessage, false)
 
-function receiveMessage(event)
-{
+function receiveMessage(event) {
   // For Chrome, the origin property is in the event.originalEvent
-  // object. 
+  // object.
   // 这里不准确，chrome没有这个属性
-  // var origin = event.origin || event.originalEvent.origin; 
+  // var origin = event.origin || event.originalEvent.origin;
   var origin = event.origin
-  if (origin !== "http://example.org:8080")
-    return;
+  if (origin !== 'http://example.org:8080') return
 
   // ...
 }
@@ -510,36 +512,35 @@ function receiveMessage(event)
 ```html
 <!-- localhost:8080 -->
 <body>
-    <button>btn</button>
-    <iframe name="myframe" src="http://localhost:8081" frameborder="1"></iframe>
-    <script>
-        window.addEventListener('message', function (e) {
-            if (e.origin === 'http://localhost:8081') {
-                console.log(e.data)
-            }
-        })
+  <button>btn</button>
+  <iframe name="myframe" src="http://localhost:8081" frameborder="1"></iframe>
+  <script>
+    window.addEventListener('message', function (e) {
+      if (e.origin === 'http://localhost:8081') {
+        console.log(e.data)
+      }
+    })
 
-        var iframe = window.frames['myframe']
+    var iframe = window.frames['myframe']
 
-        var btn = document.querySelector('button')
-        btn.addEventListener('click', function () {
-            iframe.postMessage('this is 8080', 'http://localhost:8081')
-        })
-    </script>
+    var btn = document.querySelector('button')
+    btn.addEventListener('click', function () {
+      iframe.postMessage('this is 8080', 'http://localhost:8081')
+    })
+  </script>
 </body>
-
 
 <!-- localhost:8081 -->
 <body>
-    this is frame!
-    <script>
-        window.addEventListener("message", function(e) {
-            if (e.origin === "http://localhost:8080") {
-                console.log(e.data);
-                e.source.postMessage("this is 8081", e.origin);
-            }
-        });
-    </script>
+  this is frame!
+  <script>
+    window.addEventListener('message', function (e) {
+      if (e.origin === 'http://localhost:8080') {
+        console.log(e.data)
+        e.source.postMessage('this is 8081', e.origin)
+      }
+    })
+  </script>
 </body>
 ```
 
@@ -557,39 +558,39 @@ function receiveMessage(event)
 <!-- a.html -->
 <iframe id="iframe" src="http://www.domain2.com/b.html" style="display:none;"></iframe>
 <script>
-    var iframe = document.getElementById('iframe');
+  var iframe = document.getElementById('iframe')
 
-    // 向b.html传hash值
-    setTimeout(function() {
-        iframe.src = iframe.src + '#user=admin';
-    }, 1000);
+  // 向b.html传hash值
+  setTimeout(function () {
+    iframe.src = iframe.src + '#user=admin'
+  }, 1000)
 
-    // 开放给同域c.html的回调方法
-    function onCallback(res) {
-        alert('data from c.html ---> ' + res);
-    }
+  // 开放给同域c.html的回调方法
+  function onCallback(res) {
+    alert('data from c.html ---> ' + res)
+  }
 </script>
 
 <!-- b.html -->
 <iframe id="iframe" src="http://www.domain1.com/c.html" style="display:none;"></iframe>
 <script>
-    var iframe = document.getElementById('iframe');
+  var iframe = document.getElementById('iframe')
 
-    // 监听a.html传来的hash值，再传给c.html
-    window.onhashchange = function () {
-        iframe.src = iframe.src + location.hash;
-    };
+  // 监听a.html传来的hash值，再传给c.html
+  window.onhashchange = function () {
+    iframe.src = iframe.src + location.hash
+  }
 </script>
 
 <!-- c.html -->
 <iframe id="iframe" src="http://www.domain1.com/c.html" style="display:none;"></iframe>
 <script>
-    var iframe = document.getElementById('iframe');
+  var iframe = document.getElementById('iframe')
 
-    // 监听a.html传来的hash值，再传给c.html
-    window.onhashchange = function () {
-        iframe.src = iframe.src + location.hash;
-    };
+  // 监听a.html传来的hash值，再传给c.html
+  window.onhashchange = function () {
+    iframe.src = iframe.src + location.hash
+  }
 </script>
 ```
 
@@ -605,9 +606,9 @@ function receiveMessage(event)
 
 ## 参考文章
 
-1. [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy "same-origin policy")
-2. [浏览器同源策略](https://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html "浏览器同源策略")
-3. [CORS-MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS "CORS-MDN")
-4. [CORS-阮一峰](https://www.ruanyifeng.com/blog/2016/04/cors.html "CORS-阮一峰")
-5. [不要再问我跨域的问题了](https://segmentfault.com/a/1190000015597029 "不要再问我跨域的问题了")
-6. [9种常见的前端跨域解决方案（详解）](https://juejin.im/post/6844903882083024910 "9种常见的前端跨域解决方案（详解）")
+1. [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy 'same-origin policy')
+2. [浏览器同源策略](https://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html '浏览器同源策略')
+3. [CORS-MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS 'CORS-MDN')
+4. [CORS-阮一峰](https://www.ruanyifeng.com/blog/2016/04/cors.html 'CORS-阮一峰')
+5. [不要再问我跨域的问题了](https://segmentfault.com/a/1190000015597029 '不要再问我跨域的问题了')
+6. [9种常见的前端跨域解决方案（详解）](https://juejin.im/post/6844903882083024910 '9种常见的前端跨域解决方案（详解）')

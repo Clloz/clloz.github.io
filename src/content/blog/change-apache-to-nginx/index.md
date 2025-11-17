@@ -6,10 +6,8 @@ tags:
   - server
   - 建站知识
 language: '中文'
-heroImage: {"src":"./nginx.png","color":"#B4C6DA"}
+heroImage: { 'src': './nginx.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -210,7 +208,7 @@ server {
 - `~*` ：用于正则 `uri` 前，但不区分大小写
 - `^~` ：用于标准 `uri` 前，要求 `Nginx` 找到标识 `uri` 和请求字符串匹配度最高的 `location` 后，立即使用此 `location` 处理请求，而不再使用 `location` 块中的正则 `uri` 和请求字符串做匹配
 
-由于我只是更换 `web` 服务器，所以还算比较简单，如果你是从头安装，那么你可以看我之前的文章，或者参考腾讯云的这篇教程：[手动搭建 LNMP 环境（CentOS 7）](https://cloud.tencent.com/document/product/213/38056 "手动搭建 LNMP 环境（CentOS 7）")
+由于我只是更换 `web` 服务器，所以还算比较简单，如果你是从头安装，那么你可以看我之前的文章，或者参考腾讯云的这篇教程：[手动搭建 LNMP 环境（CentOS 7）](https://cloud.tencent.com/document/product/213/38056 '手动搭建 LNMP 环境（CentOS 7）')
 
 **更新**内存占用的主要原因是 `php-fpm` 进程过多，配置一下 `/etc/php-fpm.d/www.conf`。
 

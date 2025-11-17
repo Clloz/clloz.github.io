@@ -6,10 +6,8 @@ tags:
   - assorted
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./iterm2-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './iterm2-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -25,7 +23,7 @@ brew tap caskroom/cask
 brew cask install iterm2
 ```
 
-安装成功后在 `Launchpad` 中可以看到有一个新图标出现，打开 `iTerm2`。如果你想用快捷键快速启动程序而不是点击图标，参考我的[这篇文章](https://www.clloz.com/programming/assorted/2018/10/23/terminal-shortcut/ "这篇文章")。
+安装成功后在 `Launchpad` 中可以看到有一个新图标出现，打开 `iTerm2`。如果你想用快捷键快速启动程序而不是点击图标，参考我的[这篇文章](https://www.clloz.com/programming/assorted/2018/10/23/terminal-shortcut/ '这篇文章')。
 
 ## 快捷键修改
 
@@ -35,7 +33,7 @@ brew cask install iterm2
 
 我们可以根据自己的喜好来选择 `iTerm2` 的配色方案，先检查下终端颜色配置为 `xterm-256color`，位置在 `iTerm2 -> Preferences -> Profiles -> Terminal`。
 
-![xterm256](./images/xterm256.png "xterm256")
+![xterm256](./images/xterm256.png 'xterm256')
 
 然后我们可以在 `iTerm2 -> Preferences -> Profiles -> Colors` 中选择我们的配色方案，不过自带的配色方案比较少，我们可以自己导入配色方案。
 
@@ -46,7 +44,7 @@ brew cask install iterm2
 git clone https://github.com/mbadolato/iTerm2-Color-Schemes
 ```
 
-[![iterm-color-import](./images/iterm-color-import.png "iterm-color-import")](https://cdn1.clloz.com/blog/writing/iterm-color-import.png "iterm-color-import")
+[![iterm-color-import](./images/iterm-color-import.png 'iterm-color-import')](https://cdn1.clloz.com/blog/writing/iterm-color-import.png 'iterm-color-import')
 
 然后点击图中红框位置的下拉框选择其中的 `import` 然后选择刚刚克隆的 `iTerm2-Color-Schemes` 中的 `schemes` 文件夹中的全部文件导入，我们就有非常多的配色方案可用了， 大家可以选择自己喜欢的，我使用的是 `Dracula`。
 
@@ -54,7 +52,7 @@ git clone https://github.com/mbadolato/iTerm2-Color-Schemes
 
 想要让 `iTerm2` 显示图标我们就得用一些特别的字体，图标字体并不是 `ASCII` 码字体，在 `iTerm2` 中可以进行配置，所以先要安装这个字体。这款字体叫 `nerd-fonts`，它支持下面这么多种图标。
 
-[![nerd-font](./images/nerd-font.png "nerd-font")](https://cdn1.clloz.com/blog/writing/nerd-font.png "nerd-font")
+[![nerd-font](./images/nerd-font.png 'nerd-font')](https://cdn1.clloz.com/blog/writing/nerd-font.png 'nerd-font')
 
 ```bash
 brew tap caskroom/fonts
@@ -65,7 +63,7 @@ brew cask install font-hack-nerd-font
 
 安装成功后需要在 `iTerm2` 中配置一下，在 `iTerm2 -> Preferences -> Profiles -> Text -> Font -> Change Font` 栏位中，`Text` 下面勾选 `Use a different font for non-ASCII text`，然后再选择字体以及设置字体大小，需要注意的是 `Font` 和 `Non-ASCII Font` 所选择的字体和字体大小必须一致，否则会出现显示异常。
 
-[![iterm-font](./images/iterm-font.png "iterm-font")](https://cdn1.clloz.com/blog/writing/iterm-font.png "iterm-font")
+[![iterm-font](./images/iterm-font.png 'iterm-font')](https://cdn1.clloz.com/blog/writing/iterm-font.png 'iterm-font')
 
 ## 安装 zsh
 
@@ -113,7 +111,7 @@ chsh -s /usr/local/bin/zsh
 
 `CentOS7` 的通过 `yum` 安装的 `zsh` 版本为 `5.0.2`，但是很多主题需要更高的版本。比如我使用的`Powerlevel9k` 主题，在使用 `git init` 的时候就经常会报错，每次都只能把主题换了再操作，很麻烦。这里给大家说一下如何通过源码安装最新的 `zsh`。
 
-最新版 `zsh` 下载地址 [zsh-5.8.tar.xz](http://zsh.sourceforge.net/Arc/source.html "zsh-5.8.tar.xz")，下载速度可能比较慢，不过还好文件不大，耐心等待。
+最新版 `zsh` 下载地址 [zsh-5.8.tar.xz](http://zsh.sourceforge.net/Arc/source.html 'zsh-5.8.tar.xz')，下载速度可能比较慢，不过还好文件不大，耐心等待。
 
 下载好 `zsh-5.8.tar.xz` 后用 `scp` 上传到服务器，然后执行以下操作。
 
@@ -141,7 +139,7 @@ chsh -s /usr/local/bin/zsh
 
 安装完成后 `iTerm2` 已经产生了明显的变化了，同时我们的用户文件夹 `~` 中生成了一个 `.zshrc` 的 `oh-my-zsh` 的配置文件。到这一步基本已经大功告成了，下面我们要做的就是对这个配置文件进行改动来达到我们的目标。
 
-## 关联 .bash\_profile
+## 关联 .bash_profile
 
 需要注意的是当前我们使用的 `shell` 换成了 `zsh`，我们原来在 `.bash_profile` 中的配置不会被读取，所以我们要在 `.zshrc` 中加上一句 `source ~/.bash_profile`，这样我们原来的配置也会生效。
 
@@ -164,7 +162,7 @@ source ~/.zshrc
 # 后面会出来 p10k 的配置向导，跟着配置即可。如果后面想要修改配置，一种方法是直接修改 ~/.p10k.zsh 文件，另一种方法是执行 p10k configure 命令
 ```
 
-`p10k` 不需要像 `p9k` 那样自己进行复杂的定制，设置向导中已经囊括了比较常用的配置，如果你还是要自己定制可以参考 [p10k - README](https://github.com/romkatv/powerlevel10k "p10k - README")
+`p10k` 不需要像 `p9k` 那样自己进行复杂的定制，设置向导中已经囊括了比较常用的配置，如果你还是要自己定制可以参考 [p10k - README](https://github.com/romkatv/powerlevel10k 'p10k - README')
 
 ## 插件
 
@@ -185,7 +183,7 @@ source $ZSH/oh-my-zsh.sh
 
 ## zsh-autosuggestion
 
-如图所示，输入命令时可提示自动补全(灰色部分)，然后按键盘 `→` 即可补全([详细介绍](https://github.com/zsh-users/zsh-autosuggestions "详细介绍"))
+如图所示，输入命令时可提示自动补全(灰色部分)，然后按键盘 `→` 即可补全([详细介绍](https://github.com/zsh-users/zsh-autosuggestions '详细介绍'))
 
 ```bash
 #安装
@@ -194,7 +192,7 @@ $ git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/z
 
 ## zsh-syntax-highlighting
 
-日常用的命令会高亮显示，命令错误显示红色，如下图([详细介绍](https://github.com/zsh-users/zsh-syntax-highlighting "详细介绍"))
+日常用的命令会高亮显示，命令错误显示红色，如下图([详细介绍](https://github.com/zsh-users/zsh-syntax-highlighting '详细介绍'))
 
 ```bash
 #安装
@@ -205,7 +203,7 @@ $ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTO
 
 `colorls` 是一个 `Ruby` 实现的脚本，它可以配合 `powerlevel9k` 显示电脑上的文件图标(应该是通过后缀判断的)，效果如下
 
-[![colorls](./images/colorls.png "colorls")](https://cdn1.clloz.com/blog/writing/colorls.png "colorls")
+[![colorls](./images/colorls.png 'colorls')](https://cdn1.clloz.com/blog/writing/colorls.png 'colorls')
 
 ```bash
 #安装
@@ -219,7 +217,7 @@ sudo gem install colorls
 - 连续按两次 `tab` 会补全列表，补全项可以使用 `ctrl+n/p/f/b` 上下左右切换
 - 输入目录名即可进入，不用 `cd` 了，输入 `..` 即可到上级目录，返回上次目录输入 `-`
 - 输入 d 即可看到目录列表
-- 智能的命令纠错功能（需开启 ENABLE\_CORRECTION 配置）
+- 智能的命令纠错功能（需开启 ENABLE_CORRECTION 配置）
 - `Cmd + Shift + H` 可以查看剪切板的历史记录
 - `Cmd + Option + B` 可以利用时间轴来查看之前输入的命令
 
@@ -234,7 +232,7 @@ sudo gem install colorls
 "terminal.integrated.fontSize": 14,
 ```
 
-[![iterm-vscode](./images/iterm-vscode.png "iterm-vscode")](https://cdn1.clloz.com/blog/writing/iterm-vscode.png "iterm-vscode")
+[![iterm-vscode](./images/iterm-vscode.png 'iterm-vscode')](https://cdn1.clloz.com/blog/writing/iterm-vscode.png 'iterm-vscode')
 
 ## Linux 配置
 

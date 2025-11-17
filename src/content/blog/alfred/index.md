@@ -6,10 +6,8 @@ tags:
   - assorted
   - 软件工具
 language: '中文'
-heroImage: {"src":"./alfred.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './alfred.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -69,37 +67,37 @@ heroImage: {"src":"./alfred.jpg","color":"#B4C6DA"}
 
 ## 终端
 
-`Alfred` 也支持直接执行终端命令，指令为 `<`，默认调用的终端是 `terminal`。如果你跟我一样使用的是 `iTerm`，那么你就参考 [更换默认终端为iTerm2](https://github.com/vitorgalvao/custom-alfred-iterm-scripts "更换默认终端为iTerm2") 进行更换。不过根据我的实际使用情况，这个功能比较鸡肋，因为每次都还是在终端打开一个新的 `tab`，然后执行指令，不是很好用。
+`Alfred` 也支持直接执行终端命令，指令为 `<`，默认调用的终端是 `terminal`。如果你跟我一样使用的是 `iTerm`，那么你就参考 [更换默认终端为iTerm2](https://github.com/vitorgalvao/custom-alfred-iterm-scripts '更换默认终端为iTerm2') 进行更换。不过根据我的实际使用情况，这个功能比较鸡肋，因为每次都还是在终端打开一个新的 `tab`，然后执行指令，不是很好用。
 
 ## 插件
 
-目前没有一个专门管理插件的网站，如果你想寻找插件，可以到[官网](https://www.alfredapp.com/workflows/ "官网")以及[官方论坛](https://www.alfredforum.com/ "官方论坛")。其他的只能借助搜索引擎查询或者按照自己的需求写一个。下面放一下我尝试的插件的链接。
+目前没有一个专门管理插件的网站，如果你想寻找插件，可以到[官网](https://www.alfredapp.com/workflows/ '官网')以及[官方论坛](https://www.alfredforum.com/ '官方论坛')。其他的只能借助搜索引擎查询或者按照自己的需求写一个。下面放一下我尝试的插件的链接。
 
-1. [颜色格式转换](http://www.packal.org/workflow/colors "颜色格式转换")
-2. [Reddit浏览工具](https://github.com/deanishe/alfred-reddit "Reddit浏览工具")
-3. [StackOverFlow问题查询工具](https://github.com/deanishe/alfred-stackexchange "StackOverFlow问题查询工具")
-4. [搜索工具（支持谷歌，百度，知乎，微博等）](https://github.com/zqzten/alfred-web-search-suggest "搜索工具（支持谷歌，百度，知乎，微博等）")
-5. [豆瓣书籍电影查询工具](https://github.com/h3l/douban-workflow "豆瓣书籍电影查询工具")
-6. [github工具](https://github.com/gharlan/alfred-github-workflow "github工具")
-7. [awesome-workflow](https://github.com/derimagia/awesome-alfred-workflows "awesome-workflow")
-8. [有道翻译](https://github.com/wensonsmith/YoudaoTranslate "有道翻译")
-9. [html字符实体查询](https://github.com/ajgon/alfred2-html-entity-lookup "html字符实体查询")
-10. [font awesome 图标查询](https://github.com/ruedap/alfred-font-awesome-workflow "font awesome 图表查询")
-11. [包查询](https://github.com/willfarrell/alfred-pkgman-workflow "包查询")
-12. [对字符进行多种形式的编码解码](https://github.com/willfarrell/alfred-encode-decode-workflow "对字符进行多种形式的编码解码")
-13. [ip信息查询](https://raw.githubusercontent.com/willfarrell/alfred-workflows/master/IPAddress.alfredworkflow "ip信息查询")
-14. [强制结束进程](https://github.com/ngreenstein/alfred-process-killer "强制结束进程")
+1. [颜色格式转换](http://www.packal.org/workflow/colors '颜色格式转换')
+2. [Reddit浏览工具](https://github.com/deanishe/alfred-reddit 'Reddit浏览工具')
+3. [StackOverFlow问题查询工具](https://github.com/deanishe/alfred-stackexchange 'StackOverFlow问题查询工具')
+4. [搜索工具（支持谷歌，百度，知乎，微博等）](https://github.com/zqzten/alfred-web-search-suggest '搜索工具（支持谷歌，百度，知乎，微博等）')
+5. [豆瓣书籍电影查询工具](https://github.com/h3l/douban-workflow '豆瓣书籍电影查询工具')
+6. [github工具](https://github.com/gharlan/alfred-github-workflow 'github工具')
+7. [awesome-workflow](https://github.com/derimagia/awesome-alfred-workflows 'awesome-workflow')
+8. [有道翻译](https://github.com/wensonsmith/YoudaoTranslate '有道翻译')
+9. [html字符实体查询](https://github.com/ajgon/alfred2-html-entity-lookup 'html字符实体查询')
+10. [font awesome 图标查询](https://github.com/ruedap/alfred-font-awesome-workflow 'font awesome 图表查询')
+11. [包查询](https://github.com/willfarrell/alfred-pkgman-workflow '包查询')
+12. [对字符进行多种形式的编码解码](https://github.com/willfarrell/alfred-encode-decode-workflow '对字符进行多种形式的编码解码')
+13. [ip信息查询](https://raw.githubusercontent.com/willfarrell/alfred-workflows/master/IPAddress.alfredworkflow 'ip信息查询')
+14. [强制结束进程](https://github.com/ngreenstein/alfred-process-killer '强制结束进程')
 15. `Dash API` 查询集成，由 `Dash` 软件提供。
 
 其实插件功能就类似于 `Mac` 的 `automator`，不过它提供了更多更人性化的支持。关于自己写 `workflow` 我还在研究，，给几篇文章大家参考一下。
 
-1. [Alfred 3 天气预报workflow](https://zhuanlan.zhihu.com/p/66514693 "Alfred 3 天气预报workflow")
-2. [如何去写一个第三方的workflow](https://allenwu.itscoder.com/how-to-write-a-workflow-for-mac "如何去写一个第三方的workflow")
-3. [用NodeJS把玩一番workflow](https://juejin.im/post/6844903490406318093 "用NodeJS把玩一番workflow")
+1. [Alfred 3 天气预报workflow](https://zhuanlan.zhihu.com/p/66514693 'Alfred 3 天气预报workflow')
+2. [如何去写一个第三方的workflow](https://allenwu.itscoder.com/how-to-write-a-workflow-for-mac '如何去写一个第三方的workflow')
+3. [用NodeJS把玩一番workflow](https://juejin.im/post/6844903490406318093 '用NodeJS把玩一番workflow')
 
 把自己日常的工作流形成 `workflow`，能够极大的提高我们在 `Mac` 上的使用效率，这也是 `Alfred` 最强大的功能，不过需要一点学习成本。
 
 ## 参考文章
 
-1. [Alfred神器使用手册](https://louiszhai.github.io/2018/05/31/alfred/#alfred-workflow "Alfred神器使用手册")
-2. [Alfred打磨之路](https://1991421.cn/2019/04/06/b908e228/ "Alfred打磨之路")
+1. [Alfred神器使用手册](https://louiszhai.github.io/2018/05/31/alfred/#alfred-workflow 'Alfred神器使用手册')
+2. [Alfred打磨之路](https://1991421.cn/2019/04/06/b908e228/ 'Alfred打磨之路')

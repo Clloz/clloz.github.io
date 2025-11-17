@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 今天在服务器上部署代码的时候，发现服务器上的 `git` 版本非常老，是 `git 1.8.0`，于是就把 `git` 的版本更新到了最新的 `2.21.0`。
@@ -32,7 +30,7 @@ yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel asciid
 
 ```bash
 wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.15.tar.gz
-tar zxvf libiconv-1.15.tar.gz 
+tar zxvf libiconv-1.15.tar.gz
 cd libiconv-1.15
 ./configure --prefix=/usr/local/libiconv
 make && make install
@@ -40,7 +38,7 @@ make && make install
 
 ## 下载安装最新版本git
 
-下载地址：[release](https://github.com/git/git/releases "release")
+下载地址：[release](https://github.com/git/git/releases 'release')
 
 ```bash
 wget https://github.com/git/git/archive/v2.21.0.tar.gz

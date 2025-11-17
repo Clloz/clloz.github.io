@@ -6,10 +6,8 @@ tags:
   - hardware
   - 硬件设备
 language: '中文'
-heroImage: {"src":"./logitech.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './logitech.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 问题
 

@@ -6,10 +6,8 @@ tags:
   - js
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -17,15 +15,15 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ## 语法
 
-回忆一下 `co` 自动执行生成器函数的方式（[生成器 Generator 的异步应用](https://www.clloz.com/programming/front-end/js/2020/11/01/generator-async/#co "生成器 Generator 的异步应用")）：
+回忆一下 `co` 自动执行生成器函数的方式（[生成器 Generator 的异步应用](https://www.clloz.com/programming/front-end/js/2020/11/01/generator-async/#co '生成器 Generator 的异步应用')）：
 
 ```javascript
 var gen = function* () {
-    var f1 = yield readFile('/etc/fstab');
-    var f2 = yield readFile('/etc/shells');
-    console.log(f1.toString());
-    console.log(f2.toString());
-};
+  var f1 = yield readFile('/etc/fstab')
+  var f2 = yield readFile('/etc/shells')
+  console.log(f1.toString())
+  console.log(f2.toString())
+}
 co(gen)
 ```
 
@@ -33,11 +31,11 @@ co(gen)
 
 ```javascript
 var asyncReadFile = async function () {
-    var f1 = await readFile('/etc/fstab');
-    var f2 = await readFile('/etc/shells');
-    console.log(f1.toString());
-    console.log(f2.toString());
-};
+  var f1 = await readFile('/etc/fstab')
+  var f2 = await readFile('/etc/shells')
+  console.log(f1.toString())
+  console.log(f2.toString())
+}
 asyncReadFile()
 ```
 
@@ -50,7 +48,7 @@ asyncReadFile()
 
 `async` 函数完全可以看作多个异步操作，包装成的一个 `Promise` 对象，而 `await` 命令就是内部 `then` 命令的语法糖。
 
-* * *
+---
 
 `async` 函数是 `AsyncFunction` 构造函数的实例，我们无法直接访问 `AsyncFunction`，因为它不是一个全局对象，但是我们可以通过 `Object.getPrototypeOf(async function(){}).constructor` 得到它，并且可以用它来构造 `async` 函数 `new AsyncFunction([arg1[, arg2[, ...argN]],] functionBody)`。
 
@@ -61,26 +59,26 @@ asyncReadFile()
 async function foo() {}
 
 // 函数表达式
-const foo = async function () {};
+const foo = async function () {}
 
 // 对象的方法
-let obj = { async foo() {} };
-obj.foo().then(val => val);
+let obj = { async foo() {} }
+obj.foo().then((val) => val)
 
 // Class 的方法
 class Storage {
-    constructor() {
-        this.cachePromise = caches.open('avatars');
-    }
-    async getAvatar(name) {
-        const cache = await this.cachePromise;
-        return cache.match(`/avatars/${name}.jpg`);
-    }
+  constructor() {
+    this.cachePromise = caches.open('avatars')
+  }
+  async getAvatar(name) {
+    const cache = await this.cachePromise
+    return cache.match(`/avatars/${name}.jpg`)
+  }
 }
-storage.getAvatar('jake').then(val => val);
+storage.getAvatar('jake').then((val) => val)
 
 // 箭头函数
-const foo = async () => {};
+const foo = async () => {}
 ```
 
 `async` 函数返回一个 `Promise` 对象（如果一个 `async` 函数的返回值看起来不是 `promise`，那么它将会被隐式地包装在一个 `promise` 中)，可以使用 `then` 方法添加回调函数。当函数执行的时候，一旦遇到 `await` 就会先返回，等到异步操作完成，再接着执行函数体内后面的语句。`async` 函数返回一个 `Promise` 对象。`async` 函数内部 `return` 语句返回的值，会成为 `then` 方法回调函数的参数。
@@ -95,14 +93,14 @@ const foo = async () => {};
 
 ```javascript
 async function k() {
-    console.log(123);
-    let m = await 3;
-    return m;
+  console.log(123)
+  let m = await 3
+  return m
 }
 
-k().then(val => console.log(val));
+k().then((val) => console.log(val))
 
-console.log('end');
+console.log('end')
 // 123
 // end
 // 3
@@ -112,12 +110,12 @@ console.log('end');
 
 ```javascript
 async function f() {
-    throw new Error('出错了');
+  throw new Error('出错了')
 }
 f().then(
-    v => console.log(v),
-    e => console.log(e),
-);
+  (v) => console.log(v),
+  (e) => console.log(e)
+)
 // Error: 出错了
 ```
 
@@ -125,11 +123,11 @@ f().then(
 
 ```javascript
 async function getTitle(url) {
-    let response = await fetch(url);
-    let html = await response.text();
-    return html.match(/<title>([\s\S]+)<\/title>/i)[1];
+  let response = await fetch(url)
+  let html = await response.text()
+  return html.match(/<title>([\s\S]+)<\/title>/i)[1]
 }
-getTitle('https://tc39.github.io/ecma262/').then(console.log); 
+getTitle('https://tc39.github.io/ecma262/').then(console.log)
 // "ECMAScript 2017 Language Specification"
 ```
 
@@ -139,28 +137,28 @@ getTitle('https://tc39.github.io/ecma262/').then(console.log);
 
 ```javascript
 async function f() {
-    return await 123;
+  return await 123
 }
-f().then(v => console.log(v)); // 123
+f().then((v) => console.log(v)) // 123
 ```
 
 `await` 命令后面的 `Promise` 对象如果变为 `reject` 状态，则 `reject` 的参数会 被外部的 `catch` 方法的回调函数接收到。`reject` 的 `Promise` 不需要 `return`，`catch` 也能接收到 `reject` 的参数，在 `await` 前加上 `return` 效果一样。
 
 ```javascript
 async function f() {
-    await Promise.reject('出错了');
+  await Promise.reject('出错了')
 }
 f()
-    .then(v => console.log(v))
-    .catch(e => console.log(e)); // 出错了
+  .then((v) => console.log(v))
+  .catch((e) => console.log(e)) // 出错了
 ```
 
 只要一个 `await` 语句后面的 `Promise` 变为 `reject` ，那么整个 `async` 函数都会中断执行。
 
 ```javascript
 async function f() {
-    await Promise.reject('出错了');
-    await Promise.resolve('hello world'); // 不会执行
+  await Promise.reject('出错了')
+  await Promise.resolve('hello world') // 不会执行
 }
 ```
 
@@ -168,18 +166,18 @@ async function f() {
 
 ```javascript
 async function f() {
-    try {
-        await Promise.reject('出错了');
-    } catch (e) {}
-    return await Promise.resolve('hello world');
+  try {
+    await Promise.reject('出错了')
+  } catch (e) {}
+  return await Promise.resolve('hello world')
 }
-f().then(v => console.log(v)); // hello world
+f().then((v) => console.log(v)) // hello world
 
 async function f() {
-    await Promise.reject('出错了').catch(e => console.log(e));
-    return await Promise.resolve('hello world');
+  await Promise.reject('出错了').catch((e) => console.log(e))
+  return await Promise.resolve('hello world')
 }
-f().then(v => console.log(v)); // 出错了
+f().then((v) => console.log(v)) // 出错了
 // hello world
 ```
 
@@ -187,13 +185,13 @@ f().then(v => console.log(v)); // 出错了
 
 ```javascript
 async function f() {
-    await new Promise(function (resolve, reject) {
-        throw new Error('出错了');
-    });
+  await new Promise(function (resolve, reject) {
+    throw new Error('出错了')
+  })
 }
 f()
-    .then(v => console.log(v))
-    .catch(e => console.log(e)); // Error:出错了
+  .then((v) => console.log(v))
+  .catch((e) => console.log(e)) // Error:出错了
 ```
 
 还有一个注意要点就是 `await` 只能在 `async` 函数中使用，这里要注意嵌套关系。比如下面这种情况：
@@ -212,10 +210,10 @@ async function dbFuc(db) {
 
 ```javascript
 async function dbFuc(db) {
-    let docs = [{}, {}, {}];
-    for (let doc of docs) {
-        await db.post(doc);
-    }
+  let docs = [{}, {}, {}]
+  for (let doc of docs) {
+    await db.post(doc)
+  }
 }
 ```
 
@@ -227,48 +225,48 @@ async function dbFuc(db) {
 
 ```javascript
 async function fn(args) {
-    // ...
+  // ...
 }
 // 等同于
 function fn(args) {
-    return spawn(function* () {
-        // ...
-    });
+  return spawn(function* () {
+    // ...
+  })
 }
 
 function spawn(genF) {
-    return new Promise(function (resolve, reject) {
-        var gen = genF();
-        function step(nextF) {
-            try {
-                var next = nextF();
-            } catch (e) {
-                return reject(e);
-            }
-            if (next.done) {
-                return resolve(next.value);
-            }
-            Promise.resolve(next.value).then(
-                function (v) {
-                    step(function () {
-                        return gen.next(v);
-                    });
-                },
-                function (e) {
-                    step(function () {
-                        return gen.throw(e);
-                    });
-                },
-            );
+  return new Promise(function (resolve, reject) {
+    var gen = genF()
+    function step(nextF) {
+      try {
+        var next = nextF()
+      } catch (e) {
+        return reject(e)
+      }
+      if (next.done) {
+        return resolve(next.value)
+      }
+      Promise.resolve(next.value).then(
+        function (v) {
+          step(function () {
+            return gen.next(v)
+          })
+        },
+        function (e) {
+          step(function () {
+            return gen.throw(e)
+          })
         }
-        step(function () {
-            return gen.next(undefined);
-        });
-    });
+      )
+    }
+    step(function () {
+      return gen.next(undefined)
+    })
+  })
 }
 ```
 
-这个 `spawn` 就是一个自动执行器，它是对 `co` 的一个简化，关于 `co` 的源码分析可以看 [生成器 Generator 的异步应用](https://www.clloz.com/programming/front-end/js/2020/11/01/generator-async/#co "生成器 Generator 的异步应用")。所有的 `async` 函数都可以写成上面的第二种形式，其中的 `spawn` 函数就是自动执行器。
+这个 `spawn` 就是一个自动执行器，它是对 `co` 的一个简化，关于 `co` 的源码分析可以看 [生成器 Generator 的异步应用](https://www.clloz.com/programming/front-end/js/2020/11/01/generator-async/#co '生成器 Generator 的异步应用')。所有的 `async` 函数都可以写成上面的第二种形式，其中的 `spawn` 函数就是自动执行器。
 
 ## 继发和并发问题
 
@@ -277,44 +275,44 @@ function spawn(genF) {
 由于 `await` 是有先后执行顺序的，也就是继发的。但我们的业务逻辑并不会是简单的继发或者并发，很可能是比较混杂的，我们需要自己分析好依赖关系然后再用 `async` 函数处理。比如如下的例子：
 
 ```javascript
-(async () => {
-    const listData = await getList();
-    const anotherListData = await getAnotherList();
+;(async () => {
+  const listData = await getList()
+  const anotherListData = await getAnotherList()
 
-    // do something
+  // do something
 
-    await submit(listData);
-    await submit(anotherListData);
-})();
+  await submit(listData)
+  await submit(anotherListData)
+})()
 ```
 
 `getList` 和 `getAnotherList` 是没有依赖关系的，但是 `submit` 需要依赖两者返回的数据，这种情况我们需要像如下处理：
 
 ```javascript
 async function handleList() {
-    const listPromise = await getList();
-    // ...
-    await submit(listData);
+  const listPromise = await getList()
+  // ...
+  await submit(listData)
 }
 
 async function handleAnotherList() {
-    const anotherListPromise = await getAnotherList();
-    // ...
-    await submit(anotherListData);
+  const anotherListPromise = await getAnotherList()
+  // ...
+  await submit(anotherListData)
 }
 
 // 方法一
-(async () => {
-    const handleListPromise = handleList();
-    const handleAnotherListPromise = handleAnotherList();
-    await handleListPromise;
-    await handleAnotherListPromise;
+;(async () => {
+  const handleListPromise = handleList()
+  const handleAnotherListPromise = handleAnotherList()
+  await handleListPromise
+  await handleAnotherListPromise
 })()(
-    // 方法二
-    async () => {
-        Promise.all([handleList(), handleAnotherList()]).then();
-    },
-)();
+  // 方法二
+  async () => {
+    Promise.all([handleList(), handleAnotherList()]).then()
+  }
+)()
 ```
 
 也就是分析清除依赖关系，把不相关的逻辑分开，并发执行。只有互相依赖的异步任务采用 `await` 进行继发执行。
@@ -324,38 +322,38 @@ async function handleAnotherList() {
 ```javascript
 // 继发一
 async function loadData() {
-    var res1 = await fetch(url1);
-    var res2 = await fetch(url2);
-    var res3 = await fetch(url3);
-    return 'whew all done';
+  var res1 = await fetch(url1)
+  var res2 = await fetch(url2)
+  var res3 = await fetch(url3)
+  return 'whew all done'
 }
 
 // 继发二
 async function loadData(urls) {
-    for (const url of urls) {
-        const response = await fetch(url);
-        console.log(await response.text());
-    }
+  for (const url of urls) {
+    const response = await fetch(url)
+    console.log(await response.text())
+  }
 }
 ```
 
 ```javascript
 // 并发一
 async function loadData() {
-    var res = await Promise.all([fetch(url1), fetch(url2), fetch(url3)]);
-    return 'whew all done';
+  var res = await Promise.all([fetch(url1), fetch(url2), fetch(url3)])
+  return 'whew all done'
 }
 // 并发二
 async function loadData(urls) {
-    // 并发读取 url
-    const promises = urls.map(url => {
-        return fetch(url);
-    });
+  // 并发读取 url
+  const promises = urls.map((url) => {
+    return fetch(url)
+  })
 
-    // 按次序输出
-    for (const promise of promises) {
-        console.log(await promise);
-    }
+  // 按次序输出
+  for (const promise of promises) {
+    console.log(await promise)
+  }
 }
 ```
 
@@ -365,6 +363,6 @@ async function loadData(urls) {
 
 ## 参考文章
 
-1. [我们来聊聊 async](https://github.com/mqyqingfeng/Blog/issues/100 "我们来聊聊 async")
+1. [我们来聊聊 async](https://github.com/mqyqingfeng/Blog/issues/100 '我们来聊聊 async')
 2. 《ES6 标准入门》—— 阮一峰
 3. MDN

@@ -6,10 +6,8 @@ tags:
   - js
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -21,7 +19,7 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 所以 `ES6` 引入了迭代器和 `for ... of` 来统一和简化我们对对象的遍历。
 
-* * *
+---
 
 要对对象进行遍历，首先要确定对象是否可遍历，以及如何进行遍历。`ES6` 就有两个协议：**可迭代协议** 和 **迭代器协议**。前者用来确定一个对象是可遍历的，后者告诉 `for ... of` 遍历对象的规则。
 
@@ -35,29 +33,29 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ```javascript
 let obj = {
-    num: 0,
-    [Symbol.iterator]() {
-        let num = this.num; //在 Symbol.iterator 中我们可以用 this 访问可迭代对象的属性，传递给 next，最后由 next 方法返回出去
-        return {
-            next() {
-                if (num < 10) {
-                    return {
-                        value: num++,
-                        done: false,
-                    };
-                } else {
-                    return {
-                        value: undefined,
-                        done: true,
-                    };
-                }
-            },
-        };
-    },
-};
+  num: 0,
+  [Symbol.iterator]() {
+    let num = this.num //在 Symbol.iterator 中我们可以用 this 访问可迭代对象的属性，传递给 next，最后由 next 方法返回出去
+    return {
+      next() {
+        if (num < 10) {
+          return {
+            value: num++,
+            done: false
+          }
+        } else {
+          return {
+            value: undefined,
+            done: true
+          }
+        }
+      }
+    }
+  }
+}
 
 for (let c of obj) {
-    console.log(c);
+  console.log(c)
 }
 //输出：0 1 2 3 4 5 6 7 8 9
 ```
@@ -66,49 +64,49 @@ for (let c of obj) {
 
 ```javascript
 function forOf(obj, cb) {
-    if (!obj[Symbol.iterator]) throw new TypeError(typeof obj + ' is not iterable');
-    if (typeof obj[Symbol.iterator] !== 'function')
-        throw new TypeError('Result of the Symbol.iterator method is not an object');
-    if (typeof cb !== 'function') throw new TypeError('cb must be callable');
+  if (!obj[Symbol.iterator]) throw new TypeError(typeof obj + ' is not iterable')
+  if (typeof obj[Symbol.iterator] !== 'function')
+    throw new TypeError('Result of the Symbol.iterator method is not an object')
+  if (typeof cb !== 'function') throw new TypeError('cb must be callable')
 
-    let iterator = obj[Symbol.iterator]();
-    let result = iterator.next();
-    while (!result.done) {
-        cb(result.value);
-        result = iterator.next();
-    }
+  let iterator = obj[Symbol.iterator]()
+  let result = iterator.next()
+  while (!result.done) {
+    cb(result.value)
+    result = iterator.next()
+  }
 }
 
 forOf(obj, function (val) {
-    console.log(val);
-});
+  console.log(val)
+})
 ```
 
 但是这样将 `next` 写在 `Symbol.iterator` 方法的返回对象中我们没法直接用 `this` 访问 `obj` 的属性所以我们可以改成如下形式：
 
 ```javascript
 let obj = {
-    num: 0,
-    [Symbol.iterator]() {
-        return this;
-    },
-    next() {
-        if (this.num < 10) {
-            return {
-                value: this.num++,
-                done: false,
-            };
-        } else {
-            return {
-                value: undefined,
-                done: true,
-            };
-        }
-    },
-};
+  num: 0,
+  [Symbol.iterator]() {
+    return this
+  },
+  next() {
+    if (this.num < 10) {
+      return {
+        value: this.num++,
+        done: false
+      }
+    } else {
+      return {
+        value: undefined,
+        done: true
+      }
+    }
+  }
+}
 
 for (let c of obj) {
-    console.log(c);
+  console.log(c)
 }
 ```
 
@@ -117,16 +115,16 @@ for (let c of obj) {
 其实不止 `for ... of`，还有很多其他操作也是调用的迭代器进行遍历，包括对数组和 `Set` 的解构赋值，扩展运算符，`yield*`，以及任何接受数组作为参数的场景。而且很多内置的对象默认就是可迭代的，目前所有的内置可迭代对象如下：`String`、`Array`、`TypedArray`、`Map` 和 `Set`，它们的原型对象都实现了 `@@iterator` 方法。
 
 ```javascript
-console.log(typeof 'clloz'[Symbol.iterator]); //function
+console.log(typeof 'clloz'[Symbol.iterator]) //function
 
-let iterator = 'clloz'[Symbol.iterator]();
+let iterator = 'clloz'[Symbol.iterator]()
 
-console.log(iterator.next());
-console.log(iterator.next());
-console.log(iterator.next());
-console.log(iterator.next());
-console.log(iterator.next());
-console.log(iterator.next());
+console.log(iterator.next())
+console.log(iterator.next())
+console.log(iterator.next())
+console.log(iterator.next())
+console.log(iterator.next())
+console.log(iterator.next())
 
 // { value: 'c', done: false }
 // { value: 'l', done: false }
@@ -136,7 +134,7 @@ console.log(iterator.next());
 // { value: undefined, done: true }
 ```
 
-* * *
+---
 
 很多 `API` 可以接受一个可迭代对象作为参数：
 
@@ -161,29 +159,29 @@ console.log(iterator.next());
 对于 `Map`，`for ... of` 按插入顺序返回每个键值对组成的数组，`keys()` 按插入顺序返回每个键名，`values()` 按插入顺序返回每个键值，`entries()` 和 `for ... of` 相同。
 
 ```javascript
-let m = new Map();
-m.set(1, 'a');
-m.set(2, 'b');
-m.set(3, 'c');
-m.set(4, 'd');
+let m = new Map()
+m.set(1, 'a')
+m.set(2, 'b')
+m.set(3, 'c')
+m.set(4, 'd')
 
 for (let c of m) {
-    console.log(c);
+  console.log(c)
 }
 // [ 1, 'a' ]
 // [ 2, 'b' ]
 // [ 3, 'c' ]
 // [ 4, 'd' ]
 for (let c of m.keys()) {
-    console.log(c);
+  console.log(c)
 }
 //1 2 3 4
 for (let c of m.values()) {
-    console.log(c);
+  console.log(c)
 }
 //a b c d
 for (let c of m.entries()) {
-    console.log(c);
+  console.log(c)
 }
 // [ 1, 'a' ]
 // [ 2, 'b' ]
@@ -194,25 +192,25 @@ for (let c of m.entries()) {
 对于 `Set`，`for ... of`，`keys()` 和 `values()` 返回相同，说明 `Set` 结构的键名和键值是相同的， `entries()` 则和 `Map` 一样返回键名和键值组成的数组，只不过键名和键值相同。
 
 ```javascript
-let s = new Set();
-s.add('a');
-s.add('b');
-s.add('c');
+let s = new Set()
+s.add('a')
+s.add('b')
+s.add('c')
 
 for (let c of s) {
-    console.log(c);
+  console.log(c)
 }
 // a b c
 for (let c of s.keys()) {
-    console.log(c);
+  console.log(c)
 }
 // a b c
 for (let c of s.values()) {
-    console.log(c);
+  console.log(c)
 }
 //a b c
 for (let c of s.entries()) {
-    console.log(c);
+  console.log(c)
 }
 // [ 'a', 'a' ]
 // [ 'b', 'b' ]
@@ -225,15 +223,15 @@ for (let c of s.entries()) {
 
 ```javascript
 let obj = {
-    nicknames: ['Jack', 'Jake', 'J-Dog'],
-    [Symbol.iterator]() {
-        console.log(Array.isArray(this.nicknames.entries()));
-        return this.nicknames.entries();
-    },
-};
+  nicknames: ['Jack', 'Jake', 'J-Dog'],
+  [Symbol.iterator]() {
+    console.log(Array.isArray(this.nicknames.entries()))
+    return this.nicknames.entries()
+  }
+}
 
 for (let c of obj) {
-    console.log(c);
+  console.log(c)
 }
 ```
 
@@ -245,39 +243,38 @@ for (let c of obj) {
 
 ```javascript
 function List(value) {
-    this.value = value;
-    this.next = null;
+  this.value = value
+  this.next = null
 }
 
 List.prototype[Symbol.iterator] = function () {
-    let current = this;
-    return {
-        next() {
-            if (current.next) {
-                let value = current.value;
-                current = current.next;
-                return {
-                    value: value,
-                    done: false,
-                };
-            } else {
-                return {
-                    value: current.value,
-                    done: true,
-                };
-            }
-        },
-    };
-};
-let a = new List('a');
-let b = new List('b');
-let c = new List('c');
+  let current = this
+  return {
+    next() {
+      if (current.next) {
+        let value = current.value
+        current = current.next
+        return {
+          value: value,
+          done: false
+        }
+      } else {
+        return {
+          value: current.value,
+          done: true
+        }
+      }
+    }
+  }
+}
+let a = new List('a')
+let b = new List('b')
+let c = new List('c')
 
-a.next = b;
-b.next = c;
+a.next = b
+b.next = c
 
 for (let val of a) {
-    console.log(val);
+  console.log(val)
 }
-
 ```

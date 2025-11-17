@@ -6,10 +6,8 @@ tags:
   - js
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -22,10 +20,10 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 `ES6` 用严格相等运算符来判断一个位置是否有值。在解构赋值中只有一个位置的值严格等于 `undefined`，我们设置的默认值才会生效。
 
 ```javascript
-let [x = 1] = [undefined];
+let [x = 1] = [undefined]
 x // 1
 
-let [x = 1] = [null];
+let [x = 1] = [null]
 x // null
 ```
 
@@ -35,10 +33,10 @@ x // null
 
 ```javascript
 function f() {
-  console.log('aaa');
+  console.log('aaa')
 }
 
-let [x = f()] = [1]; //f() 不会执行
+let [x = f()] = [1] //f() 不会执行
 ```
 
 ## 对象解构机制
@@ -46,24 +44,26 @@ let [x = f()] = [1]; //f() 不会执行
 数组的解构赋值是根据变量的位置来确定其值的。由于对象不像数组一样是按次序排列的，所以对象的解构赋值只能根据变量的名称到对象中查找。但是需要注意的是，我们要区分好用于匹配的模式（可以理解为键值对中的键）和具体的对象，特别是在嵌套的对象解构中。我的理解就是解构表达式中的变量表示中不管嵌套多少层，有多少标识符，第一个无法在对象中找到的标识符就是变量的名称，如果每一个标识符都能找到，那么就是隐藏了一个和最后一个标识符同名的变量。
 
 ```javascript
-let { foo: baz } = { foo: 'aaa', bar: 'bbb' };
+let { foo: baz } = { foo: 'aaa', bar: 'bbb' }
 baz // "aaa"
 foo // error: foo is not defined
 //foo是匹配的模式，baz才是变量，模式只是用来到对象中查找属性，而变量则是最后赋值的目标
 
-let {foo: {bar}} = {baz: 'baz'}; //foo 无法在对象中找到，所以是 undefined，此时再想向下找属性就会报错
+let {
+  foo: { bar }
+} = { baz: 'baz' } //foo 无法在对象中找到，所以是 undefined，此时再想向下找属性就会报错
 
 //对象的解构赋值可以找原型上的属性
-const obj1 = {};
-const obj2 = { foo: 'bar' };
-Object.setPrototypeOf(obj1, obj2);
+const obj1 = {}
+const obj2 = { foo: 'bar' }
+Object.setPrototypeOf(obj1, obj2)
 
-const { foo } = obj1;
+const { foo } = obj1
 foo // "bar"
 
 //数组是特殊的对象，所以可以对数组进行对象属性的解构
-let arr = [1, 2, 3];
-let {0 : first, [arr.length - 1] : last} = arr;
+let arr = [1, 2, 3]
+let { 0: first, [arr.length - 1]: last } = arr
 first // 1
 last // 3
 ```
@@ -71,15 +71,15 @@ last // 3
 解构赋值用引擎的内部方法 `toObject()`（我们无法在 `runtime` 访问到这个方法）强制将源数据转为对象。也就是说如果 `source` 是一个原始数据类型，会被转为对应的包装对象。由于 `null` 和 `undefined` 无法转为对象，所以会报错。
 
 ```javascript
-let { length } = 'foobar';
-console.log(length); // 6
+let { length } = 'foobar'
+console.log(length) // 6
 
-let { constructor: c } = 4;
-console.log(c === Number); // true
+let { constructor: c } = 4
+console.log(c === Number) // true
 
-let { _ } = null; // TypeError
+let { _ } = null // TypeError
 
-let { _ } = undefined; // TypeError
+let { _ } = undefined // TypeError
 ```
 
 如果解构赋值语句不是变量声明语句（前面没有 `var`，`let`，`const`），即对已经声明的变量进行进行解构赋值需要注意加上括号。
@@ -94,24 +94,24 @@ let x;
 
 ```javascript
 let person = {
-    name: 'Matt',
-    age: 27,
-    job: {
-        title: 'Software engineer',
-    },
-};
-let personCopy = {};
+  name: 'Matt',
+  age: 27,
+  job: {
+    title: 'Software engineer'
+  }
+}
+let personCopy = {}
 
-({ name: personCopy.name, age: personCopy.age, job: personCopy.job } = person);
+;({ name: personCopy.name, age: personCopy.age, job: personCopy.job } = person)
 
 // Because an object reference was assigned into personCopy, changing a property
 // inside the person.job object will be propagated to personCopy:
-person.job.title = 'Hacker';
+person.job.title = 'Hacker'
 
-console.log(person);
+console.log(person)
 // { name: 'Matt', age: 27, job: { title: 'Hacker' } }
 
-console.log(personCopy);
+console.log(personCopy)
 // { name: 'Matt', age: 27, job: { title: 'Hacker' } }
 ```
 
@@ -119,24 +119,24 @@ console.log(personCopy);
 
 ```javascript
 let person = {
-    name: 'Matt',
-    age: 27,
-};
-
-let personName, personBar, personAge;
-
-try {
-    // person.foo is undefined, so this will throw an error
-    ({
-        name: personName,
-        foo: { bar: personBar },
-        age: personAge,
-    } = person);
-} catch (e) {
-    console.log(e); //TypeError: Cannot read property 'bar' of undefined
+  name: 'Matt',
+  age: 27
 }
 
-console.log(personName, personBar, personAge);
+let personName, personBar, personAge
+
+try {
+  // person.foo is undefined, so this will throw an error
+  ;({
+    name: personName,
+    foo: { bar: personBar },
+    age: personAge
+  } = person)
+} catch (e) {
+  console.log(e) //TypeError: Cannot read property 'bar' of undefined
+}
+
+console.log(personName, personBar, personAge)
 // Matt, undefined, undefined
 ```
 
@@ -144,31 +144,31 @@ console.log(personName, personBar, personAge);
 
 ```javascript
 var people = [
-    {
-        name: 'Mike Smith',
-        family: {
-            mother: 'Jane Smith',
-            father: 'Harry Smith',
-            sister: 'Samantha Smith',
-        },
-        age: 35,
+  {
+    name: 'Mike Smith',
+    family: {
+      mother: 'Jane Smith',
+      father: 'Harry Smith',
+      sister: 'Samantha Smith'
     },
-    {
-        name: 'Tom Jones',
-        family: {
-            mother: 'Norah Jones',
-            father: 'Richard Jones',
-            brother: 'Howard Jones',
-        },
-        age: 25,
+    age: 35
+  },
+  {
+    name: 'Tom Jones',
+    family: {
+      mother: 'Norah Jones',
+      father: 'Richard Jones',
+      brother: 'Howard Jones'
     },
-];
+    age: 25
+  }
+]
 
 for (var {
-    name: n,
-    family: { father: f },
+  name: n,
+  family: { father: f }
 } of people) {
-    console.log('Name: ' + n + ', Father: ' + f);
+  console.log('Name: ' + n + ', Father: ' + f)
 }
 
 // "Name: Mike Smith, Father: Harry Smith"
@@ -178,30 +178,30 @@ for (var {
 解构赋值可以使用属性名表达式：
 
 ```javascript
-let key = 'z';
-let { [key]: foo } = { z: 'bar' };
+let key = 'z'
+let { [key]: foo } = { z: 'bar' }
 
-console.log(foo); // "bar"
+console.log(foo) // "bar"
 ```
 
 剩余参数也可以运用到对象的解构赋值中：
 
 ```javascript
-let { a, b, ...rest } = { a: 10, b: 20, c: 30, d: 40 };
-console.log(a); // 10
-console.log(b); // 20
-console.log(rest); // { c: 30, d: 40 }
+let { a, b, ...rest } = { a: 10, b: 20, c: 30, d: 40 }
+console.log(a) // 10
+console.log(b) // 20
+console.log(rest) // { c: 30, d: 40 }
 ```
 
 解构赋值的属性查找会查找原型链上的属性：
 
 ```javascript
 // 声明对象 和 自身 self 属性
-var obj = { self: '123' };
+var obj = { self: '123' }
 // 在原型链中定义一个属性 prot
-obj.__proto__.prot = '456';
+obj.__proto__.prot = '456'
 // test
-const { self, prot } = obj;
+const { self, prot } = obj
 // self "123"
 // prot "456"（访问到了原型链）
 ```
@@ -212,12 +212,12 @@ const { self, prot } = obj;
 
 ```javascript
 // 报错 Uncaught TypeError: xxx is not iterable
-let [foo] = 1;
-let [foo] = false;
-let [foo] = NaN;
-let [foo] = undefined;
-let [foo] = null;
-let [foo] = {};
+let [foo] = 1
+let [foo] = false
+let [foo] = NaN
+let [foo] = undefined
+let [foo] = null
+let [foo] = {}
 ```
 
 数组的解构赋值也可以这样使用 `let [,m] = [2,3]`。
@@ -225,7 +225,7 @@ let [foo] = {};
 数组的解构赋值还支持剩余模式：`var [a, ...b] = [1, 2, 3];`，但是要注意如果剩余元素右侧有逗号，会抛出 `SyntaxError`，因为剩余元素必须是数组的最后一个元素。
 
 ```javascript
-var [a, ...b,] = [1, 2, 3];
+var [a, ...b] = [1, 2, 3]
 // SyntaxError: rest element may not have a trailing comma
 ```
 
@@ -234,7 +234,7 @@ var [a, ...b,] = [1, 2, 3];
 解构赋值的规则是，只要等号右边的值不是对象或数组，就先将其转为对象，字符串被转为类数组对象，数值和布尔型则转为包装对象。由于 `undefined` 和 `null` 无法转为对象，所以对它们进行解构赋值，都会报错。
 
 ```javascript
-const [a, b, c, d, e] = 'hello';
+const [a, b, c, d, e] = 'hello'
 a // "h"
 b // "e"
 c // "l"
@@ -242,17 +242,17 @@ d // "l"
 e // "o"
 
 //字符串转为的对象有length属性
-let {length : len} = 'hello';
+let { length: len } = 'hello'
 len // 5
 
-let {toString: s} = 123;
+let { toString: s } = 123
 s === Number.prototype.toString // true
 
-let {toString: s} = true;
+let { toString: s } = true
 s === Boolean.prototype.toString // true
 
-let { prop: x } = undefined; // TypeError
-let { prop: y } = null; // TypeError
+let { prop: x } = undefined // TypeError
+let { prop: y } = null // TypeError
 ```
 
 ## 函数参数的解构赋值
@@ -268,25 +268,25 @@ let { prop: y } = null; // TypeError
 
 ```javascript
 let person = {
-    name: 'Matt',
-    age: 27,
-};
+  name: 'Matt',
+  age: 27
+}
 
 function printPerson(foo, { name, age }, bar) {
-    console.log(arguments);
-    console.log(name, age);
+  console.log(arguments)
+  console.log(name, age)
 }
 
 function printPerson2(foo, { name: personName, age: personAge }, bar) {
-    console.log(arguments);
-    console.log(personName, personAge);
+  console.log(arguments)
+  console.log(personName, personAge)
 }
 
-printPerson('1st', person, '2nd');
+printPerson('1st', person, '2nd')
 // ['1st', { name: 'Matt', age: 27 }, '2nd']
 // 'Matt', 27
 
-printPerson2('1st', person, '2nd');
+printPerson2('1st', person, '2nd')
 // ['1st', { name: 'Matt', age: 27 }, '2nd']
 // 'Matt', 27
 ```
@@ -295,30 +295,30 @@ printPerson2('1st', person, '2nd');
 
 ```javascript
 //设置解构赋值的默认值
-function move({x = 0, y = 0} = {}) {
-  return [x, y];
+function move({ x = 0, y = 0 } = {}) {
+  return [x, y]
 }
 
-move({x: 3, y: 8}); // [3, 8]
-move({x: 3}); // [3, 0]
-move({}); // [0, 0]
-move(); // [0, 0]
-move({x: undefined, y: undefined}) //[0, 0]
+move({ x: 3, y: 8 }) // [3, 8]
+move({ x: 3 }) // [3, 0]
+move({}) // [0, 0]
+move() // [0, 0]
+move({ x: undefined, y: undefined }) //[0, 0]
 
 //设置参数默认值
-function move({x, y} = { x: 0, y: 0 }) {
-  return [x, y];
+function move({ x, y } = { x: 0, y: 0 }) {
+  return [x, y]
 }
 
-move({x: 3, y: 8}); // [3, 8]
-move({x: 3}); // [3, undefined]
-move({}); // [undefined, undefined]
-move(); // [0, 0]
-move({x: undefined, y: undefined}) //[undefined, undefined]
+move({ x: 3, y: 8 }) // [3, 8]
+move({ x: 3 }) // [3, undefined]
+move({}) // [undefined, undefined]
+move() // [0, 0]
+move({ x: undefined, y: undefined }) //[undefined, undefined]
 
 //注意下面这种会直接报错
-function move({x = 0, y = 0}) {
-  return [x, y];
+function move({ x = 0, y = 0 }) {
+  return [x, y]
 }
 move() //Uncaught TypeError: Cannot read property 'x' of undefined
 ```
@@ -330,9 +330,8 @@ move() //Uncaught TypeError: Cannot read property 'x' of undefined
 函数的参数是一个 `arguments`，一个迭代器，类数组对象，所以上面的函数可以类比为这样的一个式子:
 
 ```javascript
-function move({x = 0, y = 0} = {}){}
-[{x = 10, y = 20} = {}] = arguments
-[{x = 10, y = 20} = {}] = []
+function move({ x = 0, y = 0 } = {}) {}
+;[{ x = 10, y = 20 } = {}] = arguments[({ x = 10, y = 20 } = {})] = []
 ```
 
 经过这种转化之后似乎清晰一些，但是如何理解呢。我们把 `{x = 10, y = 20}` 看做一个整体，上面的式子变为 `[obj = {}] = []`，也就是我们设置 `obj` 的默认值为 `{}`（也可以理解为设置参数默认值，是另一种思路，不过本质也没有区别），只要我们传入的 `arguments` 中有参数的话，就不会用这个默认值 `{}`，只有当我们的 `arguments` 的索引为 `0` 的元素严格等于 `undefined` 的时候才会用到默认值 `{}`，使用默认值就相当于执行 `{x = 10, y = 20} = {}` 的解构赋值。当 `arguments` 的索引为 `0` 的元素不严格等于 `undefined` 的时候则会把这个元素转为一个对象 `object`，执行 `{x = 10, y = 20} = object` 的解构赋值，如果找不到，则使用默认值 `10 ，20`，不管传入的是数字还是字符串等，都能正常执行；唯一会报错的就是 `null`。
@@ -355,14 +354,18 @@ function move({x = 0, y = 0} = {}){}
 
 ```javascript
 //设置默认参数
-function a([x, y] = [5, 6]){console.log(x,  y)}
+function a([x, y] = [5, 6]) {
+  console.log(x, y)
+}
 a() //5, 6
 a([1]) //1, undefined
 a('asdf') // a, s
 a(1) //VM1241:1 Uncaught TypeError: undefined is not a function(不知道为什么不是not iterable的报错)
 
 //设置默认值
-function a([x=5, y=6] = []){console.log(x,  y)}
+function a([x = 5, y = 6] = []) {
+  console.log(x, y)
+}
 a() // 5, 6
 a([1]) //1, 6
 a('asdf') // a, s
@@ -409,121 +412,126 @@ function f([z,(x)]) { return x; }
 ## 用途
 
 1. 将对象的方法赋值给某个变量
-    
-    ```javascript
-    // 例一
-    let { log, sin, cos } = Math;
-    
-    // 例二
-    const { log } = console;
-    log('hello') // hello
-    ```
-    
+
+   ```javascript
+   // 例一
+   let { log, sin, cos } = Math
+
+   // 例二
+   const { log } = console
+   log('hello') // hello
+   ```
+
 2. 交换变量的值
-    
-    ```javascript
-    let x = 1;
-    let y = 2;
-    
-    [x, y] = [y, x];
-    ```
-    
+
+   ```javascript
+   let x = 1
+   let y = 2
+
+   ;[x, y] = [y, x]
+   ```
+
 3. 函数返回多个值
-    
-    ```javascript
-    // 返回一个数组
-    
-    function example() {
-      return [1, 2, 3];
-    }
-    let [a, b, c] = example();
-    
-    // 返回一个对象
-    
-    function example() {
-      return {
-        foo: 1,
-        bar: 2
-      };
-    }
-    let { foo, bar } = example();
-    ```
-    
+
+   ```javascript
+   // 返回一个数组
+
+   function example() {
+     return [1, 2, 3]
+   }
+   let [a, b, c] = example()
+
+   // 返回一个对象
+
+   function example() {
+     return {
+       foo: 1,
+       bar: 2
+     }
+   }
+   let { foo, bar } = example()
+   ```
+
 4. 函数参数定义
-    
-    ```javascript
-    // 参数是一组有次序的值
-    function f([x, y, z]) { ... }
-    f([1, 2, 3]);
-    
-    // 参数是一组无次序的值
-    function f({x, y, z}) { ... }
-    f({z: 3, y: 2, x: 1});
-    ```
-    
+
+   ```javascript
+   // 参数是一组有次序的值
+   function f([x, y, z]) { ... }
+   f([1, 2, 3]);
+
+   // 参数是一组无次序的值
+   function f({x, y, z}) { ... }
+   f({z: 3, y: 2, x: 1});
+   ```
+
 5. 提取 `JSON` 数据
-    
-    ```javascript
-    let jsonData = {
-      id: 42,
-      status: "OK",
-      data: [867, 5309]
-    };
-    
-    let { id, status, data: number } = jsonData;
-    
-    console.log(id, status, number);
-    // 42, "OK", [867, 5309]
-    ```
-    
+
+   ```javascript
+   let jsonData = {
+     id: 42,
+     status: 'OK',
+     data: [867, 5309]
+   }
+
+   let { id, status, data: number } = jsonData
+
+   console.log(id, status, number)
+   // 42, "OK", [867, 5309]
+   ```
+
 6. 函数参数默认值
-    
-    ```javascript
-    jQuery.ajax = function (url, {
-      async = true,
-      beforeSend = function () {},
-      cache = true,
-      complete = function () {},
-      crossDomain = false,
-      global = true,
-      // ... more config
-    } = {}) {
-      // ... do stuff
-    };
-    ```
-    
+
+   ```javascript
+   jQuery.ajax = function (
+     url,
+     {
+       async = true,
+       beforeSend = function () {},
+       cache = true,
+       complete = function () {},
+       crossDomain = false,
+       global = true
+       // ... more config
+     } = {}
+   ) {
+     // ... do stuff
+   }
+   ```
+
 7. 遍历 `Map` 解构
-    
-    ```javascript
-    jQuery.ajax = function (url, {
-      async = true,
-      beforeSend = function () {},
-      cache = true,
-      complete = function () {},
-      crossDomain = false,
-      global = true,
-      // ... more config
-    } = {}) {
-      // ... do stuff
-    };
-    
-    // 获取键名
-    for (let [key] of map) {
-      // ...
-    }
-    
-    // 获取键值
-    for (let [,value] of map) {
-      // ...
-    }
-    ```
-    
+
+   ```javascript
+   jQuery.ajax = function (
+     url,
+     {
+       async = true,
+       beforeSend = function () {},
+       cache = true,
+       complete = function () {},
+       crossDomain = false,
+       global = true
+       // ... more config
+     } = {}
+   ) {
+     // ... do stuff
+   }
+
+   // 获取键名
+   for (let [key] of map) {
+     // ...
+   }
+
+   // 获取键值
+   for (let [, value] of map) {
+     // ...
+   }
+   ```
+
 8. 输入模块的指定方法
-    
-    ```javascript
-    const { SourceMapConsumer, SourceNode } = require("source-map");
-    ```
-    
+
+   ```javascript
+   const { SourceMapConsumer, SourceNode } = require('source-map')
+   ```
 
 ## 参考文章
 

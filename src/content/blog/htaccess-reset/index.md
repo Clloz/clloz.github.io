@@ -7,10 +7,8 @@ tags:
   - 实用技巧
   - 建站知识
 language: '中文'
-heroImage: {"src":"./apache.png","color":"#B4C6DA"}
+heroImage: { 'src': './apache.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 

@@ -7,10 +7,8 @@ tags:
   - 实用技巧
   - 软件工具
 language: '中文'
-heroImage: {"src":"./gitignore.png","color":"#B4C6DA"}
+heroImage: { 'src': './gitignore.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -18,7 +16,7 @@ heroImage: {"src":"./gitignore.png","color":"#B4C6DA"}
 
 ## 语法
 
-这里的语法主要是结合 [Git 官方文档](https://git-scm.com/docs/gitignore "Git 官方文档") 和自己的理解写的。`pattern` 就是匹配的模式，我们每一条规则就是一个 `pattern`。`ignore` 文件的作用就是让程序不再跟踪 `track` 某些文件。根目录指的是跟 `ignore` 文件在同一层级的目录。
+这里的语法主要是结合 [Git 官方文档](https://git-scm.com/docs/gitignore 'Git 官方文档') 和自己的理解写的。`pattern` 就是匹配的模式，我们每一条规则就是一个 `pattern`。`ignore` 文件的作用就是让程序不再跟踪 `track` 某些文件。根目录指的是跟 `ignore` 文件在同一层级的目录。
 
 - 空行没有任何意义，可以用来分隔不同的规则增强可读性。
 - 以 `#` 开头的行即注释行将被忽略，可用反斜杠转义。
@@ -54,17 +52,17 @@ doc/**/*.pdf
 # 如果你使用 !.gitkeep 并且有个 dir/.gitkeep 文件，对于 /dir 和 /dir/ 这两种匹配规则，你写的 !.gitkeep 不会生效，因为 Git不会去 dir 文件夹的内部检查；对于 /dir/*，Git会检查.gitkeep，并且dir文件夹会被提交，因为这条模式不会应用到文件夹，而是应用到文件夹里面的内容。
 ```
 
-> 可以用 `git check-ignore` 来查看我们某个文件是否被忽略，命令的细节查看[官方文档](https://git-scm.com/docs/git-check-ignore "官方文档")。
+> 可以用 `git check-ignore` 来查看我们某个文件是否被忽略，命令的细节查看[官方文档](https://git-scm.com/docs/git-check-ignore '官方文档')。
 
 在 `.gitingore` 文件中，每一行指定一个忽略规则，`Git` 检查忽略规则的时候有多个来源，它的优先级如下（由高到低）： 1、从命令行中读取可用的忽略规则 2、当前目录定义的规则 3、父级目录定义的规则，依次递推 4、`$GIT_DIR/info/exclude` 文件中定义的规则 5、`core.excludesfile` 中定义的全局规则
 
 `git` 对于 `.gitignore` 配置文件是按行从上到下进行规则匹配的，意味着如果前面的规则匹配的范围更大，则后面的规则将不会生效；如果你不慎在创建 `.gitignore` 文件之前就 `push` 了项目，那么即使你在 `.gitignore` 文件中写入新的过滤规则，这些规则也不会起作用，`Git` 仍然会对所有文件进行版本管理。所以在项目创建时就设计好对应的 `.gitignore` 文件是一个好习惯。
 
-`Github` 官方有一个仓库提供了各种语言的 `.gitignore` 模版，可以用来进行参考，仓库地址 [gitignore](https://github.com/github/gitignore "gitignore")
+`Github` 官方有一个仓库提供了各种语言的 `.gitignore` 模版，可以用来进行参考，仓库地址 [gitignore](https://github.com/github/gitignore 'gitignore')
 
 > 本文虽然是以 `.gitignore` 进行语法说明，不过大多数的 `ignore` 文件语法都类似，可以直接套用。
 
 ## 参考文章
 
-1. [git-scm document](https://git-scm.com/docs/gitignore "git-scm document")
-2. [Difference between .gitignore rules with and without trailing slash like /dir and /dir/](https://stackoverflow.com/questions/17888695/difference-between-gitignore-rules-with-and-without-trailing-slash-like-dir-an/38559600#38559600 "Difference between .gitignore rules with and without trailing slash like /dir and /dir/")
+1. [git-scm document](https://git-scm.com/docs/gitignore 'git-scm document')
+2. [Difference between .gitignore rules with and without trailing slash like /dir and /dir/](https://stackoverflow.com/questions/17888695/difference-between-gitignore-rules-with-and-without-trailing-slash-like-dir-an/38559600#38559600 'Difference between .gitignore rules with and without trailing slash like /dir and /dir/')

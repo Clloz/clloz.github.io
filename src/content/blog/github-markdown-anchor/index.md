@@ -6,10 +6,8 @@ tags:
   - assorted
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./github.png","color":"#B4C6DA"}
+heroImage: { 'src': './github.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -29,11 +27,13 @@ heroImage: {"src":"./github.png","color":"#B4C6DA"}
 [标题3](#标题3)
 
 # 标题1
+
 ## 标题2
+
 ## 标题3
 ```
 
-> 需要注意的是，我们经常使用中文标题，中文标题的锚点会进行 `url` 的编码操作，`url` 编码细节可以看[这篇文章](https://www.clloz.com/programming/front-end/js/2019/05/09/url-encode-decode/ "这篇文章")
+> 需要注意的是，我们经常使用中文标题，中文标题的锚点会进行 `url` 的编码操作，`url` 编码细节可以看[这篇文章](https://www.clloz.com/programming/front-end/js/2019/05/09/url-encode-decode/ '这篇文章')
 
 ## 锚点名称小写
 
