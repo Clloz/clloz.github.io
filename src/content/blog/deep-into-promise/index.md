@@ -415,26 +415,26 @@ Promise.race = function (promises) {
 1. 参数是一个 `Promise` 实例：如果参数是 `Promise` 实例，那么 `Promise.resolve` 将不做任何修改、原封不动地返回这个实例。
 2. 参数是一个 `thenable` 对象，就是一个有 `then` 方法的对象。`Promise.resolve()` 方法会将这个对象转为 `Promise` 对象，然后就立即执对象的 `then` 方法。这里的 `then` 方法就相当于我们 `new Promise` 时传入的函数参数，使用方式也一样，我们可以进行 `resolve` 或者 `reject`，也可以抛出错误，和一个正常的 `Promise` 相同。
 
-```javascript
-let thenable = {
-  then: function (resolve, reject) {
-    resolve(42)
-  }
-}
-let p1 = Promise.resolve(thenable)
-p1.then(function (value) {
-  console.log(value) // 42
-})
-```
+   ```javascript
+   let thenable = {
+     then: function (resolve, reject) {
+       resolve(42)
+     }
+   }
+   let p1 = Promise.resolve(thenable)
+   p1.then(function (value) {
+     console.log(value) // 42
+   })
+   ```
 
 3. 参数不具备 `then` 方法，或根本不是一个对象：如果参数是一个原始值，或者是一个不具有 `then` 方法的对象，则 `Promise.resolve` 方法返回一个新的 `Promise` 对象，状态为 `resolved` 。而我们传入 `Promise.resolve()` 的参数也会传给 `then` 的回调函数。
 
-```javascript
-var p = Promise.resolve({ name: 'clloz' })
-p.then(function (s) {
-  console.log(s) //{ name: 'clloz' }
-})
-```
+   ```javascript
+   var p = Promise.resolve({ name: 'clloz' })
+   p.then(function (s) {
+     console.log(s) //{ name: 'clloz' }
+   })
+   ```
 
 4. 不带有任何参数：该方法允许调用时不带参数，直接返回一个 `resolved` 状态的 `Promise` 对象。 所以，如果希望得到一个 `Promise` 对象，比较方便的方法就是直接调用 `Promise.resolve` 方法。需要注意的是，立即 `resolve` 的 `Promise` 对象，是在本轮“事件循环”(`event loop`)的结束时，而不是在下一轮“事件循环”的开始时，其实所有的异步 `Promise`，包括 `then`，`catch` 和 `finally` 包括 `node` 的 `process.nextTick` 都会在本轮事件循环的宏任务结束后执行，其中 `nextTick` 是微任务中最先执行的。
 

@@ -146,56 +146,56 @@ fn(1)(2)(3)
 
 1. 逻辑比较 **复杂** 的实现
 
-```javascript
-function sub_curry(fn) {
-  var args = [].slice.call(arguments, 1)
-  return function () {
-    return fn.apply(this, args.concat([].slice.call(arguments)))
-  }
-}
+   ```javascript
+   function sub_curry(fn) {
+     var args = [].slice.call(arguments, 1)
+     return function () {
+       return fn.apply(this, args.concat([].slice.call(arguments)))
+     }
+   }
 
-function curry(fn, length) {
-  length = length || fn.length
+   function curry(fn, length) {
+     length = length || fn.length
 
-  var slice = Array.prototype.slice
+     var slice = Array.prototype.slice
 
-  return function () {
-    if (arguments.length < length) {
-      var combined = [fn].concat(slice.call(arguments))
-      return curry(sub_curry.apply(this, combined), length - arguments.length)
-    } else {
-      return fn.apply(this, arguments)
-    }
-  }
-}
-```
+     return function () {
+       if (arguments.length < length) {
+         var combined = [fn].concat(slice.call(arguments))
+         return curry(sub_curry.apply(this, combined), length - arguments.length)
+       } else {
+         return fn.apply(this, arguments)
+       }
+     }
+   }
+   ```
 
 2. 和我上面的实现逻辑比较接近的实现
 
-```javascript
-function curry(fn, args) {
-  var length = fn.length
+   ```javascript
+   function curry(fn, args) {
+     var length = fn.length
 
-  args = args || []
+     args = args || []
 
-  return function () {
-    var _args = args.slice(0),
-      arg,
-      i
+     return function () {
+       var _args = args.slice(0),
+         arg,
+         i
 
-    for (i = 0; i < arguments.length; i++) {
-      arg = arguments[i]
+       for (i = 0; i < arguments.length; i++) {
+         arg = arguments[i]
 
-      _args.push(arg)
-    }
-    if (_args.length < length) {
-      return curry.call(this, fn, _args)
-    } else {
-      return fn.apply(this, _args)
-    }
-  }
-}
-```
+         _args.push(arg)
+       }
+       if (_args.length < length) {
+         return curry.call(this, fn, _args)
+       } else {
+         return fn.apply(this, _args)
+       }
+     }
+   }
+   ```
 
 3. 可以改变参数顺序的实现
 
