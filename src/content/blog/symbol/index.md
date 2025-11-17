@@ -6,10 +6,8 @@ tags:
   - js
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -29,21 +27,21 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ```javascript
 const obj = {
-    toString() {
-        return 'abc';
-    },
-};
-const sym = Symbol(obj);
-sym; // Symbol(abc)
+  toString() {
+    return 'abc'
+  }
+}
+const sym = Symbol(obj)
+sym // Symbol(abc)
 ```
 
 虽然不能用 `new` 创建一个 `Symbol` 对象，但是可以通过 `Object` 方法获得一个包装对象。
 
 ```javascript
-var sym = Symbol("foo");
-typeof sym;     // "symbol"
-var symObj = Object(sym);
-typeof symObj;  // "object"
+var sym = Symbol('foo')
+typeof sym // "symbol"
+var symObj = Object(sym)
+typeof symObj // "object"
 ```
 
 `Symbol` 作为属性名，该属性不会出现在 `for ... in`、`for ... of` 循环中，也不会被被 `Object.keys()`、`Object.getOwnPropertyNames()`、`JSON.toStringify()` 返回。但是，它也不是私有属性，有一个 `Object.getOwnPropertySymbols()` 放法，可以获取指定对象的所有 `Symbol` 属性名。另一个新的 `API`， `Reflect.ownKeys` 方法可以返回所有类型的键名，包括常规键名和 `Symbol` 键名。由于以 `Symbol` 值作为名称的属性，不会被常规方法遍历得到。我们可以利用这个 特性，为对象定义一些非私有的、但又希望只用于内部的方法。
@@ -52,12 +50,12 @@ typeof symObj;  // "object"
 
 ```javascript
 let obj = {
-    [Symbol('clloz')]: 'clloz',
-};
-console.log(Object.getOwnPropertySymbols(obj)); //[ Symbol(clloz) ]
+  [Symbol('clloz')]: 'clloz'
+}
+console.log(Object.getOwnPropertySymbols(obj)) //[ Symbol(clloz) ]
 ```
 
-关于 `Symbol` 的类型转换可以参考我的另一片文章 [深入 JavaScript 类型转换](https://www.clloz.com/programming/front-end/js/2020/10/13/type-conversion/ "深入 JavaScript 类型转换")，这里做一个简单的总结：
+关于 `Symbol` 的类型转换可以参考我的另一片文章 [深入 JavaScript 类型转换](https://www.clloz.com/programming/front-end/js/2020/10/13/type-conversion/ '深入 JavaScript 类型转换')，这里做一个简单的总结：
 
 - 尝试将一个 `symbol` 值转换为一个 `number` 值时，会抛出一个 `TypeError` 错误 (`e.g. +sym or sym | 0`).
 - 使用宽松相等时， `Object(sym) == sym` 返回 `true`。
@@ -76,31 +74,31 @@ console.log(Object.getOwnPropertySymbols(obj)); //[ Symbol(clloz) ]
 `Symbol.for()` 和 `Symbol()` 的区别是，`Symbol.for()` 创建的 `Symbol` 会被登记在全局环境中共搜索。`Symbol.fo()` 不会每次都创建一个新的 `Symbol`，只会在搜索不到的时候创建。
 
 ```javascript
-Symbol.for("foo"); // 创建一个 symbol 并放入 symbol 注册表中，键为 "foo"
-Symbol.for("foo"); // 从 symbol 注册表中读取键为"foo"的 symbol
+Symbol.for('foo') // 创建一个 symbol 并放入 symbol 注册表中，键为 "foo"
+Symbol.for('foo') // 从 symbol 注册表中读取键为"foo"的 symbol
 
-Symbol.for("bar") === Symbol.for("bar"); // true，证明了上面说的
-Symbol("bar") === Symbol("bar"); // false，Symbol() 函数每次都会返回新的一个 symbol
+Symbol.for('bar') === Symbol.for('bar') // true，证明了上面说的
+Symbol('bar') === Symbol('bar') // false，Symbol() 函数每次都会返回新的一个 symbol
 
-var sym = Symbol.for("mario");
-sym.toString();
+var sym = Symbol.for('mario')
+sym.toString()
 // "Symbol(mario)"，mario 既是该 symbol 在 symbol 注册表中的键名，又是该 symbol 自身的描述字符串
 
 //为了防止冲突，最好为键名设置前缀
-Symbol.for("mdn.foo");
-Symbol.for("mdn.bar");
+Symbol.for('mdn.foo')
+Symbol.for('mdn.bar')
 ```
 
 `Symbol.keyFor(sym)` 方法用来获取全局 `symbol` 注册表中与某个 `symbol` 关联的键。即参数是一个 `Symbol`，如果这个 `Symbol` 是用 `Symbol.for()` 在全局注册的，则返回这个 `Symbol` 的描述符，一个字符串。若没找到则返回 `undefined`。
 
 ```javascript
-let symbol1 = Symbol('clloz');
-let symbol2 = Symbol.for('clloz');
-console.log(Symbol.keyFor(symbol1)); //undefined
-console.log(Symbol.keyFor(symbol2)); //clloz
+let symbol1 = Symbol('clloz')
+let symbol2 = Symbol.for('clloz')
+console.log(Symbol.keyFor(symbol1)) //undefined
+console.log(Symbol.keyFor(symbol2)) //clloz
 ```
 
-* * *
+---
 
 `Symbol()` 有原型 `Symbol.prototype`，你可以使用构造函数的原型对象来给所有 `Symbol` 实例添加属性或者方法。`Symbol.prototype` 默认有一个数姓 `Symbol.prototype.description`，返回对应 `Symbol` 的描述符。
 
@@ -109,34 +107,34 @@ console.log(Symbol.keyFor(symbol2)); //clloz
 `toString()` 方法返回当前 `symbol` 对象的字符串表示。`symbol` 原始值不能转换为字符串，所以只能先转换成它的包装对象，再调用 `toString()` 方法。
 
 ```javascript
-Symbol("foo") + "bar";      
+Symbol('foo') + 'bar'
 // TypeError: Can't convert symbol to string
-Symbol("foo").toString() + "bar"
+Symbol('foo').toString() + 'bar'
 // "Symbol(foo)bar"，就相当于下面的:
-Object(Symbol("foo")).toString() + "bar"
+Object(Symbol('foo')).toString() + 'bar'
 // "Symbol(foo)bar"
 ```
 
 `valueOf()` 方法返回当前 `symbol` 对象所包含的 `symbol` 原始值。在 `JavaScript` 中，虽然大多数类型的对象在某些操作下都会自动的隐式调用自身的 `valueOf()` 方法或者 `toString()` 方法来将自己转换成一个原始值，但 `symbol` 对象不会这么干，`symbol` 对象无法隐式转换成对应的原始值。
 
 ```javascript
-Object(Symbol("foo")) + "bar";
+Object(Symbol('foo')) + 'bar'
 // TypeError: can't convert symbol object to primitive
 // 无法隐式的调用 valueOf() 方法
 
-Object(Symbol("foo")).valueOf() + "bar";
+Object(Symbol('foo')).valueOf() + 'bar'
 // TypeError:  can't convert symbol to string
 // 手动调用 valueOf() 方法，虽然转换成了原始值，但 symbol 原始值不能转换为字符串
 
-Object(Symbol("foo")).toString() + "bar";
+Object(Symbol('foo')).toString() + 'bar'
 // "Symbol(foo)bar"，需要手动调用 toString() 方法才行
 ```
 
-关于 `Symbol.prototype[Symbol.toPrimitive](hint)` 参考 [深入 JavaScript 类型转换](https://www.clloz.com/programming/front-end/js/2020/10/13/type-conversion/ "深入 JavaScript 类型转换")
+关于 `Symbol.prototype[Symbol.toPrimitive](hint)` 参考 [深入 JavaScript 类型转换](https://www.clloz.com/programming/front-end/js/2020/10/13/type-conversion/ '深入 JavaScript 类型转换')
 
 ## 属性
 
-除了我们自己创建的 `Symbol`，`JavaScript` 还内建了一些在 `ECMAScript 5` 之前没有暴露给开发者的 `symbol`，它们代表了内部语言行为。在标准中他们以 `@@` 开头替代 `Symbol`，被称为 [Well-Known Symbols](https://tc39.es/ecma262/#sec-well-known-symbols "Well-Known Symbols")。
+除了我们自己创建的 `Symbol`，`JavaScript` 还内建了一些在 `ECMAScript 5` 之前没有暴露给开发者的 `symbol`，它们代表了内部语言行为。在标准中他们以 `@@` 开头替代 `Symbol`，被称为 [Well-Known Symbols](https://tc39.es/ecma262/#sec-well-known-symbols 'Well-Known Symbols')。
 
 - `Symbol.iterator`：一个返回一个对象默认迭代器的方法。被 `for...of` 使用。
 - `Symbol.asyncIterator`: 一个返回对象默认的异步迭代器的方法。被 `for await of` 使用。**试验性API**
@@ -159,11 +157,11 @@ Object(Symbol("foo")).toString() + "bar";
 
 ```javascript
 class MyClass {
-    [Symbol.hasInstance](foo) {
-        return foo instanceof Array;
-    }
+  [Symbol.hasInstance](foo) {
+    return foo instanceof Array
+  }
 }
-console.log([1, 2, 3] instanceof new MyClass()); // true
+console.log([1, 2, 3] instanceof new MyClass()) // true
 ```
 
 ## Symbol.isConcatSpreadable
@@ -171,52 +169,52 @@ console.log([1, 2, 3] instanceof new MyClass()); // true
 对象的 `Symbol.isConcatSpreadable` 属性等于一个布尔值，表示该对象用于 `Array.prototype.concat()` 时，是否可以展开。
 
 ```javascript
-let arr1 = ['c', 'd'];
-console.log(['a', 'b'].concat(arr1, 'e')); // ['a', 'b', 'c', 'd', 'e']
-console.log(arr1[Symbol.isConcatSpreadable]); // undefined
+let arr1 = ['c', 'd']
+console.log(['a', 'b'].concat(arr1, 'e')) // ['a', 'b', 'c', 'd', 'e']
+console.log(arr1[Symbol.isConcatSpreadable]) // undefined
 
-let arr2 = ['c', 'd'];
-arr2[Symbol.isConcatSpreadable] = false;
-console.log(['a', 'b'].concat(arr2, 'e'));
+let arr2 = ['c', 'd']
+arr2[Symbol.isConcatSpreadable] = false
+console.log(['a', 'b'].concat(arr2, 'e'))
 //['a', 'b', ['c', 'd', ([Symbol(Symbol.isConcatSpreadable)]: false)], 'e'];
 ```
 
 上面代码说明，数组的默认行为是可以展开，`Symbol.isConcatSpreadable` 默认等于 `undefined` 。该属性等于 `true` 时，也有展开的效果。当我们把数组的 `Symbol.isConcatSpreadable` 设置为 `false`，在调用 `cancat` 发现没有展开。
 
 ```javascript
-let obj = { length: 2, 0: 'c', 1: 'd' };
-console.log(['a', 'b'].concat(obj, 'e')); // [ 'a', 'b', { '0': 'c', '1': 'd', length: 2 }, 'e' ]
+let obj = { length: 2, 0: 'c', 1: 'd' }
+console.log(['a', 'b'].concat(obj, 'e')) // [ 'a', 'b', { '0': 'c', '1': 'd', length: 2 }, 'e' ]
 
-obj[Symbol.isConcatSpreadable] = true;
-console.log(['a', 'b'].concat(obj, 'e')); // ['a', 'b', 'c', 'd', 'e']
+obj[Symbol.isConcatSpreadable] = true
+console.log(['a', 'b'].concat(obj, 'e')) // ['a', 'b', 'c', 'd', 'e']
 ```
 
 类似数组的对象正好相反，默认不展开。将它的 `Symbol.isConcatSpreadable` 属性设为 `true` ，就可以展开。
 
-* * *
+---
 
 ```javascript
 class A1 extends Array {
-    constructor(args) {
-        super(args);
-        this[Symbol.isConcatSpreadable] = true;
-    }
+  constructor(args) {
+    super(args)
+    this[Symbol.isConcatSpreadable] = true
+  }
 }
 class A2 extends Array {
-    constructor(args) {
-        super(args);
-    }
-    get [Symbol.isConcatSpreadable]() {
-        return false;
-    }
+  constructor(args) {
+    super(args)
+  }
+  get [Symbol.isConcatSpreadable]() {
+    return false
+  }
 }
-let a1 = new A1();
-a1[0] = 3;
-a1[1] = 4;
-let a2 = new A2();
-a2[0] = 5;
-a2[1] = 6;
-console.log([1, 2].concat(a1).concat(a2)); // [ 1, 2, 3, 4, A2(2) [ 5, 6 ] ]
+let a1 = new A1()
+a1[0] = 3
+a1[1] = 4
+let a2 = new A2()
+a2[0] = 5
+a2[1] = 6
+console.log([1, 2].concat(a1).concat(a2)) // [ 1, 2, 3, 4, A2(2) [ 5, 6 ] ]
 ```
 
 也可以在类中设置这个属性，可以在构造函数中设置，也可以直接作为原型的访问器属性。
@@ -227,22 +225,22 @@ console.log([1, 2].concat(a1).concat(a2)); // [ 1, 2, 3, 4, A2(2) [ 5, 6 ] ]
 
 ```javascript
 class MyArray extends Array {
-    // 覆盖 species 到父级的 Array 构造函数上
-    static get [Symbol.species]() {
-        return Array;
-    }
+  // 覆盖 species 到父级的 Array 构造函数上
+  static get [Symbol.species]() {
+    return Array
+  }
 }
 
-const a = new MyArray(1, 2, 3);
-console.log(a instanceof MyArray); //true
-console.log(a instanceof Array); //true
+const a = new MyArray(1, 2, 3)
+console.log(a instanceof MyArray) //true
+console.log(a instanceof Array) //true
 
-const mapped = a.map(x => x * x);
+const mapped = a.map((x) => x * x)
 
-console.log(mapped instanceof MyArray);
+console.log(mapped instanceof MyArray)
 // expected output: false
 
-console.log(mapped instanceof Array);
+console.log(mapped instanceof Array)
 // expected output: true
 ```
 
@@ -250,9 +248,9 @@ console.log(mapped instanceof Array);
 
 ```javascript
 class MyArray extends Array {
-    static get [Symbol.species]() {
-        return this;
-    }
+  static get [Symbol.species]() {
+    return this
+  }
 }
 ```
 
@@ -263,16 +261,16 @@ class MyArray extends Array {
 有了这个属性之后，即使不是正则对象，我们也可以让 `String.prototype.match()` 正常执行。
 
 ```javascript
-String.prototype.match(regexp);
+String.prototype.match(regexp)
 // 等同于
-regexp[Symbol.match](this);
+regexp[Symbol.match](this)
 
 class MyMatcher {
-    [Symbol.match](string) {
-        return 'hello world'.indexOf(string);
-    }
+  [Symbol.match](string) {
+    return 'hello world'.indexOf(string)
+  }
 }
-'e'.match(new MyMatcher()); // 1
+'e'.match(new MyMatcher()) // 1
 ```
 
 ## Symbol.replace
@@ -280,17 +278,17 @@ class MyMatcher {
 `Symbol.replace` 一个替换匹配字符串的子串的方法。当对象被 `String.prototype.replace()` 方法调用时，会调用对象上的 `Symbol.replace` 方法。
 
 ```javascript
-String.prototype.replace(searchValue, replaceValue);
+String.prototype.replace(searchValue, replaceValue)
 // 等同于
-searchValue[Symbol.replace](this, replaceValue); // this 就是调用 replace 的字符串
+searchValue[Symbol.replace](this, replaceValue) // this 就是调用 replace 的字符串
 ```
 
 有了这个属性，即使不是正则对象，`String.prototype.replace()` 也能正常执行。
 
 ```javascript
-const x = {};
-x[Symbol.replace] = (...s) => console.log(s);
-'Hello'.replace(x, 'World'); // ["Hello", "World"]
+const x = {}
+x[Symbol.replace] = (...s) => console.log(s)
+'Hello'.replace(x, 'World') // ["Hello", "World"]
 ```
 
 ## Symbol.search
@@ -298,16 +296,16 @@ x[Symbol.replace] = (...s) => console.log(s);
 `Symbol.search` 指向一个返回一个字符串中与正则表达式相匹配的索引的方法。被 `String.prototype.search()` 使用。当对象被 `String.prototype.search()` 方法调用时，会调用对象的这个方法。
 
 ```javascript
-String.prototype.search(regexp); // 等同于 regexp[Symbol.search](this)
+String.prototype.search(regexp) // 等同于 regexp[Symbol.search](this)
 class MySearch {
-    constructor(value) {
-        this.value = value;
-    }
-    [Symbol.search](string) {
-        return string.indexOf(this.value);
-    }
+  constructor(value) {
+    this.value = value
+  }
+  [Symbol.search](string) {
+    return string.indexOf(this.value)
+  }
 }
-'foobar'.search(new MySearch('foo')); // 0
+'foobar'.search(new MySearch('foo')) // 0
 ```
 
 ## Symbol.split
@@ -315,7 +313,7 @@ class MySearch {
 `Symbol.split` 指向一个在匹配正则表达式的索引处拆分一个字符串的方法.。被 `String.prototype.split()` 使用。当对象被 `String.prototype.split()` 方法调用时，会调用对象的这个方法。`split` 的第一个参数可以是字符串也可以是正则表达式。
 
 ```javascript
-String.prototype.split(separator, limit) 
+String.prototype.split(separator, limit)
 // 等同于
 separator[Symbol.split](this, limit)
 ```
@@ -325,14 +323,15 @@ separator[Symbol.split](this, limit)
 ```javascript
 class MySplitter {
   constructor(value) {
-this.value = value; }
-[Symbol.split](string) {
-var index = string.indexOf(this.value); if (index === -1) {
-      return string;
+    this.value = value
+  }
+  [Symbol.split](string) {
+    var index = string.indexOf(this.value)
+    if (index === -1) {
+      return string
     }
-return [
-string.substr(0, index), string.substr(index + this.value.length)
-]; }
+    return [string.substr(0, index), string.substr(index + this.value.length)]
+  }
 }
 'foobar'.split(new MySplitter('foo'))
 // ['', 'bar']
@@ -355,41 +354,41 @@ string.substr(0, index), string.substr(index + this.value.length)
 ```javascript
 var myIterable = {}
 myIterable[Symbol.iterator] = function* () {
-    yield 1;
-    yield 2;
-    yield 3;
-};
-[...myIterable] // [1, 2, 3]
+  yield 1
+  yield 2
+  yield 3
+}
+;[...myIterable] // [1, 2, 3]
 ```
 
 ## Symbol.toPrimitive
 
-`Symbol.toPrimitive` 指向一个将对象转化为基本数据类型的方法，当一个对象转换为对应的原始值时，会调用此函数。这个方法我在 [深入 JavaScript 类型转换](https://www.clloz.com/programming/front-end/js/2020/10/13/type-conversion/ "深入 JavaScript 类型转换") 中已经详细介绍过了。
+`Symbol.toPrimitive` 指向一个将对象转化为基本数据类型的方法，当一个对象转换为对应的原始值时，会调用此函数。这个方法我在 [深入 JavaScript 类型转换](https://www.clloz.com/programming/front-end/js/2020/10/13/type-conversion/ '深入 JavaScript 类型转换') 中已经详细介绍过了。
 
 `Symbol.toPrimitive` 被调用时，一个对象可被转换为原始值。该函数被调用时，会被传递一个字符串参数 `hint` ，表示要转换到的原始值的预期类型。 `hint` 参数的取值是 `number`、`string` 和 `default` 中的任意一个。详细的解析参考上面的那篇文章，这里放一个例子：
 
 ```javascript
 // 一个没有提供 Symbol.toPrimitive 属性的对象，参与运算时的输出结果
-var obj1 = {};
-console.log(+obj1);     // NaN
-console.log(`{obj1}`); // "[object Object]"
-console.log(obj1 + ""); // "[object Object]"
+var obj1 = {}
+console.log(+obj1) // NaN
+console.log(`{obj1}`) // "[object Object]"
+console.log(obj1 + '') // "[object Object]"
 
 // 接下面声明一个对象，手动赋予了 Symbol.toPrimitive 属性，再来查看输出结果
 var obj2 = {
-    [Symbol.toPrimitive](hint) {
-        if (hint == "number") {
-            return 10;
-        }
-        if (hint == "string") {
-            return "hello";
-        }
-        return true;
+  [Symbol.toPrimitive](hint) {
+    if (hint == 'number') {
+      return 10
     }
-};
-console.log(+obj2);     // 10      -- hint 参数值是 "number"
-console.log(`{obj2}`); // "hello" -- hint 参数值是 "string"
-console.log(obj2 + ""); // "true"  -- hint 参数值是 "default"
+    if (hint == 'string') {
+      return 'hello'
+    }
+    return true
+  }
+}
+console.log(+obj2) // 10      -- hint 参数值是 "number"
+console.log(`{obj2}`) // "hello" -- hint 参数值是 "string"
+console.log(obj2 + '') // "true"  -- hint 参数值是 "default"
 ```
 
 ## Symbol.toStringTag
@@ -399,21 +398,21 @@ console.log(obj2 + ""); // "true"  -- hint 参数值是 "default"
 许多内置的 `JavaScript` 对象类型即便没有 `toStringTag` 属性，也能被 `toString()` 方法识别并返回特定的类型标签，比如：
 
 ```javascript
-Object.prototype.toString.call('foo');     // "[object String]"
-Object.prototype.toString.call([1, 2]);    // "[object Array]"
-Object.prototype.toString.call(3);         // "[object Number]"
-Object.prototype.toString.call(true);      // "[object Boolean]"
-Object.prototype.toString.call(undefined); // "[object Undefined]"
-Object.prototype.toString.call(null);      // "[object Null]"
+Object.prototype.toString.call('foo') // "[object String]"
+Object.prototype.toString.call([1, 2]) // "[object Array]"
+Object.prototype.toString.call(3) // "[object Number]"
+Object.prototype.toString.call(true) // "[object Boolean]"
+Object.prototype.toString.call(undefined) // "[object Undefined]"
+Object.prototype.toString.call(null) // "[object Null]"
 // ... and more
 ```
 
 另外一些对象类型则不然，`toString()` 方法能识别它们是因为引擎为它们设置好了 `toStringTag` 标签：
 
 ```javascript
-Object.prototype.toString.call(new Map());       // "[object Map]"
-Object.prototype.toString.call(function* () {}); // "[object GeneratorFunction]"
-Object.prototype.toString.call(Promise.resolve()); // "[object Promise]"
+Object.prototype.toString.call(new Map()) // "[object Map]"
+Object.prototype.toString.call(function* () {}) // "[object GeneratorFunction]"
+Object.prototype.toString.call(Promise.resolve()) // "[object Promise]"
 // ... and more
 ```
 
@@ -422,7 +421,7 @@ Object.prototype.toString.call(Promise.resolve()); // "[object Promise]"
 ```javascript
 class ValidatorClass {}
 
-Object.prototype.toString.call(new ValidatorClass()); // "[object Object]"
+Object.prototype.toString.call(new ValidatorClass()) // "[object Object]"
 ```
 
 加上 `toStringTag` 属性，你的类也会有自定义的类型标签了：
@@ -430,11 +429,11 @@ Object.prototype.toString.call(new ValidatorClass()); // "[object Object]"
 ```javascript
 class ValidatorClass {
   get [Symbol.toStringTag]() {
-    return "Validator";
+    return 'Validator'
   }
 }
 
-Object.prototype.toString.call(new ValidatorClass()); // "[object Validator]"
+Object.prototype.toString.call(new ValidatorClass()) // "[object Validator]"
 ```
 
 ## Symbol.unscopables
@@ -442,7 +441,7 @@ Object.prototype.toString.call(new ValidatorClass()); // "[object Validator]"
 `Symbol.unscopables` 指向一个对象。该对象指定了使用 `with` 关 键字时，哪些属性会被 `with` 环境排除。
 
 ```javascript
-console.log(Array.prototype[Symbol.unscopables]);
+console.log(Array.prototype[Symbol.unscopables])
 // [Object: null prototype] {
 //     copyWithin: true,
 //     entries: true,
@@ -455,7 +454,7 @@ console.log(Array.prototype[Symbol.unscopables]);
 //     keys: true,
 //     values: true
 //   }
-console.log(Object.keys(Array.prototype[Symbol.unscopables]));
+console.log(Object.keys(Array.prototype[Symbol.unscopables]))
 // [
 //     'copyWithin', 'entries',
 //     'fill',       'find',
@@ -470,30 +469,30 @@ console.log(Object.keys(Array.prototype[Symbol.unscopables]));
 ```javascript
 // 没有 unscopables 时
 class MyClass {
-    foo() {
-        return 1;
-    }
+  foo() {
+    return 1
+  }
 }
 var foo = function () {
-    return 2;
-};
+  return 2
+}
 with (MyClass.prototype) {
-    console.log(foo()); // 1
+  console.log(foo()) // 1
 }
 
 // 有 unscopables 时
 class MyClass {
-    foo() {
-        return 1;
-    }
-    get [Symbol.unscopables]() {
-        return { foo: true };
-    }
+  foo() {
+    return 1
+  }
+  get [Symbol.unscopables]() {
+    return { foo: true }
+  }
 }
 var foo = function () {
-    return 2;
-};
+  return 2
+}
 with (MyClass.prototype) {
-    console.log(foo()); // 2
+  console.log(foo()) // 2
 }
 ```

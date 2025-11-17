@@ -6,10 +6,8 @@ tags:
   - js
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -21,53 +19,53 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 观察者模式说起来很简单，我们希望对一个目标进行 `observe`，当这个目标发生变化的时候告诉我们。其实这听上去和回调函数很像，其实回调函数就是一种特殊的观察者模式。真正的观察者模式需要是一对多的，被观察者 `Subject` 会管理一个观察者列表，当这个 `Subject` 发生某个变化的时候会通知观察者列表中的所有观察者。大概关系如下图：
 
-![observer1](./images/observer1.png "observer1")
+![observer1](./images/observer1.png 'observer1')
 
 有没有感觉这个模式非常熟悉，这和我们经常使用的 `DOM` 事件模式完全相同。我们的 `DOM` 事件也就是一个观察者模式的实现。当我们为一个元素绑定事件的时候，我们就相当于进行了 `Subscribe` 订阅，成为了一个观察者。当对应的事件触发的时候，被观察的元素会通知我们，执行我们的回调函数（所谓的通知其实就是执行观察者中的对应方法，并不是真的发个通知）。我们也可以绑定多个 `Observer`，当事件触发的时候，所有的观察者都会被通知。`DOM` 提供了我们订阅 `addEventListener`，和取消订阅 `removeEventListener` 的 `API`。
 
 所以观察者模式有两个部分；观察者和被观察对象。而主要的实现都是在被观察对象上，一个模拟的观察者模式的实现如下：
 
 ```javascript
- // 观察者
+// 观察者
 class Observer {
-    constructor() {}
-    update(val) {}
+  constructor() {}
+  update(val) {}
 }
 // 观察者列表
 class ObserverList {
-    constructor() {
-        this.observerList = []
-    }
-    add(observer) {
-        return this.observerList.push(observer);
-    }
-    remove(observer) {
-        this.observerList = this.observerList.filter(ob => ob !== observer);
-    }
-    count() {
-        return this.observerList.length;
-    }
-    get(index) {
-        return this.observerList(index);
-    }
+  constructor() {
+    this.observerList = []
+  }
+  add(observer) {
+    return this.observerList.push(observer)
+  }
+  remove(observer) {
+    this.observerList = this.observerList.filter((ob) => ob !== observer)
+  }
+  count() {
+    return this.observerList.length
+  }
+  get(index) {
+    return this.observerList(index)
+  }
 }
 // 目标
 class Subject {
-    constructor() {
-        this.observers = new ObserverList();
+  constructor() {
+    this.observers = new ObserverList()
+  }
+  addObserver(observer) {
+    this.observers.add(observer)
+  }
+  removeObserver(observer) {
+    this.observers.remove(observer)
+  }
+  notify(...args) {
+    let obCount = this.observers.count()
+    for (let i = 0; i < obCount; i++) {
+      this.observers.get(i).update(...args)
     }
-    addObserver(observer) {
-        this.observers.add(observer);
-    }
-    removeObserver(observer) {
-        this.observers.remove(observer);
-    }
-    notify(...args) {
-        let obCount = this.observers.count();
-        for (let i = 0; i < obCount; i++) {
-            this.observers.get(i).update(...args);
-        }
-    }
+  }
 }
 ```
 
@@ -78,32 +76,32 @@ class Subject {
 最后在放一个用 `Proxy` 实现的简单的观察者模式。
 
 ```javascript
-let fnArr = new Set();
+let fnArr = new Set()
 function observable(obj) {
-    return new Proxy(obj, {
-        set: function (target, prop, value, receiver) {
-            Reflect.set(target, prop, value)
-            for (let fn of fnArr) {
-                console.log(fn)
-                fn();
-            }
-        }
-    })
+  return new Proxy(obj, {
+    set: function (target, prop, value, receiver) {
+      Reflect.set(target, prop, value)
+      for (let fn of fnArr) {
+        console.log(fn)
+        fn()
+      }
+    }
+  })
 }
 
 function observe(fn) {
-    fnArr.add(fn);
+  fnArr.add(fn)
 }
 
-const person = observable({ 
-    name: '张三',
-    age: 20
-});
-function print() { 
-    console.log(`${person.name}, ${person.age}`)
+const person = observable({
+  name: '张三',
+  age: 20
+})
+function print() {
+  console.log(`${person.name}, ${person.age}`)
 }
-observe(print); 
-person.name = '李四'; // 李四, 20
+observe(print)
+person.name = '李四' // 李四, 20
 ```
 
 ## 发布订阅模式 Pub-sub pattern
@@ -114,7 +112,7 @@ person.name = '李四'; // 李四, 20
 
 为了解决这个问题，就有了发布订阅模式。他们的本质都是一样的，都是对于未来会发生的事件进行一个监听，当事件发生了，通知监听的对象执行对应的方法。但是他们实现的逻辑不同。看下图：
 
-![observer2](./images/observer2.png "observer2")
+![observer2](./images/observer2.png 'observer2')
 
 在发布订阅模式中，添加了一个事件通道，发布者和订阅者不在直接进行交互。所有的注册，解绑，发布都是通过 `Event Channel` 来实现的。也就是说我们把观察者模式中的逻辑抽象出来，形成了一个单独的模块。
 
@@ -124,28 +122,28 @@ person.name = '李四'; // 李四, 20
 
 ```javascript
 class PubSub {
-    constructor() {
-        this.subscribers = {}
-    }
-    subscribe(type, fn) {
-        let listeners = this.subscribers[type] || [];
-        listeners.push(fn);
-    }
-    unsubscribe(type, fn) {
-        let listeners = this.subscribers[type];
-        if (!listeners || !listeners.length) return;
-        this.subscribers[type] = listeners.filter(v => v !== fn);
-    }
-    publish(type, ...args) {
-        let listeners = this.subscribers[type];
-        if (!listeners || !listeners.length) return;
-        listeners.forEach(fn => fn(...args));
-    }
+  constructor() {
+    this.subscribers = {}
+  }
+  subscribe(type, fn) {
+    let listeners = this.subscribers[type] || []
+    listeners.push(fn)
+  }
+  unsubscribe(type, fn) {
+    let listeners = this.subscribers[type]
+    if (!listeners || !listeners.length) return
+    this.subscribers[type] = listeners.filter((v) => v !== fn)
+  }
+  publish(type, ...args) {
+    let listeners = this.subscribers[type]
+    if (!listeners || !listeners.length) return
+    listeners.forEach((fn) => fn(...args))
+  }
 }
 
-let ob = new PubSub();
-ob.subscribe('add', (val) => console.log(val));
-ob.publish('add', 1);
+let ob = new PubSub()
+ob.subscribe('add', (val) => console.log(val))
+ob.publish('add', 1)
 ```
 
 比较观察者模式和发布订阅模式的代码我们可以发现，观察者模式由具体目标调度，每个被订阅的目标里面都需要有对观察者的处理，会造成代码的冗余。而发布订阅模式则统一由调度中心处理，消除了发布者和订阅者之间的依赖。
@@ -164,79 +162,79 @@ ob.publish('add', 1);
 
 ```javascript
 class Emitter {
-    constructor() {
-        this._event = this._event || new Map();
-        this.maxListeners = 10;
+  constructor() {
+    this._event = this._event || new Map()
+    this.maxListeners = 10
+  }
+
+  addEventListener(type, fn) {
+    const handler = this._event.get(type)
+
+    if (!handler) {
+      this._event.set(type, fn)
+    } else {
+      if (handler && typeof handler === 'function') {
+        this._event.set(type, [handler, fn])
+      } else {
+        handler.push(fn)
+      }
     }
+  }
 
-    addEventListener(type, fn) {
-        const handler = this._event.get(type);
+  removeEventListener(type, fn) {
+    const handler = this._event.get(type)
 
-        if (!handler) {
-            this._event.set(type, fn)
-        } else {
-            if (handler && typeof handler === 'function') {
-                this._event.set(type, [handler, fn])
-            } else {
-                handler.push(fn);
-            }
-        }
+    if (handler && typeof handler === 'function') {
+      if (handler === fn) this._event.delete(type)
+    } else {
+      let newHandler = handler.filter((v) => v !== fn)
+      if (newHandler.length === 1) {
+        this._event.set(type, newHandler[0])
+      } else {
+        this._event.set(type, newHandler)
+      }
     }
+  }
 
-    removeEventListener(type, fn) {
-        const handler = this._event.get(type);
+  emit(type, ...args) {
+    const handler = this._event.get(type)
 
-        if (handler && typeof handler === 'function') {
-            if (handler === fn) this._event.delete(type);
-        } else {
-            let newHandler = handler.filter(v => v !== fn)
-            if (newHandler.length === 1) {
-                this._event.set(type, newHandler[0])
-            } else {
-                this._event.set(type, newHandler)
-            }
-        }
+    if (Array.isArray(handler)) {
+      handler.forEach((fn) => {
+        fn.apply(this, args)
+      })
+    } else {
+      handler.apply(this, args)
     }
-
-    emit(type, ...args) {
-        const handler = this._event.get(type);
-
-        if (Array.isArray(handler)) {
-            handler.forEach(fn => {
-                fn.apply(this, args)
-            })
-        } else {
-            handler.apply(this, args);
-        }
-        return true;
-    }
+    return true
+  }
 }
 
-let emitter = new Emitter();
+let emitter = new Emitter()
 
-emitter.addEventListener('change', obj => {
-    console.log(`name is ${obj.name}.`);
+emitter.addEventListener('change', (obj) => {
+  console.log(`name is ${obj.name}.`)
 })
 
-emitter.addEventListener('change', obj => {
-    console.log(`age is ${obj.age}.`);
+emitter.addEventListener('change', (obj) => {
+  console.log(`age is ${obj.age}.`)
 })
 
-emitter.addEventListener('change', obj => {
-    console.log(`sex is ${obj.sex}.`);
+emitter.addEventListener('change', (obj) => {
+  console.log(`sex is ${obj.sex}.`)
 })
 
 function site(obj) {
-    console.log(`site is ${obj.site}`)
+  console.log(`site is ${obj.site}`)
 }
 
 emitter.addEventListener('change', site)
 
 emitter.emit('change', {
-    name: 'clloz',
-    age: 28,
-    sex: 'male',
-    site: 'clloz.com'
+  name: 'clloz',
+  age: 28,
+  sex: 'male',
+  site: 'clloz.com'
 })
 //name is clloz.
 //age is 28.
@@ -246,17 +244,17 @@ emitter.emit('change', {
 emitter.removeEventListener('change', site)
 
 emitter.emit('change', {
-    name: 'clloz',
-    age: 28,
-    sex: 'male',
-    site: 'clloz.com'
+  name: 'clloz',
+  age: 28,
+  sex: 'male',
+  site: 'clloz.com'
 })
 //name is clloz.
 //age is 28.
 //sex is male.
 ```
 
-如果你有兴趣也可以研究一下 `browserify` 的 `Event` 模块实现：[event.js - browserify](https://github.com/browserify/events/blob/master/events.js "event.js - browserify")。
+如果你有兴趣也可以研究一下 `browserify` 的 `Event` 模块实现：[event.js - browserify](https://github.com/browserify/events/blob/master/events.js 'event.js - browserify')。
 
 ## 总结
 
@@ -264,6 +262,6 @@ emitter.emit('change', {
 
 ## 参考文章
 
-1. [面试官:既然React/Vue可以用Event Bus进行组件通信,你可以实现下吗?](https://juejin.im/post/6844903587043082247 "面试官:既然React/Vue可以用Event Bus进行组件通信,你可以实现下吗?")
-2. [观察者模式和发布订阅模式有什么不同？ - 无邪气的回答 - 知乎](https://www.zhihu.com/question/23486749/answer/314072549 "观察者模式和发布订阅模式有什么不同？ - 无邪气的回答 - 知乎")
-3. [面试题， 实现一个Event类（发布订阅模式）](https://zhuanlan.zhihu.com/p/60324936 "面试题， 实现一个Event类（发布订阅模式）")
+1. [面试官:既然React/Vue可以用Event Bus进行组件通信,你可以实现下吗?](https://juejin.im/post/6844903587043082247 '面试官:既然React/Vue可以用Event Bus进行组件通信,你可以实现下吗?')
+2. [观察者模式和发布订阅模式有什么不同？ - 无邪气的回答 - 知乎](https://www.zhihu.com/question/23486749/answer/314072549 '观察者模式和发布订阅模式有什么不同？ - 无邪气的回答 - 知乎')
+3. [面试题， 实现一个Event类（发布订阅模式）](https://zhuanlan.zhihu.com/p/60324936 '面试题， 实现一个Event类（发布订阅模式）')

@@ -6,10 +6,8 @@ tags:
   - js
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -19,7 +17,7 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ## 标准
 
-我们直接一步到位，从标准中看定时器的定义，定时器 `timer` 在[HTML标准](https://html.spec.whatwg.org/multipage/ "HTML标准")的第 `8.6` 章节。
+我们直接一步到位，从标准中看定时器的定义，定时器 `timer` 在[HTML标准](https://html.spec.whatwg.org/multipage/ 'HTML标准')的第 `8.6` 章节。
 
 ## 语法
 
@@ -54,27 +52,27 @@ Cancels the timeout set with setInterval() or setTimeout() identified by handle.
 ```javascript
 console.time('first')
 setTimeout(function () {
-    console.timeEnd('first')
-    console.time('second')
+  console.timeEnd('first')
+  console.time('second')
+  setTimeout(function () {
+    console.timeEnd('second')
+    console.time('third')
     setTimeout(function () {
-        console.timeEnd('second')
-        console.time('third')
+      console.timeEnd('third')
+      console.time('fourth')
+      setTimeout(function () {
+        console.timeEnd('fourth')
+        console.time('fifth')
         setTimeout(function () {
-            console.timeEnd('third')
-            console.time('fourth')
-            setTimeout(function () {
-                console.timeEnd('fourth')
-                console.time('fifth')
-                setTimeout(function () {
-                    console.timeEnd('fifth')
-                    console.time('sixth')
-                    setTimeout(function () {
-                        console.timeEnd('sixth')
-                    })
-                })
-            })
+          console.timeEnd('fifth')
+          console.time('sixth')
+          setTimeout(function () {
+            console.timeEnd('sixth')
+          })
         })
+      })
     })
+  })
 })
 //chrome 输出
 //first: 1.2001953125ms
@@ -93,7 +91,7 @@ setTimeout(function () {
 //sixth: 1.259ms
 ```
 
-第二点就是我们设置的 `delay` 延迟时间并不是精确的，要根据 `CPU` 负载，其他的任务的执行时间。关于这一点要理解浏览器工作过程中非常重要的 `event loop` （`nodejs` 也有相同的设施），这个要详细说明比较复杂。大致可以这么理解，引擎只负责处理要执行的任务，但是异步任务的执行时不确定的，所以宿主环境都提供了一种设施来管理异步任务何时进入引擎的调用栈执行。引擎遇到一个异步的回调函数交给管理异步任务的模块，当这个回调函数触发了（比如我们的定时器时间到了，或者元素绑定事件触发了等），并不是直接把这个回调函数交给引擎执行（`JS` 是单线程的，任务只能一个一个执行），而是放进浏览器管理的一个任务队列，触发的回调函数会加入这个队列，等待引擎执行完再到队列里面来取任务（这也就是所谓的 `event loop`）。也就是我们设定的这个 `delay` 指的是我们的回调函数什么时候进入任务队列，而不是什么时候执行。这里讲的只是一个大概的过程，具体的内容可以看我的两篇文章：[JavaScript如何工作一：引擎，运行时和调用栈概述](clloz.com/programming/front-end/js/2019/05/13/how-javascript-works-1/#_The_Callback_Queue "JavaScript如何工作一：引擎，运行时和调用栈概述")和 [事件循环 Event Loop](https://www.clloz.com/programming/front-end/js/2020/11/01/event-loop/ "事件循环 Event Loop")
+第二点就是我们设置的 `delay` 延迟时间并不是精确的，要根据 `CPU` 负载，其他的任务的执行时间。关于这一点要理解浏览器工作过程中非常重要的 `event loop` （`nodejs` 也有相同的设施），这个要详细说明比较复杂。大致可以这么理解，引擎只负责处理要执行的任务，但是异步任务的执行时不确定的，所以宿主环境都提供了一种设施来管理异步任务何时进入引擎的调用栈执行。引擎遇到一个异步的回调函数交给管理异步任务的模块，当这个回调函数触发了（比如我们的定时器时间到了，或者元素绑定事件触发了等），并不是直接把这个回调函数交给引擎执行（`JS` 是单线程的，任务只能一个一个执行），而是放进浏览器管理的一个任务队列，触发的回调函数会加入这个队列，等待引擎执行完再到队列里面来取任务（这也就是所谓的 `event loop`）。也就是我们设定的这个 `delay` 指的是我们的回调函数什么时候进入任务队列，而不是什么时候执行。这里讲的只是一个大概的过程，具体的内容可以看我的两篇文章：[JavaScript如何工作一：引擎，运行时和调用栈概述](clloz.com/programming/front-end/js/2019/05/13/how-javascript-works-1/#_The_Callback_Queue 'JavaScript如何工作一：引擎，运行时和调用栈概述')和 [事件循环 Event Loop](https://www.clloz.com/programming/front-end/js/2020/11/01/event-loop/ '事件循环 Event Loop')
 
 ## 执行细节
 
@@ -110,10 +108,10 @@ setTimeout(function () {
 5. 将初始化脚本作为活动脚本
 6. 断言：初始化脚本不为 `null`。
 7. 运行下面的子步骤
-    
-    - 如果对应的 `handle` 在 `list of active timers` 中被清除了则终止这些步骤。
-    - 如果方法的第一个参数是 `Function`，用后续的参数调用该方法，将 `method context proxy` 作为回调函数的 `this` 对象。
-    - 如果 `repeat flag` 为 `true`，则再次调用 `timer initialization steps`，传递相同的参数，当前的 `handle` 作为 `previous handle`。
+   - 如果对应的 `handle` 在 `list of active timers` 中被清除了则终止这些步骤。
+   - 如果方法的第一个参数是 `Function`，用后续的参数调用该方法，将 `method context proxy` 作为回调函数的 `this` 对象。
+   - 如果 `repeat flag` 为 `true`，则再次调用 `timer initialization steps`，传递相同的参数，当前的 `handle` 作为 `previous handle`。
+
 8. 方法的第二个参数作为 `timeout`
 9. 如果当前正在运行的任务是相同的算法创建的（我的理解是都是 `setTimeout`，即当前的步骤是在一个 `setTimeout` 中或者是 `repeat flag` 为 `true` 的 `setInterval`），将嵌套层级设置为当前执行的定时器的其那套层级。否则嵌套层级为 `0`。
 10. 如果 `timeout` 小于 `0`， 设 `timeout` 为 `0`。
@@ -121,7 +119,7 @@ setTimeout(function () {
 12. 嵌套层级加一。
 13. 设置任务的嵌套层级为上面计算出的嵌套层级。
 14. 返回 `handle`，并行运行这个算法。
-15. `fully avtive` 概念参考[标准](https://html.spec.whatwg.org/multipage/browsers.html#fully-active "标准")
+15. `fully avtive` 概念参考[标准](https://html.spec.whatwg.org/multipage/browsers.html#fully-active '标准')
 16. 等待其他开始于本计时器之前，并且事件小于等于本计时器 `timeout` 的计时器执行完成。
 17. 进入任务队列，等待 `event loop` 执行。
 
@@ -132,63 +130,64 @@ setTimeout(function () {
 从标准我们可以看出，回调函数是在全局环境执行的，有一个特殊的地方就是，无论是否在严格模式下，回调函数的 `this`都返回 `window` 对象。想要获得 `setTimeout` 执行位置的词法作用域的 `this`，一个有效的方法就是箭头函数。
 
 ```javascript
-function a () {
-    setTimeout(() => {
-        console.log(this)
-    }, 0)
+function a() {
+  setTimeout(() => {
+    console.log(this)
+  }, 0)
 }
 
 let obj = {
-    fun: a
+  fun: a
 }
 
 obj.fun() // { fun: [Function: a] }
 ```
 
-* * *
+---
 
 `setTimeout` 回调函数也可以获得块级作用域闭包。
 
 ```javascript
 {
-    let a = 10;
-    setTimeout(function () {
-        console.log(a) //10
-    })
+  let a = 10
+  setTimeout(function () {
+    console.log(a) //10
+  })
 }
-let a = 20;
+let a = 20
 console.log(a) //20
 ```
 
-* * *
+---
 
 我们上面说了 `delay` 的最短间隔问题，同时 `delay` 也是有上限的。`javascript` 规定 `delay` 是一个 `32` 位无符号整数，这意味着 `delay` 的上限是 $2^{32} - 1$ 即 `2147483647`。
 
-* * *
+---
 
 想要清除定时器我们需要将 `setTimeout` 或者 `setInterval` 的返回值储存到一个变量中，当我们有嵌套的定时器或者管理的定时器较多时，如何命名和清除对应的定时器是一个要解决的问题。我今天就想到一个场景，两个嵌套的 `setInterval`，外层的 `delay` 比内层的 `delay` 要短的情况下，并且我们只希望内层的 `setInterval` 执行几次就停止，如何有效的清除对应的定时器。
 
 我们将场景设置地具体一点，我们希望内层的每个定时器执行五次后被清除，我们要如何储存定时器 `id`，我们需要给每一个定时器不同的命名，同时需要确保我们使用的外部变量补鞥呢影响到其他定时器。我最终的解决方案是用一个对象 `timerPool`来保存所有的定时器，属性名用 ``timerPool[`timer${index}`]``，`index` 是一个自增的变量，外层的定时器每执行一次就自增，这样就能确保每个定时器 `id` 保存在不同的变量中。同时这个 `index` 是在变化的，当我们进行 ``clearIterval(timerPool[`timer${index}`])`` 的时候，`index` 已经不是我们要的那个 `index` 了，所以需要用一个立即执行函数将内层的定时器包裹起来，将 `index` 传递进去以保存，其他的可能会被影响的外部变量也可以参照处理。最后的代码如下：
 
 ```javascript
-let outer = 0;
+let outer = 0
 let timerPool = {}
 setInterval(() => {
-    (function(outer){
-        let index = 0, inner = 0;
-        timerPool[`timer${outer}`] = setInterval(() => {
-                if (index >= 5) {
-                    inner = 0;
-                    console.log(outer)
-                    clearInterval(timerPool[`timer${outer}`]);
-                } else {
-                    console.log(index, outer, inner);
-                    index++
-                    inner++;
-                }
-            }, 1000)
-    })(outer)
-    outer++;
+  ;(function (outer) {
+    let index = 0,
+      inner = 0
+    timerPool[`timer${outer}`] = setInterval(() => {
+      if (index >= 5) {
+        inner = 0
+        console.log(outer)
+        clearInterval(timerPool[`timer${outer}`])
+      } else {
+        console.log(index, outer, inner)
+        index++
+        inner++
+      }
+    }, 1000)
+  })(outer)
+  outer++
 }, 4000)
 ```
 
@@ -203,23 +202,23 @@ setInterval(() => {
 先说 `setTimeout`，`setTimeout` 的逻辑是过一个指定长度的时间执行代码，当执行一次的时候，这不存在什么问题。当我们要实现一些递归的效果，比如每个 `1s` 将 `div` 换个颜色，我们就需要递归的调用 `setTimeout`。那么这个时候我们会发现，每次执行的时间间隔不是我们指定的 `1000ms`，而是 `1000ms` 加上函数执行的时间。
 
 ```javascript
-let i = 0;
+let i = 0
 setTimeout(function fn() {
-    console.log(i++);
-    setTimeout(fn, 1000);
-}, 0);
+  console.log(i++)
+  setTimeout(fn, 1000)
+}, 0)
 ```
 
-`setInterval` 是定时将函数推入任务队列（参考 [事件循环 Event Loop](https://www.clloz.com/programming/front-end/js/2020/11/01/event-loop/ "事件循环 Event Loop")），我们能确定的只是回调函数进入任务队列的时间间隔。而且如果 `js` 线程很忙碌，在我们下一个定时器要进去的时候发现上一个定时器的回调函数还没执行，那么这次插入任务队列就会失败。`setInterval` 会尝试在下一次间隔到了再次查看任务队列，只有任务队列没有来自同一个定时器的任务才会插入成功。此时还有一个问题就是我们会发现相邻的任务之间的时间间隔消失了，变成了连续执行。比如下面这段代码，我们会发现执行之间没有了间隔。
+`setInterval` 是定时将函数推入任务队列（参考 [事件循环 Event Loop](https://www.clloz.com/programming/front-end/js/2020/11/01/event-loop/ '事件循环 Event Loop')），我们能确定的只是回调函数进入任务队列的时间间隔。而且如果 `js` 线程很忙碌，在我们下一个定时器要进去的时候发现上一个定时器的回调函数还没执行，那么这次插入任务队列就会失败。`setInterval` 会尝试在下一次间隔到了再次查看任务队列，只有任务队列没有来自同一个定时器的任务才会插入成功。此时还有一个问题就是我们会发现相邻的任务之间的时间间隔消失了，变成了连续执行。比如下面这段代码，我们会发现执行之间没有了间隔。
 
 ```javascript
-console.time('log');
+console.time('log')
 setInterval(() => {
-    console.timeLog('log');
-    let start = new Date().getTime();
-    while (new Date().getTime() - start < 1000) {}
-    console.timeLog('log');
-}, 500);
+  console.timeLog('log')
+  let start = new Date().getTime()
+  while (new Date().getTime() - start < 1000) {}
+  console.timeLog('log')
+}, 500)
 ```
 
 > 注意，`NodeJS` 的 `setInterval` 的逻辑和浏览器不同。`NodeJS` 中是回调函数执行完毕之后才会尝试向任务队列插入新的任务。
@@ -230,16 +229,16 @@ setInterval(() => {
 
 ```javascript
 setTimeout(() => {
-  document.body.style.background = "red"
+  document.body.style.background = 'red'
   setTimeout(() => {
-    document.body.style.background = "blue"
+    document.body.style.background = 'blue'
   })
 })
 ```
 
 我们是希望页面先变成红色在变成蓝色，但是实际执行我们会发现很多时候浏览器并不会渲染红色，而是直接显示蓝色，有时候能够正常渲染出颜色的变化，这是为什么呢？其实道理也很简单，如果这两个 `setTimeout` 任务之间正好遇上了浏览器渲染，那么就能成功看到红色变蓝色。如果两次任务之间浏览器没有渲染，那么就只能看到蓝色。也就是说，丢帧了。如果我们用 `setTimeout` 或者 `setInterval` 做动画，很可能最后的效果不是很好，因为浏览器的渲染是不确定的。
 
-> 如果是用定时器做动画，我们一般设置间隔为 `17ms`，因为一般情况下浏览器渲染是一秒钟 `60` 帧，也就是 `16.7ms` 渲染一次。但是根据具体的浏览器和机器，帧数不一定相同。细节参考 [事件循环 Event Loop](https://www.clloz.com/programming/front-end/js/2020/11/01/event-loop/ "事件循环 Event Loop")
+> 如果是用定时器做动画，我们一般设置间隔为 `17ms`，因为一般情况下浏览器渲染是一秒钟 `60` 帧，也就是 `16.7ms` 渲染一次。但是根据具体的浏览器和机器，帧数不一定相同。细节参考 [事件循环 Event Loop](https://www.clloz.com/programming/front-end/js/2020/11/01/event-loop/ '事件循环 Event Loop')
 
 为了能够实现平滑的动画，`HTML5` 提供了 `window.requestAnimationFrame()` 这个 `API`， 它的功能是告诉浏览器——你希望执行一个动画，并且要求浏览器在下次重绘之前调用指定的回调函数更新动画。该方法需要传入一个回调函数作为参数，该回调函数会在浏览器下一次重绘之前执行。所以 `requestAnimationFrame` 能够和页面渲染同步，能够完美解决我们平滑执行动画的问题。
 
@@ -249,6 +248,6 @@ setTimeout(() => {
 
 ## 参考文章
 
-1. [浅谈 requestAnimationFrame](https://juejin.im/post/6844903877976981517 "浅谈 requestAnimationFrame")
-2. [深入理解定时器系列第二篇——被誉为神器的requestAnimationFrame](https://www.cnblogs.com/xiaohuochai/p/5777186.html "深入理解定时器系列第二篇——被誉为神器的requestAnimationFrame")
-3. [深入解析 EventLoop 和浏览器渲染、帧动画、空闲回调的关系](https://zhuanlan.zhihu.com/p/142742003 "深入解析 EventLoop 和浏览器渲染、帧动画、空闲回调的关系")
+1. [浅谈 requestAnimationFrame](https://juejin.im/post/6844903877976981517 '浅谈 requestAnimationFrame')
+2. [深入理解定时器系列第二篇——被誉为神器的requestAnimationFrame](https://www.cnblogs.com/xiaohuochai/p/5777186.html '深入理解定时器系列第二篇——被誉为神器的requestAnimationFrame')
+3. [深入解析 EventLoop 和浏览器渲染、帧动画、空闲回调的关系](https://zhuanlan.zhihu.com/p/142742003 '深入解析 EventLoop 和浏览器渲染、帧动画、空闲回调的关系')

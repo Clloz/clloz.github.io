@@ -7,10 +7,8 @@ tags:
   - 实用技巧
   - 计算机系统
 language: '中文'
-heroImage: {"src":"./linux-logo.png","color":"#B4C6DA"}
+heroImage: { 'src': './linux-logo.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -23,8 +21,6 @@ heroImage: {"src":"./linux-logo.png","color":"#B4C6DA"}
 - Shell for Root（/sbin/sh）
 
 等，其中 `bash` 是大部分 `Linux` 系统默认的 `Shell`。本文整理一下 `linux` 下常用的的 `shell` 命令，方便查询。在一般情况下，人们并不区分 `Bourne Shell` 和 `Bourne Again Shell`，所以，像 `#!/bin/sh`，它同样也可以改为 `#!/bin/bash`。
-
-
 
 **注意 `Shell Script` 都是在一个子 `Shell` 中运行，所以如果像执行 `cd` 这样的命令会发现不生效，因为在子 `Shell` 中完成后又退出了，像这样的命令应该用 `alias` 或者函数**
 
@@ -229,7 +225,7 @@ command <<END #从标准输入（键盘）中读取数据，直到遇见分界�
 command <file1 >file2 #将 file1 作为 command 的输入，并将 command 的处理结果输出到 file2。
 ```
 
-> 关于 `shell` 中的单引号和双引号的用法请看我的另一篇文章[shell中的引号和转义](https://www.clloz.com/programming/computer-science/operating-system/2019/04/12/shell-quote-escape/ "shell中的引号和转义")
+> 关于 `shell` 中的单引号和双引号的用法请看我的另一篇文章[shell中的引号和转义](https://www.clloz.com/programming/computer-science/operating-system/2019/04/12/shell-quote-escape/ 'shell中的引号和转义')
 
 ## 常用命令
 
@@ -237,13 +233,13 @@ command <file1 >file2 #将 file1 作为 command 的输入，并将 command 的�
 
 内置命令：出于效率的考虑，将一些常用命令的解释程序构造在 `Shell` 内部。 外置命令：存放在 `/bin`、`/sbin` 目录下的命令 实用程序：存放在 `/usr/bin`、`/usr/sbin`、`/usr/share`、`/usr/local/bin` 等目录下的实用程序 用户程序：用户程序经过编译生成可执行文件后，可作为 `Shell` 命令运行 `Shell` 脚本：由 `Shell` 语言编写的批处理文件，可作为 `Shell` 命令运行
 
-关于 `Linux` 常用命令已经在另一篇文章[Linux常用命令](https://www.clloz.com/programming/computer-science/operating-system/2020/08/18/linux-command/ "Linux常用命令")中进行了详细的介绍。
+关于 `Linux` 常用命令已经在另一篇文章[Linux常用命令](https://www.clloz.com/programming/computer-science/operating-system/2020/08/18/linux-command/ 'Linux常用命令')中进行了详细的介绍。
 
 ## 参考文章
 
 1. [linux中竖线'|'，双竖线‘||’，&和&&的意思](https://www.cnblogs.com/jpfss/p/10077390.html "linux中竖线'|'，双竖线‘||’，&和&&的意思")
-2. [看完这篇Linux基本的操作就会了 - 知乎](https://zhuanlan.zhihu.com/p/36801617 "看完这篇Linux基本的操作就会了 - 知乎")
-3. [Shell教程 - 菜鸟教程](https://www.runoob.com/linux/linux-shell.html "Shell教程 - 菜鸟教程")
-4. [Shell中的美元符号](https://blog.csdn.net/MiltonZhong/article/details/10344163#:~:text=Linux%20Shell%E4%B8%AD%E7%9A%84%E7%BE%8E%E5%85%83,%E5%88%B0%249%20%E6%95%B0%E5%AD%97%E8%A1%A8%E7%A4%BAshell "Shell中的美元符号")
-5. [Linux特殊符号大全](https://www.cnblogs.com/balaamwe/archive/2012/03/15/2397998.html "Linux特殊符号大全")
-6. [Shell输入/输出重定向](https://www.runoob.com/linux/linux-shell-io-redirections.html "Shell输入/输出重定向")
+2. [看完这篇Linux基本的操作就会了 - 知乎](https://zhuanlan.zhihu.com/p/36801617 '看完这篇Linux基本的操作就会了 - 知乎')
+3. [Shell教程 - 菜鸟教程](https://www.runoob.com/linux/linux-shell.html 'Shell教程 - 菜鸟教程')
+4. [Shell中的美元符号](https://blog.csdn.net/MiltonZhong/article/details/10344163#:~:text=Linux%20Shell%E4%B8%AD%E7%9A%84%E7%BE%8E%E5%85%83,%E5%88%B0%249%20%E6%95%B0%E5%AD%97%E8%A1%A8%E7%A4%BAshell 'Shell中的美元符号')
+5. [Linux特殊符号大全](https://www.cnblogs.com/balaamwe/archive/2012/03/15/2397998.html 'Linux特殊符号大全')
+6. [Shell输入/输出重定向](https://www.runoob.com/linux/linux-shell-io-redirections.html 'Shell输入/输出重定向')

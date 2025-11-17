@@ -6,10 +6,8 @@ tags:
   - css
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './css.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -51,18 +49,18 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 
 `MDN` 整理了这几个值的区别
 
-|  | 换行符 | 空格和制表符 | 文字换行 | 行尾空格 |
-| --- | --- | --- | --- | --- |
-| `normal` | 合并 | 合并 | 换行 | 删除 |
-| `nowrap` | 合并 | 合并 | 不换 | 删除 |
-| `pre` | 保留 | 保留 | 不换行 | 保留 |
-| `pre-wrap` | 保留 | 保留 | 换行 | 挂起 |
-| `pre-line` | 保留 | 合并 | 换行 | 删除 |
-| `break-spaces` | 保留 | 保留 | 换行 | 换行 |
+|                | 换行符 | 空格和制表符 | 文字换行 | 行尾空格 |
+| -------------- | ------ | ------------ | -------- | -------- |
+| `normal`       | 合并   | 合并         | 换行     | 删除     |
+| `nowrap`       | 合并   | 合并         | 不换     | 删除     |
+| `pre`          | 保留   | 保留         | 不换行   | 保留     |
+| `pre-wrap`     | 保留   | 保留         | 换行     | 挂起     |
+| `pre-line`     | 保留   | 合并         | 换行     | 删除     |
+| `break-spaces` | 保留   | 保留         | 换行     | 换行     |
 
 空白符的合并其实比较好理解，比较难理解的是文字的换行。我个人的理解是，`normal` 空格和换行符一样，都可以进行换行（换行符被当做空格一样，但是每个空格处都可以换行）；`nowrap` 中任何换行符无效；`pre` 只有在遇到换行符和 `br` 标签的时候会换行；`pre-wrap` 空格和换行符 `br` 都可以进行换行；`pre-line` 和 `pre-wrap` 换行机制一致（它们的不同在于是否合并空格和制表符）；`break-spaces` 和 `pre-wrap` 的机制大致相同，不同的是行尾出现大段连续空白的时候，`break-spaces` 会将这些空白符全部输出，并且他能在任何空格处换行。
 
-所以会在水平方向上超出父元素的只有 `nowrap` 和 `pre` 两个属性。几个属性最后的效果可以查看：[white-space 效果Demo](https://cdn.clloz.com/study/white-space.html "white-space 效果Demo")
+所以会在水平方向上超出父元素的只有 `nowrap` 和 `pre` 两个属性。几个属性最后的效果可以查看：[white-space 效果Demo](https://cdn.clloz.com/study/white-space.html 'white-space 效果Demo')
 
 > 正常情况下，我们需要文本溢出的时候我们会希望文本显示在同一行，因为默认情况下我们的文本到达元素框边界的时候是会自动换行的，所以我们需要`white-space: nowrap`来约束文本显示在一行。
 
@@ -70,7 +68,7 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 
 `word-break` 属性指定浏览器怎样在单词内断行。该属性有四个值： 1. `normal`：按默认规则进行换行，对于CJK（中文/日语/韩文）在每个字符之间都可以换行，而对于非CJK则需要在单词结束换行，如果一个单词的长度超过了元素框的宽度，那么该文本将溢出 2. `break-all`：在任意字符之间都可以换行。 3. `keep-all`： 对于非 `CJK` 语言，按 `normal` 规则，对于 `CJK` 不换行。
 
-几个属性的最后效果可以查看：[word-break 效果 Demo](https://cdn.clloz.com/study/word-break.html "word-break 效果 Demo")
+几个属性的最后效果可以查看：[word-break 效果 Demo](https://cdn.clloz.com/study/word-break.html 'word-break 效果 Demo')
 
 > 当`white-space: nowrap`文本不换行的时候，该属性无效。
 
@@ -80,7 +78,7 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 
 `overflow-wrap` 属性指导浏览器对于特别长的超出元素框宽度的单词是否可以从中间断开换行。有两个属性： 1. `normal`：不允许断开单词。 2. `break-word`：当单词过长，元素的宽度不能容纳单词则会在单词内部断开强制换行。 3. `anywhere`：目前支持不是很好。
 
-几个属性的最后效果可以查看：[overflow-wrap 效果 Demo](https://cdn.clloz.com/study/overflow-wrap.html "overflow-wrap 效果 Demo")
+几个属性的最后效果可以查看：[overflow-wrap 效果 Demo](https://cdn.clloz.com/study/overflow-wrap.html 'overflow-wrap 效果 Demo')
 
 与 `word-break` 相比，`overflow-wrap` 仅在无法将整个单词放在自己的行而不会溢出的情况下才会产生中断。所以我们可以看到 `word-break: break-all` 会在任意地方进行中断，文本当中不会留下很多空白；而 `overflow-wrap: break-word` 只会在不得不断的地方（整行都放不下一个单词）进行中断，所以会出现很多空白。
 
@@ -92,9 +90,9 @@ heroImage: {"src":"./css.jpg","color":"#B4C6DA"}
 
 ```css
 /*单行文本溢出用省略号显示：*/
-overflow:hidden;
-text-overflow:ellipsis;
-white-space:nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
 
 /*多行文本溢出用省略号显示：*/
 display: -webkit-box;
@@ -109,8 +107,8 @@ overflow: hidden;
 
 ```css
 .style {
-    white-sapce: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  white-sapce: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 ```

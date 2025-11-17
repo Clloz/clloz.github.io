@@ -6,31 +6,29 @@ tags:
   - css
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./dice.png","color":"#B4C6DA"}
+heroImage: { 'src': './dice.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
 用 `CSS` 实现一个 `3d` 的骰子，然后实现用鼠标拖动旋转的效果。实现的效果如下，可以拖动这个骰子进行旋转。
 
-<iframe width="100%" height="300px" style="border: none" src="https://cdn.clloz.com/study/spin-dice/spin-dice.html"></iframe>
+<!-- <iframe width="100%" height="300px" style="border: none" src="https://cdn.clloz.com/study/spin-dice/spin-dice.html"></iframe> -->
 
 ## CSS 实现 3D 骰子
 
-想要实现一个 `3d` 的骰子，肯定是要使用 `transform`。关于 `transform` 的细节本文就不多讲了，可以参考 `MDN` 和 [深入理解CSS变形transform(3d)](https://www.cnblogs.com/xiaohuochai/p/5351477.html "深入理解CSS变形transform(3d)")。我们主要讲讲如何实现效果。
+想要实现一个 `3d` 的骰子，肯定是要使用 `transform`。关于 `transform` 的细节本文就不多讲了，可以参考 `MDN` 和 [深入理解CSS变形transform(3d)](https://www.cnblogs.com/xiaohuochai/p/5351477.html '深入理解CSS变形transform(3d)')。我们主要讲讲如何实现效果。
 
 `HTML` 的结构很简单，我们需要一个包含块（最后我们旋转的就是这个包含块），和 `6` 个子元素作为骰子的六个面。
 
 ```html
 <ul id="dice">
-    <li class="front">1</li>
-    <li class="back">2</li>
-    <li class="right">3</li>
-    <li class="left">4</li>
-    <li class="top">5</li>
-    <li class="bottom">6</li>
+  <li class="front">1</li>
+  <li class="back">2</li>
+  <li class="right">3</li>
+  <li class="left">4</li>
+  <li class="top">5</li>
+  <li class="bottom">6</li>
 </ul>
 ```
 
@@ -38,13 +36,13 @@ heroImage: {"src":"./dice.png","color":"#B4C6DA"}
 
 ```css
 ul {
-    display: block;
-    width: 100px;
-    height: 100px;
-    margin: 100px auto;
-    padding: 0;
-    list-style: none;
-    transform-style: preserve-3d;
+  display: block;
+  width: 100px;
+  height: 100px;
+  margin: 100px auto;
+  padding: 0;
+  list-style: none;
+  transform-style: preserve-3d;
 }
 ```
 
@@ -65,51 +63,51 @@ ul {
 
 ```css
 ul li {
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 100%;
-    font-size: 30px;
-    color: white;
-    line-height: 100px;
-    text-align: center;
-    backface-visibility: visible;
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-size: 30px;
+  color: white;
+  line-height: 100px;
+  text-align: center;
+  backface-visibility: visible;
 }
 .front {
-    background-color: rgba(90, 90, 90, 0.7);
-    transform: translateZ(50px);
+  background-color: rgba(90, 90, 90, 0.7);
+  transform: translateZ(50px);
 }
 .back {
-    background-color: rgba(0, 210, 0, 0.7);
-    transform: rotateY(180deg) translateZ(50px);
+  background-color: rgba(0, 210, 0, 0.7);
+  transform: rotateY(180deg) translateZ(50px);
 }
 .right {
-    background-color: rgba(210, 0, 0, 0.7);
-    transform: rotateY(90deg) translateZ(50px);
+  background-color: rgba(210, 0, 0, 0.7);
+  transform: rotateY(90deg) translateZ(50px);
 }
 .left {
-    background-color: rgba(0, 0, 210, 0.7);
-    transform: rotateY(-90deg) translateZ(50px);
+  background-color: rgba(0, 0, 210, 0.7);
+  transform: rotateY(-90deg) translateZ(50px);
 }
 .top {
-    background-color: rgba(210, 210, 0, 0.7);
-    transform: rotateX(90deg) translateZ(50px);
+  background-color: rgba(210, 210, 0, 0.7);
+  transform: rotateX(90deg) translateZ(50px);
 }
 .bottom {
-    background-color: rgba(210, 0, 210, 0.7);
-    transform: rotateX(-90deg) translateZ(50px);
+  background-color: rgba(210, 0, 210, 0.7);
+  transform: rotateX(-90deg) translateZ(50px);
 }
 ```
 
 此时我们就已经得到一个 `3d` 的骰子了。我们可以给它一个初始的角度或者加上透视，就能够看到 `3d` 的效果。
 
-<iframe width="100%" height="350px" style="border: none" src="https://cdn.clloz.com/study/spin-dice/static-spin-dice.html"></iframe>
+<!-- <iframe width="100%" height="350px" style="border: none" src="https://cdn.clloz.com/study/spin-dice/static-spin-dice.html"></iframe> -->
 
 ## 旋转动画
 
 在实现拖动旋转之前，我们先做一个旋转动画来了解 `3d` 旋转。我们实现将这个骰子立起来，然后进行旋转，效果如下。
 
-<iframe width="100%" height="350px" style="border: none" src="https://cdn.clloz.com/study/spin-dice/vertical-spin-dice.html"></iframe>
+<!-- <iframe width="100%" height="350px" style="border: none" src="https://cdn.clloz.com/study/spin-dice/vertical-spin-dice.html"></iframe> -->
 
 如何实现这样的效果呢，我们要做的就是先将筛子立起来。其实就是以 `z` 轴顺时针旋转 `45deg`，然后以 `x` 轴逆时针旋转 `45deg`。最后的旋转方向我们使用 `rotate3d(1, 1, 1, ndeg)` 来实现，这里的三个 `1` 可以理解成向量，我们的旋转轴就是原点到这个向量的连线，原点默认在中心，而 `1，1，1` 的位置就相当于在 `xyz` 的坐标系中取点 `(1, 1, 1)`（这里注意坐标轴的方向和我们平时数学题中的方向不同），他们的连线就是一个垂直穿过的对角的轴。最后的效果就是一个立起来的骰子沿着垂直方向旋转。
 
@@ -124,101 +122,100 @@ ul li {
 ```html
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Spin Dice</title>
-        <style>
-            ul {
-                display: block;
-                width: 100px;
-                height: 100px;
-                margin: 100px auto;
-                padding: 0;
-                list-style: none;
-                /* perspective: 550px; */
-                transform-style: preserve-3d;
-                /* transition: all 0.3s ease-in; */
-                /* animation: spin 5s infinite linear; */
-                transform: rotateX(13deg) rotateY(13deg);
-            }
-            ul li {
-                position: absolute;
-                display: block;
-                width: 100%;
-                height: 100%;
-                font-size: 30px;
-                color: white;
-                line-height: 100px;
-                text-align: center;
-                backface-visibility: visible;
-            }
-            .front {
-                background-color: rgba(90, 90, 90, 0.7);
-                transform: translateZ(50px);
-            }
-            .back {
-                background-color: rgba(0, 210, 0, 0.7);
-                transform: rotateY(180deg) translateZ(50px);
-            }
-            .right {
-                background-color: rgba(210, 0, 0, 0.7);
-                transform: rotateY(90deg) translateZ(50px);
-            }
-            .left {
-                background-color: rgba(0, 0, 210, 0.7);
-                transform: rotateY(-90deg) translateZ(50px);
-            }
-            .top {
-                background-color: rgba(210, 210, 0, 0.7);
-                transform: rotateX(90deg) translateZ(50px);
-            }
-            .bottom {
-                background-color: rgba(210, 0, 210, 0.7);
-                transform: rotateX(-90deg) translateZ(50px);
-            }
-        </style>
-    </head>
-    <body>
-        <ul id="dice">
-            <li class="front">1</li>
-            <li class="back">2</li>
-            <li class="right">3</li>
-            <li class="left">4</li>
-            <li class="top">5</li>
-            <li class="bottom">6</li>
-        </ul>
-        <script>
-            let dice = document.getElementById('dice');
-            let baseX = 13;
-            let baseY = 13;
-            dice.addEventListener('mousedown', e => {
-                let rotateX = e.clientX;
-                let rotateY = e.clientY;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spin Dice</title>
+    <style>
+      ul {
+        display: block;
+        width: 100px;
+        height: 100px;
+        margin: 100px auto;
+        padding: 0;
+        list-style: none;
+        /* perspective: 550px; */
+        transform-style: preserve-3d;
+        /* transition: all 0.3s ease-in; */
+        /* animation: spin 5s infinite linear; */
+        transform: rotateX(13deg) rotateY(13deg);
+      }
+      ul li {
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 100%;
+        font-size: 30px;
+        color: white;
+        line-height: 100px;
+        text-align: center;
+        backface-visibility: visible;
+      }
+      .front {
+        background-color: rgba(90, 90, 90, 0.7);
+        transform: translateZ(50px);
+      }
+      .back {
+        background-color: rgba(0, 210, 0, 0.7);
+        transform: rotateY(180deg) translateZ(50px);
+      }
+      .right {
+        background-color: rgba(210, 0, 0, 0.7);
+        transform: rotateY(90deg) translateZ(50px);
+      }
+      .left {
+        background-color: rgba(0, 0, 210, 0.7);
+        transform: rotateY(-90deg) translateZ(50px);
+      }
+      .top {
+        background-color: rgba(210, 210, 0, 0.7);
+        transform: rotateX(90deg) translateZ(50px);
+      }
+      .bottom {
+        background-color: rgba(210, 0, 210, 0.7);
+        transform: rotateX(-90deg) translateZ(50px);
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="dice">
+      <li class="front">1</li>
+      <li class="back">2</li>
+      <li class="right">3</li>
+      <li class="left">4</li>
+      <li class="top">5</li>
+      <li class="bottom">6</li>
+    </ul>
+    <script>
+      let dice = document.getElementById('dice')
+      let baseX = 13
+      let baseY = 13
+      dice.addEventListener('mousedown', (e) => {
+        let rotateX = e.clientX
+        let rotateY = e.clientY
 
-                let move = e => {
-                    // console.log(baseX, rotateX, e.clientX);
-                    // console.log(baseY, rotateY, e.clientY);
-                    dice.style.transform = `rotateX(${baseX - (((e.clientY - rotateY) / 10) % 360)}deg) rotateY(${
-                        baseY + (((e.clientX - rotateX) / 10) % 360)
-                    }deg)`;
-                    // console.log(dice.style.transform);
-                };
-                let up = e => {
-                    baseX = baseX - (((e.clientY - rotateY) / 10) % 360);
-                    baseY = baseY + (((e.clientX - rotateX) / 10) % 360);
-                    // console.log(baseX, baseY);
-                    document.removeEventListener('mousemove', move);
-                    document.removeEventListener('mouseup', up);
-                };
-                document.addEventListener('mousemove', move);
-                document.addEventListener('mouseup', up);
-            });
-            document.addEventListener('selectstart', e => e.preventDefault());
-        </script>
-    </body>
+        let move = (e) => {
+          // console.log(baseX, rotateX, e.clientX);
+          // console.log(baseY, rotateY, e.clientY);
+          dice.style.transform = `rotateX(${baseX - (((e.clientY - rotateY) / 10) % 360)}deg) rotateY(${
+            baseY + (((e.clientX - rotateX) / 10) % 360)
+          }deg)`
+          // console.log(dice.style.transform);
+        }
+        let up = (e) => {
+          baseX = baseX - (((e.clientY - rotateY) / 10) % 360)
+          baseY = baseY + (((e.clientX - rotateX) / 10) % 360)
+          // console.log(baseX, baseY);
+          document.removeEventListener('mousemove', move)
+          document.removeEventListener('mouseup', up)
+        }
+        document.addEventListener('mousemove', move)
+        document.addEventListener('mouseup', up)
+      })
+      document.addEventListener('selectstart', (e) => e.preventDefault())
+    </script>
+  </body>
 </html>
-
 ```
 
 注意要把 `CSS` 代码中的 `transition` 注释掉，否则影响旋转效果。

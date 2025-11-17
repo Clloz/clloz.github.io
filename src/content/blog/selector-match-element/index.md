@@ -6,10 +6,8 @@ tags:
   - js
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./browser.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './browser.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -25,9 +23,9 @@ heroImage: {"src":"./browser.jpg","color":"#B4C6DA"}
 
 ```javascript
 function specificity(selector) {
-    let reg = /(?<tagname>(\w+)?)(?<id>(#\w+)?)(?<classname>(.[\w.]+)?)/;
-    let result = selector.match(reg);
-    return result.groups;
+  let reg = /(?<tagname>(\w+)?)(?<id>(#\w+)?)(?<classname>(.[\w.]+)?)/
+  let result = selector.match(reg)
+  return result.groups
 }
 console.log(specificity('div#myid.class1.class2'))
 //[Object: null prototype] {
@@ -37,58 +35,57 @@ console.log(specificity('div#myid.class1.class2'))
 //}
 ```
 
-我们利用正则表达式中的分组提取出 `tagname`，`id` 和 `class`。关于正则表达式可以看我的另一篇文章[正则表达式的入门和JavaScript中的应用](https://www.clloz.com/programming/front-end/js/2020/08/05/regex-javascript-apply/ "正则表达式的入门和JavaScript中的应用")。
+我们利用正则表达式中的分组提取出 `tagname`，`id` 和 `class`。关于正则表达式可以看我的另一篇文章[正则表达式的入门和JavaScript中的应用](https://www.clloz.com/programming/front-end/js/2020/08/05/regex-javascript-apply/ '正则表达式的入门和JavaScript中的应用')。
 
-* * *
+---
 
 将复合选择器转化为简单选择器后，我们要做的就是取得元素的简单选择器然后进行比较。元素的几个对应属性很简单，`tagName` 可以用 `element.tagName` 直接获得；`id` 和 `class` 可以通过 `element.getAttribute()` 方法获得（形式略有不同，需要处理）
 
 ```javascript
 function compare(result, element) {
-    if (result.tagname !== '' && element.tagName.toLowerCase() !== result.tagname) {
-        return false;
-    }
-    if (result.id !== '' && element.getAttribute('id') !== result.id.slice(1)) {
-        return false;
-    }
-    if (result.classname !== '') {
-        let classnames = result.classname.split('.').filter(val => !!val);
-        let el_classnames = element.getAttribute('class').split(' ');
-        let isContain = classnames.every(x => el_classnames.includes(x))
-        if (!isContain) return false;
-    }
-    return true;
+  if (result.tagname !== '' && element.tagName.toLowerCase() !== result.tagname) {
+    return false
+  }
+  if (result.id !== '' && element.getAttribute('id') !== result.id.slice(1)) {
+    return false
+  }
+  if (result.classname !== '') {
+    let classnames = result.classname.split('.').filter((val) => !!val)
+    let el_classnames = element.getAttribute('class').split(' ')
+    let isContain = classnames.every((x) => el_classnames.includes(x))
+    if (!isContain) return false
+  }
+  return true
 }
-
 ```
 
-* * *
+---
 
 最后我们要做的就是循环选择器数组，与当前元素匹配。元素用 `while` 向上回溯，直到 `element.parentElement` 为 `null`。
 
 ```javascript
 function match(selector, element) {
-    let selectors = selector.split(' ');
-    for (let i = selectors.length - 1; i >= 0; i--) {
-        let result = specificity(selectors[i]);
+  let selectors = selector.split(' ')
+  for (let i = selectors.length - 1; i >= 0; i--) {
+    let result = specificity(selectors[i])
 
-        if (i === selectors.length - 1) {
-            if (!compare(result, element)) return false;
-        } else {
-            let isMatch = false;
-            element = element.parentElement;
-            console.log(element)
+    if (i === selectors.length - 1) {
+      if (!compare(result, element)) return false
+    } else {
+      let isMatch = false
+      element = element.parentElement
+      console.log(element)
 
-            while (element !== null && isMatch === false) {
-                console.log(result, element)
-                if (compare(result, element)) isMatch = true;
-                element = element.parentElement
-            }
-            console.log(isMatch)
-            if (!isMatch) return false;
-        }
+      while (element !== null && isMatch === false) {
+        console.log(result, element)
+        if (compare(result, element)) isMatch = true
+        element = element.parentElement
+      }
+      console.log(isMatch)
+      if (!isMatch) return false
     }
-    return true;
+  }
+  return true
 }
 ```
 
@@ -98,4 +95,4 @@ function match(selector, element) {
 
 我们上面说过，元素和选择器的匹配是从后往前（从右往左），这里来简单解释一下为什么。当我们要知道当前的元素是否和某个选择器匹配的时候，比如选择器 `#id .class1 .class2`。如果我们从左往右匹配，当我们遇到 `#id` 的元素的时候，我们需要检查所有的子元素来寻找 `.class1`，这在复杂的文档解构中是非常低效率的。而如果我们从后往前匹配，当我们遇到一个 `.class2` 的元素，我们只需要看他的父元素（有些选择器也要看兄弟元素）是否you 匹配 `.class1` ，依次向上追溯就可以了。并且如果 `.class2` 没有匹配成功我们就可以直接确定这个元素不符合。
 
-浏览器中的 `CSS` 是如何计算的可以参考这篇文章[从Chrome源码看浏览器如何计算CSS](https://zhuanlan.zhihu.com/p/25380611 "从Chrome源码看浏览器如何计算CSS")
+浏览器中的 `CSS` 是如何计算的可以参考这篇文章[从Chrome源码看浏览器如何计算CSS](https://zhuanlan.zhihu.com/p/25380611 '从Chrome源码看浏览器如何计算CSS')

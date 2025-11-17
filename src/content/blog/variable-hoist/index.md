@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 在 `ES6` 以前，`JavaScript` 中是不存在块级作用域的，变量的作用域是靠执行环境来控制的，要么是在某个函数内要么是在全局作用于中。由于 `JS` 中的变量提升 `Hoist` 机制的存在，我们的定义的变量或者函数很可能发生命名冲突引发错误。所以在 `ES6` 中引入了 `let` 和 `const` 来应对这个问题，本文就讨论一下三个命令之间的区别，以及 `JS` 中的变量提升机制。
@@ -24,17 +22,17 @@ language: '中文'
 
 ```javascript
 {
-    let m = 10;
-    const n = 20;
+  let m = 10
+  const n = 20
 }
-console.log(m); //ReferenceError: m is not defined
-console.log(n); //ReferenceError: n is not defined
+console.log(m) //ReferenceError: m is not defined
+console.log(n) //ReferenceError: n is not defined
 
-var x = 1;
+var x = 1
 {
-    var x = 2;
+  var x = 2
 }
-console.log(x); // 输出 2
+console.log(x) // 输出 2
 ```
 
 没有块级作用域的情况下，结合变量提升机制，经常会产生一些奇怪的现象：
@@ -42,9 +40,9 @@ console.log(x); // 输出 2
 ```javascript
 var arr = []
 for (var i = 0; i < 5; i++) {
-    arr[i] = function () {
-        return i;
-    }
+  arr[i] = function () {
+    return i
+  }
 }
 console.log(arr[0]()) //5
 console.log(arr[1]()) //5
@@ -52,18 +50,17 @@ console.log(arr[2]()) //5
 console.log(arr[3]()) //5
 console.log(arr[4]()) //5
 
-
-var tmp = new Date();
+var tmp = new Date()
 function f() {
-  console.log(tmp); // 想打印外层的时间作用域
+  console.log(tmp) // 想打印外层的时间作用域
   if (false) {
-    var tmp = 'hello world'; // 这里声明的作用域为整个函数
+    var tmp = 'hello world' // 这里声明的作用域为整个函数
   }
 }
-f(); // undefined
+f() // undefined
 ```
 
-`ES6` 引入了块级作用域，明确允许在块级作用域之中声明函数（`ES5` 中是不允许函数声明在块级作用域中）。`ES6` 规定，块级作用域之中，函数声明语句的行为类似于 `let`，在块级作用域之外不可引用。但是实际上各个浏览器并没有遵循标准进行实现，因为如果按标准进行实现的话对老代码的影响会非常大。具体规定参考标准：[https://tc39.es/ecma262/#sec-block-level-function-declarations-web-legacy-compatibility-semantics](https://tc39.es/ecma262/#sec-block-level-function-declarations-web-legacy-compatibility-semantics "https://tc39.es/ecma262/#sec-block-level-function-declarations-web-legacy-compatibility-semantics")
+`ES6` 引入了块级作用域，明确允许在块级作用域之中声明函数（`ES5` 中是不允许函数声明在块级作用域中）。`ES6` 规定，块级作用域之中，函数声明语句的行为类似于 `let`，在块级作用域之外不可引用。但是实际上各个浏览器并没有遵循标准进行实现，因为如果按标准进行实现的话对老代码的影响会非常大。具体规定参考标准：[https://tc39.es/ecma262/#sec-block-level-function-declarations-web-legacy-compatibility-semantics](https://tc39.es/ecma262/#sec-block-level-function-declarations-web-legacy-compatibility-semantics 'https://tc39.es/ecma262/#sec-block-level-function-declarations-web-legacy-compatibility-semantics')
 
 对于支持 `ES6` 的浏览器，块级作用域中的函数声明表现如下：
 
@@ -77,29 +74,29 @@ f(); // undefined
 //非严格模式
 // 'use strict';
 function test() {
-    console.log(a); //undefined
-    {
-        console.log(a); //[Function: a]
-        function a() {
-            console.log('a');
-        }
+  console.log(a) //undefined
+  {
+    console.log(a) //[Function: a]
+    function a() {
+      console.log('a')
     }
-    a(); //a
+  }
+  a() //a
 }
-test();
+test()
 
 //严格模式
-'use strict';
+;('use strict')
 function test() {
-    // console.log(a); //ReferenceError: a is not defined
-    {
-        console.log(a); //[Function: a]
-        function a() {
-            console.log('a');
-        }
+  // console.log(a); //ReferenceError: a is not defined
+  {
+    console.log(a) //[Function: a]
+    function a() {
+      console.log('a')
     }
+  }
 }
-test();
+test()
 ```
 
 考虑到环境导致的行为差异太大，应该避免在块级作用域内声明函数。如果确实需要，也应该写成函数表达式，而不是函数声明语句。
@@ -126,9 +123,9 @@ test();
 
 ```javascript
 test: {
-    console.log(1);
-    break test;
-    console.log(2) //这一句不会执行
+  console.log(1)
+  break test
+  console.log(2) //这一句不会执行
 }
 ```
 
@@ -139,25 +136,28 @@ test: {
 变量的声明有多种形式，特别是声明多个变量的时候。
 
 ```javascript
-var a = 0, b = 0;
+var a = 0,
+  b = 0
 
-var a = "A";
-var b = a;
+var a = 'A'
+var b = a
 
 // 等效于：
-var a, b = a = "A";
+var a,
+  b = (a = 'A')
 
-var x = y, y = 'A';
-console.log(x + y); // undefinedA
+var x = y,
+  y = 'A'
+console.log(x + y) // undefinedA
 
-var x = 0;
+var x = 0
 
-function f(){
-  var x = y = 1; // x在函数内部声明，y不是！
+function f() {
+  var x = (y = 1) // x在函数内部声明，y不是！
 }
-f();
+f()
 
-console.log(x, y); // 0, 1
+console.log(x, y) // 0, 1
 // x 是全局变量。
 // y 是隐式声明的全局变量。
 //JS在执行语句之前会先检查是否有未声明的变量，如果有则将其声明提升到全局作用域
@@ -173,8 +173,8 @@ console.log(x, y); // 0, 1
 
 ```javascript
 {
-  let a = 10;
-  var b = 1;
+  let a = 10
+  var b = 1
 }
 a // ReferenceError: a is not defined. b // 1
 ```
@@ -184,9 +184,9 @@ a // ReferenceError: a is not defined. b // 1
 ```javascript
 var arr = []
 for (let i = 0; i < 5; i++) {
-    arr[i] = function () {
-        return i;
-    }
+  arr[i] = function () {
+    return i
+  }
 }
 console.log(arr[0]()) //0
 console.log(arr[1]()) //1
@@ -199,8 +199,8 @@ console.log(arr[4]()) //4
 
 ```javascript
 for (let i = 0; i < 3; i++) {
-    let i = 'abc';
-    console.log(i);
+  let i = 'abc'
+  console.log(i)
 }
 // abc
 // abc
@@ -211,11 +211,11 @@ for (let i = 0; i < 3; i++) {
 
 ```javascript
 {
-    let j;
-    for (j=0; j<10; j++) {
-        let i = j; // 每次迭代重新绑定
-        console.log( i );
-    }
+  let j
+  for (j = 0; j < 10; j++) {
+    let i = j // 每次迭代重新绑定
+    console.log(i)
+  }
 }
 ```
 
@@ -227,9 +227,9 @@ for (let i = 0; i < 3; i++) {
 
 ```javascript
 // var 的情况
-console.log(foo); // 输出undefined var foo = 2;
+console.log(foo) // 输出undefined var foo = 2;
 // let 的情况
-console.log(bar); // 报错ReferenceError let bar = 2;
+console.log(bar) // 报错ReferenceError let bar = 2;
 ```
 
 ## 暂时性死区
@@ -237,10 +237,10 @@ console.log(bar); // 报错ReferenceError let bar = 2;
 只要在一个块级作用域能用 `let` 语句声明了一个变量，那么在该块级作用域内，将只有一个该变量，外部的同名变量将无法被访问。可以理解为 `let` 语句创建的变量与所在的语句块绑定了。
 
 ```javascript
-var tmp = 123;
+var tmp = 123
 if (true) {
-  tmp = 'abc'; // Uncaught ReferenceError: Cannot access 'tmp' before initialization
-  let tmp;
+  tmp = 'abc' // Uncaught ReferenceError: Cannot access 'tmp' before initialization
+  let tmp
 }
 ```
 
@@ -251,25 +251,24 @@ if (true) {
 使用 `let` 声明变量时，只要变量在还没有 声明完成前使用，就会报错。
 
 ```javascript
-var x = x; //undefined
+var x = x //undefined
 
-let x = x; //Uncaught SyntaxError: Identifier 'x' has already been declared
+let x = x //Uncaught SyntaxError: Identifier 'x' has already been declared
 ```
 
 另外还有一点就是函数参数似乎也有和 `let` 的相似的行为，我们不能再函数内部用 `let` 或 `const`给参数重新赋值，也不能像 `x = x` 这样给函数初始值。但是与 `let` 不同的是，用 `var` 可以给参数赋值。具体的过程可能需要查看标准。
 
 ```javascript
 function foo(x = 5) {
-  var x = 1;
+  var x = 1
   console.log(x) //1
 }
 
 function foo(x = 5) {
-  let x = 1; // Uncaught SyntaxError: Identifier 'x' has already been declared
+  let x = 1 // Uncaught SyntaxError: Identifier 'x' has already been declared
 }
 
-function a(x = x) {
-} //Uncaught ReferenceError: Cannot access 'x' before initialization
+function a(x = x) {} //Uncaught ReferenceError: Cannot access 'x' before initialization
 ```
 
 ## 不允许重复声明
@@ -286,7 +285,7 @@ function () {
 // 报错
 function () {
     let a = 10;
-    let a = 1; 
+    let a = 1;
 }
 ```
 
@@ -297,21 +296,21 @@ function () {
 `const` 的大部分行为和 `let` 是保持一致的，不同的地方时，`const` 声明的是一个只读的常量，声明的时候必须进行初始化，且不能更改。
 
 ```javascript
-const PI = 3.1415;
-PI = 3; //Uncaught TypeError: Assignment to constant variable.
+const PI = 3.1415
+PI = 3 //Uncaught TypeError: Assignment to constant variable.
 
-const foo;  // SyntaxError: Missing initializer in const declaration
+const foo // SyntaxError: Missing initializer in const declaration
 ```
 
 但其实 `const` 并不是绝对安全的，因为当 `const` 声明的变量保存的是一个引用类型的时候，他保存的只是一个指向引用类型的指针，他能保证的是这个指针不变，但如果指针指向的的引用类型的内容发生变化，它是无法控制的。
 
 ```javascript
-const foo = {};
+const foo = {}
 // 为 foo 添加一个属性，可以成功
-foo.prop = 123;
+foo.prop = 123
 foo.prop // 123
 // 将 foo 指向另一个对象，就会报错
-foo = {}; // Uncaught SyntaxError: Identifier 'foo' has already been declared
+foo = {} // Uncaught SyntaxError: Identifier 'foo' has already been declared
 ```
 
 ## class
@@ -320,9 +319,9 @@ foo = {}; // Uncaught SyntaxError: Identifier 'foo' has already been declared
 
 ```javascript
 {
-    class A {}
-    let a = new A()
-    console.log(a) //A {}
+  class A {}
+  let a = new A()
+  console.log(a) //A {}
 }
 let a = new A() //ReferenceError: A is not defined
 ```
@@ -342,7 +341,7 @@ let a = new A() //ReferenceError: A is not defined
 ```javascript
 //未声明变量只有在解释执行阶段才会处理，没有提升行为
 console.log(b)
-var a = b = 110 //Uncaught ReferenceError: b is not defined
+var a = (b = 110) //Uncaught ReferenceError: b is not defined
 
 console.log(b)
 b = 110 //Uncaught ReferenceError: b is not defined
@@ -351,16 +350,16 @@ b = 110
 console.log(b) //110
 
 //严格模式下不可以使用未声明变量
-'use strict'
-m = 10;
-console.log(window.m)  //Uncaught ReferenceError: m is not defined
+;('use strict')
+m = 10
+console.log(window.m) //Uncaught ReferenceError: m is not defined
 
 //未声明的对象属性也会在解释执行之前提前创建
-var a = {n:1};
-var b = a;
-a.x = a = {n:2}; //a.x 在执行完 a = {n:2} 表达式之后依然能正确赋值是因为执行之前已经县创建了 {n:1} 对象的 x属性，这一行语句可以等价为 {n:1}.x = a = {n:2}
-console.log(a.x); //undefined
-console.log(b.x); //{n:2} 
+var a = { n: 1 }
+var b = a
+a.x = a = { n: 2 } //a.x 在执行完 a = {n:2} 表达式之后依然能正确赋值是因为执行之前已经县创建了 {n:1} 对象的 x属性，这一行语句可以等价为 {n:1}.x = a = {n:2}
+console.log(a.x) //undefined
+console.log(b.x) //{n:2}
 ```
 
 对于全局环境，预编译大概分为如下几步：
@@ -385,13 +384,13 @@ console.log(b.x); //{n:2}
 ## 例一
 
 ```javascript
-function s () {
-    m() //123
-    var m = 10;
-    function m() {
-        console.log(123);
-    }
-    m() //m is not a function
+function s() {
+  m() //123
+  var m = 10
+  function m() {
+    console.log(123)
+  }
+  m() //m is not a function
 }
 s()
 ```
@@ -403,78 +402,77 @@ s()
 ## 例二
 
 ```javascript
-function fn(a){
-     console.log(a); //function a() {}
-    // 变量声明+变量赋值（只提升变量声明，不提升变量赋值）
-    var a = 123;
-    console.log(a); //123
-    // 函数声明
-    function a(){};
-    console.log(a);//123
-    // 函数表达式
-    var b = function(){};
-    console.log(b); //function () {}
-    // 函数
-     function d(){};
+function fn(a) {
+  console.log(a) //function a() {}
+  // 变量声明+变量赋值（只提升变量声明，不提升变量赋值）
+  var a = 123
+  console.log(a) //123
+  // 函数声明
+  function a() {}
+  console.log(a) //123
+  // 函数表达式
+  var b = function () {}
+  console.log(b) //function () {}
+  // 函数
+  function d() {}
 }
 //调用函数
-fn(1);
+fn(1)
 ```
 
 这个例子我们按照上面的局部环境预编译的四步来分析：
 
 1. 创建执行上下文的活动对象 `AO（Activation Object）`。
-    
-    ```javascript
-    AO{
-    
-    }
-    ```
-    
+
+   ```javascript
+   AO{
+
+   }
+   ```
+
 2. 找形参和 `var` 语句进行的变量声明，将变量和形参名作为 `AO` 属性名，值为 `undefined`
-    
-    ```javascript
-    AO{
-         a : undefined,
-         b : undefined
-    }
-    ```
-    
+
+   ```javascript
+   AO{
+        a : undefined,
+        b : undefined
+   }
+   ```
+
 3. 将实参值和形参统一。
-    
-    ```javascript
-    AO{
-         a : 1,
-         b : function(){...}
-    }
-    ```
-    
+
+   ```javascript
+   AO{
+        a : 1,
+        b : function(){...}
+   }
+   ```
+
 4. 在函数体里面找函数声明，值赋予函数体。
-    
-    ```javascript
-    AO{
-         a : function a(){...},
-         b : undefined,
-         d : function d(){...}
-    }
-    ```
-    
+
+   ```javascript
+   AO{
+        a : function a(){...},
+        b : undefined,
+        d : function d(){...}
+   }
+   ```
 
 所以显然第一个 `console.log(a)` 输出的是 `AO` 中的 `a`，为 `function a() {}`，然后 `a` 被初始化语句修改为 `123` ，所以第二个 `console.log(a)` 的结果为 `123`。下面的函数声明在解释执行阶段可以忽略，所以第三个 `console.log(a)` 依然输出 `123`。接下来是对 `b` 进行初始化，值为一个匿名函数的引用，所以 `b` 的值输出该匿名函数。
 
 ## 例三
 
 ```javascript
-var foo={n:1};
+var foo = { n: 1 }
 
-(function (foo) {
-    console.log(foo.n); //1
-    foo.n = 3;
-    var foo = {n:2};
-    console.log(foo.n); //2
-})(foo);
+;(function (foo) {
+  console.log(foo.n) //1
+  foo.n = 3
+  var foo = { n: 2 }
+  console.log(foo.n) //2
+})(foo)
 
-console.log(foo.n); //3
+console.log(foo.n) //3
 ```
 
 这个例子跟上面两个不一样的地方时这一题不再是单纯的变量，而是引用类型。在立即执行函数内部，预编译后的活动对象就是 `{foo: {n:1}}`，所以第一个输出结果为 `1`。然后改 `foo.n` 为 `3`。这里需要注意的是引用类型并不是值传递，所以我们此时的 `foo` 和全局那个 `foo` 指向同一个对象，也就是全局 `foo` 指向的对象也被修改了，所以最后一行的 `foo.n` 就是输出修改后的值 `3`。回到函数内部，`var foo = {n:2}` 这一句直接将 `AO.foo` 指向了一个新的对象 `{n:2}`，这个新对象已经跟全局的那个 `foo` 指向的对象没有关系了，所以函数内部的最后一个输出结果为 `2`。
@@ -482,5 +480,5 @@ console.log(foo.n); //3
 ## 参考文章
 
 1. 《ECMAScript6 入门》
-2. [我花了两个月的时间才理解let](https://zhuanlan.zhihu.com/p/28140450 "我花了两个月的时间才理解let")
-3. [JavaScript预编译](https://zhuanlan.zhihu.com/p/50236805 "JavaScript预编译")
+2. [我花了两个月的时间才理解let](https://zhuanlan.zhihu.com/p/28140450 '我花了两个月的时间才理解let')
+3. [JavaScript预编译](https://zhuanlan.zhihu.com/p/50236805 'JavaScript预编译')

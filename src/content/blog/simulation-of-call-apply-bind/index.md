@@ -7,14 +7,12 @@ tags:
   - 实用技巧
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
-`call`，`apply` 和 `bind` 是 `Function.prototype` 上的三个方法，他们能让我们指定函数执行的上下文和参数。关于他们的区别，可以参考我的另一篇文章 [apply和call, bing方法的应用](https://www.clloz.com/programming/front-end/js/2020/07/03/apply-call-bind/ "apply和call, bing方法的应用")。为了加深对他们的理解，就动手实现一下模拟的 `call`，`apply` 和 `bind`。
+`call`，`apply` 和 `bind` 是 `Function.prototype` 上的三个方法，他们能让我们指定函数执行的上下文和参数。关于他们的区别，可以参考我的另一篇文章 [apply和call, bing方法的应用](https://www.clloz.com/programming/front-end/js/2020/07/03/apply-call-bind/ 'apply和call, bing方法的应用')。为了加深对他们的理解，就动手实现一下模拟的 `call`，`apply` 和 `bind`。
 
 ## 模拟 call
 
@@ -38,16 +36,16 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 //this is a testing javascript file
 
 Function.prototype._call = function (thisArg) {
-    thisArg.func = this;
-    thisArg.func();
-    delete thisArg.func
+  thisArg.func = this
+  thisArg.func()
+  delete thisArg.func
 }
 
 let obj1 = {}
 let obj2 = {}
 
 function iscalled() {
-    console.log(Object.getOwnPropertyNames(this))
+  console.log(Object.getOwnPropertyNames(this))
 }
 
 iscalled._call(obj1) //['func']
@@ -124,77 +122,77 @@ console.log(beCalled._call(obj, 'clloz', '28')); //2 {value: 2, name: "clloz", a
 
 ```javascript
 Function.prototype._apply = function (thisArg, args) {
-    //判断this是否是函数
-    if (typeof this !== 'function') {
-        throw new TypeError(this + ' is not a function');
+  //判断this是否是函数
+  if (typeof this !== 'function') {
+    throw new TypeError(this + ' is not a function')
+  }
+
+  //thisArg 为 undefined 或者 null 则转为全局对象
+  if (thisArg === void 0 || thisArg === null) {
+    thisArg = window
+  } else {
+    //thisArg 不是对象为其包装
+    thisArg = new Object(thisArg)
+  }
+
+  const FUNC = Symbol('func')
+  thisArg[FUNC] = this
+  let argList = []
+  let result
+
+  if (!argList) {
+    result = thisArg[FUNC]()
+  } else {
+    for (let i = 0; i < args.length; i++) {
+      argList.push('args[' + i + ']')
     }
+    result = eval('thisArg[FUNC](' + argList + ')')
+  }
 
-    //thisArg 为 undefined 或者 null 则转为全局对象
-    if (thisArg === void(0) || thisArg === null) {
-        thisArg = window;
-    } else {
-        //thisArg 不是对象为其包装
-        thisArg = new Object(thisArg)
-    }
-
-    const FUNC = Symbol('func');
-    thisArg[FUNC] = this;
-    let argList = []
-    let result;
-
-    if (!argList) {
-        result = thisArg[FUNC]();
-    } else {
-        for (let i = 0; i < args.length; i++) {
-            argList.push('args[' + i + ']');
-        }
-        result = eval('thisArg[FUNC](' + argList + ')');
-    }
-
-    delete thisArg[FUNC];
-    return result;
+  delete thisArg[FUNC]
+  return result
 }
 
 // 测试一下
-var value = 1;
+var value = 1
 
 var obj = {
-    value: 2
+  value: 2
 }
 
 function beCalled(name, age) {
-    console.log(this.value);
-    return {
-        value: this.value,
-        name: name,
-        age: age
-    }
+  console.log(this.value)
+  return {
+    value: this.value,
+    name: name,
+    age: age
+  }
 }
 
-beCalled._apply(null); // 2
-beCalled._apply(undefined);
+beCalled._apply(null) // 2
+beCalled._apply(undefined)
 beCalled._apply(1)
 
-console.log(beCalled._apply(obj, ['clloz', '28']));
+console.log(beCalled._apply(obj, ['clloz', '28']))
 ```
 
 ## 模拟 bind
 
 `bind` 是返回一个指定了 `this` 的函数，同时这个函数支持 `new` 调用，使用 `new` 调用则指定的 `this` 不生效。
 
-在模拟 `bind` 之前，我们先看一下 [Function.prototype.bind](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/bind "Function.prototype.bind") 上的一个例子，这个例子我在 [apply和call, bing方法的应用](https://www.clloz.com/programming/front-end/js/2020/07/03/apply-call-bind/#bind "apply和call, bing方法的应用") 里面也谈过，不过今天看了下自己还不是很透彻就再讲一遍，感觉还是有助于对于本文知识点，包括是函数的理解的。
+在模拟 `bind` 之前，我们先看一下 [Function.prototype.bind](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/bind 'Function.prototype.bind') 上的一个例子，这个例子我在 [apply和call, bing方法的应用](https://www.clloz.com/programming/front-end/js/2020/07/03/apply-call-bind/#bind 'apply和call, bing方法的应用') 里面也谈过，不过今天看了下自己还不是很透彻就再讲一遍，感觉还是有助于对于本文知识点，包括是函数的理解的。
 
 ```javascript
 //给 Array.prototype.slice 一个别名，方便调用
-var slice = Array.prototype.slice;
+var slice = Array.prototype.slice
 
-slice.apply(arguments);
+slice.apply(arguments)
 
 //也可以这样用bind实现
-var unboundSlice = Array.prototype.slice;
-var slice = Function.prototype.apply.bind(unboundSlice);
+var unboundSlice = Array.prototype.slice
+var slice = Function.prototype.apply.bind(unboundSlice)
 
-slice(arguments);
+slice(arguments)
 ```
 
 上面的两段代码实现的都是实现 `Array.prototype.slice` 的快捷调用，让我们不用每次都输入一长串字符，直接一个 `slice` 就可以了。不过第一种实现，我们需要显示的使用 `slice.apply`，第二种实现则直接使用 `slice` 即可。这是如何实现的呢？
@@ -205,7 +203,7 @@ slice(arguments);
 
 当我们需要频繁调用一个指定 `this` 的函数，我们可以用 `bind` 来实现快捷调用。举个例子子，我们相对类数组对象（比如 `arguments`）执行数组方法（比如 `slice`），我们一般是 `Array.prototype.slice.apply(arguments)`，当我们需要频繁使用这个方法的时候，我们可能会这样 `let slice = Array.prototype.slice; slice.apply(arguments);`。如果我们使用 `bind`，我们可以直接 `slice(arguments)` 这样调用，更方便，具体实现看下面的代码。
 
-* * *
+---
 
 实现 `bind` 主要有三个点，返回一个函数，可以预设参数以及生成的绑定函数可以使用 `new` 操作符。
 
@@ -213,59 +211,59 @@ slice(arguments);
 
 ```javascript
 Function.prototype._bind = function (thisArg) {
-    let self = this;
-    let args = Array.prototype.slice.call(arguments, 1);
-    let fBound = function () {
-        let bindArgs = Array.prototype.slice.call(arguments);
-        return self.apply(thisArg, args.concat(bindArgs));
-    }
-    return fBound;
+  let self = this
+  let args = Array.prototype.slice.call(arguments, 1)
+  let fBound = function () {
+    let bindArgs = Array.prototype.slice.call(arguments)
+    return self.apply(thisArg, args.concat(bindArgs))
+  }
+  return fBound
 }
 
 function sum(c, d) {
-    return this.a + this.b + c + d;
+  return this.a + this.b + c + d
 }
 
-let obj = {a: 1, b: 2}
+let obj = { a: 1, b: 2 }
 
-let t = sum._bind(obj, 3);
+let t = sum._bind(obj, 3)
 
 console.log(t(4)) //10
 ```
 
-* * *
+---
 
-下面就是要实现 `new` 调用。如果你对 `new` 操作符不熟悉，可以先看一下 [JavaScript 中的 new 操作符和实现](https://www.clloz.com/programming/front-end/js/2020/06/29/new-operator/ "JavaScript 中的 new 操作符和实现")。当使用 `new` 调用绑定函数，`this` 将指向绑定函数的原型，我们要的效果是原型指向的是原函数的 `prototype`，那么最直接的想法就是将绑定函数的 `prototype` 指向原函数的 `prototype` 即可。但是这样做有一个问题就是当我们后面改变绑定函数的 `prototype`，原函数的 `prototype` 也会被修改，他们指向的是同一个对象。基于这样的原因我们需要在中间加一层。最终的实现如下：
+下面就是要实现 `new` 调用。如果你对 `new` 操作符不熟悉，可以先看一下 [JavaScript 中的 new 操作符和实现](https://www.clloz.com/programming/front-end/js/2020/06/29/new-operator/ 'JavaScript 中的 new 操作符和实现')。当使用 `new` 调用绑定函数，`this` 将指向绑定函数的原型，我们要的效果是原型指向的是原函数的 `prototype`，那么最直接的想法就是将绑定函数的 `prototype` 指向原函数的 `prototype` 即可。但是这样做有一个问题就是当我们后面改变绑定函数的 `prototype`，原函数的 `prototype` 也会被修改，他们指向的是同一个对象。基于这样的原因我们需要在中间加一层。最终的实现如下：
 
 ```javascript
 Function.prototype._bind = function (thisArg) {
-    if (typeof this !== 'function') {
-        throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
-    }
-    let self = this;
-    let args = Array.prototype.slice.call(arguments, 1);
+  if (typeof this !== 'function') {
+    throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable')
+  }
+  let self = this
+  let args = Array.prototype.slice.call(arguments, 1)
 
-    let fNOP = function () {};
-    let fBound = function () {
-        let bindArgs = Array.prototype.slice.call(arguments);
-        return self.apply(this instanceof fNOP ? this : thisArg, args.concat(bindArgs));
-    }
+  let fNOP = function () {}
+  let fBound = function () {
+    let bindArgs = Array.prototype.slice.call(arguments)
+    return self.apply(this instanceof fNOP ? this : thisArg, args.concat(bindArgs))
+  }
 
-    fNOP.prototype = this.prototype;
-    fBound.prototype = new fNOP();
+  fNOP.prototype = this.prototype
+  fBound.prototype = new fNOP()
 
-    return fBound;
+  return fBound
 }
 
 function sum(c, d) {
-    console.log(this.a, this.b) //undefined undefined
-    this.a = c;
-    this.b = d;
+  console.log(this.a, this.b) //undefined undefined
+  this.a = c
+  this.b = d
 }
 
-let obj = {a: 1, b: 2}
+let obj = { a: 1, b: 2 }
 
-let t = sum._bind(obj, 3);
+let t = sum._bind(obj, 3)
 
 let m = new t(4, 5)
 
@@ -274,11 +272,11 @@ console.log(m) //{3, 4}
 
 我们可以看到最后结果使用的参数是 `bind` 的时添加的一个参数和 `new` 添加的第一个参数，`new` 的多余参数被忽略。这也是 `bind` 的另一个功能，可以预设参数。而我们也发现 `bind` 绑定的 `obj` 没有生效，这部分我们是用 `instanceof` 判断调用绑定函数时的 `this` 来判断的，如果是 `new` 调用，那么这个 `this` 是 `fNOP` 的实例（如果是直接调用，那么这个 `this` 会是全局对象，浏览器环境就是 `window` 对象）。
 
-关于原生的 `bind` 和我们这个 `bind` 还有一个区别就是原生的 `bind` 生成的绑定函数的 `prototype` 是 `undefined`，并且同时 `newObj instanceof 绑定函数` 返回时 `true`，这是违反我们对 `instanceof` 的理解的，我在标准中也没有找到合理的解释。我们这里实现的绑定函数的 `prototype` 就是 `new fNOP()`，在我们的代码里，`t.prototype.__proto__ === sum.prototype` 将返回 `true`。关于这一点，在我的另一片文章 [apply和call, bing方法的应用](https://www.clloz.com/programming/front-end/js/2020/07/03/apply-call-bind/#bind "apply和call, bing方法的应用") 的 `bind` 章节有更详细的说明
+关于原生的 `bind` 和我们这个 `bind` 还有一个区别就是原生的 `bind` 生成的绑定函数的 `prototype` 是 `undefined`，并且同时 `newObj instanceof 绑定函数` 返回时 `true`，这是违反我们对 `instanceof` 的理解的，我在标准中也没有找到合理的解释。我们这里实现的绑定函数的 `prototype` 就是 `new fNOP()`，在我们的代码里，`t.prototype.__proto__ === sum.prototype` 将返回 `true`。关于这一点，在我的另一片文章 [apply和call, bing方法的应用](https://www.clloz.com/programming/front-end/js/2020/07/03/apply-call-bind/#bind 'apply和call, bing方法的应用') 的 `bind` 章节有更详细的说明
 
 ## 参考文章
 
-1. [JavaScript深入之call和apply的模拟实现](https://github.com/mqyqingfeng/Blog/issues/11 "JavaScript深入之call和apply的模拟实现")
-2. [JavaScript 深入之 bind 实现](https://github.com/mqyqingfeng/Blog/issues/12 "JavaScript 深入之 bind 实现")
-3. [Function.prototype.bind - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/bind "Function.prototype.bind - MDN")
-4. [面试官问：能否模拟实现JS的call和apply方法](https://juejin.im/post/6844903728147857415 "面试官问：能否模拟实现JS的call和apply方法")
+1. [JavaScript深入之call和apply的模拟实现](https://github.com/mqyqingfeng/Blog/issues/11 'JavaScript深入之call和apply的模拟实现')
+2. [JavaScript 深入之 bind 实现](https://github.com/mqyqingfeng/Blog/issues/12 'JavaScript 深入之 bind 实现')
+3. [Function.prototype.bind - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/bind 'Function.prototype.bind - MDN')
+4. [面试官问：能否模拟实现JS的call和apply方法](https://juejin.im/post/6844903728147857415 '面试官问：能否模拟实现JS的call和apply方法')

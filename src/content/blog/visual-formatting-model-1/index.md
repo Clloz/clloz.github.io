@@ -7,21 +7,19 @@ tags:
   - 学习笔记
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./css-spec.png","color":"#B4C6DA"}
+heroImage: { 'src': './css-spec.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## CSS 视觉格式化模型系列
 
-1. [CSS 视觉格式化模型（一）：盒模型和盒类型](https://www.clloz.com/programming/front-end/css/2020/08/19/visual-formatting-model-1/ "CSS 视觉格式化模型（一）：盒模型和盒类型")
-2. [CSS 视觉格式化模型（二）：格式上下文](https://www.clloz.com/programming/front-end/css/2020/08/19/visual-formatting-model-2/ "CSS 视觉格式化模型（二）：格式上下文")
+1. [CSS 视觉格式化模型（一）：盒模型和盒类型](https://www.clloz.com/programming/front-end/css/2020/08/19/visual-formatting-model-1/ 'CSS 视觉格式化模型（一）：盒模型和盒类型')
+2. [CSS 视觉格式化模型（二）：格式上下文](https://www.clloz.com/programming/front-end/css/2020/08/19/visual-formatting-model-2/ 'CSS 视觉格式化模型（二）：格式上下文')
 
 ## 前言
 
 我们的浏览器说到底也就是一种信息的展示，无论是文字，图片还是其他媒体内容。内容的展示其实就是将内容按照一定的规则来对文档信息（`HTML` 文档和 `CSS` ）进行计算并渲染到屏幕上，这本质上上和现实中的印刷排版还是类似的，只不过载体不同。视觉格式化模型就是这套规则。我将分几篇文章来写一写我阅读标准的一些笔记。
 
-> 视觉格式化模型 `visual formatting model` 对应[CSS2.2](https://www.w3.org/TR/CSS22/ "CSS2.2")的第九和第十章，我认为是 `CSS2.2` 中最核心的部分。
+> 视觉格式化模型 `visual formatting model` 对应[CSS2.2](https://www.w3.org/TR/CSS22/ 'CSS2.2')的第九和第十章，我认为是 `CSS2.2` 中最核心的部分。
 
 ## 盒模型 box model
 
@@ -29,7 +27,7 @@ heroImage: {"src":"./css-spec.png","color":"#B4C6DA"}
 
 我们先来了解一个盒子的基本结构（见下图）。一个盒子必然有一个 `content area` 和可选的 `margin`，`padding` 和 `border`。`margin` 表示外边距，`padding` 表示内边距，`border` 表示边框。`content area` 的宽高由盒内的内容以及视觉格式化模型的规则来决定。外边距总是透明的，内边距和边框的背景样式由元素的 `background` 决定。
 
-![box-model](./images/box-model.png "box-model")
+![box-model](./images/box-model.png 'box-model')
 
 当 `margin` 和 `padding` 的值是百分比时，注意的是这个百分比是根据该元素的包含块 `containing block` 的 `width` 来计算的。每一个元素生成的盒就是其后代元素的盒的包含块，这里说的该元素的包含块是指该元素所在的包含块，而不是该元素生成的包含块。如果包含块的宽度是由该元素决定的（即包含块没有设置宽度，由该元素撑开的情况），这种情况下产生的布局是 `CSS2.2` 中未定义的（即由具体实现的浏览器决定）。
 
@@ -41,7 +39,7 @@ heroImage: {"src":"./css-spec.png","color":"#B4C6DA"}
 
 `margin` 和 `padding` 都是简写属性，他们都有上下左右四个分量。简写属性接受多个值，用逗号分隔开。如果只给一个值，那么该值作用于四个分量；如果给两个值，那么第一个值作用于上下分量，而第二个值作用于左右分量；如果给三个值，那么第一个值作用于上分量，第二个值作用于左右分量，第三个值作用于下分量；如果给四个值，那么分别作用域上下左右分量。这种规则也适用于 `border`。
 
-* * *
+---
 
 `border` 是简写属性，他有上下左右四个分量 `border-top`，`border-right`，`border-bottome` 和 `border-left`，不过和 `margin/padding` 不同，`border` 简写属性不能对四个方向设置不同的值。`border` 的四个分量依然是简写属性，他们还有 `color`，`style` 和 `width` 三个分量。而 `border-color`，`border-style` 和 `border-width` 也可以作为简写属性直接赋值，他们能够接受一到四个值，和 `margin/padding` 的规则一样，可以为四个方向应用不同的值。
 
@@ -51,11 +49,13 @@ heroImage: {"src":"./css-spec.png","color":"#B4C6DA"}
 
 ```html
 <div style="width: 100%; text-align:center;">
-       <div style="display: inline-block; height: 300px; width: 300px; background: pink; border: 3px dashed rgba(0, 0, 0, 0.3)"></div>
+  <div
+    style="display: inline-block; height: 300px; width: 300px; background: pink; border: 3px dashed rgba(0, 0, 0, 0.3)"
+  ></div>
 </div>
 ```
 
-* * *
+---
 
 盒模型还有一点要注意的是 `box-sizing` 属性，该属性决定了如何计算元素的高度和宽度。默认设定下，宽度和高度只表示 `content area` ，也就是 `content-box`。而如果设置 `box-sizing` 为 `border-box` 的话，宽度和高度将包括 `padding` 和 `border`。
 
@@ -88,11 +88,11 @@ heroImage: {"src":"./css-spec.png","color":"#B4C6DA"}
 
 > `CSS2.2` 中没有明确说明行盒是块级的，我在 `google` 中也没有找到相关的说明。唯一看到的资料就是 `winter` 的文章，不过我认为这种逻辑是比较合理的，整个视觉格式化模型的结构在这种理解下变得非常有逻辑和清晰。
 
-![block-inline-css22](./images/block-inline-css22.png "block-inline-css22")
+![block-inline-css22](./images/block-inline-css22.png 'block-inline-css22')
 
 ```html
 <!-- Some text 虽然没有被任何元素包裹，其实他显示包裹了一层匿名块盒，匿名块盒内部又包裹了一层匿名行盒 -->
-<div >
+<div>
   <div style="margin: 0 auto;border: 1px solid;width: 200px;font-size: 20px;">
     Some text
     <p style="border: 2px solid red">More text</p>
@@ -104,7 +104,7 @@ Some text
 
 More text
 
-* * *
+---
 
 当一个行内盒包含流内块级元素（`in-flow`，没有因浮动或定位而脱离文档流的块级元素）时，行内盒（以及属于同一个行框的行内祖先）会被破坏，分布到该块级元素（以及任何连续的或只被可合并的空白符和/或流外元素隔开的块级兄弟：多个块级元素的情况）周围。行内盒会被切成两个部分（这两个部分各有一边是空的，也就是只有三条边），分布于块级元素的两边。拆分前的行框和拆分后的行框都被包进匿名块盒，这些匿名块盒会作为分隔块级盒的兄弟。当这样一个行内盒受到相对定位的影响时，任何由此产生的位移也会影响行内盒里面的块级盒。
 
@@ -114,9 +114,9 @@ More text
 并且我们可以看到被块级元素分隔开的两个文本块的边框是断开的，这部分细节我们在下一篇格式上下文里面讲 -->
 <div>
   <p style="display: inline; border: 1px solid red">
-  This is anonymous text before the SPAN.
-  <span style="display: block; border: 2px solid blue;">This is the content of SPAN.</span>
-  This is anonymous text after the SPAN.
+    This is anonymous text before the SPAN.
+    <span style="display: block; border: 2px solid blue;">This is the content of SPAN.</span>
+    This is anonymous text after the SPAN.
   </p>
 </div>
 ```
@@ -131,13 +131,12 @@ This is anonymous text before the SPAN.This is the content of SPAN.This is anony
 - 对于其它元素，如果该元素的 `position` 是 `relative`或者 `static`，包含块由其最近的块容器祖先盒的内容边界形成
 - 如果元素具有 `position: fixed`，包含块由连续媒体的视口或者分页媒体的页区建立
 - 如果元素具有 `position: absolute`，包含块由最近的 `position` 为 `absolute`，`relative` 或者 `fixed` 的祖先建立，按照如下方式：
-    
-    - 如果该祖先是一个行内元素，包含块就是环绕着为该元素生成的第一个和最后一个行内盒的内边距框的边界框（`bounding box`）。在 `CSS 2.2` 中，如果该行内元素被跨行分割了，那么包含块是未定义的
-    - 否则，包含块由该祖先的内边距边界形成
+  - 如果该祖先是一个行内元素，包含块就是环绕着为该元素生成的第一个和最后一个行内盒的内边距框的边界框（`bounding box`）。在 `CSS 2.2` 中，如果该行内元素被跨行分割了，那么包含块是未定义的
+  - 否则，包含块由该祖先的内边距边界形成
 
 ## display 属性
 
-`display` 属性确定元素的类型和生成的盒的类型，以及内部的元素应用何种布局。`display` 属性会设置元素的内部和外部显示类型。外部类型确定了元素如何参与流 `flow` 的布局（关于 `flow` 的介绍在系列文章的[第二篇](https://www.clloz.com/programming/front-end/css/2020/08/19/visual-formatting-model-2/ "第二篇")），内部类型确定子元素的布局（这也就是我上面说的元素生成的盒不一定是唯一的，比如 `inline-block`。有些 `display` 属性的布局定义有一份完全单独的标准，比如 `flex` 属性就有自己单独的标准 [CSS Flexible Box Layout Module Level 1](https://www.w3.org/TR/css-flexbox-1/ "CSS Flexible Box Layout Module Level 1")。
+`display` 属性确定元素的类型和生成的盒的类型，以及内部的元素应用何种布局。`display` 属性会设置元素的内部和外部显示类型。外部类型确定了元素如何参与流 `flow` 的布局（关于 `flow` 的介绍在系列文章的[第二篇](https://www.clloz.com/programming/front-end/css/2020/08/19/visual-formatting-model-2/ '第二篇')），内部类型确定子元素的布局（这也就是我上面说的元素生成的盒不一定是唯一的，比如 `inline-block`。有些 `display` 属性的布局定义有一份完全单独的标准，比如 `flex` 属性就有自己单独的标准 [CSS Flexible Box Layout Module Level 1](https://www.w3.org/TR/css-flexbox-1/ 'CSS Flexible Box Layout Module Level 1')。
 
 `display` 的各种取值的含义如下：
 
@@ -162,5 +161,5 @@ This is anonymous text before the SPAN.This is the content of SPAN.This is anony
 
 ## 参考文章
 
-1. [CSS2.2 - Box model](https://www.w3.org/TR/CSS22/box.html#margin-properties "CSS2.2 - Box model")
-2. [CSS Box Model Module Level 3](https://www.w3.org/TR/css-box-3/ "CSS Box Model Module Level 3")
+1. [CSS2.2 - Box model](https://www.w3.org/TR/CSS22/box.html#margin-properties 'CSS2.2 - Box model')
+2. [CSS Box Model Module Level 3](https://www.w3.org/TR/css-box-3/ 'CSS Box Model Module Level 3')

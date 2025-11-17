@@ -7,14 +7,12 @@ tags:
   - 学习笔记
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./ydnjs.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './ydnjs.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## YDNJS 学习笔记
 
-1. [YDNJS上卷第一部分](https://www.clloz.com/programming/front-end/js/2020/07/16/ydnjs-note/ "YDNJS上卷第一部分")
+1. [YDNJS上卷第一部分](https://www.clloz.com/programming/front-end/js/2020/07/16/ydnjs-note/ 'YDNJS上卷第一部分')
 
 ## 前言
 
@@ -26,7 +24,7 @@ heroImage: {"src":"./ydnjs.jpg","color":"#B4C6DA"}
 
 ## LHS 和 RHS
 
-`LHS` 就是 `left-hand-side expression`，`RHS` 就是 `right-hand-side expression`，在[ecma-262](https://www.ecma-international.org/ecma-262/11.0/index.html#sec-intro "ecma-262")的第 `12` 章有对 `LHS` 的详细定义，所有 `LHS` 都可以作为 `RHS`，非 `LHS` 的合法表达式都是 `RHS`。标准主要讲的是哪些是合法的左值表达式。这里的 `left` 和 `right` 指的是在赋值操作符的左边和右边，但语句中并不一定要出现赋值符号，比如 `++` 和 `--`，他们在执行的过程中实际是有赋值行为的，这也就是为什么 `++a++` 报错的原因。所以区分左手还是右手关键是看有没有赋值行为发生（赋值行为不一定需要赋值操作符，可以有其他形式），`LHS` 可以理解为 `找到要赋值的目标`，而 `RHS` 可以理解为 `找到某个已经被赋值的结果`。
+`LHS` 就是 `left-hand-side expression`，`RHS` 就是 `right-hand-side expression`，在[ecma-262](https://www.ecma-international.org/ecma-262/11.0/index.html#sec-intro 'ecma-262')的第 `12` 章有对 `LHS` 的详细定义，所有 `LHS` 都可以作为 `RHS`，非 `LHS` 的合法表达式都是 `RHS`。标准主要讲的是哪些是合法的左值表达式。这里的 `left` 和 `right` 指的是在赋值操作符的左边和右边，但语句中并不一定要出现赋值符号，比如 `++` 和 `--`，他们在执行的过程中实际是有赋值行为的，这也就是为什么 `++a++` 报错的原因。所以区分左手还是右手关键是看有没有赋值行为发生（赋值行为不一定需要赋值操作符，可以有其他形式），`LHS` 可以理解为 `找到要赋值的目标`，而 `RHS` 可以理解为 `找到某个已经被赋值的结果`。
 
 回到作用域中，在引擎查找变量的时候，如果查找的目的是对变量进行赋值，就是用 `LHS` 查询，如果目的是获取变量的值，就是用 `RHS` 查询。引擎在处理未声明的 `LHS` 和 `RHS` 是不同的，`RHS` 如果在作用域链中查询不到引擎会抛出 `ReferenceError` 异常。而 `LHS` 如果沿着作用域链查询到顶层（全局作用域）中都没有查询到的话，在非严格模式下就会在全局作用域中创建一个该名称变量，返回给引擎，如果是在严格模式下，会和 `RHS` 一样抛出一个 `ReferenceError` 异常。
 
@@ -40,7 +38,7 @@ heroImage: {"src":"./ydnjs.jpg","color":"#B4C6DA"}
 
 词法作用域顾名思义就是发生在上面编译三个阶段的第一阶段（由引擎的专门负责作用域的部分来管理），词法作用域是由你在写代码时将变量和块作用域写在哪里来决定的。这种机制能够保证代码在词法分析阶段的作用域保持不变（大部分情况下）。词法作用域某种意义上是一种静态的作用域，而另一种对应的模式被称为 `动态作用域`。结论：无论函数在哪里被调用，也无论他如何被调用，他的词法作用域都只由函数被声明时所处的位置决定。作用域查找会在找到第一个匹配的标识符时停止。
 
-* * *
+---
 
 关于引擎对代码的处理可以看一个简单的例子 `var a = 2;`,事实上编译器会进行如下处理。
 
@@ -55,15 +53,15 @@ heroImage: {"src":"./ydnjs.jpg","color":"#B4C6DA"}
 
 ```javascript
 function a(obj) {
-    with(obj) {
-        a = 10;
-        var b = 20;
-    }
-    console.log(b)
+  with (obj) {
+    a = 10
+    var b = 20
+  }
+  console.log(b)
 }
 obj = {
-    a: 1,
-    b: 2
+  a: 1,
+  b: 2
 }
 a(obj) //undefined 如果obj中没有b属性则此处输出20
 console.log(obj) //{a:1,b:20}
@@ -83,26 +81,25 @@ console.log(obj) //{a:1,b:20}
 2. 安全风险：`eval` 的参数是一个字符串，自然也可以拼接，如果我们的拼接字符串中有来自用户的输入（比如 `input`），那么就是一个非常危险的行为，并且 `eval` 会暴露自己的作用域。当然这种情况一般不太会发生
 3. `eval` 的性能问题，`eval` 必须调用解释器来解释执行，而且现代 `JavaScript` 解释器会将 `javascript` 转换为机器代码，而在执行过程中才解析的 `eval` 中的代码很可能需要诉诸环境重新执行已经生成的机器码来应对，这必然造成性能的损失。引擎在编译阶段的各种优化方式也是依赖于词法的静态分析，预先确定变量和函数的位置，让代码在执行的时候能够快速找到对应的变量和函数，而 `eval` 函数中接受的代码使不确定的，所以很多优化是无法进行的。
 4. 由于 `eval` 中的代码相当于执行 `eval` 的位置，所以其内部的声明会影响到当前环境的词法作用域作用域。
-    
-    ```javascript
-    function foo(str, a) {
-        eval( str ); // 此处执行的代码声明了一个新的变量，改变了当前环境的词法作用域
-        console.log( a, b );
-    }
-    var b = 2;
-    foo( "var b = 3;", 1 ); // 1, 3
-    ```
-    
+
+   ```javascript
+   function foo(str, a) {
+     eval(str) // 此处执行的代码声明了一个新的变量，改变了当前环境的词法作用域
+     console.log(a, b)
+   }
+   var b = 2
+   foo('var b = 3;', 1) // 1, 3
+   ```
 
 `Function` 函数也可以像 `eval` 一样把字符串当做代码执行，`Function` 可以使用 `new` 也可以不用，它们的效果是一样的，最后一个参数会被当做函数体，前面的参数是参数名，必须要要用 `javascript` 中合法的标识符字符串，所有被传递到构造函数中的参数，都将被视为将被创建的函数的参数，并且是相同的标示符名称和传递顺序，可以是 `Function('a', 'b', functionBody)` 的形式，也可以是 `Function('a, b', functionBody)` 的形式，`functionBody` 是一个含有包括函数定义的 JavaScript 语句的字符串。由 `Function` 构造器创建的函数不会创建当前环境的闭包，它们总是被创建于全局环境，因此在运行时它们只能访问全局变量和自己的局部变量，不能访问 `Function` 构造器创建时所在的作用域的变量。这一点与使用 eval 执行创建函数的代码不同。这种方式要比 `eval` 安全很多，但是依然不推荐使用，使用 `Function` 构造器生成的 `Function` 对象是在函数创建时解析的。这比你使用函数声明或者函数表达式并在你的代码中调用更为低效，因为使用后者创建的函数是跟其他代码一起解析的。
 
 ```javascript
 function foo(str, a) {
-    Function(str)(); //3
-    console.log( a, b );
+  Function(str)() //3
+  console.log(a, b)
 }
-var b = 2;
-foo( "var b = 3;console.log(b)", 1 ); // 1, 2
+var b = 2
+foo('var b = 3;console.log(b)', 1) // 1, 2
 ```
 
 ## 作用域
@@ -129,15 +126,14 @@ foo( "var b = 3;console.log(b)", 1 ); // 1, 2
 立即执行函数有一种特殊的写法，将需要执行的内容当做参数传递进去，叫做 `UMD(Universal Module Definition)`
 
 ```javascript
-var a = 2;
-(function IIFE( def ) { 
-    def( window );
-})(function def( global ) {
-    var a = 3;
-    console.log( a ); // 3 
-    console.log( global.a ); // 2
-});
-
+var a = 2
+;(function IIFE(def) {
+  def(window)
+})(function def(global) {
+  var a = 3
+  console.log(a) // 3
+  console.log(global.a) // 2
+})
 ```
 
 ## try...catch 语句
@@ -162,15 +158,14 @@ var a = 2;
 
 ```javascript
 {
-    try {
-        throw undefined;
-    } 
-    catch (a) { 
-        a = 2;
-        console.log( a ); //2
-    }
+  try {
+    throw undefined
+  } catch (a) {
+    a = 2
+    console.log(a) //2
+  }
 }
-console.log( a ); //ReferenceError: a is not defined
+console.log(a) //ReferenceError: a is not defined
 ```
 
 > 大括号 `{}` 在 `ES6` 中可以作为块级作用域的（配合 `let`，`const` 和 `class`，函数声明也因为兼容性保持特殊行为），在 `ES6` 之前他只是一种组织代码的方式。
@@ -180,32 +175,34 @@ console.log( a ); //ReferenceError: a is not defined
 `YDKJS` 建议为块作用域进行显式的创建，能够让变量的附属关系更清晰。因为 `{}` 本身就是分隔代码块的一种方式，一般不会改变语义。
 
 ```javascript
-var foo = true;
+var foo = true
 if (foo) {
-    { // <-- 显式的块
-        let bar = foo * 2;
-        bar = something( bar ); console.log( bar );
-    } 
+  {
+    // <-- 显式的块
+    let bar = foo * 2
+    bar = something(bar)
+    console.log(bar)
+  }
 }
-console.log( bar ); // ReferenceError
+console.log(bar) // ReferenceError
 ```
 
 `let` 在循环中的使用看似和 `var` 没太大区别，其实 `for` 循环头部的 `let` 不仅将 `i` 绑定到了 `for` 循环的块中，事实上它将其重新绑定到了循环 的每一个迭代中，确保使用上一个循环迭代结束时的值重新进行赋值。所以 `for` 循环小括号和大括号并不是同一个词法作用域，小括号在大括号的上层。下面两段代码分别问一般的 `for` 循环和实际的迭代过程模拟。
 
 ```javascript
 //for 循环
-for (let i=0; i<10; i++) { 
-    console.log( i );
+for (let i = 0; i < 10; i++) {
+  console.log(i)
 }
-console.log( i ); // ReferenceError
+console.log(i) // ReferenceError
 
 //迭代过程模拟
 {
-    let j;
-    for (j=0; j<10; j++) {
-        let i = j; // 每个迭代重新绑定!
-        console.log( i ); 
-    }
+  let j
+  for (j = 0; j < 10; j++) {
+    let i = j // 每个迭代重新绑定!
+    console.log(i)
+  }
 }
 ```
 
@@ -226,7 +223,7 @@ process( someReallyBigData );
 
 var btn = document.getElementById( "my_button" );
 
-btn.addEventListener( "click", function click(evt) { 
+btn.addEventListener( "click", function click(evt) {
     console.log("button clicked");
 }, /*capturingPhase=*/false );
 ```
@@ -238,9 +235,9 @@ function process(data) {
 // 在这里做点有趣的事情
 }
 
-// 在这个块中定义的内容完事可以销毁! 
+// 在这个块中定义的内容完事可以销毁!
 {
-    let someReallyBigData = { .. }; 
+    let someReallyBigData = { .. };
     process( someReallyBigData );
 }
 
@@ -255,7 +252,7 @@ btn.addEventListener( "click", function click(evt){
 
 引擎会在执行代码前对代码进行编译，这里除了编译器的工作，还有一个重要的工作就是作用域。这些工作都为了提升代码的执行效率，编译成机器码让计算机能快速执行，而作用域的存在可以让引擎在运行时对变量的查找更加快速和有效率。当然中间还有很多其他的优化，在引擎的发展过程中不断进步（比如 `JIT` 可以延迟编译甚至实施重编译）。而对变量和函数声明的处理也是其中的重要一环。
 
-关于变量和函数的提升，我已经在另一篇[文章](https://www.clloz.com/programming/front-end/js/2020/07/01/variable-hoist/#let-2 "文章")里面详细写过了，这里就不在重复了。
+关于变量和函数的提升，我已经在另一篇[文章](https://www.clloz.com/programming/front-end/js/2020/07/01/variable-hoist/#let-2 '文章')里面详细写过了，这里就不在重复了。
 
 由于 `YDNJS` 第一版（第二版英文版在 `github` 上已经可以看了，只有 `scope and closure` 一本）已经是 `2015` 版本了，所以有些内容已经不适合现在的 `JS`，比如 `提升` 这个章节小结前的最后一段代码，在现在的 `JS` 宿主环境执行就会报 `TypeError`，具体原因就是函数声明在块级作用域中的行为发生了改变，后面随便版本的更新可能还会改变，现在的行为也是为了兼容以前的老代码而做的妥协，因为函数声明是很早就有的概念，而块作用域则是 `ES6` 才出现的，如果把函数声明也全部变成块作用域的话，很多以前的代码将无法运行。函数声明在块级作用域的具体行为查看上面链接的文章中的 `let -> 没有变量提升` 这一小节。
 
@@ -267,24 +264,24 @@ btn.addEventListener( "click", function click(evt){
 
 ```javascript
 function foo() {
-    var a = 2;
-    function bar() { 
-        console.log( a );
-    }
-    return bar;
+  var a = 2
+  function bar() {
+    console.log(a)
+  }
+  return bar
 }
-var baz = foo();
-baz(); // 2 bar在定义时的词法作用域以外执行
+var baz = foo()
+baz() // 2 bar在定义时的词法作用域以外执行
 
 function foo() {
-    var a = 2;
-    function baz() { 
-        console.log( a ); // 2
-    }
-    bar( baz );
+  var a = 2
+  function baz() {
+    console.log(a) // 2
+  }
+  bar(baz)
 }
 function bar(fn) {
-    fn(); // baz在定义时的词法作用域以外执行
+  fn() // baz在定义时的词法作用域以外执行
 }
 ```
 
@@ -294,12 +291,12 @@ function bar(fn) {
 
 ```javascript
 function setupBot(name, selector) {
-    $( selector ).click( function activator() {
-        console.log( "Activating: " + name );
-    } );
+  $(selector).click(function activator() {
+    console.log('Activating: ' + name)
+  })
 }
-setupBot( "Closure Bot 1", "#bot_1" );
-setupBot( "Closure Bot 2", "#bot_2" );
+setupBot('Closure Bot 1', '#bot_1')
+setupBot('Closure Bot 2', '#bot_2')
 //setupBot函数执行完后为 #bot_1 和 #bot_2绑定了 click 事件，但是当事件触发时，我们依然可以访问name和selector
 ```
 
@@ -320,35 +317,35 @@ var MyModules = (function Manager() {
         for (var i=0; i<deps.length; i++) {
             deps[i] = modules[deps[i]];
         }
-        modules[name] = impl.apply( impl, deps ); 
+        modules[name] = impl.apply( impl, deps );
         console.log(modules)
     }
 
-    function get(name) { 
+    function get(name) {
         return modules[name];
     }
     return {
         define: define,
-        get: get 
+        get: get
     };
 })();
 
-MyModules.define( "bar", [], function() { 
+MyModules.define( "bar", [], function() {
     function hello(who) {
-        return "Let me introduce: " + who; 
+        return "Let me introduce: " + who;
     }
     return {
         hello: hello
-    }; 
+    };
 });
-MyModules.define( "foo", ["bar"], function(bar) { 
+MyModules.define( "foo", ["bar"], function(bar) {
     var hungry = "hippo";
     function awesome() {
         console.log( bar.hello( hungry ).toUpperCase() );
     }
     return {
         awesome: awesome
-    }; 
+    };
 });
 
 var bar = MyModules.get( "bar" );  //{ bar: { hello: [Function: hello] } }
@@ -370,26 +367,26 @@ console.log(bar.hello()) Let me introduce: undefined
 
 ```javascript
 //静态
-function foo() { 
-    console.log( a ); // 2
+function foo() {
+  console.log(a) // 2
 }
-function bar() { 
-    var a = 3;
-    foo(); 
+function bar() {
+  var a = 3
+  foo()
 }
-var a = 2; 
-bar();
+var a = 2
+bar()
 
 //动态
-function foo() { 
-    console.log( a ); // 3
+function foo() {
+  console.log(a) // 3
 }
-function bar() { 
-    var a = 3;
-    foo(); 
+function bar() {
+  var a = 3
+  foo()
 }
-var a = 2; 
-bar();
+var a = 2
+bar()
 ```
 
 > 简单一点说就是词法作用域根据定义的位置寻找变量（在写代码或者说定义时确定的），而动态作用域则是根据调用的位置来寻找变量（在运行时确定的）。虽然 `JavaScript` 中并没有动态作用域，但是 `this` 关键字的机制却和动态作用域很类似。

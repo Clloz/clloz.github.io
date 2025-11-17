@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 在写 `cdn` 和 对象存储文章的时候，看到了一些跟静态资源有关的问题，这里就来做一些整理。
@@ -27,8 +25,8 @@ language: '中文'
 
 ## 静态资源加速方法
 
-[Web静态资源缓存及优化](https://zhuanlan.zhihu.com/p/30780216 "Web静态资源缓存及优化")
+[Web静态资源缓存及优化](https://zhuanlan.zhihu.com/p/30780216 'Web静态资源缓存及优化')
 
 ## 参考文章
 
-1. [静态资源放置于独立域名下的好处](https://blog.csdn.net/ziwozizhan/article/details/53420501 "静态资源放置于独立域名下的好处")
+1. [静态资源放置于独立域名下的好处](https://blog.csdn.net/ziwozizhan/article/details/53420501 '静态资源放置于独立域名下的好处')

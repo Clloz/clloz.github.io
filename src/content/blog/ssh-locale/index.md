@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 `Mac` 上 `ssh` 登陆服务器一直有一个 `warning: setlocale: LC_CTYPE: cannot change locale (en_US.UTF-8): No such file or directory.` 警告，看着很不舒服，来解决一下。
@@ -25,4 +23,4 @@ LC_ALL=en_US.utf-8
 
 ## 参考文章
 
-[CentOS 下解决ssh登录 locale 警告](https://segmentfault.com/a/1190000004378075 "CentOS 下解决ssh登录 locale 警告")
+[CentOS 下解决ssh登录 locale 警告](https://segmentfault.com/a/1190000004378075 'CentOS 下解决ssh登录 locale 警告')

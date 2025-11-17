@@ -8,24 +8,24 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 今天在看 `get` 和 `set` 语法的时候在知乎上看到一个提问，具体内容看下面的代码
 
 ```javascript
-function Dog(){
-     this.tail = true;
-        }
-Dog.prototype.say = function(){return "Woof";}
-var dog = new Dog();
-dog.say(); // "Woof"
+function Dog() {
+  this.tail = true
+}
+Dog.prototype.say = function () {
+  return 'Woof'
+}
+var dog = new Dog()
+dog.say() // "Woof"
 dog.constructor // Dog()
 Dog.prototype = {
-      paws:4
-};
-var newDog = new Dog();
+  paws: 4
+}
+var newDog = new Dog()
 
 newDog.constructor // ƒ Object() { [native code] }
 typeof newDog.constructor.prototype.paws // "undefined"
@@ -38,7 +38,7 @@ typeof dog.constructor.prototype.paws // "number"
 
 要搞清楚这些对象之间的关系，我们来画一画这些对象的关系图
 
-![prototype-issue](./images/prototype-issue1.png "prototype-issue")
+![prototype-issue](./images/prototype-issue1.png 'prototype-issue')
 
 图中不同类型的连线我已经用不同颜色标注出来，还是可以清楚的看出我们的各个对象之间的关系的。对象被我分成了三行，下面的分析中有时我会用第几行来说名对象的位置。
 

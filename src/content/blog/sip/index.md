@@ -6,10 +6,8 @@ tags:
   - assorted
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./automator.png","color":"#B4C6DA"}
+heroImage: { 'src': './automator.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -27,4 +25,4 @@ heroImage: {"src":"./automator.png","color":"#B4C6DA"}
 
 ## 参考文章
 
-[How to Disable System Integrity Protection on a Mac (and Why You Shouldn’t)](https://www.howtogeek.com/230424/how-to-disable-system-integrity-protection-on-a-mac-and-why-you-shouldnt/ "How to Disable System Integrity Protection on a Mac (and Why You Shouldn’t)") [Mac 更改/usr/bin 目录权限失败](https://segmentfault.com/q/1010000003095378?_ea=301917 "Mac 更改/usr/bin 目录权限失败")
+[How to Disable System Integrity Protection on a Mac (and Why You Shouldn’t)](https://www.howtogeek.com/230424/how-to-disable-system-integrity-protection-on-a-mac-and-why-you-shouldnt/ 'How to Disable System Integrity Protection on a Mac (and Why You Shouldn’t)') [Mac 更改/usr/bin 目录权限失败](https://segmentfault.com/q/1010000003095378?_ea=301917 'Mac 更改/usr/bin 目录权限失败')

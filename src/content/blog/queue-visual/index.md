@@ -7,10 +7,8 @@ tags:
   - 编程技巧
   - 项目实现
 language: '中文'
-heroImage: {"src":"./front-end.jpeg","color":"#B4C6DA"}
+heroImage: { 'src': './front-end.jpeg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -20,7 +18,7 @@ heroImage: {"src":"./front-end.jpeg","color":"#B4C6DA"}
 
 题目分成两个部分，第一个部分很简单，就是写一个队列的可视化，支持左进右进，左出又出，做出来的效果大概如下图：
 
-![queue](./images/queue.gif "queue")
+![queue](./images/queue.gif 'queue')
 
 具体代码查看[第一部分](https://www.clloz.com/study/ife2017-js4.html)。
 
@@ -30,7 +28,7 @@ heroImage: {"src":"./front-end.jpeg","color":"#B4C6DA"}
 
 对队列的操作就是对元素的添加和移除，我们可以用两个函数来实现这个功能，两个函数都需要有一个方向的参数，确定我们的元素是从队列的那一端添加活删除，虽然我们已经通过元素的高度来展示我们的元素大小，但是为了更直观还是要在元素上添加一个文本节点来展示元素的大小。另外为了后面的排序功能，我们要给我们的元素按先后顺序编号，显示在元素下方，这样我们排序后就能够知道元素是第几个添加的。效果如下：
 
-![queue1](./images/queue1.png "queue1")
+![queue1](./images/queue1.png 'queue1')
 
 如果我们直接用输入的值设置高度当元素差距特别小的时候可能不是很直观，所以我们可以设置一个系数来设置高度。 添加和删除元素就用 `removeChild` 和 `appendChild` 两个方法很容易就实现了。
 
@@ -38,7 +36,7 @@ heroImage: {"src":"./front-end.jpeg","color":"#B4C6DA"}
 
 在我们删除元素的时候，我们会遇到元素编号的断裂，比如这种情况：
 
-![queue2](./images/queue2.png "queue2")
+![queue2](./images/queue2.png 'queue2')
 
 如果我们此时用左侧出来删除5号元素，那么元素的编号就会变成 `1，2，3，4，6`，当元素比较多我们多次操作，元素的编号就非常混乱了，所以我们在删除元素的时候要注意重置一下元素的编号，逻辑非常简单，我们只要找到比当前删除元素编号大的元素，把他们的编号值减去1就可以了。但是这里比较两个文本节点的 `nodeValue` 的时候会出现一个小问题，js的数据类型是动态的，所以我们在进行关系操作符运算的时候会自动帮我们转换类型，我们也经常不关注关系操作符运算的具体细节，在这里就会出现问题，因为比较的两个值都是 `string` 类型，他们在比较的时候不会转成数值进行比较，而是比较两个字符串对应的字符的 `ASCII` 码值，比如我们比较 `"1"` 和 `"11"`, 这两个字符串的值是相等的，因为 `11` 的第一位和 `1` 的 `ASCII`码值是相等，所以我们在比较的时候需要把字符串转为数值来进行比较。
 
@@ -56,13 +54,13 @@ heroImage: {"src":"./front-end.jpeg","color":"#B4C6DA"}
 
 ```javascript
 function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 ```
 
 排序的效果如下（冒泡排序）：
 
-![queue4](./images/queue4.gif "queue4")
+![queue4](./images/queue4.gif 'queue4')
 
 具体代码查看[第二部分](https://www.clloz.com/study/ife2017-js5.html)
 

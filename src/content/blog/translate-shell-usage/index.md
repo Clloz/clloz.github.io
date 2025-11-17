@@ -7,16 +7,14 @@ tags:
   - 奇技淫巧
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./terminal.png","color":"#B4C6DA"}
+heroImage: { 'src': './terminal.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
-我在 `Mac` 的命令行里面使用的翻译工具是[fanyi](https://www.npmjs.com/package/fanyi "fanyi")，安装方法为 `npm install -g fanyi`，这个工具只能进行中英文翻译，翻译的来源是[金山词霸](http://www.iciba.com/ "金山词霸")和[有道词典](http://fanyi.youdao.com/ "有道词典")，如果只是要翻译英文的话其实挺好用的。不过我日常经常需要查询日语，`Mac` 自带的 `dictionary` 里面的日语字典只有 `大辞林` 和 `日英字典`，所以对我来说翻译日语经常需要用 `Google`。
+我在 `Mac` 的命令行里面使用的翻译工具是[fanyi](https://www.npmjs.com/package/fanyi 'fanyi')，安装方法为 `npm install -g fanyi`，这个工具只能进行中英文翻译，翻译的来源是[金山词霸](http://www.iciba.com/ '金山词霸')和[有道词典](http://fanyi.youdao.com/ '有道词典')，如果只是要翻译英文的话其实挺好用的。不过我日常经常需要查询日语，`Mac` 自带的 `dictionary` 里面的日语字典只有 `大辞林` 和 `日英字典`，所以对我来说翻译日语经常需要用 `Google`。
 
-今天给大家介绍另一个功能更强的命令行翻译工具，叫做[Translate Shell](https://github.com/soimort/translate-shell "Translate Shell")，它的翻译来源主要是 `Google Translate (default)`, `Bing Translator`, `Yandex.Translate`, 和 `Apertium`。它的功能要比 `fanyi` 强很多，它能够在多种语言之间进行翻译，也能翻译句子。
+今天给大家介绍另一个功能更强的命令行翻译工具，叫做[Translate Shell](https://github.com/soimort/translate-shell 'Translate Shell')，它的翻译来源主要是 `Google Translate (default)`, `Bing Translator`, `Yandex.Translate`, 和 `Apertium`。它的功能要比 `fanyi` 强很多，它能够在多种语言之间进行翻译，也能翻译句子。
 
 ```bash
 $ trans 'Saluton, Mondo!'
@@ -61,12 +59,12 @@ In order to be happy, the best way is to be loved by people.
 
 官方提供了三种安装方法
 
-1. 下载[the self-contained executable](http://git.io/trans "the self-contained executable")，然后放置到 `path` 对应的位置。
+1. 下载[the self-contained executable](http://git.io/trans 'the self-contained executable')，然后放置到 `path` 对应的位置。
 
 ```bash
-$ wget git.io/trans
-$ chmod +x ./trans
-$ sudo mv trans /usr/bin/
+wget git.io/trans
+chmod +x ./trans
+sudo mv trans /usr/bin/
 ```
 
 2. 通过 `Git` 安装，克隆 `Translate Shell` 的 `GitHub` 仓库然后手工编译。
@@ -229,5 +227,5 @@ $ trans -shell en:fr
 
 ## 参考文章
 
-1. [Translate Shell](https://github.com/soimort/translate-shell "Translate Shell")
-2. [Translate Shell ：一款在 Linux 命令行中使用谷歌翻译的工具](https://linux.cn/article-9107-1.html "Translate Shell ：一款在 Linux 命令行中使用谷歌翻译的工具")
+1. [Translate Shell](https://github.com/soimort/translate-shell 'Translate Shell')
+2. [Translate Shell ：一款在 Linux 命令行中使用谷歌翻译的工具](https://linux.cn/article-9107-1.html 'Translate Shell ：一款在 Linux 命令行中使用谷歌翻译的工具')

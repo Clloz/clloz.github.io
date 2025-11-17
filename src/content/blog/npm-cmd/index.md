@@ -6,10 +6,8 @@ tags:
   - js
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./npm.png","color":"#B4C6DA"}
+heroImage: { 'src': './npm.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -95,7 +93,7 @@ npm search    #搜索registry
 
 `x` 表示该位置任意，`*` 和 `""` 则表示任意版本。
 
-关于版本号的语法参考[官方文档](https://docs.npmjs.com/cli/v6/using-npm/semver "官方文档")。
+关于版本号的语法参考[官方文档](https://docs.npmjs.com/cli/v6/using-npm/semver '官方文档')。
 
 可以用连字符表示版本号范围，比如 `1.2.3 - 2.3.4` 等价于 `>=1.2.3 <=2.3.4`，可以用空格来表示逻辑与，`||` 表示逻辑或，如：`<1.0.0 || >=2.3.1 <2.4.5 || >=2.5.2 <3.0.0`，表示满足这 `3` 个范围的版本都可以。
 
@@ -151,7 +149,7 @@ NODE_ENV=production npm install
 - `dependencies`：应用依赖，或者叫做业务依赖，它用于指定应用依赖的外部包，这些依赖是应用发布后正常执行时所需要的，但不包含测试时或者开发时所使用的包，比如打包工具之类。
 - `devDependencies`：开发环境依赖，它的对象定义和 `dependencies` 一样，只不过它里面的包只用于开发环境，不用于生产环境，这些包通常是单元测试或者打包工具等，例如 `gulp, grunt, webpack, moca, coffee` 等。
 - `optionalDependencies`：可选依赖，如果有一些依赖包即使安装失败，项目仍然能够运行或者希望 `npm` 继续运行，就可以使用 `optionalDependencies`。另外 `optionalDependencies` 会覆盖 `dependencies` 中的同名依赖包，所以不要在两个地方都写。举个栗子，可选依赖包就像程序的插件一样，如果存在就执行存在的逻辑，不存在就执行另一个逻辑。
-- `peerDependencies`：可以理解为子依赖，有时我们安装的包会依赖于其他的包。关于这一点可以参考[官方文档](https://nodejs.org/es/blog/npm/peer-dependencies/ "官方文档")以及[探讨npm依赖管理之peerDependencies](https://www.cnblogs.com/wonyun/p/9692476.html "探讨npm依赖管理之peerDependencies")
+- `peerDependencies`：可以理解为子依赖，有时我们安装的包会依赖于其他的包。关于这一点可以参考[官方文档](https://nodejs.org/es/blog/npm/peer-dependencies/ '官方文档')以及[探讨npm依赖管理之peerDependencies](https://www.cnblogs.com/wonyun/p/9692476.html '探讨npm依赖管理之peerDependencies')
 
 ## 卸载模块
 
@@ -205,8 +203,8 @@ npm config set registry https://registry.npmjs.org    #设置为默认镜像
 
 ## npm的包管理机制
 
-关于 `package.json` 的详细剖析和实际工作中的包管理实践，参考抖音前端整理的[npm的包管理机制](https://juejin.cn/post/6844904022080667661 "npm的包管理机制")
+关于 `package.json` 的详细剖析和实际工作中的包管理实践，参考抖音前端整理的[npm的包管理机制](https://juejin.cn/post/6844904022080667661 'npm的包管理机制')
 
 ## 参考文章
 
-1. [npm模块管理器](https://javascript.ruanyifeng.com/nodejs/npm.html#toc2 "npm模块管理器")
+1. [npm模块管理器](https://javascript.ruanyifeng.com/nodejs/npm.html#toc2 'npm模块管理器')

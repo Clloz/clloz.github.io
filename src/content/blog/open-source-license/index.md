@@ -7,18 +7,16 @@ tags:
   - 学习笔记
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./open-source-heading.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './open-source-heading.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
 开源许可证授予任何人以任何目的使用，修改和共享许可软件的权限，但要遵守保护该软件的来源和开放性的条件。对于常用的开源许可证我们要理解他们的区别才能正确使用。常用的许可证区别可以看下图。
 
-![open-source-license](./images/open-source-license.png "open-source-license")
+![open-source-license](./images/open-source-license.png 'open-source-license')
 
-> `github` 有一个[页面](https://choosealicense.com/ "页面")帮助你选择开源许可证，另外还有一个网站[choosealicense](https://choosealicense.com/licenses/ "choosealicense")也有主要的许可证介绍。
+> `github` 有一个[页面](https://choosealicense.com/ '页面')帮助你选择开源许可证，另外还有一个网站[choosealicense](https://choosealicense.com/licenses/ 'choosealicense')也有主要的许可证介绍。
 
 ## 许可证介绍
 
@@ -61,8 +59,8 @@ heroImage: {"src":"./open-source-heading.jpg","color":"#B4C6DA"}
 
 想要知道一个 `Github` 仓库的许可证，看项目的页面右边的 `About` 区域即可（老版的 `Github` 在文件列表上方的 `tab` 末尾）
 
-如何为我们的项目添加一个 `license` 呢，我们只要点击页面上的 `creat new file` 然后文件名填写 `LICENSE` （全大写），右边会出现一个 `choose a license template` 按钮，点进去选择自己想要的 `license` 然后完成文件的创建即可。具体流程参考[添加许可到仓库](https://docs.github.com/cn/github/building-a-strong-community/adding-a-license-to-a-repository "添加许可到仓库")
+如何为我们的项目添加一个 `license` 呢，我们只要点击页面上的 `creat new file` 然后文件名填写 `LICENSE` （全大写），右边会出现一个 `choose a license template` 按钮，点进去选择自己想要的 `license` 然后完成文件的创建即可。具体流程参考[添加许可到仓库](https://docs.github.com/cn/github/building-a-strong-community/adding-a-license-to-a-repository '添加许可到仓库')
 
 ## 参考文章
 
-1. [开源许可证教程](https://www.ruanyifeng.com/blog/2017/10/open-source-license-tutorial.html "开源许可证教程")
+1. [开源许可证教程](https://www.ruanyifeng.com/blog/2017/10/open-source-license-tutorial.html '开源许可证教程')

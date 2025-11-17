@@ -7,10 +7,8 @@ tags:
   - 实用技巧
   - 硬件设备
 language: '中文'
-heroImage: {"src":"./usb-logo-scaled.png","color":"#B4C6DA"}
+heroImage: { 'src': './usb-logo-scaled.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -38,9 +36,9 @@ heroImage: {"src":"./usb-logo-scaled.png","color":"#B4C6DA"}
 
 现 `USB` 标准中，按照速度等级和连接方式分为以下七种版本。注意 `USB-IF` （`USB`开发者论坛，`USB`标准的制定组织）当前正式的主版本号只有 `USB 2.0` 和 `USB 3.2` 两个。
 
-![usb-version](./images/usb2.png "usb-version")
+![usb-version](./images/usb2.png 'usb-version')
 
-[USB开发者论坛](https://zh.wikipedia.org/wiki/USB-IF "USB开发者论坛")负责 `USB` 标准制订，其成员包括：`Apple`、`HP`、`NEC`、`Microsoft` 和 `Intel`。`2001` 年底，`USB-IF` 公布 `USB 2.0` 规范，与之前的 `USB 0.9`、`USB 1.0` 和 `USB 1.1` 一样，该规范完全向下兼容。随后，`USB-IF` 公布 `USB On-The-Go`（`USB OTG`，当前版本：`1.0a`）作为 `USB 2.0` 规范的补充标准，使其能够用于在便携设备之间直接交换数据。
+[USB开发者论坛](https://zh.wikipedia.org/wiki/USB-IF 'USB开发者论坛')负责 `USB` 标准制订，其成员包括：`Apple`、`HP`、`NEC`、`Microsoft` 和 `Intel`。`2001` 年底，`USB-IF` 公布 `USB 2.0` 规范，与之前的 `USB 0.9`、`USB 1.0` 和 `USB 1.1` 一样，该规范完全向下兼容。随后，`USB-IF` 公布 `USB On-The-Go`（`USB OTG`，当前版本：`1.0a`）作为 `USB 2.0` 规范的补充标准，使其能够用于在便携设备之间直接交换数据。
 
 `USB` 的连接器分为 `A`、`B` 两种，分别用于主机和设备；其各自的小型化的连接器是 `Mini-A`, `Mini-B` 和 `Micro-A`, `Micro-B`，另外还有 `Mini-AB`（可同时支持 `Mini-A` 及 `Mini-B`）的插口。`USB 3.1` 版本中引入了支持正反面不区分插入的 `C` 型。每一种连接器有对应的公口和母口，并且我们用来连接两种不同设备的 `USB` 线两端会用不同的连接器，这些内容在 `USB-IF` 都有规定。
 
@@ -48,7 +46,7 @@ heroImage: {"src":"./usb-logo-scaled.png","color":"#B4C6DA"}
 
 具体的版本和对应的接口看下图：
 
-![usb-connector](./images/usb1.png "usb-connector")
+![usb-connector](./images/usb1.png 'usb-connector')
 
 从上面的内容中可以看出，所谓的 `2.0`，`3.0`，`3.1`，`3.2` 对应的就是 `USB-IF` 制定的新的 `USB` 标准的命名，而所谓的 `type C`，`type A` 则是在某个标准实现下具体使用的物理接口（连接器），同一个标准会为不同的设备设计不同的接头。不过几家参与制定标准的大厂都是向着统一接口的目标努力的。
 
@@ -68,9 +66,9 @@ heroImage: {"src":"./usb-logo-scaled.png","color":"#B4C6DA"}
 
 `USB` 的连接器的插头和插座配对，以及连接不同设备的 `USB` 线的两端连接器标准都是有规定的，见下两张图。
 
-![usb-connector1](./images/usb5.png "usb-connector1")
+![usb-connector1](./images/usb5.png 'usb-connector1')
 
-![usb-connector2](./images/usb3.png "usb-connector2")
+![usb-connector2](./images/usb3.png 'usb-connector2')
 
 大部分的连接器都是只能和合身对应的插头插座连接，`USB 3.0` 的插座大部分都向下兼容。而在 `USB` 线的部分我们可以看到应用的最广泛的 `Type-A` 和 `Type-C` 是适用场景最多的。
 
@@ -92,8 +90,8 @@ heroImage: {"src":"./usb-logo-scaled.png","color":"#B4C6DA"}
 
 ## 参考文章
 
-1. [并行端口](https://zh.wikipedia.org/wiki/%E5%B9%B6%E8%A1%8C%E7%AB%AF%E5%8F%A3 "并行端口")
-2. [为什么串口比并口快？ - 又见山人的回答 - 知乎](https://www.zhihu.com/question/27815296/answer/38699109 "为什么串口比并口快？ - 又见山人的回答 - 知乎 ")
-3. [USB-维基百科](https://zh.wikipedia.org/wiki/USB "USB-维基百科")
-4. [闪电接头-维基百科](https://zh.wikipedia.org/wiki/Lightning%E6%8E%A5%E5%A4%B4 "闪电接头-维基百科")
-5. [Thunderbolt-维基百科](https://zh.wikipedia.org/wiki/Thunderbolt "Thunderbolt-维基百科")
+1. [并行端口](https://zh.wikipedia.org/wiki/%E5%B9%B6%E8%A1%8C%E7%AB%AF%E5%8F%A3 '并行端口')
+2. [为什么串口比并口快？ - 又见山人的回答 - 知乎](https://www.zhihu.com/question/27815296/answer/38699109 '为什么串口比并口快？ - 又见山人的回答 - 知乎 ')
+3. [USB-维基百科](https://zh.wikipedia.org/wiki/USB 'USB-维基百科')
+4. [闪电接头-维基百科](https://zh.wikipedia.org/wiki/Lightning%E6%8E%A5%E5%A4%B4 '闪电接头-维基百科')
+5. [Thunderbolt-维基百科](https://zh.wikipedia.org/wiki/Thunderbolt 'Thunderbolt-维基百科')

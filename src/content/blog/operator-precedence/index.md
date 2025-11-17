@@ -6,10 +6,8 @@ tags:
   - js
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -17,7 +15,7 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ## 运算符优先级
 
-![operator-precedence](./images/operation.png "operator-precedence")
+![operator-precedence](./images/operation.png 'operator-precedence')
 
 很多时候由于对运算符优先级的不确定，会用括号来确保表达式的执行顺序。如果搞清楚运算符的优先级，即使不用括号也能确保表达式按照正确的顺序执行。
 
@@ -27,7 +25,7 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ## 左手表达式
 
-左手表达式即 `Left-Hand-Side Expression`，即能出现在赋值运算左边的表达式。几乎所有的左手表达式都可以作为右手表达式，这在大部分编程语言中都是通用的。`JS` 中的左手表达式的详细规则请看[ECMAScript262-left-hand-side expression](https://www.ecma-international.org/ecma-262/11.0/index.html#sec-left-hand-side-expressions "ECMAScript262-left-hand-side expression")。标准中没有定义右手表达式，因为合法的表达式只要不是左手表达式就是右手表达式，所以不需要在单独定义。有一点需要注意的是 `++` 和 `--` 的操作数也要是一个左手表达式。
+左手表达式即 `Left-Hand-Side Expression`，即能出现在赋值运算左边的表达式。几乎所有的左手表达式都可以作为右手表达式，这在大部分编程语言中都是通用的。`JS` 中的左手表达式的详细规则请看[ECMAScript262-left-hand-side expression](https://www.ecma-international.org/ecma-262/11.0/index.html#sec-left-hand-side-expressions 'ECMAScript262-left-hand-side expression')。标准中没有定义右手表达式，因为合法的表达式只要不是左手表达式就是右手表达式，所以不需要在单独定义。有一点需要注意的是 `++` 和 `--` 的操作数也要是一个左手表达式。
 
 ## 一些细节
 

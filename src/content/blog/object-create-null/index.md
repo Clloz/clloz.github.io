@@ -7,10 +7,8 @@ tags:
   - 实用技巧
   - 编程技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -28,21 +26,26 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 ```javascript
 //请注意，尽管在 ES5 中 Object.create支持设置为[[Prototype]]为null，但因为那些ECMAScript5以前版本限制，此 polyfill 无法支持该特性。
-if (typeof Object.create !== "function") {
-    Object.create = function (proto, propertiesObject) {
-        if (typeof proto !== 'object' && typeof proto !== 'function') {
-            throw new TypeError('Object prototype may only be an Object: ' + proto);
-        } else if (proto === null) {
-            throw new Error("This browser's implementation of Object.create is a shim and doesn't support 'null' as the first argument.");
-        }
+if (typeof Object.create !== 'function') {
+  Object.create = function (proto, propertiesObject) {
+    if (typeof proto !== 'object' && typeof proto !== 'function') {
+      throw new TypeError('Object prototype may only be an Object: ' + proto)
+    } else if (proto === null) {
+      throw new Error(
+        "This browser's implementation of Object.create is a shim and doesn't support 'null' as the first argument."
+      )
+    }
 
-        if (typeof propertiesObject !== 'undefined') throw new Error("This browser's implementation of Object.create is a shim and doesn't support a second argument.");
+    if (typeof propertiesObject !== 'undefined')
+      throw new Error(
+        "This browser's implementation of Object.create is a shim and doesn't support a second argument."
+      )
 
-        function F() {}
-        F.prototype = proto;
+    function F() {}
+    F.prototype = proto
 
-        return new F();
-    };
+    return new F()
+  }
 }
 ```
 
@@ -50,20 +53,20 @@ if (typeof Object.create !== "function") {
 
 ```javascript
 function MyClass() {
-     SuperClass.call(this);
-     OtherSuperClass.call(this);
+  SuperClass.call(this)
+  OtherSuperClass.call(this)
 }
 
 // 继承一个类
-MyClass.prototype = Object.create(SuperClass.prototype);
+MyClass.prototype = Object.create(SuperClass.prototype)
 // 混合其它
-Object.assign(MyClass.prototype, OtherSuperClass.prototype);
+Object.assign(MyClass.prototype, OtherSuperClass.prototype)
 // 重新指定constructor
-MyClass.prototype.constructor = MyClass;
+MyClass.prototype.constructor = MyClass
 
-MyClass.prototype.myMethod = function() {
-     // do a thing
-};
+MyClass.prototype.myMethod = function () {
+  // do a thing
+}
 ```
 
 ## new Object()
@@ -84,18 +87,22 @@ MyClass.prototype.myMethod = function() {
 定义属性为 `__proto__:` 值 或 `"__proto__":` 值 时，不会创建名为 `__proto__` 属性。如果给出的值是对象或者 `null`，那么对象的 `[[Prototype]]` 会被设置为给出的值。注意的是一定要使用冒号的方式定义，不使用冒号标记的属性定义，不会变更对象的原型；而是和其他具有不同名字的属性一样是普通属性定义。下面这些形式都不可以。
 
 ```javascript
-var __proto__ = "variable";
+var __proto__ = 'variable'
 
-var obj1 = { __proto__ };
-console.log(Object.getPrototypeOf(obj1) === Object.prototype); //true
-console.log(obj1.hasOwnProperty("__proto__")); //true
-console.log(obj1.__proto__ === "variable"); //true
+var obj1 = { __proto__ }
+console.log(Object.getPrototypeOf(obj1) === Object.prototype) //true
+console.log(obj1.hasOwnProperty('__proto__')) //true
+console.log(obj1.__proto__ === 'variable') //true
 
-var obj2 = { __proto__() { return "hello"; } };
-console.log(obj2.__proto__() === "hello"); //true
+var obj2 = {
+  __proto__() {
+    return 'hello'
+  }
+}
+console.log(obj2.__proto__() === 'hello') //true
 
-var obj3 = { ["__prot" + "o__"]: 17 };
-console.log(obj3.__proto__ === 17); //true
+var obj3 = { ['__prot' + 'o__']: 17 }
+console.log(obj3.__proto__ === 17) //true
 ```
 
 还有一点就是对象字面量虽然和 `JSON` 很像，但他们不是同一个东西，主要不同点有以下：
@@ -120,7 +127,7 @@ console.log(obj3.__proto__ === 17); //true
 
 ## 参考文章
 
-1. [Object - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object "Object - MDN")
-2. [对象字面量](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Object_initializer "对象字面量")
-3. [Object.create()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create "Object.create()")
-4. [详解 Object.create(null)](https://juejin.im/post/6844903589815517192 "详解 Object.create(null)")
+1. [Object - MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object 'Object - MDN')
+2. [对象字面量](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Object_initializer '对象字面量')
+3. [Object.create()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create 'Object.create()')
+4. [详解 Object.create(null)](https://juejin.im/post/6844903589815517192 '详解 Object.create(null)')

@@ -6,16 +6,15 @@ tags:
   - assorted
   - 奇技淫巧
 language: '中文'
-heroImage: {"src":"./shadowsocks.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './shadowsocks.jpg', 'color': '#B4C6DA' }
+draft: true
 ---
-
-\[toc\]
 
 > **_目前 `bandwagon` 已经下架了 `19.9` 刀 的 `VPS` 了，最便宜的 `49.9` 刀，这么高的价格不如直接买比较好的 `VPN` 了，想买的同学只能等等有没有活动了。_**
 
 ## 2019.10.29更新
 
-国庆前一个星期，两台服务器的 `IP` 都被封了，这两天终于解封了，不过用了两三天，发现有一台服务器又不能使用了，不过这次用下面的链接查询，`IP` 并没有被封，于是上[站长之家-ping检测](http://ping.chinaz.com/ "站长之家-ping检测")检测了一下 `IP` 发现 `ping` 通没问题，`ssh` 连接服务器也没问题，遇到这种情况一般就是 `ss` 的端口被封了，就是写在 `shadowsocks.json` 中的端口配置，这时候只要把配置中的端口换一个，然后重启一下服务 `systemctl restart shadowsocks` 就可以用了。最后还是希望上面的网稍微松一点，不然大家都没得玩，虽然 `VPN` 一直都可以用，不过还是代理方便。
+国庆前一个星期，两台服务器的 `IP` 都被封了，这两天终于解封了，不过用了两三天，发现有一台服务器又不能使用了，不过这次用下面的链接查询，`IP` 并没有被封，于是上[站长之家-ping检测](http://ping.chinaz.com/ '站长之家-ping检测')检测了一下 `IP` 发现 `ping` 通没问题，`ssh` 连接服务器也没问题，遇到这种情况一般就是 `ss` 的端口被封了，就是写在 `shadowsocks.json` 中的端口配置，这时候只要把配置中的端口换一个，然后重启一下服务 `systemctl restart shadowsocks` 就可以用了。最后还是希望上面的网稍微松一点，不然大家都没得玩，虽然 `VPN` 一直都可以用，不过还是代理方便。
 
 ## 2019.9.17更新
 
@@ -28,21 +27,21 @@ pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
 
 另外有一点需要注意的是，在执行 `systemctl enable shadowsocks.service` 的时候可能会遇到 `bad message` 的报错，这时候大概率是因为 `/etc/systemd/system/shadowsocks.service` 文件有问题，在复制粘贴的时候，在 `vim` 中很可能会掉几个字符，检查一下。
 
-最后在提醒一句的是，如果发现 `IP` 被墙了，不要急着去换 `IP` 这也是 `bandwagonHost` 建议的，等几天看看，`GFW` 的 `blocklist` 会更新的，现在已经没有免费换 `IP` 的服务了。如果发现 `ss` 一直连接不上，想知道自己的 `IP` 是不是被 `ban` 了，登录自己的 `KiwiVM` 控制台，然后打开这个链接 [GFW-blacklistcheck](https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck "GFW-banlistcheck")。
+最后在提醒一句的是，如果发现 `IP` 被墙了，不要急着去换 `IP` 这也是 `bandwagonHost` 建议的，等几天看看，`GFW` 的 `blocklist` 会更新的，现在已经没有免费换 `IP` 的服务了。如果发现 `ss` 一直连接不上，想知道自己的 `IP` 是不是被 `ban` 了，登录自己的 `KiwiVM` 控制台，然后打开这个链接 [GFW-blacklistcheck](https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck 'GFW-banlistcheck')。
 
 ## 前言
 
-我之前科学上网都是通过直接购买 `VPN` 服务提供商的产品来做了，虽然也知道可以买境外的 `VPS` 来搭建 `SS`，但是一方面是觉得麻烦，一方面是觉得没必要，`SS` 的成本比较低，但是我一直觉得没有免费的午餐，`VPN` 供应商也不是傻子，能卖出价格肯定是有道理的。当然还有个主要的原因是我用的 `VPN` 这么久没出现过任何问题，体验也非常好（除了在十八大的时候偶尔会连不上），全平台支持，现在在对应的路由器上也能安装了，价格是贵了点，不过我觉得还是物有所值的，想了解的朋友可以点击[ExpressVPN](https://www.expressvpn.com/ "ExpressVPN")。话题扯远了，今天我尝试了一下 `SS`，速度还可以，服务端安装好之后就可以在客户端访问了，安装过程也很简单，下面就来和大家分享一下。
+我之前科学上网都是通过直接购买 `VPN` 服务提供商的产品来做了，虽然也知道可以买境外的 `VPS` 来搭建 `SS`，但是一方面是觉得麻烦，一方面是觉得没必要，`SS` 的成本比较低，但是我一直觉得没有免费的午餐，`VPN` 供应商也不是傻子，能卖出价格肯定是有道理的。当然还有个主要的原因是我用的 `VPN` 这么久没出现过任何问题，体验也非常好（除了在十八大的时候偶尔会连不上），全平台支持，现在在对应的路由器上也能安装了，价格是贵了点，不过我觉得还是物有所值的，想了解的朋友可以点击[ExpressVPN](https://www.expressvpn.com/ 'ExpressVPN')。话题扯远了，今天我尝试了一下 `SS`，速度还可以，服务端安装好之后就可以在客户端访问了，安装过程也很简单，下面就来和大家分享一下。
 
 ## 购买境外 VPS 搭建 SS Server 端
 
-关于SS的原理就不过多赘述了，如果感兴趣的同学可以看[这里](http://www.chinagfw.org/2016/01/shadowsocks_26.html "这里")，想让你能够通过SS客户端绕过 `GFW` 访问墙外的世界，那么你首先要做的就是购买一台境外的 `VPS`，然后部署好 `SS` 的服务端。关于购买 `VPS` 的问题，我购买的是 `BandwagonHost` 的 `VPS`，一年 `19.9` 刀，每个月 `500G` 的流量，基本够用了，用优惠码的话可以打 `9.35` 折，优惠码 `google` 就可以，购买的细节就不多说了，`Bandwagon` 是支持 `alipay` 和 `paypal` 的，对国内的用户还是蛮友好的。购买成功后点击 `service`，见图：
+关于SS的原理就不过多赘述了，如果感兴趣的同学可以看[这里](http://www.chinagfw.org/2016/01/shadowsocks_26.html '这里')，想让你能够通过SS客户端绕过 `GFW` 访问墙外的世界，那么你首先要做的就是购买一台境外的 `VPS`，然后部署好 `SS` 的服务端。关于购买 `VPS` 的问题，我购买的是 `BandwagonHost` 的 `VPS`，一年 `19.9` 刀，每个月 `500G` 的流量，基本够用了，用优惠码的话可以打 `9.35` 折，优惠码 `google` 就可以，购买的细节就不多说了，`Bandwagon` 是支持 `alipay` 和 `paypal` 的，对国内的用户还是蛮友好的。购买成功后点击 `service`，见图：
 
-![vps](./images/VPS.png "vps")
+![vps](./images/VPS.png 'vps')
 
 然后点击 `KiwiVM Control Panel` 进入 `VPS` 的控制台，在 `Main Controls` 页面看到 `VPS` 的基本状态，默认安装的系统是 `centos6_x86_bbr`，如果你想更换系统，就先 `stop` 你的 `VPS` 然后进入 `install new OS` 选择自己喜欢的系统安装，速度很快，注意重新安装好系统后会更改 `VPS` 的端口。下面就是远程链接 `VPS` 了，默认的 `root` 用户的密码是随机生成的，在 `root password modification` 中可以重新生成，有了密码后我们就可以登录，`windows` 下用 `Xshell`，`mac` 或者 `linux` 直接 `ssh` 登录依旧可以了，输入 `IP`，端口，用户名密码。连接上 `VPS` 以后如果你觉得随机生成的密码难记，那么你可以在命令行中输入`passwd`来设置自己的密码。
 
-![panel](./images/panel.png "panel")
+![panel](./images/panel.png 'panel')
 
 下面开始安装 `SS`，由于本文使用的 `python` 版本的 `SS`，所以要先安装 `python` 的包管理工具 `pip`：
 
@@ -109,11 +108,11 @@ chmod +x shadowsocks.sh
 
 `SS` 客户端全平台都有，这里跟大家说一下，`windows`，`mac`，`iphone` 的经过我测试可用的客户端。
 
-- `windows10` ： [shadowsocks-windows](https://github.com/shadowsocks/shadowsocks-windows/releases "shadowsocks-windows")
-- `mac`： [shadowsocksX-NG](https://github.com/shadowsocks/ShadowsocksX-NG/releases "shadowsocksX-NG")
+- `windows10` ： [shadowsocks-windows](https://github.com/shadowsocks/shadowsocks-windows/releases 'shadowsocks-windows')
+- `mac`： [shadowsocksX-NG](https://github.com/shadowsocks/ShadowsocksX-NG/releases 'shadowsocksX-NG')
 - `iphone` ：`shadowrocket`（在 `app store`下载即可，付费 `12￥`）
 
-最后说一下 `centos`，目前[Shadowsocks](https://github.com/shadowsocks/shadowsocks/releases "Shadowsocks")在 `github` 上提供的最新的正式版本是 `2.9.1`，但是这个版本有个问题就是不支持 `gcm` 的加密方式，有一个非正式的 `3.0.0` 版本，我试了一下，虽然支持了 `gcm` 但是在安装完成后进行 `curl` 测试的时候一直返回错误，所以我就放弃了。也有建议使用[shadowsocks-libev](https://github.com/shadowsocks/shadowsocks-libev "shadowsocks-libev")的，我没有尝试，后面有时间会试一下，有兴趣的同学自己试试。
+最后说一下 `centos`，目前[Shadowsocks](https://github.com/shadowsocks/shadowsocks/releases 'Shadowsocks')在 `github` 上提供的最新的正式版本是 `2.9.1`，但是这个版本有个问题就是不支持 `gcm` 的加密方式，有一个非正式的 `3.0.0` 版本，我试了一下，虽然支持了 `gcm` 但是在安装完成后进行 `curl` 测试的时候一直返回错误，所以我就放弃了。也有建议使用[shadowsocks-libev](https://github.com/shadowsocks/shadowsocks-libev 'shadowsocks-libev')的，我没有尝试，后面有时间会试一下，有兴趣的同学自己试试。
 
 ## 更新 Linux 安装 SS 客户端
 
@@ -207,7 +206,7 @@ export https_proxy=http://127.0.0.1:8118
 测试是否成功
 
 ```bash
-[root@aniu-k8s ~]# curl -I www.google.com 
+[root@aniu-k8s ~]# curl -I www.google.com
 HTTP/1.1 200 OK
 Date: Fri, 26 Jan 2018 05:32:37 GMT
 Expires: -1

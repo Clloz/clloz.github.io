@@ -8,8 +8,6 @@ tags:
 language: '中文'
 ---
 
-\[toc\]
-
 ## 前言
 
 本文介绍函数节流 `throttle` 和 函数防抖 `debounce` 的实现方法。

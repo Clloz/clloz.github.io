@@ -6,10 +6,8 @@ tags:
   - assorted
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./ssh.png","color":"#B4C6DA"}
+heroImage: { 'src': './ssh.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -17,7 +15,7 @@ heroImage: {"src":"./ssh.png","color":"#B4C6DA"}
 
 ## ssh 基本原理
 
-传统的网络服务程序，如FTP、Pop和Telnet其本质上都是不安全的；因为它们在网络上用明文传送数据、用户帐号和用户口令，很容易受到中间人（`man-in-the-middle`）攻击方式的攻击。就是存在另一个人或者一台机器冒充真正的服务器接收用户传给服务器的数据，然后再冒充用户把数据传给真正的服务器。为了解决这个问题，`ssh` 协议提供了两种身份验证方式，都是使用非对称加密，关于非对称加密的内容可以看我的这篇文章[HTTPS](https://www.clloz.com/programming/network/2019/05/02/https "HTTPS")。一般我们把被登录的服务器称为服务端，而请求登录的机器称为客户端。
+传统的网络服务程序，如FTP、Pop和Telnet其本质上都是不安全的；因为它们在网络上用明文传送数据、用户帐号和用户口令，很容易受到中间人（`man-in-the-middle`）攻击方式的攻击。就是存在另一个人或者一台机器冒充真正的服务器接收用户传给服务器的数据，然后再冒充用户把数据传给真正的服务器。为了解决这个问题，`ssh` 协议提供了两种身份验证方式，都是使用非对称加密，关于非对称加密的内容可以看我的这篇文章[HTTPS](https://www.clloz.com/programming/network/2019/05/02/https 'HTTPS')。一般我们把被登录的服务器称为服务端，而请求登录的机器称为客户端。
 
 1. 基于口令的安全验证：只要你知道自己帐号和口令，就可以登录到远程主机。所有传输的数据都会被加密，但是不能保证你正在连接的服务器就是你想连接的服务器。可能会有别的服务器在冒充真正的服务器，也就是受到“中间人”这种方式的攻击。
 2. 在客户端生成公钥和私钥，然后将公钥储存到服务端。当客服端请求连接到SSH服务器时，客户端软件就会向服务器发出请求，请求用你的密匙进行安全验证。服务器收到请求之后，先在该服务器上你的主目录下寻找你的公用密匙，然后把它和你发送过来的公用密匙进行比较。如果两个密匙一致，服务器就用公用密匙加密“质询”（`challenge`）并把它发送给客户端软件。客户端软件收到“质询”之后就可以用你的私人密匙解密再把它发送给服务器。
@@ -54,7 +52,7 @@ Warning: Permanently added 'ssh-server.example.com,12.18.429.21' (RSA) to the li
 - `Server` 端会也会对`R` 和 `SessionKey` 利用同样摘要算法生成 `Digest2`。
 - `Server`端会最后比较 `Digest1` 和 `Digest2` 是否相同，完成认证过程。
 
-这个过程看起来有点复杂，还是建议线看一下文章[HTTPS](https://www.clloz.com/programming/network/2019/05/02/https "HTTPS")中的非对称加密的知识。这种方式在网络上传递的只有公钥，所以是相对来说安全很多的。并且免去了我们每次登录都要输入密码的麻烦，也很方便。
+这个过程看起来有点复杂，还是建议线看一下文章[HTTPS](https://www.clloz.com/programming/network/2019/05/02/https 'HTTPS')中的非对称加密的知识。这种方式在网络上传递的只有公钥，所以是相对来说安全很多的。并且免去了我们每次登录都要输入密码的麻烦，也很方便。
 
 在 `~/.ssh` 文件夹中一般会出现四种文件
 
@@ -139,7 +137,7 @@ ssh omd@192.168.1.100 -t "sh /home/omd/ftl.sh"  # 当前服务器A远程登录�
 3. `-C`: 指定此密钥的备注信息, 需要配置多个免密登录时, 建议携带;
 4. `-N`: 指定此密钥对应的密码, 如果指定此参数, 则命令执行过程中就不会出现交互确认密码的信息了.
 
-在配置好 `ssh` 以后我们也可以用 `scp` 来传输文件了，具体的使用方法看这篇文章[Mac用scp上传或下载文件](https://www.clloz.com/programming/assorted/2019/04/09/mac-scp/ "Mac用scp上传或下载文件")
+在配置好 `ssh` 以后我们也可以用 `scp` 来传输文件了，具体的使用方法看这篇文章[Mac用scp上传或下载文件](https://www.clloz.com/programming/assorted/2019/04/09/mac-scp/ 'Mac用scp上传或下载文件')
 
 ## 总结
 
@@ -205,7 +203,7 @@ Host *
 
 如果你为你的私钥进行了独立的命名，将上面的 `id_rsa` 换成对应的名字即可。
 
-* * *
+---
 
 `ssh-agent` 还有一个比较好用的功能，就是 `forwarding`。如果你有服务器 `a` 和 `b`，你用自己的电脑登录上了 `a`，现在又想到 `b` 上进行某个操作，你不想退出 `a` 也不想把密钥放到 `a` 上，那么你知道配置 `forwarding` 就能够在 `a` 上直接登录 `b`。只要在 `client， a， b` 上的 `~/.ssh/config` 里都加上如下配置即可。
 
@@ -214,12 +212,12 @@ Host *
 　　ForwardAgent yes
 ```
 
-关于 `ssh-agent` 的配置可以参考 [Github 帮助文档](https://docs.github.com/cn/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent "Github 帮助文档") 还有 [配置SSH agent 和 SSH agent forwarding转发](https://www.fythonfang.com/blog/2017/12/27/ssh-agent-and-ssh-agent-forwarding "配置SSH agent 和 SSH agent forwarding转发")
+关于 `ssh-agent` 的配置可以参考 [Github 帮助文档](https://docs.github.com/cn/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent 'Github 帮助文档') 还有 [配置SSH agent 和 SSH agent forwarding转发](https://www.fythonfang.com/blog/2017/12/27/ssh-agent-and-ssh-agent-forwarding '配置SSH agent 和 SSH agent forwarding转发')
 
 ## 参考文章
 
-1. [图解ssh](https://www.cnblogs.com/diffx/p/9553587.html "图解ssh")
-2. [Mac 启动 SSH](https://blog.csdn.net/wanglemao/article/details/88413573 "Mac 启动 SSH")
-3. [CentOS7安装和配置SSH](https://www.cnblogs.com/liuhouhou/p/8975812.html "CentOS7安装和配置SSH")
-4. [Linux - 配置SSH免密通信 - “ssh-keygen”的基本用法](https://www.cnblogs.com/shoufeng/p/11022258.html "Linux - 配置SSH免密通信 - “ssh-keygen”的基本用法")
-5. [ssh的基本用法](https://zhuanlan.zhihu.com/p/21999778 "ssh的基本用法")
+1. [图解ssh](https://www.cnblogs.com/diffx/p/9553587.html '图解ssh')
+2. [Mac 启动 SSH](https://blog.csdn.net/wanglemao/article/details/88413573 'Mac 启动 SSH')
+3. [CentOS7安装和配置SSH](https://www.cnblogs.com/liuhouhou/p/8975812.html 'CentOS7安装和配置SSH')
+4. [Linux - 配置SSH免密通信 - “ssh-keygen”的基本用法](https://www.cnblogs.com/shoufeng/p/11022258.html 'Linux - 配置SSH免密通信 - “ssh-keygen”的基本用法')
+5. [ssh的基本用法](https://zhuanlan.zhihu.com/p/21999778 'ssh的基本用法')

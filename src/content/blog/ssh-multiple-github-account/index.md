@@ -6,10 +6,8 @@ tags:
   - assorted
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./github.png","color":"#B4C6DA"}
+heroImage: { 'src': './github.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -17,7 +15,7 @@ heroImage: {"src":"./github.png","color":"#B4C6DA"}
 
 ## 准备
 
-准备工作就是两个 `Github` 账号和两对 `ssh` 公私钥。`Github` 的账号注册就不说了，`ssh` 的公私钥的创建可以参考[ssh的简介和使用](https://www.clloz.com/programming/assorted/2019/10/02/ssh-rsa/ "ssh的简介和使用")。这里特别提一下，`ssh` 默认创建的公私钥文件名分别是 `id_rsa` 和 `id_rsa.pub`，为了清楚的区分我们是为 `Github` 创建的公私钥我们可以加上 `-f location` 参数来指定生成的文件的路径和名字，比如 `-f ~/.ssh/github1` 就会生成 `github1` 和 `github1.pub` 这一对公私钥。
+准备工作就是两个 `Github` 账号和两对 `ssh` 公私钥。`Github` 的账号注册就不说了，`ssh` 的公私钥的创建可以参考[ssh的简介和使用](https://www.clloz.com/programming/assorted/2019/10/02/ssh-rsa/ 'ssh的简介和使用')。这里特别提一下，`ssh` 默认创建的公私钥文件名分别是 `id_rsa` 和 `id_rsa.pub`，为了清楚的区分我们是为 `Github` 创建的公私钥我们可以加上 `-f location` 参数来指定生成的文件的路径和名字，比如 `-f ~/.ssh/github1` 就会生成 `github1` 和 `github1.pub` 这一对公私钥。
 
 然后将两个公钥分别放到自己注册的两个 `Gihub` 账号的 `Settings -> SSH and GPG keys` 中。
 
@@ -31,7 +29,7 @@ heroImage: {"src":"./github.png","color":"#B4C6DA"}
 
 但是当我们的 `.ssh` 文件夹中有两对甚至更多的公私钥的时候，并且我们进行了自定义的命名，此时我们就要对公私钥进行配置，告诉 `ssh` 如何寻找对应的私钥。
 
-配置文件位于 `~/.ssh/config`，如何配置看下面的例子。更多 `ssh config` 的配置字段参考 [SSH Config 那些你所知道和不知道的事](https://deepzz.com/post/how-to-setup-ssh-config.html "SSH Config 那些你所知道和不知道的事")
+配置文件位于 `~/.ssh/config`，如何配置看下面的例子。更多 `ssh config` 的配置字段参考 [SSH Config 那些你所知道和不知道的事](https://deepzz.com/post/how-to-setup-ssh-config.html 'SSH Config 那些你所知道和不知道的事')
 
 ```bash
 #Github clloz@outlook.com
@@ -76,7 +74,7 @@ ssh -T git@github.com 
 #Hi Clloz! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
-* * *
+---
 
 经过上面的配置以后，我们已经能够正常的进行两个 `github` 账号的仓库管理了。需要注意的是分清楚当前仓库是属于哪个用户的。比如 `account1` 对应的 `host` 是 `allias1`，`accout2` 对应的 `host` 是 `alias2`，那么你 `clone` 或者设置 `remote` 的时候地址就要将 `github.com` 改为对应的 `alias`。如果你在 `accout2` 下面创建了一个仓库，然后 `clone` 的时候用的是 `git clone git@alias1:username/repository_name.git`。那么你会发现，当你进行 `push` 的时候会报如下的错误：
 
@@ -90,7 +88,7 @@ and the repository exists.
 
 因为这是 `alias1` 的仓库，我们自然没有权限对其进行操作。不过我们可以登录 `alias1` 的 `Github` 账户，在对应的 `repository` 的 `Settings -> Manage Access` 中将 `allias2` 对应的用户添加到 `Collaborator` 中，我们就能对这个仓库进行操作了。
 
-* * *
+---
 
 还有一点需要注意的，在 `git config --global` 中的 `user.name` 和 `user.email` 我们可以设置为常用账户的，在 `alias2` 的本地仓库中我们可以用 `git config --local` 进行单独的设置。我们在 `Github` 中看到的 `commit` 就是根据 `config` 来确定是哪个 `github` 用户提交的。比如我在 `alias2` 的仓库中设置 `config` 的 `user.name` 和 `user.email` 为 `alias1` 对应的用户信息然后进行 `commit push`，那么在 `github` 上看到的提交就是由 `alias1` 对用的用户完成的，`contributor` 中也多了 `alias1` 对应的用户，虽然我们并没有把他加入到 `Collaborator` 中。
 
@@ -100,10 +98,10 @@ and the repository exists.
 
 ## ssh-agent
 
-最后再说一下 `ssh-agent`。关于 `ssh-agent` 的详细内容还是看[ssh的简介和使用](https://www.clloz.com/programming/assorted/2019/10/02/ssh-rsa/ "ssh的简介和使用")，我这里主要要说的是，如果你为私钥设置了 `passphrase`，想要使用 `ssh-agent`，那么你**必须把两个账号的私钥都交给 `ssh-agent` 来代理**，否则会出错。
+最后再说一下 `ssh-agent`。关于 `ssh-agent` 的详细内容还是看[ssh的简介和使用](https://www.clloz.com/programming/assorted/2019/10/02/ssh-rsa/ 'ssh的简介和使用')，我这里主要要说的是，如果你为私钥设置了 `passphrase`，想要使用 `ssh-agent`，那么你**必须把两个账号的私钥都交给 `ssh-agent` 来代理**，否则会出错。
 
 ## 参考文章
 
-1. [同一台电脑配置多个git账号](https://github.com/jawil/notes/issues/2 "同一台电脑配置多个git账号")
-2. [一台电脑，两个及多个git账号配置](https://www.cnblogs.com/fanbi/p/7825746.html "一台电脑，两个及多个git账号配置")
-3. [多个密钥ssh-key的生成与管理](https://me.chjiyun.com/2017/08/28/%E5%A4%9A%E4%B8%AA%E5%AF%86%E9%92%A5ssh-key%E7%9A%84%E7%94%9F%E6%88%90%E4%B8%8E%E7%AE%A1%E7%90%86/ "多个密钥ssh-key的生成与管理")
+1. [同一台电脑配置多个git账号](https://github.com/jawil/notes/issues/2 '同一台电脑配置多个git账号')
+2. [一台电脑，两个及多个git账号配置](https://www.cnblogs.com/fanbi/p/7825746.html '一台电脑，两个及多个git账号配置')
+3. [多个密钥ssh-key的生成与管理](https://me.chjiyun.com/2017/08/28/%E5%A4%9A%E4%B8%AA%E5%AF%86%E9%92%A5ssh-key%E7%9A%84%E7%94%9F%E6%88%90%E4%B8%8E%E7%AE%A1%E7%90%86/ '多个密钥ssh-key的生成与管理')

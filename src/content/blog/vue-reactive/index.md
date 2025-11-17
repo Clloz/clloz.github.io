@@ -7,16 +7,14 @@ tags:
   - vue
   - 学习笔记
 language: '中文'
-heroImage: {"src":"./vuelogo.png","color":"#B4C6DA"}
+heroImage: { 'src': './vuelogo.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
 `Vue3` 将双向数据绑定的实现由 `Object.defineProperty()` 换成了 `Proxy`。本文我们来深入研究一下这两种方法分别如何实现双向数据绑定，并且他们的区别和优劣在哪里。
 
-> 本文所有代码均在 [clloz-vue - Github](https://github.com/Clloz/clloz-vue/tree/dev "clloz-vue - Github")
+> 本文所有代码均在 [clloz-vue - Github](https://github.com/Clloz/clloz-vue/tree/dev 'clloz-vue - Github')
 
 ## 双向数据绑定原理
 
@@ -30,34 +28,34 @@ heroImage: {"src":"./vuelogo.png","color":"#B4C6DA"}
 
 ```html
 <body>
-    <input id="be-watch" type="text" />
-    <p id="show"></p>
+  <input id="be-watch" type="text" />
+  <p id="show"></p>
 </body>
 <script>
-    let obj = {
-        getVal: 0,
-    };
+  let obj = {
+    getVal: 0
+  }
 
-    let cache = obj.getVal;
+  let cache = obj.getVal
 
-    let input = document.getElementById('be-watch');
-    let p = document.getElementById('show');
-    input.addEventListener('input', e => {
-        obj.getVal = e.target.value;
-    });
+  let input = document.getElementById('be-watch')
+  let p = document.getElementById('show')
+  input.addEventListener('input', (e) => {
+    obj.getVal = e.target.value
+  })
 
-    Object.defineProperty(obj, 'getVal', {
-        enumerable: true,
-        configurable: true,
-        get() {
-            return cache;
-        },
-        set(val) {
-            cache = val;
-            input.value = val;
-            p.innerHTML = val;
-        },
-    });
+  Object.defineProperty(obj, 'getVal', {
+    enumerable: true,
+    configurable: true,
+    get() {
+      return cache
+    },
+    set(val) {
+      cache = val
+      input.value = val
+      p.innerHTML = val
+    }
+  })
 </script>
 ```
 
@@ -65,7 +63,7 @@ heroImage: {"src":"./vuelogo.png","color":"#B4C6DA"}
 
 ## 优化和应用
 
-上面的代码是最简单的双向数据绑定，也是其核心原理。但是在实际的项目中我们不可能这么使用，因为实际的项目中要监听的对象和属性非常多，元素也各不相同，事件也各不相同，如果用上面的这种方法实现每一个属性和对应的元素事件我们都要单独绑定太麻烦了，而且所有的代码都耦合在一起，肯定是非常难以维护的。所以要把这个技术真的应用的到工程中去我们必须抽象出它的一套可行的逻辑。这其中最主要的就是发布订阅模式，不太清楚发布订阅模式的同学可以参考我的文章 [深入发布订阅模式](https://www.clloz.com/programming/front-end/js/2020/10/18/observer-pub-sub-pattern/ "深入发布订阅模式")。
+上面的代码是最简单的双向数据绑定，也是其核心原理。但是在实际的项目中我们不可能这么使用，因为实际的项目中要监听的对象和属性非常多，元素也各不相同，事件也各不相同，如果用上面的这种方法实现每一个属性和对应的元素事件我们都要单独绑定太麻烦了，而且所有的代码都耦合在一起，肯定是非常难以维护的。所以要把这个技术真的应用的到工程中去我们必须抽象出它的一套可行的逻辑。这其中最主要的就是发布订阅模式，不太清楚发布订阅模式的同学可以参考我的文章 [深入发布订阅模式](https://www.clloz.com/programming/front-end/js/2020/10/18/observer-pub-sub-pattern/ '深入发布订阅模式')。
 
 我们来重新理一下需求，我们希望我们声明的对象和某些方法关联起来。在上面的例子中，我们是希望对象属性变化的的时候能够改变 `input` 的 `value`，并显示到一个 `p` 标签中，其实就是执行了一个简单的方法，虽然这个方法只有两行代码。即我希望对象的属性变化的时候，让用到这个属性的方法能够执行。最简单的做法就是像上面的例子中，将这个方法的代码直接放到 `setter` 中，那么在属性改变的时候自然就会执行对应的代码。
 
@@ -74,47 +72,47 @@ heroImage: {"src":"./vuelogo.png","color":"#B4C6DA"}
 这个时候就要用到发布订阅模式了，我们把调用属性的方法放一边，单独抽象出对象属性的逻辑。我们对对象的包装就两件事，设置 `setter` 和 `getter`，在 `setter` 中通知变化，至于通知给谁，这里我们就要通知给发布订阅模式的事件中心，这里我们称为依赖中心 `Dep`，我们为每一个属性单独建立一个 `Dep`，当属性变化我们就告诉 `Dep` 就可以了，至于 `Dep` 要怎么做我们后面再讨论。这样我们就将把普通 `object` 变为一个可侦测监听的 `object` 这个逻辑分离成一个可以复用的逻辑，我们将这个逻辑抽象出一个 `Observer` 类，它通过 `setter` 发布变化给事件中心 `Dep`，也就是发布订阅模式中 **发布者**。下面给出一个 `Observer` 类的简单骨架：
 
 ```javascript
-import Dep from './dep.mjs';
+import Dep from './dep.mjs'
 
 export class Observer {
-    constructor(data) {
-        this.data = data;
-        if (!Array.isArray(data)) {
-            this.walk(data);
+  constructor(data) {
+    this.data = data
+    if (!Array.isArray(data)) {
+      this.walk(data)
+    }
+  }
+
+  /* eslint-disable */
+  walk(obj) {
+    Object.keys(obj).forEach((key) => {
+      let dep = new Dep()
+      let val = obj[key]
+
+      observe(val)
+      Object.defineProperty(obj, key, {
+        enumreable: true,
+        configurable: true,
+        get() {
+          if (Dep.target) {
+            dep.depend()
+          }
+          return val
+        },
+        set(newValue) {
+          if (val === newValue) return
+          val = newValue
+          dep.notify()
         }
-    }
-
-    /* eslint-disable */
-    walk(obj) {
-        Object.keys(obj).forEach(key => {
-            let dep = new Dep();
-            let val = obj[key];
-
-            observe(val);
-            Object.defineProperty(obj, key, {
-                enumreable: true,
-                configurable: true,
-                get() {
-                    if (Dep.target) {
-                        dep.depend();
-                    }
-                    return val;
-                },
-                set(newValue) {
-                    if (val === newValue) return;
-                    val = newValue;
-                    dep.notify();
-                },
-            });
-        });
-    }
+      })
+    })
+  }
 }
 
 export function observe(val) {
-    if (!val || typeof val !== 'object') {
-        return;
-    }
-    return new Observer(val);
+  if (!val || typeof val !== 'object') {
+    return
+  }
+  return new Observer(val)
 }
 ```
 
@@ -123,37 +121,37 @@ export function observe(val) {
 `Watcher` 实例主要做什么呢？分析要访问的属性（比如上面的 `a`，这里路径可能有嵌套表达式等情况），访问该属性触发 `getter`，我们将会在 `getter` 中进行依赖的收集。提供一个 `update` 函数，当依赖的属性发出变化通知的时候（`setter` 中的逻辑），外部会调用实例内部的 `update` 方法，执行回调函数。下面给出一个简单的 `Watcher` 骨架：
 
 ```javascript
-import Dep from './dep.mjs';
+import Dep from './dep.mjs'
 
 export default class Watcher {
-    constructor(gb, exp, cb) {
-        this.gb = gb;
-        this.data = this.gb.data;
-        this.exp = exp;
-        this.cb = cb;
-        this.value = this.get();
-    }
+  constructor(gb, exp, cb) {
+    this.gb = gb
+    this.data = this.gb.data
+    this.exp = exp
+    this.cb = cb
+    this.value = this.get()
+  }
 
-    // 访问属性，添加订阅
-    get() {
-        Dep.target = this; // 设置 Dep.target 为当前 watcher，让 Dep 知道添加谁
-        let value = this.data[this.exp];
-        Dep.target = null; // getter 触发结束成功添加注册后设置 Dep.target 为 null，防止非 watcher 的属性访问也添加订阅
-        return value;
-    }
+  // 访问属性，添加订阅
+  get() {
+    Dep.target = this // 设置 Dep.target 为当前 watcher，让 Dep 知道添加谁
+    let value = this.data[this.exp]
+    Dep.target = null // getter 触发结束成功添加注册后设置 Dep.target 为 null，防止非 watcher 的属性访问也添加订阅
+    return value
+  }
 
-    addDep(dep) {
-        dep.addSub(this); // 进行订阅
-    }
+  addDep(dep) {
+    dep.addSub(this) // 进行订阅
+  }
 
-    // 给 Dep 调用的更新方法
-    update() {
-        const oldVal = this.value;
-        const newVal = this.get();
-        if (oldVal !== newVal) {
-            this.cb.call(this.gb, this.newVal, oldVal);
-        }
+  // 给 Dep 调用的更新方法
+  update() {
+    const oldVal = this.value
+    const newVal = this.get()
+    if (oldVal !== newVal) {
+      this.cb.call(this.gb, this.newVal, oldVal)
     }
+  }
 }
 ```
 
@@ -161,7 +159,7 @@ export default class Watcher {
 
 而 `Watcher` 就是我们将想要订阅属性变更的一些方法的抽象，即每一个方法都是一个 `Watcher` 实例，它通过访问对应的属性触发 `getter` 来实现依赖的注入（注入到 `Dep` 中），同时提供一个 `update()`，让 `Dep` 能在属性变化的时候调用从而执行回调函数。在实际的 `Vue` 代码中，`Watcher` 是在模版的解析过程中生成的，这个我们在后面讨论。
 
-* * *
+---
 
 剩下的就是依赖调度中心 `Dep` 了，每一个被侦测的属性都会有一个 `Dep` 实例，`Dep` 的主要任务管理该属性依赖，即将收集到的依赖保存，当该属性变化的时候调用对应 `Watcher` 的 `update` 执行回调函数。
 
@@ -169,70 +167,70 @@ export default class Watcher {
 
 ```javascript
 function remove(arr, item) {
-    if (arr.length) {
-        let index = arr.indexOf(item);
-        if (index > -1) {
-            return arr.splice(index, 1);
-        }
+  if (arr.length) {
+    let index = arr.indexOf(item)
+    if (index > -1) {
+      return arr.splice(index, 1)
     }
-    return false;
+  }
+  return false
 }
 
 export default class Dep {
-    constructor() {
-        this.subs = [];
-    }
+  constructor() {
+    this.subs = []
+  }
 
-    // 调用订阅者 Watcher 的 addDep 方法添加订阅，实际内部调用的就是下面的 addSub
-    depend() {
-        Dep.target.addDep(this);
-    }
+  // 调用订阅者 Watcher 的 addDep 方法添加订阅，实际内部调用的就是下面的 addSub
+  depend() {
+    Dep.target.addDep(this)
+  }
 
-    // 添加订阅
-    addSub(sub) {
-        this.subs.push(sub);
-    }
+  // 添加订阅
+  addSub(sub) {
+    this.subs.push(sub)
+  }
 
-    // 移除订阅
-    removeSub(sub) {
-        remove(this.subs, sub);
-    }
+  // 移除订阅
+  removeSub(sub) {
+    remove(this.subs, sub)
+  }
 
-    // 接收到来自 setter 的属性变化的消息则执行所有订阅者的 update 方法
-    notify() {
-        this.subs.forEach(sub => sub.update());
-    }
+  // 接收到来自 setter 的属性变化的消息则执行所有订阅者的 update 方法
+  notify() {
+    this.subs.forEach((sub) => sub.update())
+  }
 }
 
-Dep.target = null;
+Dep.target = null
 ```
 
 这张图来自 《深入浅出 vue.js》，可以帮助大家理解这里的逻辑：
 
-![binding1](./images/vue-two-ways-binding1.png "binding1")
+![binding1](./images/vue-two-ways-binding1.png 'binding1')
 
 最后我们写一个例子来测试上面的逻辑是否能够运行：
 
 ```javascript
-import Watcher from './watcher.mjs';
-import { observe } from './observer.mjs';
+import { observe } from './observer.mjs'
+import Watcher from './watcher.mjs'
 
 let obj = {
-    data: {
-        name: 'clloz',
-        age: '28',
-    },
-};
+  data: {
+    name: 'clloz',
+    age: '28'
+  }
+}
 
-observe(obj);
+observe(obj)
 
 /* eslint-disable */
 new Watcher(obj, 'name', function () {
-    console.log('reactive successful');
-});
+  console.log('reactive successful')
+})
 
-obj.data.name = 'clloz1992'; // reactive successful
-console.log(obj.data.name); // clloz1992
+obj.data.name = 'clloz1992' // reactive successful
+console.log(obj.data.name) // clloz1992
 ```
 
 在例子中我们用 `observe` 方法来对 `obj` 对象进行改造，然后用一个 `watcher` 示例来注册 `name` 属性，当我们给 `name` 属性赋值的时候，我们发现 `reactive successful` 成功输出了。
@@ -261,11 +259,11 @@ export function parsePath (path: string): any {
 
 这个 `ParsePath` 就是用来处理 `exp` 的，在我上面写的例子中，我是直接访问 `this.data[exp]`，如果是有嵌套的对象这样肯定行不通。通过上面的函数。用 `.` 将嵌套的访问进行分割，然后沿着 `obj` 一层一层向下访问即可。添加了这个逻辑之后我们就可以访问嵌套的逻辑了。当然了我们的属性访问还可以通过 `[]` 运算符，如果使用了 `[]` 就必须要转换成 `.` 的访问形式。
 
-`Vue` 还为 `Watcher` 和 `Dep` 实例添加了 `id` 和 `hash`，防止重复的订阅添加。以及在 `Observer` 的 `setter` 中对新添加的属性执行了 `observe`，应该是为了处理设置的属性是一个对象的情况。想要详细了解可以去看 `Vue` 的源码 [Vue Souce Code](https://github.com/vuejs/vue/tree/70f497e2e1651f78c5189a05144ed8b1659a1826/src/core/observer "Vue Souce Code")。
+`Vue` 还为 `Watcher` 和 `Dep` 实例添加了 `id` 和 `hash`，防止重复的订阅添加。以及在 `Observer` 的 `setter` 中对新添加的属性执行了 `observe`，应该是为了处理设置的属性是一个对象的情况。想要详细了解可以去看 `Vue` 的源码 [Vue Souce Code](https://github.com/vuejs/vue/tree/70f497e2e1651f78c5189a05144ed8b1659a1826/src/core/observer 'Vue Souce Code')。
 
-`vue` 的双向绑定原理图（来自 [vue双向数据绑定原理图(简易) - zhangjinpei](https://segmentfault.com/a/1190000022600105 "vue双向数据绑定原理图(简易) - zhangjinpei")，可以帮助大家理解整个执行过程。
+`vue` 的双向绑定原理图（来自 [vue双向数据绑定原理图(简易) - zhangjinpei](https://segmentfault.com/a/1190000022600105 'vue双向数据绑定原理图(简易) - zhangjinpei')，可以帮助大家理解整个执行过程。
 
-![binding2](./images/vue-two-ways-binding2.png "binding2")
+![binding2](./images/vue-two-ways-binding2.png 'binding2')
 
 ## Object.defineProperty 的局限
 
@@ -291,16 +289,16 @@ export function parsePath (path: string): any {
 
 关于 `Proxy` 的响应式，可以先看一个 `Proxy` 实现的调色器的例子：
 
-<iframe width="100%" height="230px" style="border: none" src="https://cdn.clloz.com/study/reactive/palette"></iframe>
+<!-- <iframe width="100%" height="230px" style="border: none" src="https://cdn.clloz.com/study/reactive/palette"></iframe> -->
 
-代码在 [调色盘 - Proxy](https://github.com/Clloz/clloz-vue/tree/dev/src/reactive/simplify "调色盘 - Proxy")，具体如何进行绑定的参考代码。
+代码在 [调色盘 - Proxy](https://github.com/Clloz/clloz-vue/tree/dev/src/reactive/simplify '调色盘 - Proxy')，具体如何进行绑定的参考代码。
 
 `Vue 3` 的源码阅读中，有时间补上。
 
 ## 参考文章
 
-1. [面试官: 实现双向绑定Proxy比defineproperty优劣如何?](https://juejin.cn/post/6844903601416978439#heading-14 "面试官: 实现双向绑定Proxy比defineproperty优劣如何?")
+1. [面试官: 实现双向绑定Proxy比defineproperty优劣如何?](https://juejin.cn/post/6844903601416978439#heading-14 '面试官: 实现双向绑定Proxy比defineproperty优劣如何?')
 2. 《深入浅出 vue.js》
-3. [vue双向数据绑定原理图(简易)](https://segmentfault.com/a/1190000022600105 "vue双向数据绑定原理图(简易)")
-4. [vue 的双向绑定原理及实现](https://juejin.cn/entry/6844903479044112391 "vue 的双向绑定原理及实现")
-5. [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/v2/prepare/ "Vue.js 技术揭秘")
+3. [vue双向数据绑定原理图(简易)](https://segmentfault.com/a/1190000022600105 'vue双向数据绑定原理图(简易)')
+4. [vue 的双向绑定原理及实现](https://juejin.cn/entry/6844903479044112391 'vue 的双向绑定原理及实现')
+5. [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/v2/prepare/ 'Vue.js 技术揭秘')

@@ -7,10 +7,8 @@ tags:
   - 实用技巧
   - 软件工具
 language: '中文'
-heroImage: {"src":"./tmux.png","color":"#B4C6DA"}
+heroImage: { 'src': './tmux.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -159,4 +157,4 @@ $ tmux source-file ~/.tmux.conf
 
 ## 参考文件
 
-1. [Tmux 使用教程](https://www.ruanyifeng.com/blog/2019/10/tmux.html "Tmux 使用教程")
+1. [Tmux 使用教程](https://www.ruanyifeng.com/blog/2019/10/tmux.html 'Tmux 使用教程')

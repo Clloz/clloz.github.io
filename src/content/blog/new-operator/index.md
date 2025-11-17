@@ -6,10 +6,8 @@ tags:
   - js
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -27,11 +25,11 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 我么可以用代码简单表示上面的逻辑：
 
 ```javascript
-function new_ (constr, ...rests) {
-    var obj = {};
-    obj.__proto__ = constr.prototype;
-    var ret = constr.apply(obj, rests);
-    return isPrimitive(ret) ? obj : ret; //判断构造函数的返回值是否为对象，不是则直接返回创建的obj对象
+function new_(constr, ...rests) {
+  var obj = {}
+  obj.__proto__ = constr.prototype
+  var ret = constr.apply(obj, rests)
+  return isPrimitive(ret) ? obj : ret //判断构造函数的返回值是否为对象，不是则直接返回创建的obj对象
 }
 ```
 
@@ -41,37 +39,37 @@ function new_ (constr, ...rests) {
 
 ```javascript
 function new_(constr, ...rests) {
-    if (typeof constr !== "function") {
-        throw "the first param must be a function";
-    }
-    new_.target = constr;
-    var obj = Object.create(constr.prototype);
-    var ret = constr.apply(obj, rests);
-    var isObj = typeof ret !== null && typeof ret === "object";
-    var isFun = typeof ret === "function";
-    //var isObj = typeof ret === "function" || typeof ret === "object" && !!ret;
-    if (isObj || isFun) {
-        return ret;
-    }
-    return obj;
+  if (typeof constr !== 'function') {
+    throw 'the first param must be a function'
+  }
+  new_.target = constr
+  var obj = Object.create(constr.prototype)
+  var ret = constr.apply(obj, rests)
+  var isObj = typeof ret !== null && typeof ret === 'object'
+  var isFun = typeof ret === 'function'
+  //var isObj = typeof ret === "function" || typeof ret === "object" && !!ret;
+  if (isObj || isFun) {
+    return ret
+  }
+  return obj
 }
 
 function Person(name, age) {
-    this.name = name;
-    this.age = age;
+  this.name = name
+  this.age = age
 }
 Person.prototype.say = function () {
-    console.log(this.name);
-};
+  console.log(this.name)
+}
 var p1 = new_(Person, 'clloz', '28')
 var p2 = new_(Person, 'csx', '31')
-console.log(p1); //Person {name: "clloz", age: "28"}
-p1.say();  //clloz
-console.log(p2);  //Person {name: "csx", age: "31"}
-p2.say();  //csx
+console.log(p1) //Person {name: "clloz", age: "28"}
+p1.say() //clloz
+console.log(p2) //Person {name: "csx", age: "31"}
+p2.say() //csx
 
-console.log(p1.__proto__ === Person.prototype);  //true
-console.log(p2.__proto__ === Person.prototype);  //true
+console.log(p1.__proto__ === Person.prototype) //true
+console.log(p2.__proto__ === Person.prototype) //true
 ```
 
 以上就是一个简单的 `new` 实现，判断是否为对象那里可能不是很严谨，不过没有想到更好的方法。
@@ -80,10 +78,10 @@ console.log(p2.__proto__ === Person.prototype);  //true
 
 ```javascript
 Function.prototype.construct = function (aArgs) {
-  var oNew = Object.create(this.prototype);
-  this.apply(oNew, aArgs);
-  return oNew;
-};
+  var oNew = Object.create(this.prototype)
+  this.apply(oNew, aArgs)
+  return oNew
+}
 ```
 
 ## 强制用 new 调用构造函数
@@ -121,11 +119,11 @@ b.__proto__ === Object.prototype //true
 补充三个关于 `new` 运算符的知识点。
 
 1. 上面提到 `new` 的执行过程的最后一步，如果构造函数没有返回值或者返回值不是一个对象，则返回 `this`。但是如果返回的是一个 `null` 的话，依然返回 `this`，虽然 `null` 也算是 `object`。
-2. `new` 操作符后面的构造函数可以带括号也可以不带括号，除了带括号可以传递参数以外，还有一个重要的点是两种用法的运算符优先级不一样，在[JS运算符优先级](https://www.clloz.com/programming/front-end/js/2019/04/05/operator-precedence/ "JS运算符优先级")这篇文章中有提到，带参数的 `new` 操作符的优先级是比不带参数的要高的，`new Foo() > Foo() > new Foo`。
+2. `new` 操作符后面的构造函数可以带括号也可以不带括号，除了带括号可以传递参数以外，还有一个重要的点是两种用法的运算符优先级不一样，在[JS运算符优先级](https://www.clloz.com/programming/front-end/js/2019/04/05/operator-precedence/ 'JS运算符优先级')这篇文章中有提到，带参数的 `new` 操作符的优先级是比不带参数的要高的，`new Foo() > Foo() > new Foo`。
 3. 运算符优先级相关：对于 `new`，函数调用，成员访问三者结合的情况，比如 `new obj1.obj2.obj3.fun().prop` 这样的情况，我个人总结就是函数调用直接到前面的 `new` 先计算，得到的结果在进行成员访问。
 
 一般不太会遇到，可能有些题目会问这些问题。
 
 ## 参考文章
 
-1. [能否实现JS的new操作符](https://juejin.im/post/5bde7c926fb9a049f66b8b52 "能否实现JS的new操作符")
+1. [能否实现JS的new操作符](https://juejin.im/post/5bde7c926fb9a049f66b8b52 '能否实现JS的new操作符')

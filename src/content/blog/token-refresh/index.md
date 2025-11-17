@@ -7,10 +7,8 @@ tags:
   - 学习笔记
   - 项目实现
 language: '中文'
-heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
+heroImage: { 'src': './javascript-logo.jpg', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -28,7 +26,7 @@ heroImage: {"src":"./javascript-logo.jpg","color":"#B4C6DA"}
 
 `token` 的优点是服务端不需要保存 `token`，只需要验证前端传过来的 `token` 即可，所以几遍是分布式部署也可以使用这种方式。`token` 的缺点就是，由于服务器不保存 `session` 状态，因此无法在使用过程中废止某个 `token`，或者更改 `token` 的权限。也就是说，一旦 `token` 签发了，在到期之前就会始终有效，除非服务器部署额外的逻辑。
 
-目前比较常用的 `token` 加密方式是 `JWT JSON Web Token`，关于 `JWT` 可以参考阮一峰老师的 [JSON Web Token 入门教程](https://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html "JSON Web Token 入门教程")
+目前比较常用的 `token` 加密方式是 `JWT JSON Web Token`，关于 `JWT` 可以参考阮一峰老师的 [JSON Web Token 入门教程](https://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html 'JSON Web Token 入门教程')
 
 ## token 刷新
 
@@ -133,7 +131,7 @@ export default (vue: Function) => {
 
 ## 参考文章
 
-1. [JSON Web Token 入门教程](https://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html "JSON Web Token 入门教程")
-2. [解决使用jwt刷新token带来的问题](https://segmentfault.com/a/1190000013151506 "解决使用jwt刷新token带来的问题")
-3. [axios如何利用promise无痛刷新token（二）](https://juejin.cn/post/6844903993274007565#comment "axios如何利用promise无痛刷新token（二）")
-4. [axios如何利用promise无痛刷新token](https://juejin.cn/post/6844903925078818829#heading-13 "axios如何利用promise无痛刷新token")
+1. [JSON Web Token 入门教程](https://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html 'JSON Web Token 入门教程')
+2. [解决使用jwt刷新token带来的问题](https://segmentfault.com/a/1190000013151506 '解决使用jwt刷新token带来的问题')
+3. [axios如何利用promise无痛刷新token（二）](https://juejin.cn/post/6844903993274007565#comment 'axios如何利用promise无痛刷新token（二）')
+4. [axios如何利用promise无痛刷新token](https://juejin.cn/post/6844903925078818829#heading-13 'axios如何利用promise无痛刷新token')

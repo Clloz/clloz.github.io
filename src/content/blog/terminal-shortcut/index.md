@@ -6,10 +6,8 @@ tags:
   - assorted
   - 实用技巧
 language: '中文'
-heroImage: {"src":"./automator.png","color":"#B4C6DA"}
+heroImage: { 'src': './automator.png', 'color': '#B4C6DA' }
 ---
-
-\[toc\]
 
 ## 前言
 
@@ -21,11 +19,11 @@ heroImage: {"src":"./automator.png","color":"#B4C6DA"}
 
 打开 `application` 中的 `automator`，`automator` 其实就是用来自定义工作流以及服务的软件，用好这个软件可以自己定制自己的工作流或者自定义服务，提高自己使用 `mac` 的效率。 我们要为“打开 `terminal` ”动作新建一个服务流程如下， 1. 新建一个服务，选择任务栏上的 `File->New->Service`,如下图：
 
-![terminal1](./images/terminal1.png "terminal1")
+![terminal1](./images/terminal1.png 'terminal1')
 
 2. 添加服务内容，在左边的菜单栏依次选择 `Utilities->Run AppleScript`,然后添加如下代码
 
-![terminal2](./images/terminal2.png "terminal2")
+![terminal2](./images/terminal2.png 'terminal2')
 
 添加完之后点击黑色箭头运行，如果能够打开 `terminal` 说明服务没有问题，`command+S` 保存该工作流，你可以将其命名为“`Open Terminal`” 3. 绑定快捷键，在 `System Preferences->Keyboard->Shortcuts->Services->General` 中找到刚刚添加的 `Open terminal` 绑定自己想要的快捷键就可以了。
 
