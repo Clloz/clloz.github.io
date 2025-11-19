@@ -7,7 +7,7 @@ import ProjectSection from '@/components/projects/ProjectSection.astro'
 // import Sponsors from '@/components/projects/Sponsors.astro'
 import Sponsorship from '@/components/projects/Sponsorship.astro'
 import alipay from '@/assets/alipay-qrcode.jpg'
-// import KeyIcon from '@/assets/icons/key.svg'
+import KeyIcon from '@/assets/icons/key.svg'
 import wechat from '@/assets/wechat-qrcode.jpg'
 
 const headings = [
@@ -15,7 +15,7 @@ const headings = [
   { depth: 2, slug: 'programs', text: 'Programs' },
   { depth: 2, slug: 'learnings', text: 'Learnings' },
   // { depth: 2, slug: 'others', text: 'Others' },
-  // { depth: 2, slug: 'gpg-signature', text: 'GPG Signature' },
+  { depth: 2, slug: 'gpg-signature', text: 'GPG Signature' },
   { depth: 2, slug: 'sponsorship', text: 'Sponsorship' }
 ]
 ---
@@ -151,14 +151,19 @@ const headings = [
   /> -->
 
   <!-- gpg signature -->
-  <!-- <h2 id='gpg-signature'>GPG Signature</h2>
+  <h2 id='gpg-signature'>GPG Signature</h2>
   <p>
     You can verify the authenticity of the files I signed by checking the GPG signature. My GPG key
-    is <code>114514</code>, and you can find it on the opengpg key servers or download from it.
+    is <code>34D0E2A8183C0E23E7A74576837017D2F7E504E8</code>, and you can find it on the opengpg key
+    servers or download from it.
   </p>
-  <Button href='https://keys.openpgp.org/search?q=114514' title='Checkout my key' target='_blank'>
+  <Button
+    href='https://keys.openpgp.org/search?q=34D0E2A8183C0E23E7A74576837017D2F7E504E8'
+    title='Checkout my key'
+    target='_blank'
+  >
     <KeyIcon class='size-5' slot='before' />
-  </Button> -->
+  </Button>
 
   <!-- sponsorship -->
   <h2 id='sponsorship'>Sponsorship</h2>
