@@ -36,22 +36,17 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
       <div class='flex flex-col items-center gap-y-4'>
         <h1 class='text-3xl font-bold'>{config.author}</h1>
         <div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
-          <Label title='China'>
+          <Label title='China / Shanghai' as='span'>
             <Icon name='location' class='size-5' slot='icon' />
           </Label>
-          <Label
-            title='Source code'
-            as='a'
-            href='https://github.com/cworld1/astro-theme-pure'
-            target='_blank'
-          >
+          <Label title='Github' as='a' href='https://github.com/Clloz' target='_blank'>
             <Icon name='github' class='size-5' slot='icon' />
           </Label>
         </div>
       </div>
 
       {/* Get template */}
-      <a
+      <!-- <a
         href='https://github.com/cworld1/astro-theme-pure'
         target='_blank'
         class='flex flex-row items-center gap-x-3 rounded-full border bg-background px-4 py-2 text-sm shadow-sm transition-shadow hover:shadow-md'
@@ -63,7 +58,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
           <span class='size-2 rounded-full bg-green-400'></span>
         </span>
         <p class='font-medium text-muted-foreground'>Get Template</p>
-      </a>
+      </a> -->
     </section>
 
     <div id='content' class='animate flex flex-col gap-y-10 md:w-4/5 lg:w-5/6'>
